@@ -1,0 +1,18 @@
+To make all dependency works in build proccess we need some plugins.
+
+npm install
+...
+
+npm install typescript
+npm i clean-webpack-plugin --save-dev
+npm i html-webpack-plugin --save-dev
+
+Possible fix : 
+
+npm i webpack --save-dev
+npm i extract-text-webpack-plugin --save-dev
+
+
+Fix code format : 
+
+tslint -c tslint.json 'src/**/*.ts' --fix
