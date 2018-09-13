@@ -31,13 +31,13 @@ module.exports = {
             {test: /\.tsx?$/, loader: "ts-loader"},
             {test: /\.(jpg|png)$/,loader: "file-loader", options: {name: '[name].[ext]', outputPath: 'imgs/'}},
             {test: /\.css$/, loader: "style-loader!css-loader" }, 
-            {test: /\.(svg|png|jpg|jpeg|gif)$/,
-              include: '/examples/imgs/',
+            {test: /\.(ico)$/,
+              //include: '/',
               use: {
                 loader: 'file-loader',
                 options: {
-                  name: '[path][name].[ext]',
-                  outputPath: '/build'
+                  name: '[name].[ext]',
+                  outputPath: '/styles'
                 }
               }
             },
