@@ -1,12 +1,14 @@
 import Browser from "../class/browser";
 
+/**
+* @Description Global window based events
+*/
+
 class GlobalEvent {
 
-  /**
-	  * @Description window based events
-  	*/
   public get: {[key: string]: any} = {};
-  public activeKey: {[key: string]: any} = {};
+  public activeKey: {[key: number]: any} = {};
+
   private browser: Browser;
 
   public constructor(browser: Browser) {
@@ -18,24 +20,34 @@ class GlobalEvent {
   }
 
   public activateKeyDetection() {
-
-    const root = this;
-
-    document.body.addEventListener("keydown", function(e) {
-      root.activeKey[e.keyCode] = true;
-    });
-
-    document.body.addEventListener("keyup", function(e) {
-      root.activeKey[e.keyCode] = false;
-    });
+ 
+    document.body.addEventListener("keydown", this.onKeyDownHandler, true);
+    document.body.addEventListener("keyup", this.onKeyUpHandler, true);
 
  }
 
+ public deactivateKeyDetection() {
+ 
+  document.body.removeEventListener("keydown", this.onKeyDownHandler, true);
+  document.body.removeEventListener("keyup", this.onKeyUpHandler, true);
+
+}
+
   public attachEvent(name: string, callback) {
     this.get[name] = callback;
-    window[name]  = (event) => {
+    window[name] = (event) => {
       this.get[name](event);
     };
+  }
+
+  private onKeyDownHandler = (e) => {
+    const root = this;
+    root.activeKey[e.keyCode] = true;
+  }
+
+  private onKeyUpHandler = (e) => {
+    const root = this;
+    root.activeKey[e.keyCode] = false;
   }
 
 }

@@ -56,9 +56,8 @@ class VisualRender {
             if (part.render.sprite && part.render.visualComponent && !options.wireframes) {
 
                 // part sprite
-                 const sprite = part.render.sprite;
-
-                 const texture = part.render.visualComponent.assets.getImg("tex0");
+                // const sprite = part.render.sprite;
+                // const texture = part.render.visualComponent.assets.getImg("tex0");
 
                  c.translate(part.position.x, part.position.y);
                  c.rotate(part.angle);

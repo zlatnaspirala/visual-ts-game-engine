@@ -34,10 +34,10 @@ class TextureComponent implements IVisualComponent {
 
   public drawComponent(c: CanvasRenderingContext2D, part: any): void {
 
-    if (part.vertices.length === 4) {
+   // if (part.vertices.length === 4) {
 
       if (this.keepAspectRatio == false) {
-
+console.log("aa");
       const dist1 = getDistance(part.vertices[0], part.vertices[1]);
       const dist2 = getDistance(part.vertices[0], part.vertices[3]);
       let originX = dist1 * -part.render.sprite.xOffset * part.render.sprite.xScale;
@@ -51,9 +51,9 @@ class TextureComponent implements IVisualComponent {
         for (let j = -this.horizontalTiles / 2; j < this.horizontalTiles / 2; j++) {
 
         c.drawImage(
-          this.assets.getImg("tex0") ,
-          originX - originW * (x) ,
-          originY - originH * (j) ,
+          this.assets.getImg("tex1"),
+          originX - originW * (x),
+          originY - originH * (j),
           originW,
           originH);
 
@@ -62,14 +62,14 @@ class TextureComponent implements IVisualComponent {
     } else {
 
       c.drawImage(
-        this.assets.getImg("tex0"),
-        this.assets.getImg("tex0").width * -part.render.sprite.xOffset * part.render.sprite.xScale,
-        this.assets.getImg("tex0").height * -part.render.sprite.yOffset * part.render.sprite.yScale,
-        this.assets.getImg("tex0").width * part.render.sprite.xScale,
-        this.assets.getImg("tex0").height * part.render.sprite.yScale);
+        this.assets.getImg("tex1"),
+        this.assets.getImg("tex1").width * -part.render.sprite.xOffset * part.render.sprite.xScale,
+        this.assets.getImg("tex1").height * -part.render.sprite.yOffset * part.render.sprite.yScale,
+        this.assets.getImg("tex1").width * part.render.sprite.xScale,
+        this.assets.getImg("tex1").height * part.render.sprite.yScale);
     }
 
-  }
+ // }
 
   }
 
