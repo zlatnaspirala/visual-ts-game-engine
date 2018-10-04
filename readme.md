@@ -1,17 +1,19 @@
-#To make all dependency works in build proccess we need some plugins.
+# Project : Visual ts #
+## Version : new era - 2018/2019 ##
 
-<code>
-  npm install
-</code>
+#### To make all dependency works in build proccess we need some plugins. ####
 
-## Start dependency system from app.ts
+<pre>
+ <b> npm install </b>
+</pre>
 
-Fisrt game template is Platformer.
+## Start dependency system from app.ts ##
 
-In progress...
+ - Fisrt game template is Platformer.
+
 ## Main dependency file ##
 
-```c#
+```typescript
 /** Import css */
 require("./styles/styles.css");
 require("./styles/favicon.ico");
@@ -24,8 +26,8 @@ const master = new Ioc();
 master.singlton(Platformer, master.get.Starter);
 ```
 
-# Fix code format : #
+## Fix code format : ##
 
-```
+```c#
 tslint -c tslint.json 'src/**/*.ts' --fix
 ```
