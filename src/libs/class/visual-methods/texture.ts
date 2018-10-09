@@ -37,7 +37,7 @@ class TextureComponent implements IVisualComponent {
    // if (part.vertices.length === 4) {
 
       if (this.keepAspectRatio == false) {
-console.log("aa");
+      // console.log("aa");
       const dist1 = getDistance(part.vertices[0], part.vertices[1]);
       const dist2 = getDistance(part.vertices[0], part.vertices[3]);
       let originX = dist1 * -part.render.sprite.xOffset * part.render.sprite.xScale;

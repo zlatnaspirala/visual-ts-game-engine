@@ -1,6 +1,8 @@
 import GlobalEvent from "../../libs/global-event/global-event";
 import Starter from "../../libs/starter";
-import { level1 } from "./scripts/level1";
+import { level1 } from "./scripts/level1/level1";
+import { staticItem, worldElement } from "../../libs/types/global";
+
 /**
  * @author Nikola Lukic
  * @class Platformer
@@ -21,10 +23,7 @@ class Platformer {
   public starter: Starter;
   private levelAccess: {[key: string]: (r: Platformer) => void} = {};
 
-  // for now player is simple object
-  public ground: any = {};
-  // public circle: any = {};
-
+  public grounds: worldElement[] = [];
   // shortcut for view size
   public v: any;
   private globalEvent: GlobalEvent;

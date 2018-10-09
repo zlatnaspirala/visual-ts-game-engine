@@ -1,7 +1,9 @@
 import * as Matter from "matter-js";
-import TextureComponent from "../../../libs/class/visual-methods/texture";
-import Platformer from "../platformer";
-import { playerGroundCheck } from "./common";
+import TextureComponent from "../../../../libs/class/visual-methods/texture";
+import Platformer from "../../platformer";
+import { playerGroundCheck } from "../common";
+import { staticGrounds } from "./map";
+import { worldElement } from "../../../../libs/types/global";
 /**
  * @description Finally game start at here
  * @function level1
@@ -12,12 +14,13 @@ export function level1(r: Platformer): void {
 
   const globalEvent = r.starter.ioc.get.GlobalEvent;
   const imgRes = [
-    require("../imgs/floor.png"),
-    require("../imgs/target.png")
+    require("../../imgs/floor.png"),
+    require("../../imgs/target.png")
   ];
 
-  r.player = Matter.Bodies.circle(r.v.getWidth(50), r.v.getHeight(30), r.v.getWidth(6), {
-    label: "target",
+  let playerRadius = 6;
+  r.player = Matter.Bodies.circle(r.v.getWidth(50), r.v.getHeight(30), r.v.getWidth(playerRadius), {
+    label: "player",
     density: 0.0005,
     friction: 0.01,
     frictionAir: 0.06,
@@ -45,35 +48,45 @@ export function level1(r: Platformer): void {
   r.player.render.visualComponent.keepAspectRatio = true;
 
   //this sensor check if the player is on the ground to enable jumping
-  /* r.playerSensor = Matter.Bodies.rectangle(r.v.getWidth(50), r.v.getHeight(30), playerRadius, 5, {
+   r.playerSensor = Matter.Bodies.rectangle(r.v.getWidth(50), r.v.getHeight(30), r.v.getWidth(playerRadius), 5, {
     isSensor: true,
     render: {
       visible: false,
     },
   });
-  */
+ 
 
+  staticGrounds.forEach((item) => {
 
-  // r.playerSensor.collisionFilter.group = -1;
+    let newStaticElement: worldElement =  Matter.Bodies.rectangle(
+      r.v.getWidth(item.x),
+      r.v.getHeight(item.y),
+      r.v.getWidth(item.w),
+      r.v.getHeight(item.h),
+     {
+       isStatic: true,
+       label: "ground",
+       render: {
+         visualComponent: new TextureComponent(item.tex),
+         sprite: {
+           olala: true
+         },
+        } as any | Matter.IBodyRenderOptions,
+    });
 
-  r.ground = Matter.Bodies.rectangle(r.v.getWidth(50), r.v.getHeight(90), r.v.getWidth(50), r.v.getHeight(5), {
-    isStatic: true,
-    label: "ground",
-    render: {
-      visualComponent: new TextureComponent(imgRes),
-      sprite: {
-        lalala: true,
-      },
-    } as Matter.IBodyRenderOptions | any,
+    r.grounds.push(newStaticElement);
+
+    ((r.grounds[r.grounds.length - 1] as Matter.Body).render as any).visualComponent.setVerticalTiles(13);
+
   });
 
-  r.ground.render.visualComponent.setVerticalTiles(13);
+  Matter.World.add(r.starter.getWorld(),
+    r.grounds as worldElement
+  );
 
   // add bodies
   Matter.World.add(r.starter.getWorld(), [
-    r.ground,
     r.player,
-    // r.playerSensor,
   ]);
 
   /**
@@ -102,7 +115,7 @@ export function level1(r: Platformer): void {
 
     }
 
-    // Matter.Body.setAngle(r.player, -Math.PI * 0);
+    Matter.Body.setAngle(r.player, -Math.PI * 0);
 
     if (counter >= 60 * 2.5) {
 
@@ -144,10 +157,12 @@ export function level1(r: Platformer): void {
     if (globalEvent.activeKey[38] &&
          r.player.ground && r.player.jumpCD < game.cycle) {
 
+      r.player.ground = false;
+
       r.player.jumpCD = game.cycle + 1; //adds a cooldown to jump
       r.player.force = {
         x: 0,
-        y: -0.25,
+        y: -0.05,
       };
       Matter.Body.applyForce(r.player, { x: r.player.position.x, y: r.player.position.y }, r.player.force);
 
@@ -156,7 +171,7 @@ export function level1(r: Platformer): void {
     else if (globalEvent.activeKey[37] && r.player.angularVelocity > -limit) {
 
       r.player.force = {
-        x: -0.005,
+        x: -0.001,
         y: 0,
       };
       Matter.Body.applyForce(r.player, { x: r.player.position.x, y: r.player.position.y }, r.player.force);
@@ -167,27 +182,14 @@ export function level1(r: Platformer): void {
       if (globalEvent.activeKey[39] && r.player.angularVelocity < limit) {
 
         r.player.force = {
-          x: 0.005,
+          x: 0.001,
           y: 0,
         };
         Matter.Body.applyForce(r.player, { x: r.player.position.x, y: r.player.position.y }, r.player.force);
         // r.player.torque = spin;
       }
     }
-
-    /*
-    //set sensor velocity to zero so it collides properly
-    //r.v.getWidth(50), r.v.getHeight(30)
-    Matter.Body.setVelocity(r.playerSensor, {
-        x: 0,
-        y: 0
-      })
-      //move sensor to below the player
-      Matter.Body.setPosition(r.playerSensor, {
-      x: r.player.position.x,
-      y: r.player.position.y + playerRadius
-    });
-    */
+  
   });
 
   globalEvent.activateKeyDetection();
