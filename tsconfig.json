@@ -1,6 +1,6 @@
 {
     "compilerOptions": {
-		"target": "es5",
+        "target": "es5",
         "module": "amd",
         "noImplicitAny": false,
         "removeComments": true,
@@ -8,14 +8,14 @@
         "outDir": "/build/",
         "sourceMap": true,
         "allowJs": true,
-		//"noEmit": true
+        //"noEmit": true
     },
     "include": [
         "src/**/*"
     ],
     "exclude": [
-	    "dist",
-		"build",
+        "dist",
+        "build",
         "node_modules",
         "**/*.spec.ts"
     ]

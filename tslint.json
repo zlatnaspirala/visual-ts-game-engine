@@ -16,11 +16,23 @@
                 "trace"
             ]
         },
-        "indent": [true, "spaces", 2],
+        "indent": [
+            true,
+            "spaces",
+            2
+        ],
         "object-literal-sort-keys": false,
         "only-arrow-functions": false,
-        "max-line-length": [true, {"limit": 140, "ignore-pattern": "^import |^export {(.*?)}"}],
-        "one-variable-per-declaration": false
+        "max-line-length": [
+            true,
+            {
+                "limit": 140,
+                "ignore-pattern": "^import |^export {(.*?)}"
+            }
+        ],
+        "one-variable-per-declaration": false,
+        "no-require-imports": false,
+        "no-var-requires": false
     },
     "rulesDirectory": []
 }

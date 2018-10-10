@@ -2,9 +2,9 @@ import ViewPort from "./view-port";
 
 class Position {
 
-    private x: number;
-    private y: number;
-    private viewPort: ViewPort;
+  private x: number;
+  private y: number;
+  private viewPort: ViewPort;
 
   constructor(viewPort: ViewPort) {
 

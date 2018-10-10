@@ -1,6 +1,6 @@
 import { Counter } from "./math";
 
-interface ImageRes {[key: string]: HTMLImageElement; }
+interface ImageRes { [key: string]: HTMLImageElement; }
 
 class Resources {
 
@@ -14,7 +14,7 @@ class Resources {
 
   public getImg(name?: string, id?: number): HTMLImageElement {
 
-    if (name) {if (this.images[name] instanceof HTMLImageElement) { return this.images[name]; }}
+    if (name) { if (this.images[name] instanceof HTMLImageElement) { return this.images[name]; } }
     if (id) { return this.images["tex" + id] as HTMLImageElement; }
     if (this.images.tex0) { return this.images.tex0 as HTMLImageElement; }
 
@@ -31,10 +31,10 @@ class Resources {
 
   }
 
-  public insertSerial( imgRes: string[] ) {
+  public insertSerial(imgRes: string[]) {
 
     for (let x = 0; x < imgRes.length; x++) {
-      this.insertImg( "tex" + x , imgRes[x] );
+      this.insertImg("tex" + x, imgRes[x]);
     }
 
   }

@@ -1,8 +1,4 @@
-
 import { Render } from "matter-js";
-import { networkInterfaces } from "os";
-import IVisualComponent from "../interface/visual-component";
-import TextureComponent from "./visual-methods/texture";
 
 /**
  * @description Override method for matter-js render
@@ -26,76 +22,77 @@ class VisualRender {
      */
     private overrideRenderFunction(render, bodies, context) {
 
-    const c = context;
-    const engine = render.engine,
-            options = render.options,
+        const c = context;
+        const options = render.options,
             showInternalEdges = options.showInternalEdges || !options.wireframes;
-    let body, part, i, k;
+        let body, part, i, k;
 
-    for (i = 0; i < bodies.length; i++) {
-        body = bodies[i];
+        for (i = 0; i < bodies.length; i++) {
+            body = bodies[i];
 
-        if (!body.render.visible) {
-            continue;
-        }
-
-        // handle compound parts
-        for (k = body.parts.length > 1 ? 1 : 0; k < body.parts.length; k++) {
-            part = body.parts[k];
-
-            if (!part.render.visible) {
+            if (!body.render.visible) {
                 continue;
             }
 
-            if (options.showSleeping && body.isSleeping) {
-                c.globalAlpha = 0.5 * part.render.opacity;
-            } else if (part.render.opacity !== 1) {
-                c.globalAlpha = part.render.opacity;
+            // handle compound parts
+            for (k = body.parts.length > 1 ? 1 : 0; k < body.parts.length; k++) {
+                part = body.parts[k];
+
+                if (!part.render.visible) {
+                    continue;
+                }
+
+                if (options.showSleeping && body.isSleeping) {
+                    c.globalAlpha = 0.5 * part.render.opacity;
+                } else if (part.render.opacity !== 1) {
+                    c.globalAlpha = part.render.opacity;
+                }
+
+                if (part.render.sprite && part.render.visualComponent && !options.wireframes) {
+
+                    // part sprite
+                    // const sprite = part.render.sprite;
+                    // const texture = part.render.visualComponent.assets.getImg("tex0");
+
+                    c.translate(part.position.x, part.position.y);
+                    c.rotate(part.angle);
+                    // () => this.drawSolid(c, part, showInternalEdges, options);
+                    if (part.render.visualComponent) {
+                        part.render.visualComponent.drawComponent(c, part);
+                    }
+
+                    /**
+                     * else {  c.drawImage(
+                     * texture,
+                     * texture.width * -sprite.xOffset * sprite.xScale,
+                     * texture.height * -sprite.yOffset * sprite.yScale,
+                     * exture.width * sprite.xScale,
+                     * texture.height * sprite.yScale);
+                     * }
+                     */
+
+                    // revert translation, hopefully faster than save / restore
+                    c.rotate(-part.angle);
+                    c.translate(-part.position.x, -part.position.y);
+                } else {
+
+                    this.drawSolid(c, part, showInternalEdges, options);
+
+                }
+
+                c.globalAlpha = 1;
             }
-
-            if (part.render.sprite && part.render.visualComponent && !options.wireframes) {
-
-                // part sprite
-                // const sprite = part.render.sprite;
-                // const texture = part.render.visualComponent.assets.getImg("tex0");
-
-                 c.translate(part.position.x, part.position.y);
-                 c.rotate(part.angle);
-                 //() => this.drawSolid(c, part, showInternalEdges, options);
-                 if (part.render.visualComponent) {
-                    part.render.visualComponent.drawComponent(c, part);
-                 }
-
-                 /** else {  c.drawImage(
-                        texture,
-                        texture.width * -sprite.xOffset * sprite.xScale,
-                        texture.height * -sprite.yOffset * sprite.yScale,
-                        texture.width * sprite.xScale,
-                        texture.height * sprite.yScale);
-                }*/
-
-                // revert translation, hopefully faster than save / restore
-                 c.rotate(-part.angle);
-                 c.translate(-part.position.x, -part.position.y);
-            } else {
-
-                this.drawSolid(c, part, showInternalEdges, options);
-
-            }
-
-            c.globalAlpha = 1;
         }
     }
-    }
 
-   private getTexture(render, imagePath): HTMLImageElement {
+    private getTexture(render, imagePath): HTMLImageElement {
 
         let image = render.textures[imagePath];
 
         if (image) {
             return image;
         }
-        console.log(".................");
+        // console.log(".................");
         image = render.textures[imagePath] = new Image();
         image.src = imagePath;
 

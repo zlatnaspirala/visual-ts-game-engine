@@ -12,7 +12,7 @@
 ## Start dependency system from app.ts ##
 
  - Fisrt game template is Platformer.
-
+     
 ## Main dependency file ##
 
 ```typescript
@@ -30,6 +30,13 @@ master.singlton(Platformer, master.get.Starter);
 
 ## Fix code format : ##
 
-```c#
-tslint -c tslint.json 'src/**/*.ts' --fix
+```javascript
+  tslint -c tslint.json 'src/**/*.ts' --fix
+  tslint -c tslint.json 'src/**/*.ts'
+```
+or use : 
+
+```javascript
+  npm run fix
+  npm run tslint
 ```
