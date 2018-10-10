@@ -1,4 +1,2 @@
-node_modules
-build
-build/app.html
-build/visualjs2.js
+/node_modules
+/build
