@@ -1,20 +1,23 @@
 import * as Matter from "matter-js";
 import ViewPort from "../libs/class/view-port";
 import Ioc from "../libs/ioc";
-import { worldElement } from "./types/global";
+import { worldElement, uniVector } from "./types/global";
 
 class Starter {
 
     public ioc: Ioc;
-    public get: {[key: string]: any} = {};
+    public get: uniVector = {};
     protected attach;
     protected view: ViewPort;
 
+    private map: any = {};
     private render: any;
     private engine: any;
     private world: any;
     private runner: any;
     private mouseConstraint;
+
+
 
     public constructor(ioc: Ioc) {
 
@@ -24,6 +27,7 @@ class Starter {
         Render = Matter.Render,
         Runner = Matter.Runner,
         Events = Matter.Events,
+        Bounds = Matter.Bounds,
         MouseConstraint = Matter.MouseConstraint,
         Mouse = Matter.Mouse,
         World = Matter.World,
@@ -43,7 +47,25 @@ class Starter {
                 },
             });
 
+        this.setWorldBounds(-100, -100, 800 , 1000)
+
         this.render.options.background = "black";
+
+        this.map = {
+            translate: 0,
+            viewportCentre: {
+                x: this.render.options.width * 0.5,
+                y: this.render.options.height * 0.5
+            },
+            boundsScaleTarget: 1,
+            boundsScale: {
+                x: 1,
+                y: 1,
+            },
+
+        };
+        // new var
+        
 
         Render.run(this.render);
 
@@ -92,6 +114,18 @@ class Starter {
 
     }
 
+    public getMouseConstraint(){
+      return this.mouseConstraint;
+    }
+
+    public getMap() {
+      return this.map;
+    }
+
+    public getRender() {
+        return this.render;
+    }
+
     public getWorld() {
       return this.world;
     }
@@ -110,6 +144,13 @@ class Starter {
 
     public destroyBody(destroyBody) {
       Matter.Composite.remove(this.world, destroyBody);
+    }
+
+    private setWorldBounds(minX: number, minY: number, maxX: number, maxY: number){
+        this.world.bounds.min.x = minX;
+        this.world.bounds.min.y = minY;
+        this.world.bounds.max.x = maxX;
+        this.world.bounds.max.y = maxY;
     }
 
 }

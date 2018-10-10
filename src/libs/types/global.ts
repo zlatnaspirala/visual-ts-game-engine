@@ -7,4 +7,5 @@ export type worldElement = Matter.MouseConstraint | Matter.Composite | Matter.Co
 export type drawableObject = HTMLImageElement | HTMLCanvasElement | HTMLVideoElement | ImageBitmap;
 export type imagesResource =  HTMLImageElement |  HTMLImageElement[];
 export type literalImageSrc = string | string[];
-export type staticItem = {x: number,y: number, w: number, h:number, tex: literalImageSrc};
+export type staticItem = {x: number,y: number, w: number, h:number, tex: literalImageSrc, tiles: number};
+export type uniVector = {[key: string]: any};

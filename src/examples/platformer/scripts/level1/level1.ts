@@ -76,7 +76,7 @@ export function level1(r: Platformer): void {
 
     r.grounds.push(newStaticElement);
 
-    ((r.grounds[r.grounds.length - 1] as Matter.Body).render as any).visualComponent.setVerticalTiles(13);
+    ((r.grounds[r.grounds.length - 1] as Matter.Body).render as any).visualComponent.setVerticalTiles(item.tiles);
 
   });
 
@@ -197,6 +197,36 @@ export function level1(r: Platformer): void {
   const limit = 0.3;
 
   Matter.Events.on(r.starter.getEngine(), "beforeTick", function (event) {
+
+    let deltaCentre = Matter.Vector.sub( r.starter.getMouseConstraint().mouse.absolute, r.starter.getMap().viewportCentre),
+    centreDist = Matter.Vector.magnitude(deltaCentre);
+
+// translate the view if mouse has moved over 50px from the centre of viewport
+if (centreDist > 50) {
+    // create a vector to translate the view, allowing the user to control view speed
+    var direction = Matter.Vector.normalise(deltaCentre),
+        speed = Math.min(10, Math.pow(centreDist - 50, 2) * 0.0002);
+
+        
+    r.starter.getMap().translate = Matter.Vector.mult(direction, speed);
+
+    // prevent the view moving outside the world bounds
+    if (r.starter.getRender().bounds.min.x + r.starter.getMap().translate.x < r.starter.getWorld().bounds.min.x)
+        r.starter.getMap().translate.x = r.starter.getWorld().bounds.min.x - r.starter.getRender().bounds.min.x;
+
+    if (r.starter.getRender().bounds.max.x + r.starter.getMap().translate.x > r.starter.getWorld().bounds.max.x)
+    r.starter.getMap().translate.x = r.starter.getWorld().bounds.max.x - r.starter.getRender().bounds.max.x;
+
+    if (r.starter.getRender().bounds.min.y + r.starter.getMap().translate.y < r.starter.getWorld().bounds.min.y)
+    r.starter.getMap().translate.y = r.starter.getWorld().bounds.min.y - r.starter.getRender().bounds.min.y;
+
+    if (r.starter.getRender().bounds.max.y + r.starter.getMap().translate.y > r.starter.getWorld().bounds.max.y)
+    r.starter.getMap().translate.y = r.starter.getWorld().bounds.max.y - r.starter.getRender().bounds.max.y;
+
+    // move the view
+    Matter.Bounds.translate(r.starter.getRender().bounds, r.starter.getMap().translate);
+  }
+
     /*
     //spin left and right
     const spin = 0.05;

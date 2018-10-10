@@ -9,11 +9,11 @@ export function playerGroundCheck(event, ground: boolean, r: Platformer) {
       pair.activeContacts.forEach(element => {
         if (element.vertex.body.label === "player" &&
               element.vertex.index > 5 && element.vertex.index < 8) {
-                console.log("  JUMP:");
+           //     console.log("  JUMP:");
               r.player.ground = ground;
         } else {
               r.player.ground = false;
-          console.log("NO JUMP:");
+         // console.log("NO JUMP:");
         }
       });
     }
