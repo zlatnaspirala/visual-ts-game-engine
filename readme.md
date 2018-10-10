@@ -1,5 +1,7 @@
-# Project : Visual ts #
+# Project : Visual ts game engine #
 ## Version : new era - 2018/2019 ##
+
+![visualTS](https://github.com/zlatnaspirala/visual-ts/blob/master/logo.png)
 
 #### To make all dependency works in build proccess we need some plugins. ####
 
