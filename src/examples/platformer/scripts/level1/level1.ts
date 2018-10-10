@@ -80,7 +80,7 @@ export function level1(r: Platformer): void {
     r.player,
   ]);
 
-  Matter.Events.on(r.starter.getEngine(), "beforeUpdate", function(event) {
+  Matter.Events.on(r.starter.getEngine(), "beforeUpdate", function (event) {
 
     Matter.Body.setAngle(r.player, -Math.PI * 0);
 
@@ -95,23 +95,23 @@ export function level1(r: Platformer): void {
   const limit = 0.3;
 
   // at the start of a colision for player
-  Matter.Events.on(r.starter.getEngine(), "collisionStart", function(event) {
+  Matter.Events.on(r.starter.getEngine(), "collisionStart", function (event) {
     playerGroundCheck(event, true, r);
     // touchingPortals(event,portal0,portal1);
     // touchingPortals(event,portal1,portal0);
   });
   // ongoing checks for collisions for player
-  Matter.Events.on(r.starter.getEngine(), "collisionActive", function(event) {
+  Matter.Events.on(r.starter.getEngine(), "collisionActive", function (event) {
     playerGroundCheck(event, true, r);
   });
   // at the end of a colision for player set ground to false
-  Matter.Events.on(r.starter.getEngine(), "collisionEnd", function(event) {
+  Matter.Events.on(r.starter.getEngine(), "collisionEnd", function (event) {
     playerGroundCheck(event, false, r);
     // exitingPortal(event,portal0);
     // exitingPortal(event,portal1);
   });
 
-  Matter.Events.on(r.starter.getEngine(), "afterTick", function(event) {
+  Matter.Events.on(r.starter.getEngine(), "afterTick", function (event) {
 
     // jump
     if (globalEvent.activeKey[38] && r.player.ground) {
@@ -147,7 +147,7 @@ export function level1(r: Platformer): void {
 
   globalEvent.activateKeyDetection();
 
-  Matter.Events.on(r.starter.getEngine(), "beforeTick", function(event) {
+  Matter.Events.on(r.starter.getEngine(), "beforeTick", function (event) {
 
     // let ctx = r.starter.getRender().canvas.getContext("2d");
     // ctx.translate(window.innerWidth / 25, window.innerHeight / 25);
