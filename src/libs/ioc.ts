@@ -2,7 +2,7 @@ import Browser from "./class/browser";
 import ViewPort from "./class/view-port";
 import VisualRender from "./class/visual-render";
 import MasterConfig from "./engine-config";
-import GlobalEvent from "./global-event/global-event";
+import GlobalEvent from "./multiplatform/global-event";
 import Starter from "./starter";
 import { IUniVector } from "./types/global";
 
@@ -16,7 +16,7 @@ class Ioc {
     this.config = new MasterConfig();
     this.singlton(Browser, undefined);
     this.singlton(ViewPort, this.config.getDrawRefference());
-    this.singlton(GlobalEvent, undefined);
+    this.singlton(GlobalEvent, this.get.Browser);
     this.singlton(VisualRender, undefined);
     this.singlton(Starter, this);
     // console.log("ioc constructed");

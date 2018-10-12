@@ -4,6 +4,7 @@ class Browser {
     public isMobile: boolean = false;
     public device: string = "unknow";
     public uAgent = navigator.userAgent;
+    // No numerated variable -> os
     public os: string = "";
     public description: string = "";
 

@@ -6,7 +6,6 @@ import { IStaticItem, literalImageSrc } from "../../../../libs/types/global";
 
 const imgRes: literalImageSrc = [
   require("../../imgs/floor.png"),
-  //  "../../imgs/target.png",
 ];
 
 export const staticGrounds: IStaticItem[] = [

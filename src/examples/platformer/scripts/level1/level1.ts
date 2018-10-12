@@ -34,7 +34,7 @@ export function level1(r: Platformer): void {
       mask: 1,
     },
     render: {
-      visualComponent: new TextureComponent(imgRes),
+      visualComponent: new TextureComponent("playerImage", imgRes),
       // wireframes: true,
       fillStyle: "blue",
       sprite: {
@@ -58,7 +58,7 @@ export function level1(r: Platformer): void {
         isStatic: true,
         label: "ground",
         render: {
-          visualComponent: new TextureComponent(item.tex),
+          visualComponent: new TextureComponent("imgGround", item.tex),
           sprite: {
             olala: true,
           },

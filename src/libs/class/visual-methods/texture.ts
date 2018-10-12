@@ -1,5 +1,5 @@
 import IVisualComponent from "../../interface/visual-component";
-import {getDistance} from "../math";
+import { getDistance } from "../math";
 import Resources from "../resources";
 
 /**
@@ -14,30 +14,30 @@ class TextureComponent implements IVisualComponent {
   private verticalTiles: number = 1;
   private horizontalTiles: number = 1;
 
-  constructor(imgRes: string | string[], name?: string) {
+  constructor(name: string, imgRes: string | string[]) {
 
-    let id: string = "tex0";
-    if (name) { id = name; }
-    if (typeof imgRes !== "string" ) {
-      if (Array.isArray(imgRes)) {
-        this.assets.insertSerial(imgRes);
+    if (name === undefined) {
+      throw console.error("You miss first arg : name in TextureComponent instancing...");
+    }
+    if (imgRes === undefined) {
+      throw console.error("You miss second arg : imageRes in TextureComponent instancing...");
+    }
+    if (typeof imgRes !== "string") {
+      if (imgRes.length > 1) {
+        this.assets.insertImgs(name, imgRes);
       } else {
-        console.warn("WTF");
+        this.assets.insertImg(name, imgRes[0]);
       }
     } else {
-       this.assets.insertImg(id, imgRes);
+      this.assets.insertImg(name, imgRes);
     }
-
   }
-
-  public generate() {}
 
   public drawComponent(c: CanvasRenderingContext2D, part: any): void {
 
-   // if (part.vertices.length === 4) {
+    // if (part.vertices.length === 4) {
+    if (this.keepAspectRatio === false) {
 
-      if (this.keepAspectRatio == false) {
-      // console.log("aa");
       const dist1 = getDistance(part.vertices[0], part.vertices[1]);
       const dist2 = getDistance(part.vertices[0], part.vertices[3]);
       let originX = dist1 * -part.render.sprite.xOffset * part.render.sprite.xScale;
@@ -50,26 +50,24 @@ class TextureComponent implements IVisualComponent {
       for (let x = -this.verticalTiles / 2; x < this.verticalTiles / 2; x++) {
         for (let j = -this.horizontalTiles / 2; j < this.horizontalTiles / 2; j++) {
 
-        c.drawImage(
-          this.assets.getImg("tex1"),
-          originX - originW * (x),
-          originY - originH * (j),
-          originW,
-          originH);
+          c.drawImage(
+            this.assets.getImg(),
+            originX - originW * (x),
+            originY - originH * (j),
+            originW,
+            originH);
 
-          }
+        }
       }
     } else {
 
       c.drawImage(
-        this.assets.getImg("tex1"),
-        this.assets.getImg("tex1").width * -part.render.sprite.xOffset * part.render.sprite.xScale,
-        this.assets.getImg("tex1").height * -part.render.sprite.yOffset * part.render.sprite.yScale,
-        this.assets.getImg("tex1").width * part.render.sprite.xScale,
-        this.assets.getImg("tex1").height * part.render.sprite.yScale);
+        this.assets.getImg(),
+        this.assets.getImg().width * -part.render.sprite.xOffset * part.render.sprite.xScale,
+        this.assets.getImg().height * -part.render.sprite.yOffset * part.render.sprite.yScale,
+        this.assets.getImg().width * part.render.sprite.xScale,
+        this.assets.getImg().height * part.render.sprite.yScale);
     }
-
- // }
 
   }
 

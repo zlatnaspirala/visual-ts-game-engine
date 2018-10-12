@@ -6,6 +6,8 @@ export class Counter {
   private start: number = 0;
   private finish: number = 10;
   private value: number = 0;
+  private delay: number = 200;
+  private delayInitial: number = 200;
   private regimeType: string = "REPEAT";
 
   constructor(start: number, finish: number, step: number, regimeType?: string) {
@@ -19,6 +21,12 @@ export class Counter {
   }
 
   public getValue(): number {
+
+    if (this.delay > 0) {
+      this.delay--;
+      return this.value;
+    }
+    this.delay = this.delayInitial;
 
     if (this.regimeType !== "oscMin" && this.regimeType !== "oscMax") {
 
