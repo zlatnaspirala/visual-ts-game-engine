@@ -13,5 +13,3 @@ export type worldElement = Matter.MouseConstraint |
 export type drawableObject = HTMLImageElement | HTMLCanvasElement | HTMLVideoElement | ImageBitmap;
 export type imagesResource = HTMLImageElement | HTMLImageElement[];
 export type literalImageSrc = string | string[];
-export interface IStaticItem { x: number; y: number; w: number; h: number; tex: literalImageSrc; tiles: number; }
-export interface IUniVector { [key: string]: any; }

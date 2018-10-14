@@ -73,9 +73,11 @@ class TextureComponent implements IVisualComponent {
 
   public setVerticalTiles(newVerticalTiles: number) {
     this.verticalTiles = newVerticalTiles;
+    return this;
   }
   public setHorizontalTiles(newHorinzontalTiles: number) {
     this.horizontalTiles = newHorinzontalTiles;
+    return this;
   }
 
 }

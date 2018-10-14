@@ -1,4 +1,3 @@
-import GlobalEvent from "../../libs/global-event/global-event";
 import Starter from "../../libs/starter";
 import { worldElement } from "../../libs/types/global";
 import { level1 } from "./scripts/level1/level1";
@@ -15,16 +14,13 @@ import { level1 } from "./scripts/level1/level1";
 class Platformer {
 
   public gameName: string = "platformer";
-  public version: number = 0.1;
-
-  public player: any = {};
-  public playerSensor: any = {};
-
+  public version: number = 0.02;
   public starter: Starter;
-
   public grounds: worldElement[] = [];
   // shortcut for view size
   public v: any;
+
+  public player: any = {};
   // private globalEvent: GlobalEvent;
   private levelAccess: { [key: string]: (r: Platformer) => void } = {};
 

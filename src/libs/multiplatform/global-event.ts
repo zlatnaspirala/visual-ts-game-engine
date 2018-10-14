@@ -1,5 +1,5 @@
 import Browser from "../class/browser";
-import { IUniVector } from "../types/global";
+import { IUniVector } from "../interface/global";
 
 /**
  * @description Global window based events

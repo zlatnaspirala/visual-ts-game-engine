@@ -40,7 +40,7 @@ class Resources {
     return this.totalImages;
   }
 
-  public destroy() {
+  public clear() {
     this.images = {};
     this.totalImages = 0;
   }

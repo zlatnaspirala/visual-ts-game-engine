@@ -1,7 +1,8 @@
 import * as Matter from "matter-js";
 import ViewPort from "../libs/class/view-port";
 import Ioc from "../libs/ioc";
-import { IUniVector, worldElement } from "./types/global";
+import { IUniVector } from "./interface/global";
+import { worldElement } from "./types/global";
 
 class Starter {
 
@@ -9,7 +10,7 @@ class Starter {
   public get: IUniVector = {};
   protected attach;
   protected view: ViewPort;
-  private map: any = {};
+  private mapView: any = {};
   private render: any;
   private engine: any;
   private world: any;
@@ -44,7 +45,9 @@ class Starter {
       },
     });
 
-    this.setWorldBounds(300, 300, 3000, 3000);
+    this.setWorldBounds(-this.view.getWidth(100),
+      -this.view.getWidth(100),
+      this.view.getWidth(100), 3000);
 
     this.render.options.background = "black";
 
@@ -95,7 +98,7 @@ class Starter {
 
     // console.log(this.engine.bounds);
 
-    this.map = {
+    this.mapView = {
       translate: 0,
       viewportCentre: {
         x: this.render.options.width * 0.5,
@@ -115,7 +118,7 @@ class Starter {
   }
 
   public getDeltaCentreMouse(): Matter.Vector {
-    return Matter.Vector.sub(this.mouseConstraint.mouse.absolute, this.map.viewportCentre);
+    return Matter.Vector.sub(this.mouseConstraint.mouse.absolute, this.mapView.viewportCentre);
   }
 
   public getCentreDistMouse(): number {
@@ -123,7 +126,7 @@ class Starter {
   }
 
   public getDeltaCentrePlayer(playerVector: Matter.Vector): Matter.Vector {
-    return Matter.Vector.sub(playerVector, this.map.viewportCentre);
+    return Matter.Vector.sub(playerVector, this.mapView.viewportCentre);
   }
 
   public getCentreDistPlayer(playerVector: Matter.Vector): number {
@@ -135,7 +138,7 @@ class Starter {
   }
 
   public getMap() {
-    return this.map;
+    return this.mapView;
   }
 
   public getRender() {
@@ -155,16 +158,16 @@ class Starter {
   }
 
   public AddNewBodies(elements: worldElement) {
-    Matter.World.add(this.getWorld(), elements);
+    Matter.World.add(this.getWorld(), elements as worldElement);
   }
 
   public destroyBody(destroyBody) {
     Matter.Composite.remove(this.world, destroyBody);
   }
 
-  private setWorldBounds(minX: number, minY: number, maxX: number, maxY: number) {
-    this.world.bounds.min.x = - minX;
-    this.world.bounds.min.y = - minY;
+  public setWorldBounds(minX: number, minY: number, maxX: number, maxY: number) {
+    this.world.bounds.min.x = minX;
+    this.world.bounds.min.y = minY;
     this.world.bounds.max.x = maxX + minX;
     this.world.bounds.max.y = maxY;
 

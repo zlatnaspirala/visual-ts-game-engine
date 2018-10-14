@@ -2,9 +2,9 @@ import Browser from "./class/browser";
 import ViewPort from "./class/view-port";
 import VisualRender from "./class/visual-render";
 import MasterConfig from "./engine-config";
+import { IUniVector } from "./interface/global";
 import GlobalEvent from "./multiplatform/global-event";
 import Starter from "./starter";
-import { IUniVector } from "./types/global";
 
 class Ioc {
 

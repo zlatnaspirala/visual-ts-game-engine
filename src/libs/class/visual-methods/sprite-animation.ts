@@ -12,13 +12,8 @@ class SpriteTextureComponent extends TextureComponent {
 
   constructor(name: string, imgRes: string) {
     super(name, imgRes);
-    if (name === undefined) {
-      throw console.error("You miss first arg : name in SpriteTextureComponent instancing...");
-    }
-    if (imgRes === undefined) {
-      throw console.error("You miss second arg : imgRes in SpriteTextureComponent instancing...");
-    }
-    console.log(this.assets);
+
+    console.log("TEST :::" + this.assets);
   }
 
 }

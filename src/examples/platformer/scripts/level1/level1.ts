@@ -3,7 +3,7 @@ import TextureComponent from "../../../../libs/class/visual-methods/texture";
 import { worldElement } from "../../../../libs/types/global";
 import Platformer from "../../platformer";
 import { playerGroundCheck } from "../common";
-import { staticGrounds } from "./map";
+import GameMap from "./map";
 /**
  * @description Finally game start at here
  * @function level1
@@ -11,6 +11,15 @@ import { staticGrounds } from "./map";
  */
 
 export function level1(r: Platformer): void {
+
+  const gameMap = new GameMap(r.starter);
+
+  r.starter.setWorldBounds(
+    -r.starter.getView().getWidth(100),
+    -r.starter.getView().getWidth(100),
+    r.starter.getView().getWidth(100) * 3,
+    r.starter.getView().getWidth(100) * 3,
+  );
 
   const globalEvent = r.starter.ioc.get.GlobalEvent;
   const imgRes = [
@@ -47,7 +56,37 @@ export function level1(r: Platformer): void {
   r.player.collisionFilter.group = -1;
   r.player.render.visualComponent.keepAspectRatio = true;
 
-  staticGrounds.forEach((item) => {
+  gameMap.getStaticBackgrounds().forEach((item) => {
+
+    const newStaticElement: worldElement = Matter.Bodies.rectangle(
+      r.v.getWidth(item.x),
+      r.v.getHeight(item.y),
+      r.v.getWidth(item.w),
+      r.v.getHeight(item.h),
+      {
+        isStatic: true,
+        label: "background",
+        collisionFilter: {
+          category: item.collisionFilter.category,
+          group: item.collisionFilter.group,
+          mask: item.collisionFilter.mask,
+        },
+        render: {
+          visualComponent: new TextureComponent("wall", item.tex),
+          sprite: {
+            olala: true,
+          },
+        } as any | Matter.IBodyRenderOptions,
+      });
+    newStaticElement.collisionFilter.group = -1;
+    r.grounds.push(newStaticElement);
+
+    ((r.grounds[r.grounds.length - 1] as Matter.Body).render as any).visualComponent.setVerticalTiles(item.tiles).
+      setHorizontalTiles(item.tiles);
+
+  });
+
+  gameMap.getStaticGrounds().forEach((item) => {
 
     const newStaticElement: worldElement = Matter.Bodies.rectangle(
       r.v.getWidth(item.x),
@@ -57,6 +96,11 @@ export function level1(r: Platformer): void {
       {
         isStatic: true,
         label: "ground",
+        collisionFilter: {
+          category: 1,
+          group: 1,
+          mask: 1,
+        },
         render: {
           visualComponent: new TextureComponent("imgGround", item.tex),
           sprite: {
@@ -64,21 +108,16 @@ export function level1(r: Platformer): void {
           },
         } as any | Matter.IBodyRenderOptions,
       });
-
+    // newStaticElement.collisionFilter.group = -1;
     r.grounds.push(newStaticElement);
 
-    ((r.grounds[r.grounds.length - 1] as Matter.Body).render as any).visualComponent.setVerticalTiles(item.tiles);
+    ((r.grounds[r.grounds.length - 1] as Matter.Body).render as any).visualComponent.setVerticalTiles(item.tiles).
+      setHorizontalTiles(item.tiles);
 
   });
 
-  Matter.World.add(r.starter.getWorld(),
-    r.grounds as worldElement,
-  );
-
-  // add bodies
-  Matter.World.add(r.starter.getWorld(), [
-    r.player,
-  ]);
+  r.starter.AddNewBodies(r.grounds as worldElement);
+  r.starter.AddNewBodies(r.player as worldElement);
 
   Matter.Events.on(r.starter.getEngine(), "beforeUpdate", function (event) {
 
