@@ -125,8 +125,8 @@ export function level1(r: Platformer): void {
 
     Matter.Bounds.shift(r.starter.getRender().bounds,
       {
-        x: r.player.position.x - window.innerWidth / 5,
-        y: r.player.position.y - window.innerHeight / 2,
+        x: r.player.position.x - (window as any).innerWidth / 5,
+        y: r.player.position.y - (window as any).innerHeight / 2,
       });
 
   });

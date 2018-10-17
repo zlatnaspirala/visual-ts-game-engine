@@ -1,4 +1,6 @@
+import Program from "../app-icon";
 import Browser from "./class/browser";
+import Network from "./class/networking/network";
 import ViewPort from "./class/view-port";
 import VisualRender from "./class/visual-render";
 import MasterConfig from "./engine-config";
@@ -18,6 +20,7 @@ class Ioc {
     this.singlton(ViewPort, this.config.getDrawRefference());
     this.singlton(GlobalEvent, this.get.Browser);
     this.singlton(VisualRender, undefined);
+    this.singlton(Network, this.config);
     this.singlton(Starter, this);
     // console.log("ioc constructed");
   }

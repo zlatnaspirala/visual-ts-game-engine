@@ -13,8 +13,8 @@
   <meta name="robots" content="noindex">
 
   <link rel="icon" type="image/png" sizes="96x96" href="imgs/favicon-96x96.png">
-  <link rel="icon" type="image/png" sizes="192x192" href="/android-icon-192x192.png">
-  <meta name="msapplication-TileImage" content="/ms-icon-310x310.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="imgs/android-icon.png">
+  <meta name="msapplication-TileImage" content="imgs/ms-icon-310x310.png">
 
   <title>PROJECT TITLE</title>
   <intercept-url pattern="styles/favicon.ico" access="ROLE_ANONYMOUS"> </intercept-url>
@@ -23,6 +23,14 @@
 </head>
 
 <body>
+  <div id="log-network" class=".debugNetwork">
+    <input type="text" id="room-name" placeholder="Private Room-ID" title="Your private rooms unique-id. It is required!"
+      value="MAINSERVER">
+    <input type="text" id="your-name" placeholder="(optional)" title="Optional but Recommended!">
+    <button id="continue" title="Click to join the room!">connect</button>
+    <div id="logger" class="logger"></div>
+    <div id="webCamView" class="webCamView"></div>
+  </div>
 </body>
 
 </html>

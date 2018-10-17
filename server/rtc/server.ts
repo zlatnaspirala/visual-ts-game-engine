@@ -15,7 +15,7 @@ let file = new _static.Server("./public");
 let http = require("http").createServer(function (request, response) {
   request.addListener("end", function () {
     if (request.url.search(/.png|.gif|.js|.css/g) === -1) {
-      file.serveFile(resolveURL("/index.html"), 402, {}, request, response);
+      file.serveFile(resolveURL("/app.html"), 402, {}, request, response);
     } else { file.serve(request, response); }
   }).resume();
 }).listen(port);
@@ -45,8 +45,8 @@ new WebSocketServer({
 }).on("request", onRequest);
 
 function onRequest(socket) {
-  const origin = socket.origin + socket.resource;
 
+  const origin = socket.origin + socket.resource;
   const websocket = socket.accept(null, origin);
 
   websocket.on("message", function (message) {
@@ -56,8 +56,10 @@ function onRequest(socket) {
   });
 
   websocket.on("close", function () {
+    console.warn("Event: onClose");
     truncateChannels(websocket);
   });
+
 }
 
 function onMessage(message, websocket) {
@@ -71,6 +73,7 @@ function onMessage(message, websocket) {
 }
 
 function onOpen(message, websocket) {
+  console.warn("Event : onOpen", message);
   const channel = CHANNELS[message.channel];
 
   if (channel) {

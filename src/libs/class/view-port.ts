@@ -1,4 +1,3 @@
-import Starter from ".././starter";
 
 class ViewPort {
 
@@ -13,39 +12,36 @@ class ViewPort {
 
     this.drawRefference = viewPortType;
     if (viewPortType === "diametric-fullscreen") {
-      this.reperH = function() {
-        return window.innerHeight;
+      this.reperH = function () {
+        return (window as any).innerHeight;
       };
-      this.reperW = function() {
+      this.reperW = function () {
 
-        return window.innerWidth;
+        return (window as any).innerWidth;
 
       };
 
     } else if (viewPortType === "frame") {
 
-      this.reperH = function() {
+      this.reperH = function () {
 
-        if (window.innerHeight > window.innerWidth / this.aspectRatio - 200) {
-          // tslint:disable-next-line:no-console
-          console.log("never !!!");
-          return window.innerWidth / this.aspectRatio;
+        if ((window as any).innerHeight > (window as any).innerWidth / this.aspectRatio - 200) {
+          return (window as any).innerWidth / this.aspectRatio;
         } else {
-          return window.innerHeight;
+          return (window as any).innerHeight;
         }
 
       };
-      this.reperW = function() {
+      this.reperW = function () {
 
-        if (window.innerWidth > window.innerHeight * this.aspectRatio) {
-          // console.log("!test");
-          return window.innerHeight * this.aspectRatio;
+        if ((window as any).innerWidth > (window as any).innerHeight * this.aspectRatio) {
+          return (window as any).innerHeight * this.aspectRatio;
         } else {
-          return window.innerWidth;
+          return (window as any).innerWidth;
         }
       };
     }
-    // console.log("ViewPort constructed");
+
   }
 
   public getWidth(percente: number): number {
@@ -72,7 +68,6 @@ class ViewPort {
     this.canvasDom = document.getElementsByTagName("canvas");
     canvasCss = this.canvasDom[0].style;
     canvasCss.width = width;
-    // console.log(canvasCss.width);
 
   }
 

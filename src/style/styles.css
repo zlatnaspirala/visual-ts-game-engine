@@ -58,3 +58,24 @@ canvas {
   	max-width: 99vw; 
   	max-height: 99vh;  
 }
+
+.debugNetwork {
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 15%;
+}
+
+.logger {
+  position: absolute;
+  left: 0;
+  top: 5%;
+  height: 200px;
+  overflow: auto;
+}
+
+.webCamView {
+  background: silver;
+  width: 640px;
+  height: 480px;
+}

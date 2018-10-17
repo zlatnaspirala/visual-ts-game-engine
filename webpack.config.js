@@ -20,7 +20,12 @@ module.exports = {
     module: {
         rules: [
             { test: /\.tsx?$/, loader: "ts-loader" },
-            { test: /\.(jpg|png)$/, loader: "file-loader", options: { name: '[name].[ext]', outputPath: 'imgs/' } },
+            {
+                test: /\.(jpg|png)$/, loader: "file-loader", options: {
+                    name: '[name].[ext]',
+                    outputPath: "./imgs"
+                }
+            },
             { test: /\.css$/, loader: "style-loader!css-loader" },
             {
                 test: /\.(ico)$/,

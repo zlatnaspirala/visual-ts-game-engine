@@ -12,7 +12,7 @@
 // MIT License   - www.WebRTC-Experiment.com/licence
 // --------------------------------------------------
 
-window.RTCMultiConnection = function (roomid, forceOptions) {
+export let RTCMultiConnection = function (roomid, forceOptions) {
 
     function SocketConnection(connection, connectCallback) {
         var parameters = '';
@@ -807,7 +807,7 @@ window.RTCMultiConnection = function (roomid, forceOptions) {
         };
     }
 
-    'use strict';
+    // 'use strict';
 
     // Last Updated On: 2018-05-05 12:25:07 PM UTC
 
@@ -1920,7 +1920,7 @@ window.RTCMultiConnection = function (roomid, forceOptions) {
         window.DetectRTC = DetectRTC;
 
         if (typeof module !== 'undefined' /* && !!module.exports*/) {
-            module.exports = DetectRTC;
+            // module.exports = DetectRTC;
         }
 
         if (typeof define === 'function' && define.amd) {
