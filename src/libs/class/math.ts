@@ -93,3 +93,5 @@ export function rotateVector(vector, angle) {
     y: vector.x * Math.sin(angle) + vector.y * Math.cos(angle),
   };
 }
+
+export function someRandomNumber() { return (Math.random() * 1000).toString().replace(".", ""); }

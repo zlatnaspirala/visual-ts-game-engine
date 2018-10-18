@@ -1,399 +1,278 @@
 
 import EngineConfig from "../../engine-config";
-import { byId } from "../system";
+import { byId, getElement, getRandomColor } from "../system";
 // import { RTCMultiConnection } from "./rtc-multi-connection/RTCMultiConnection3";
 import "./rtc-multi-connection/RTCMultiConnection2";
+import "./test/ui.peer-connection";
+// import "./test/ui.share-files";
 
 class Network {
 
   private type: string = "multiRtc";
   private rtcMultiConnection: any;
   private engineConfig: EngineConfig;
-
-  private loggerDiv: HTMLDivElement;
+  private loggerUI: HTMLDivElement;
   private webSocketData: WebSocket;
   private webSocketRTC: WebSocket;
   private webCamView: HTMLDivElement;
-
+  private mainChannel: string;
   private numbersOfUsers: number = 0;
+
+  private NameUI: HTMLInputElement;
+  private roomUI: HTMLInputElement;
+  private senderUI: HTMLTextAreaElement;
+  private connectUI: HTMLButtonElement;
+  private getUserinfo;
+  private fireClickEvent;
 
   constructor(config: EngineConfig) {
 
     this.engineConfig = config;
-    // window.RTCMultiConnection = RTCMultiConnection;
-    this.rtcMultiConnection = new (window as any).RTCMultiConnection();
-    this.rtcMultiConnection.session = { data: true };
+    this.loggerUI = byId("log-network") as HTMLDivElement;
+    this.NameUI = this.loggerUI.querySelector("#your-name");
+    this.roomUI = this.loggerUI.querySelector("#room-name");
+    this.connectUI = this.loggerUI.querySelector("#continue");
+    this.senderUI = byId("sender") as HTMLTextAreaElement;
 
-    this.rtcMultiConnection.sdpConstraints.mandatory = {
-      OfferToReceiveAudio: true,
-      OfferToReceiveVideo: true,
-    };
+    this.attactLogger();
 
-    byId("continue").addEventListener("click", this.LookForServer, false);
-    byId("your-name").addEventListener("onkeyup", (this.logKeyChangedUserName as any), false);
-    byId("room-name").addEventListener("onkeyup", (this.logKeyChangedRoom as any), false);
-    this.loggerDiv = byId("logger") as HTMLDivElement;
-    this.webCamView = byId("webCamView") as HTMLDivElement;
-
-    this.Attacher();
+    this.rtcMultiConnection = rtcMultiConnection;
 
   }
 
-  public LookForServer = () => {
-
-    const root = this;
-    const debugDom: HTMLDivElement = byId("log-network") as HTMLDivElement;
-    const yourName: HTMLInputElement = byId("your-name") as HTMLInputElement;
-    const roomName: HTMLInputElement = byId("room-name") as HTMLInputElement;
-
-    if (!roomName.value || !roomName.value.length) {
-      roomName.focus();
-      return alert("Your must enter main chanel!");
-    }
-
-    yourName.disabled = roomName.disabled = true;
-    const username = yourName.value || "Anonymous";
-
-    this.rtcMultiConnection.extra = {
-      username,
-      color: "lime",
-    };
-
-
-    const roomid = roomName.value;
-    this.rtcMultiConnection.channel = roomid;
-
-    this.addLog("Searching for existing rooms..." + roomid);
-
-    this.webSocketData = new WebSocket(this.engineConfig.getRemoteServerAddress());
-    this.webSocketData.onmessage = function (event) {
-      const data = JSON.parse(event.data);
-      if (data.isChannelPresent === false) {
-        root.addLog("No room found. Creating new room");
-        root.rtcMultiConnection.open();
-      } else {
-        root.addLog("Room found. Joining the room");
-        root.rtcMultiConnection.join(roomid);
-      }
-    };
-    this.webSocketData.onopen = function () {
-      this.send(JSON.stringify({
-        checkPresence: true,
-        channel: roomid,
-      }));
-    };
-  }
-
-  public getUserinfo(blobURL, imageURL) {
-    return blobURL ? '<video src="' + blobURL + '" autoplay controls></video>' : '<img src="' + imageURL + '">';
-  }
-
-  private logKeyChangedUserName(e: EventListenerOrEventListenerObject | React.KeyboardEvent) {
-    if ((e as React.KeyboardEvent).keyCode !== 13) { return; }
-    this.LookForServer();
-  }
-
-  private logKeyChangedRoom = (e: EventListenerOrEventListenerObject | React.KeyboardEvent) => {
-    if ((e as React.KeyboardEvent).keyCode !== 13) { return; }
-    this.LookForServer();
-  }
-
-  private addLog(msg: string) {
-    this.loggerDiv.innerHTML += "<p>" + msg + "</p><br/>";
-  }
-
-  private Attacher() {
-
+  private attactLogger() {
     const root = this;
 
-    this.rtcMultiConnection.openSignalingChannel = (config) => {
-      config.channel = config.channel || "programmers"; // this.channel;
-      this.webSocketRTC = new WebSocket(this.engineConfig.getRemoteServerAddress());
-      (this.webSocketRTC as any).channel = config.channel;
-      this.webSocketRTC.onopen = () => {
-        console.warn("WebSocket connection opened");
-        (this.webSocketRTC as any).push(JSON.stringify({
-          open: true,
-          channel: config.channel,
-        }));
-        if (config.callback) {
-          config.callback(this.webSocketRTC);
-        }
-      };
-      this.webSocketRTC.onmessage = (event) => {
-        config.onmessage(JSON.parse(event.data));
-      };
-      (this.webSocketRTC as any).push = this.webSocketRTC.send;
-      this.webSocketRTC.send = (data) => {
-        if (this.webSocketRTC.readyState !== 1) {
-          return setTimeout(function () {
-            root.webSocketRTC.send(data);
-          }, 1000);
-        }
-
-        (this.webSocketRTC as any).push(JSON.stringify({
-          data,
-          channel: config.channel,
-        }));
-      };
+    this.NameUI.onkeyup = (e) => {
+      if (e.keyCode !== 13) { return; }
+      root.connectUI.onclick(event as MouseEvent);
     };
-    this.rtcMultiConnection.customStreams = {};
 
-    /*
-    // http://www.rtcmulticonnection.org/docs/fakeDataChannels/
-    rtcMultiConnection.fakeDataChannels = true;
-    if(rtcMultiConnection.UA.Firefox) {
-    rtcMultiConnection.session.data = true;
+    this.roomUI.onkeyup = function (e) {
+      if (e.keyCode !== 13) { return; }
+      root.connectUI.onclick();
+    };
+
+    // this.roomUI.value = ;
+
+    if (localStorage.getItem("roomname")) {
+      this.roomUI.value = localStorage.getItem("roomname");
     }
-    */
 
-    this.rtcMultiConnection.autoTranslateText = false;
-
-    this.rtcMultiConnection.onopen = (e) => {
-      (byId("allow-webcam") as HTMLButtonElement).disabled = false;
-      (byId("allow-mic") as HTMLButtonElement).disabled = false;
-      (byId("share-files") as HTMLButtonElement).disabled = false;
-      (byId("allow-screen") as HTMLButtonElement).disabled = false;
-
-      /*
-      addNewMessage({
-        header: e.extra.username,
-        message: 'Data connection is opened between you and ' + e.extra.username + '.',
-        userinfo: getUserinfo(rtcMultiConnection.blobURLs[rtcMultiConnection.userid], 'images/info.png'),
-        color: e.extra.color
-      });
-      */
-
-      this.addLog("Data connection is opened between you and " + e.extra.username + ".");
-      // this.numbersOfUsers.innerHTML = parseInt(numbersOfUsers.innerHTML) + 1;
-      this.numbersOfUsers++;
+    this.roomUI.onkeyup = function () {
+      localStorage.setItem("roomname", root.roomUI.value);
     };
 
-    // let whoIsTyping = document.querySelector("#who-is-typing");
+    this.connectUI.onclick = function (ev) {
 
-    this.rtcMultiConnection.onmessage = (e) => {
-      if (e.data.typing) {
-        // whoIsTyping.innerHTML = e.extra.username + " is typing ...";
-        document.head.title = e.extra.username + " is typing ...";
-        return;
+      if (!root.roomUI.value || root.roomUI.value.length === 0) {
+        root.roomUI.focus();
+        return alert("Enter secure channel code!");
       }
 
-      if (e.data.stoppedTyping) {
-        // whoIsTyping.innerHTML = "";
-        document.head.title = "";
-        return;
-      }
+      root.roomUI.onkeyup();
 
-      // whoIsTyping.innerHTML = "";
+      root.NameUI.disabled = root.NameUI.disabled = (this as any).disabled = true;
+      const username = root.NameUI.value || "Anonymous";
 
-      /*
-      addNewMessage({
-        header: e.extra.username,
-        // tslint:disable-next-line:max-line-length
-        message: "Text message from " + e.extra.username + ":<br /><br />" +
-         (rtcMultiConnection.autoTranslateText ? linkify(e.data) + " ( " + linkify(e.original) + " )" : linkify(e.data)),
-        userinfo: getUserinfo(rtcMultiConnection.blobURLs[e.userid], "images/chat-message.png"),
-        color: e.extra.color
-      });
-      */
+      (rtcMultiConnection as any).extra = {
+        username,
+        color: getRandomColor(),
+      };
 
-      this.addLog(e.extra.username + "" + e.extra.username);
-
-      document.title = e.data;
-    };
-
-    const sessions = {};
-    this.rtcMultiConnection.onNewSession = (session) => {
-      if (sessions[session.sessionid]) { return; }
-      sessions[session.sessionid] = session;
-      session.join();
-      /*
-      addNewMessage({
-        header: session.extra.username,
-        message: "Making handshake with room owner....!",
+      root.addNewMessage({
+        header: username,
+        message: "Searching for existing rooms...",
         userinfo: '<img src="images/action-needed.png">',
-        color: session.extra.color,
       });
-      */
-      this.addLog("Making handshake with room owner" + session.extra.username);
-    };
 
-    this.rtcMultiConnection.onRequest = (request) => {
-      this.rtcMultiConnection.accept(request);
-      /*
-      addNewMessage({
-        header: "New Participant",
-        message: "A participant found. Accepting request of " + request.extra.username + " ( " + request.userid + " )...",
-        userinfo: '<img src="images/action-needed.png">',
-        color: request.extra.color,
-      });
-      */
-      this.addLog("Accept user" + request.extra.username);
-    };
+      const roomid = root.roomUI.value;
+      (rtcMultiConnection as any).channel = root.roomUI.value;
 
-    this.rtcMultiConnection.onCustomMessage = (message) => {
-      if (message.hasCamera || message.hasScreen) {
-        let msg = message.extra.username +
-          ' enabled webcam. <button id="preview">Preview</button> ---- <button id="share-your-cam">Share Your Webcam</button>';
-
-        if (message.hasScreen) {
-          msg = message.extra.username +
+      const websocket = new WebSocket(root.engineConfig.getRemoteServerAddress());
+      websocket.onmessage = function (event) {
+        const data = JSON.parse(event.data);
+        if (data.isChannelPresent === false) {
+          root.addNewMessage({
+            header: username,
             // tslint:disable-next-line:max-line-length
-            'is ready to share screen. <button id="preview">View His Screen</button>-<button id="share-your-cam">Share Your Screen</button>';
+            message: "No room.Creating new room" + root.roomUI.value,
+            userinfo: '<img src="./../../../icon/permission/warning.png">',
+          });
+
+          (rtcMultiConnection as any).open();
+        } else {
+          root.addNewMessage({
+            header: username,
+            message: "Room found. Joining the room...",
+            userinfo: '<img src="./../../../icon/permission/warning.png">',
+          });
+          (rtcMultiConnection as any).join(root.roomUI.value);
         }
+      };
+      websocket.onopen = function () {
+        websocket.send(JSON.stringify({
+          checkPresence: true,
+          channel: root.roomUI.value,
+        }));
+      };
+    };
 
-        /*
-        addNewMessage({
-          header: message.extra.username,
-          message: msg,
-          userinfo: '<img src="images/action-needed.png">',
-          color: message.extra.color,
-          callback(div) {
-            div.querySelector("#preview").onclick = function () {
-              this.disabled = true;
+    this.getUserinfo = (blobURL, imageURL) => {
+      return blobURL ? '<video src="' + blobURL + '" autoplay controls></video>' : '<img src="' + imageURL + '">';
+    };
 
-              message.session.oneway = true;
-              root.rtcMultiConnection.sendMessage({
-                renegotiate: true,
-                streamid: message.streamid,
-                session: message.session,
-              });
-            };
+    let isShiftKeyPressed = false;
 
-            div.querySelector("#share-your-cam").onclick = function () {
-              this.disabled = true;
-
-              if (!message.hasScreen) {
-                session = { audio: true, video: true };
-
-                rtcMultiConnection.captureUserMedia(function (stream) {
-                  rtcMultiConnection.renegotiatedSessions[JSON.stringify(session)] = {
-                    session,
-                    stream,
-                  };
-
-                  rtcMultiConnection.peers[message.userid].peer.connection.addStream(stream);
-                  div.querySelector("#preview").onclick();
-                }, session);
-              }
-
-              if (message.hasScreen) {
-                const session = { screen: true };
-
-                rtcMultiConnection.captureUserMedia(function (stream) {
-                  rtcMultiConnection.renegotiatedSessions[JSON.stringify(session)] = {
-                    session,
-                    stream,
-                  };
-
-                  rtcMultiConnection.peers[message.userid].peer.connection.addStream(stream);
-                  div.querySelector("#preview").onclick();
-                }, session);
-              }
-            };
-          },
-        });
-        */
-      }
-
-      if (message.hasMic) {
-        /*
-        addNewMessage({
-          header: message.extra.username,
-          message: message.extra.username +
-           ' enabled microphone. <button id="listen">Listen</button> ---- <button id="share-your-mic">Share Your Mic</button>',
-          userinfo: '<img src="images/action-needed.png">',
-          color: message.extra.color,
-          callback(div) {
-            div.querySelector("#listen").onclick = function () {
-              this.disabled = true;
-              message.session.oneway = true;
-              root.rtcMultiConnection.sendMessage({
-                renegotiate: true,
-                streamid: message.streamid,
-                session: message.session,
-              });
-            };
-
-            div.querySelector("#share-your-mic").onclick = function () {
-              this.disabled = true;
-
-              const session = { audio: true };
-
-              root.rtcMultiConnection.captureUserMedia(function (stream) {
-                root.rtcMultiConnection.renegotiatedSessions[JSON.stringify(session)] = {
-                  session,
-                  stream,
-                };
-
-                root.rtcMultiConnection.peers[message.userid].peer.connection.addStream(stream);
-                div.querySelector("#listen").onclick();
-              }, session);
-            };
-          },
-        });
-        */
-      }
-
-      if (message.renegotiate) {
-        const customStream = root.rtcMultiConnection.customStreams[message.streamid];
-        if (customStream) {
-          root.rtcMultiConnection.peers[message.userid].renegotiate(customStream, message.session);
-        }
+    this.senderUI.onkeydown = function (e) {
+      if (e.keyCode === 16) {
+        isShiftKeyPressed = true;
       }
     };
 
-    this.rtcMultiConnection.blobURLs = {};
-    this.rtcMultiConnection.onstream = function (e) {
-      if (e.stream.getVideoTracks().length) {
-        root.rtcMultiConnection.blobURLs[e.userid] = e.blobURL;
-        /* NON ACTIVE - Nikola lukic
-        if( document.getElementById(e.userid) ) {
-            document.getElementById(e.userid).muted = true;
+    let numberOfKeys = 0;
+    this.senderUI.onkeyup = function (e) {
+      numberOfKeys++;
+      if (numberOfKeys > 3) { numberOfKeys = 0; }
+
+      if (!numberOfKeys) {
+        if (e.keyCode === 8) {
+          return (rtcMultiConnection as any).send({
+            stoppedTyping: true,
+          });
         }
-        */
 
-        /*
-        addNewMessage({
-          header: e.extra.username,
-          message: e.extra.username + " enabled webcam.",
-          userinfo: '<video id="' + e.userid + '" src="' + URL.createObjectURL(e.stream) + '" autoplay muted=true volume=0></vide>',
-          color: e.extra.color,
+        (rtcMultiConnection as any).send({
+          typing: true,
         });
-
-        */
-
-      } else {
-
-        /*
-        addNewMessage({
-          header: e.extra.username,
-          message: e.extra.username + " enabled microphone.",
-          userinfo: '<audio src="' + URL.createObjectURL(e.stream) + '" controls muted=true volume=0></vide>',
-          color: e.extra.color,
-        });
-        */
       }
-      this.webCamView.appendChild(e.mediaElement);
-    };
 
-    this.rtcMultiConnection.sendMessage = (message) => {
-      message.userid = this.rtcMultiConnection.userid;
-      message.extra = this.rtcMultiConnection.extra;
-      this.rtcMultiConnection.sendCustomMessage(message);
-    };
+      if (isShiftKeyPressed) {
+        if (e.keyCode === 16) {
+          isShiftKeyPressed = false;
+        }
+        return;
+      }
 
-    this.rtcMultiConnection.onclose = this.rtcMultiConnection.onleave = function (event) {
-      /*
-      addNewMessage({
-        header: event.extra.username,
-        message: event.extra.username + " left the room.",
-        userinfo: getUserinfo(rtcMultiConnection.blobURLs[event.userid], "images/info.png"),
-        color: event.extra.color,
+      if (e.keyCode !== 13) { return; }
+
+      root.addNewMessage({
+        header: (rtcMultiConnection as any).extra.username,
+        message: "Your Msg:" + (window as any).linkify(root.senderUI.value),
+        userinfo: root.getUserinfo((rtcMultiConnection as any).blobURLs[(rtcMultiConnection as any).userid], "images/chat-message.png"),
+        color: (rtcMultiConnection as any).extra.color,
       });
-      */
+
+      (rtcMultiConnection as any).send(root.senderUI.value);
+      (byId("sender") as HTMLButtonElement).value = "";
+
     };
 
+    getElement("#allow-webcam").onclick = () => {
+      this.disabled = true;
+
+      const session = { audio: true, video: true };
+
+      rtcMultiConnection.captureUserMedia(function (stream) {
+        const streamid = rtcMultiConnection.token();
+        rtcMultiConnection.customStreams[streamid] = stream;
+
+        rtcMultiConnection.sendMessage({
+          hasCamera: true,
+          streamid,
+          session,
+        });
+      }, session);
+    };
+
+    getElement("#allow-mic").onclick = () => {
+      this.disabled = true;
+      const session = { audio: true };
+
+      root.rtcMultiConnection.captureUserMedia(function (stream) {
+        const streamid = root.rtcMultiConnection.token();
+        root.rtcMultiConnection.customStreams[streamid] = stream;
+
+        root.rtcMultiConnection.sendMessage({
+          hasMic: true,
+          streamid,
+          session,
+        });
+      }, session);
+    };
+
+    getElement("#allow-screen").onclick = function () {
+      this.disabled = true;
+      const session = { screen: true };
+
+      this.rtcMultiConnection.captureUserMedia(function (stream) {
+        const streamid = root.rtcMultiConnection.token();
+        root.rtcMultiConnection.customStreams[streamid] = stream;
+
+        root.rtcMultiConnection.sendMessage({
+          hasScreen: true,
+          streamid,
+          session,
+        });
+      }, session);
+    };
+
+    getElement("#share-files").onclick = function () {
+      const file = document.createElement("input");
+      file.type = "file";
+
+      file.onchange = function () {
+        rtcMultiConnection.send(this.files[0]);
+      };
+      this.fireClickEvent(file);
+    };
+
+    this.fireClickEvent = (element) => {
+      const evt = new MouseEvent("click", {
+        view: window,
+        bubbles: true,
+        cancelable: true,
+      });
+
+      element.dispatchEvent(evt);
+    };
+
+  }
+
+  private addNewMessage(args) {
+
+    const newMessageDIV = document.createElement("div");
+    newMessageDIV.className = "new-message";
+
+    const userinfoDIV = document.createElement("div");
+    userinfoDIV.className = "user-info";
+    userinfoDIV.innerHTML = args.userinfo || '<img src="images/user.png">';
+
+    userinfoDIV.style.background = args.color || this.rtcMultiConnection.extra.color || getRandomColor();
+
+    newMessageDIV.appendChild(userinfoDIV);
+
+    const userActivityDIV = document.createElement("div");
+    userActivityDIV.className = "user-activity";
+
+    userActivityDIV.innerHTML = '<h2 class="header">' + args.header + "</h2>";
+
+    const p = document.createElement("p");
+    p.className = "message";
+    userActivityDIV.appendChild(p);
+    p.innerHTML = args.message;
+
+    newMessageDIV.appendChild(userActivityDIV);
+
+    this.loggerUI.insertBefore(newMessageDIV, this.loggerUI.firstChild);
+
+    userinfoDIV.style.height = newMessageDIV.clientHeight + "px";
+
+    if (args.callback) {
+      args.callback(newMessageDIV);
+    }
+
+    // document.querySelector("#message-sound").play();
   }
 
 }
