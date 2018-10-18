@@ -23,11 +23,17 @@
 </head>
 
 <body>
-  <div id="log-network" class=".debugNetwork">
+  <div id="log-network" class=".log-network">
     <input type="text" id="room-name" placeholder="Private Room-ID" title="Your private rooms unique-id. It is required!"
       value="MAINSERVER">
     <input type="text" id="your-name" placeholder="(optional)" title="Optional but Recommended!">
     <button id="continue" title="Click to join the room!">connect</button>
+    <div class="controls">
+      <button id="allow-webcam" class="icon" disabled title="Enable Your Webcam"></button>
+      <button id="allow-mic" class="icon" disabled title="Enable Your Microphone"></button>
+      <button id="allow-screen" class="icon" disabled title="Enable Your Screen"></button>
+      <button id="share-files" class="icon" disabled title="Select and Share Your Files"></button>
+    </div>
     <div id="logger" class="logger"></div>
     <div id="webCamView" class="webCamView"></div>
   </div>

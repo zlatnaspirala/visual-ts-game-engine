@@ -59,11 +59,11 @@ canvas {
   	max-height: 99vh;  
 }
 
-.debugNetwork {
+.log-network {
   position: absolute;
   right: 0;
   top: 0;
-  height: 15%;
+  height: 300px;
 }
 
 .logger {
@@ -75,7 +75,57 @@ canvas {
 }
 
 .webCamView {
-  background: silver;
+  border: solid red;
+  background: transparent;
   width: 640px;
   height: 480px;
+}
+
+.controls {
+  margin: auto;
+  position: absolute;
+  float:left;
+  right: 0;
+  background: transparent;
+  width: 110px;
+  height: 440px;
+}
+
+.controls span {
+  padding-top: 20px
+}
+
+.icon {
+  width: 80px;
+  height: 80px;
+  vertical-align:bottom !important;
+}
+
+#allow-webcam {
+  background-image: url("../icon/permission/webcam.png");
+  background-repeat: no-repeat;
+  background-position-x: center;
+  background-position-y: top;
+
+}
+
+#allow-mic {
+  background-image: url("../icon/permission/microphone.png");
+  background-repeat: no-repeat;
+  background-position-x: center;
+  background-position-y: top;
+}
+
+#allow-screen {
+  background-image: url("../icon/permission/screen.png");
+  background-repeat: no-repeat;
+  background-position-x: center;
+  background-position-y: top;
+}
+
+#share-files {
+  background-image: url("../icon/permission/share-files.png");
+  background-repeat: no-repeat;
+  background-position-x: center;
+  background-position-y: top;
 }

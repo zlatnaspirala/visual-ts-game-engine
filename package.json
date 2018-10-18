@@ -39,6 +39,7 @@
   "scripts": {
     "build": "webpack --config webpack.config.js",
     "dev": "webpack --config webpack.config.js",
+    "rtc": "node ./server/rtc/server.ts",
     "fix": "tslint -c tslint.json 'src/**/*.ts' --fix",
     "tslint": "tslint -c tslint.json 'src/**/*.ts'",
     "test": "echo \"Error: no test specified\" && exit 1"

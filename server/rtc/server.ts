@@ -13,11 +13,13 @@ let _static = require("node-static");
 let file = new _static.Server("./public");
 
 let http = require("http").createServer(function (request, response) {
+  /*
   request.addListener("end", function () {
     if (request.url.search(/.png|.gif|.js|.css/g) === -1) {
       file.serveFile(resolveURL("/app.html"), 402, {}, request, response);
     } else { file.serve(request, response); }
   }).resume();
+  */
 }).listen(port);
 
 /* HTTPs
