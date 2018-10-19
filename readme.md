@@ -37,6 +37,7 @@ master.singlton(Platformer, master.get.Starter);
 
 ## Project structure ##
 
+<pre>
 ├── package.json
 ├── webpack.config.js
 ├── tsconfig.json
@@ -51,6 +52,7 @@ master.singlton(Platformer, master.get.Starter);
 |   └── app.ts
 └── server/
     └── server.ts
+</pre>
 
 ## Fix code format : ##
 
