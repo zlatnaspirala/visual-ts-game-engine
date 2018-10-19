@@ -11,6 +11,9 @@ class AppIcon {
     require("./icon/favicon.ico");
     require("./icon/favicon-96x96.png");
     require("./icon/android-icon.png");
+    require("./icon/permission/warning.png");
+    require("./icon/permission/webcam.png");
+    require("./icon/permission/gcheckmark.png");
 
   }
 

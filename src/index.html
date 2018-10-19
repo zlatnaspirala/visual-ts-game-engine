@@ -14,30 +14,34 @@
 
   <link rel="icon" type="image/png" sizes="96x96" href="imgs/favicon-96x96.png">
   <link rel="icon" type="image/png" sizes="192x192" href="imgs/android-icon.png">
-  <meta name="msapplication-TileImage" content="imgs/ms-icon-310x310.png">
-
-  <title>PROJECT TITLE</title>
-  <intercept-url pattern="styles/favicon.ico" access="ROLE_ANONYMOUS"> </intercept-url>
   <link rel="icon" href="styles/favicon.ico" type="image/x-icon">
+  <intercept-url pattern="styles/favicon.ico" access="ROLE_ANONYMOUS"> </intercept-url>
+  <meta name="msapplication-TileImage" content="imgs/ms-icon-310x310.png">
+  <title>TS Game engine</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
 </head>
 
 <body>
-  <div id="log-network" class=".log-network">
-    <input type="text" id="room-name" placeholder="Private Room-ID" title="Your private rooms unique-id. It is required!"
-      value="MAINSERVER">
-    <input type="text" id="your-name" placeholder="(optional)" title="Optional but Recommended!">
-    <input type="text" id="sender" placeholder="" value="test 1">
-    <button id="continue" title="Click to join the room!">continue</button>
-    <div class="controls">
-      <button id="allow-webcam" class="icon" disabled title="Enable Your Webcam"></button>
-      <button id="allow-mic" class="icon" disabled title="Enable Your Microphone"></button>
-      <button id="allow-screen" class="icon" disabled title="Enable Your Screen"></button>
-      <button id="share-files" class="icon" disabled title="Select and Share Your Files"></button>
+  <div id="log-network" class="log-network" style="display:block">
+    <div id="log-chat" class="log-chat" style="display:block">
     </div>
+    <input type="text" id="room-name" placeholder="Private ID" title="id.required" value="MAINSERVER" class="myButton"
+      style="width:169px;">
+    <input type="text" id="your-name" placeholder="Username" title="Recommended" class="myButton" style="width:170px;">
+    <button id="continue" title="Click to join the room!" class="myButton">continue</button>
+    <div id="who-is-typing" class="whoIsTyping"></div>
+    <input type="text" id="sender" placeholder="" value="Hello" style="position:absolute;top:110%;left:0;width:481px;z-index: 100;"
+      class="myButton">
     <div id="logger" class="logger"></div>
-    <div id="webCamView" class="webCamView"></div>
   </div>
+  <div class="controls" style="display: block">
+    <button id="allow-webcam" class="icon myButton" disabled title="Enable Your Webcam"></button>
+    <button id="allow-mic" class="icon myButton" disabled title="Enable Your Microphone"></button>
+    <button id="allow-screen" class="icon myButton" disabled title="Enable Your Screen"></button>
+    <button id="share-files" class="icon myButton" disabled title="Select and Share Your Files"></button>
+  </div>
+
+  <div id="webCamView" class="webCamView myButton" style="display: block"></div>
 </body>
 
 </html>

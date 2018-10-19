@@ -1,29 +1,11 @@
-// Last time updated at Wednesday, March 16th, 2016, 11:18:45 AM 
+/*
+ * Muaz Khan     - www.MuazKhan.com
+ * MIT License   - www.WebRTC-Experiment.com/licence
+ * RTCMultiConnection-v2.2.2
+ */
 
-// Quick-Demo for newbies: http://jsfiddle.net/c46de0L8/
-// Another simple demo: http://jsfiddle.net/zar6fg60/
-
-// Latest file can be found here: https://cdn.webrtc-experiment.com/RTCMultiConnection.js
-
-// Muaz Khan     - www.MuazKhan.com
-// MIT License   - www.WebRTC-Experiment.com/licence
-// Documentation - www.RTCMultiConnection.org/docs
-// FAQ           - www.RTCMultiConnection.org/FAQ
-// Changes log   - www.RTCMultiConnection.org/changes-log/
-// Demos         - www.WebRTC-Experiment.com/RTCMultiConnection
-
-// _________________________
-// RTCMultiConnection-v2.2.2
-
-// (function() {
-
-// RMC == RTCMultiConnection
-// usually page-URL is used as channel-id
-// you can always override it!
-// www.RTCMultiConnection.org/docs/channel-id/
 window.RMCDefaultChannel = location.href.replace(/\/|:|#|\?|\$|\^|%|\.|`|~|!|\+|@|\[|\||]|\|*. /g, '').split('\n').join('').split('\r').join('');
 
-// www.RTCMultiConnection.org/docs/constructor/
 window.RTCMultiConnection = function (channel) {
     // an instance of constructor
     var connection = this;
