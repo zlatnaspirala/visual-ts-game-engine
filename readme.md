@@ -12,6 +12,12 @@
  <b> npm install </b>
 </pre>
 
+<pre>
+ <b> npm run build </b>
+</pre>
+
+<b> Navigate in browser /build/app.html to see client app in action </b>
+
 ## Start dependency system from app.ts ##
 
  - Fisrt game template is Platformer.
