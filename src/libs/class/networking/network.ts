@@ -7,11 +7,9 @@ import "./rtc-multi-connection/RTCMultiConnection2";
 
 class Network {
 
-  private type: string = "multiRtc";
   private rtcMultiConnection: any;
   private engineConfig: EngineConfig;
   private loggerUI: HTMLDivElement;
-  private webSocket: WebSocket;
   private webCamView: HTMLDivElement;
   private numbersOfUsers: number = 0;
 
@@ -20,9 +18,9 @@ class Network {
   private senderUI: HTMLTextAreaElement;
   private connectUI: HTMLButtonElement;
   private chatUI: HTMLDivElement;
+  private whoIsTyping: HTMLDivElement;
   private getUserinfo;
   private fireClickEvent;
-  private whoIsTyping;
 
   constructor(config: EngineConfig) {
 
@@ -36,6 +34,12 @@ class Network {
     this.whoIsTyping = this.loggerUI.querySelector("#who-is-typing");
     this.chatUI = this.loggerUI.querySelector("#log-chat");
 
+    if (this.engineConfig.getNetworkDeepLog() === false) {
+      (window as any).log = function () {/* empty */ };
+    }
+
+    this.roomUI.value = this.engineConfig.getMasterServerKey();
+    this.roomUI.style.display = "none";
     this.attactLoggerUI();
 
     (window as any).rtcMultiConnection = new (window as any).RTCMultiConnection();
@@ -109,7 +113,7 @@ class Network {
       root.addNewMessage({
         header: e.extra.username,
         message: "line opened between you and " + e.extra.username + ".",
-        userinfo: getUserinfo(root.rtcMultiConnection.blobURLs[root.rtcMultiConnection.userid], "./imgs/gcheckmark.png"),
+        userinfo: root.getUserinfo(root.rtcMultiConnection.blobURLs[root.rtcMultiConnection.userid], "./imgs/gcheckmark.png"),
         color: e.extra.color,
       });
 
@@ -163,7 +167,7 @@ class Network {
       root.rtcMultiConnection.accept(request);
       root.addNewMessage({
         header: "New Participant",
-        message: "A participant found. Accepting request of " + request.extra.username + " ( " + request.userid + " )...",
+        message: "Accepting request of " + request.extra.username + " ( " + request.userid + " )...",
         userinfo: "",
         color: request.extra.color,
       });
@@ -172,13 +176,14 @@ class Network {
     root.rtcMultiConnection.onCustomMessage = function (message) {
 
       if (message.hasCamera || message.hasScreen) {
-        // tslint:disable-next-line:max-line-length
         let msg = message.extra.username +
-          'enabled webcam. <button id="preview">Preview</button><button id="share-your-cam">Share webcam</button>';
+          'enabled webcam. <button id="preview" class="myButton" >Preview</button>' +
+          + '<button class="myButton" id="share-your-cam">Share webcam</button>';
 
         if (message.hasScreen) {
           msg = message.extra.username +
-            'Ready to share screen <button id="preview">remote screen</button><button id="share-your-cam">Share screen</button>';
+            'Ready to share screen <button id="preview"  class="myButton">remote screen</button>' +
+            '<button id="share-your-cam"  class="myButton">Share screen</button>';
         }
 
         root.addNewMessage({
@@ -234,10 +239,11 @@ class Network {
       }
 
       if (message.hasMic) {
+
         root.addNewMessage({
           header: message.extra.username,
-          // tslint:disable-next-line:max-line-length
-          message: message.extra.username + '<button id="listen">Listen</button> <button id="share-your-mic">Share Your Mic</button>',
+          message: '<button id="listen"  class="myButton" >Listen</button>' +
+            '<button id="share-your-mic"  class="myButton" >Share Your Mic</button>',
           userinfo: '<img src="imgs/share-files.png">',
           color: message.extra.color,
           callback(div) {
@@ -252,8 +258,8 @@ class Network {
             };
 
             div.querySelector("#share-your-mic").onclick = function () {
-              this.disabled = true;
 
+              this.disabled = true;
               const session = { audio: true };
 
               root.rtcMultiConnection.captureUserMedia(function (stream) {
@@ -265,6 +271,7 @@ class Network {
                 root.rtcMultiConnection.peers[message.userid].peer.connection.addStream(stream);
                 div.querySelector("#listen").onclick();
               }, session);
+
             };
           },
         });
@@ -290,14 +297,14 @@ class Network {
         */
         root.addNewMessage({
           header: e.extra.username,
-          message: e.extra.username + " enabled webcam.",
+          message: "Enabled webcam.",
           userinfo: "",
           color: e.extra.color,
         });
       } else {
         root.addNewMessage({
           header: e.extra.username,
-          message: e.extra.username + " enabled microphone.",
+          message: "Enabled microphone.",
           userinfo: '<audio src="' + URL.createObjectURL(e.stream) + '" controls muted=true volume=0></vide>',
           color: e.extra.color,
         });
@@ -317,15 +324,11 @@ class Network {
     root.rtcMultiConnection.onclose = root.rtcMultiConnection.onleave = function (event) {
       root.addNewMessage({
         header: event.extra.username,
-        message: event.extra.username + " left the room.",
-        userinfo: getUserinfo(root.rtcMultiConnection.blobURLs[event.userid], "imgs/camera.png"),
+        message: "Left the room.",
+        userinfo: root.getUserinfo(root.rtcMultiConnection.blobURLs[event.userid], "<img src'./imgs/warning.png' >"),
         color: event.extra.color,
       });
     };
-
-    function getUserinfo(blobURL, imageURL) {
-      return blobURL ? '<video src="' + blobURL + '" autoplay controls></video>' : '<img src="' + imageURL + '">';
-    }
 
   }
 
@@ -345,11 +348,11 @@ class Network {
     // this.roomUI.value = ;
 
     if (localStorage.getItem("roomname")) {
-      this.roomUI.value = localStorage.getItem("roomname");
+      // this.roomUI.value = localStorage.getItem("roomname");
     }
 
     this.roomUI.onkeyup = function () {
-      localStorage.setItem("roomname", root.roomUI.value);
+      // localStorage.setItem("roomname", root.roomUI.value);
     };
 
     this.connectUI.onclick = function (ev) {
@@ -379,14 +382,14 @@ class Network {
       (rtcMultiConnection as any).channel = root.roomUI.value;
 
       const websocket = new WebSocket(root.engineConfig.getRemoteServerAddress());
+
       websocket.onmessage = function (event) {
         const data = JSON.parse(event.data);
         if (data.isChannelPresent === false) {
           root.addNewMessage({
             header: username,
-            // tslint:disable-next-line:max-line-length
             message: "No room.Creating new room" + root.roomUI.value,
-            userinfo: '<img class=".chatIcon" src="imgs/warning.png">',
+            userinfo: "<img class='.chatIcon' src='imgs/warning.png'>",
           });
 
           (rtcMultiConnection as any).open();
@@ -394,11 +397,12 @@ class Network {
           root.addNewMessage({
             header: username,
             message: "Room found. Joining the room...",
-            userinfo: '<img class="chatIcon" src="imgs/warning.png">',
+            userinfo: "",
           });
           (rtcMultiConnection as any).join(root.roomUI.value);
         }
       };
+
       websocket.onopen = function () {
         websocket.send(JSON.stringify({
           checkPresence: true,
@@ -421,18 +425,17 @@ class Network {
 
     let numberOfKeys = 0;
     this.senderUI.onkeyup = function (e) {
-      console.log(" chat input");
       numberOfKeys++;
       if (numberOfKeys > 3) { numberOfKeys = 0; }
 
       if (!numberOfKeys) {
         if (e.keyCode === 8) {
-          return (rtcMultiConnection as any).send({
+          return root.rtcMultiConnection.send({
             stoppedTyping: true,
           });
         }
 
-        (rtcMultiConnection as any).send({
+        root.rtcMultiConnection.send({
           typing: true,
         });
       }
@@ -479,7 +482,6 @@ class Network {
 
     getElement("#allow-mic").onclick = (e) => {
 
-      // ?
       e.target.disabled = true;
 
       const session = { audio: true };
@@ -554,6 +556,8 @@ class Network {
     p.innerHTML = args.message;
     newMessageDIV.appendChild(userActivityDIV);
     this.chatUI.insertBefore(newMessageDIV, this.chatUI.firstChild);
+
+    this.chatUI.scrollTop = 0;
 
     if (args.callback) {
       args.callback(newMessageDIV);

@@ -100,10 +100,10 @@ canvas {
 .log-chat {
   position: absolute;
   top: 12%;
-  height: 160px !important;
+  height: 182px !important;
   width: 100%;
   overflow: auto;
-  margin-top: 63px;
+  margin-top: 38px;
 }
 
 .textMessageNode {

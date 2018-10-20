@@ -1,4 +1,3 @@
-import Program from "../app-icon";
 import Browser from "./class/browser";
 import Network from "./class/networking/network";
 import ViewPort from "./class/view-port";
@@ -11,7 +10,6 @@ import Starter from "./starter";
 class Ioc {
 
   public get: IUniVector = {};
-
   private config: MasterConfig;
 
   constructor() {
@@ -22,13 +20,11 @@ class Ioc {
     this.singlton(VisualRender, undefined);
     this.singlton(Network, this.config);
     this.singlton(Starter, this);
-    // console.log("ioc constructed");
   }
 
   public singlton(Singlton: any, args: undefined | any) {
     if (args !== undefined) {
       this.get[Singlton.name] = new Singlton(args);
-
     } else {
       this.get[Singlton.name] = new Singlton();
     }
