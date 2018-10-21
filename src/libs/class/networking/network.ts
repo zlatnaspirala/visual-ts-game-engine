@@ -3,7 +3,7 @@ import EngineConfig from "../../engine-config";
 import { byId, getElement, getRandomColor } from "../system";
 import "./rtc-multi-connection/linkify";
 import "./rtc-multi-connection/RTCMultiConnection2";
-// import "./test/ui.share-files";
+import "./rtc-multi-connection/ui.share-files";
 
 class Network {
 
@@ -35,7 +35,7 @@ class Network {
     this.chatUI = this.loggerUI.querySelector("#log-chat");
 
     if (this.engineConfig.getNetworkDeepLog() === false) {
-      (window as any).log = function () {/* empty */ };
+      (window as any).log = function () { /* empty */ };
     }
 
     this.roomUI.value = this.engineConfig.getMasterServerKey();

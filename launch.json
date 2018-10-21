@@ -1,0 +1,6 @@
+{
+  "name": "Attach to server.js",
+  "type": "node",
+  "request": "attach",
+  "port": 27017
+}

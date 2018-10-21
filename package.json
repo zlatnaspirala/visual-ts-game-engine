@@ -1,7 +1,7 @@
 {
   "name": "visualjs2",
   "version": "0.0.1",
-  "description": "Javascript lib",
+  "description": "This version 2 of visualjs game engine, export name lib name is visualjs2.js. Whole project is based fully dependency build. Main file is app.ts . Class ioc saves singlton instances also bind. This project is for middle level programmers.",
   "main": ".src/index.html",
   "dependencies": {
     "@types/matter-js": "^0.10.0",
@@ -42,6 +42,7 @@
     "dev": "webpack --config webpack.config.js",
     "rtc": "node ./server/rtc/server.ts",
     "database": "node ./server/database/base.ts",
+    "datadebug": "node --inspect=27017 ./server/database/base.ts",
     "fix": "tslint -c tslint.json 'src/**/*.ts' --fix",
     "tslint": "tslint -c tslint.json 'src/**/*.ts'",
     "test": "echo \"Error: no test specified\" && exit 1"

@@ -94,7 +94,26 @@ master.singlton(Platformer, master.get.Starter);
 
 ### Installed database : mongodb@3.1.8 ###
 
+ ```node
+ mongod --dbpath data
+ ```
+
 <pre> npm run database </pre>
+
+Fix : "failed: address already in use"
+
+```javascript
+  netstat -ano | findstr :27017
+
+  taskkill /PID typeyourPIDhere /F
+```
+Also important "Run Visual Studio Code as Administrator".
+
+ -Command for kill all node.js procces for window users:
+```node
+  taskkill /im node.exe /F
+```
+
 
 ### Networking multimedia communication : WebSocketServer running on Node.js ###
 
