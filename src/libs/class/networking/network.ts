@@ -1,9 +1,8 @@
 
 import EngineConfig from "../../engine-config";
-import { byId, getElement, getRandomColor } from "../system";
+import { byId, bytesToSize, getElement, getRandomColor } from "../system";
 import "./rtc-multi-connection/linkify";
 import "./rtc-multi-connection/RTCMultiConnection2";
-import "./rtc-multi-connection/ui.share-files";
 
 class Network {
 
@@ -43,7 +42,7 @@ class Network {
     this.attactLoggerUI();
 
     (window as any).rtcMultiConnection = new (window as any).RTCMultiConnection();
-    this.rtcMultiConnection = rtcMultiConnection;
+    this.rtcMultiConnection = (window as any).rtcMultiConnection;
     this.rtcMultiConnection.session = { data: true };
     this.rtcMultiConnection.sdpConstraints.mandatory = {
       OfferToReceiveAudio: true,
@@ -51,6 +50,69 @@ class Network {
     };
 
     this.attachWebRtc();
+
+    this.attachShareFiles();
+
+  }
+
+  private attachShareFiles() {
+    /*
+     * File sharing
+     */
+    const progressHelper = {};
+    this.rtcMultiConnection.onFileStart = function (file) {
+      this.addNewMessage({
+        header: this.rtcMultiConnection.extra.username,
+        message: "<strong>" + file.name + "</strong> ( " + bytesToSize(file.size) + " )",
+        userinfo: this.getUserinfo(this.rtcMultiConnection.blobURLs[this.rtcMultiConnection.userid], "imgs/share-files.png"),
+        callback(div) {
+          const innerDiv = document.createElement("div");
+          innerDiv.title = file.name;
+          innerDiv.innerHTML = "<label>0%</label><progress></progress>";
+          div.querySelector(".message").appendChild(innerDiv);
+          progressHelper[file.uuid] = {
+            div: innerDiv,
+            progress: innerDiv.querySelector("progress"),
+            label: innerDiv.querySelector("label"),
+          };
+          progressHelper[file.uuid].progress.max = file.maxChunks;
+        },
+      });
+    };
+    this.rtcMultiConnection.onFileProgress = function (chunk) {
+      const helper = progressHelper[chunk.uuid];
+      if (!helper) { return; }
+      helper.progress.value = chunk.currentPosition || chunk.maxChunks || helper.progress.max;
+      updateLabel(helper.progress, helper.label);
+    };
+
+    // www.RTCMultiConnection.org/docs/onFileEnd/
+    this.rtcMultiConnection.onFileEnd = function (file) {
+      if (!progressHelper[file.uuid]) {
+        console.error("No such progress-helper element exists.", file);
+        return;
+      }
+      let div = progressHelper[file.uuid].div;
+      if (file.type.indexOf("image") !== -1) {
+        div.innerHTML = '<a href="' + file.url + '" download="' + file.name + '">Download<strong class="myButton" >' +
+          file.name + '</strong> </a><br /><img src="' + file.url + '" title="' + file.name + '" style="max-width: 80%;">';
+      } else {
+        div.innerHTML = '<a href="' + file.url + '" download="' + file.name + '">Download <strong class="myButton" >' +
+          file.name + '</strong> </a><br /><iframe src="' + file.url + '" title="' + file.name +
+          '" style="width: 80%;border: 0;height: inherit;margin-top:1em;"></iframe>';
+      }
+
+      setTimeout(function () {
+        div = div.parentNode.parentNode.parentNode;
+        div.querySelector(".user-info").style.height = div.querySelector(".user-activity").clientHeight + "px";
+      }, 10);
+    };
+
+    function updateLabel(progress, label) {
+      if (progress.position === -1) { return; }
+      const position = +progress.position.toFixed(2).split(".")[1] || 100;
+      label.innerHTML = position + "%";
+    }
 
   }
 
@@ -176,14 +238,12 @@ class Network {
     root.rtcMultiConnection.onCustomMessage = function (message) {
 
       if (message.hasCamera || message.hasScreen) {
-        let msg = message.extra.username +
-          'enabled webcam. <button id="preview" class="myButton" >Preview</button>' +
-          + '<button class="myButton" id="share-your-cam">Share webcam</button>';
+        let msg = 'enabled webcam. <button id="preview" class="myButton" >Preview</button>' +
+          '<button class="myButton" id="share-your-cam">Share webcam</button>';
 
         if (message.hasScreen) {
-          msg = message.extra.username +
-            'Ready to share screen <button id="preview"  class="myButton">remote screen</button>' +
-            '<button id="share-your-cam"  class="myButton">Share screen</button>';
+          msg = 'Share screen <button id="preview"  class="myButton">Remote screen</button>' +
+            '<button id="share-your-cam" class="myButton">Share screen</button>';
         }
 
         root.addNewMessage({
@@ -192,8 +252,8 @@ class Network {
           userinfo: '<img src="imgs/share-files.png">',
           color: message.extra.color,
           callback(div) {
-            div.querySelector("#preview").onclick = function () {
-              this.disabled = true;
+            document.getElementById("preview").onclick = function () {
+              (this as HTMLButtonElement).disabled = true;
 
               message.session.oneway = true;
               root.rtcMultiConnection.sendMessage({
@@ -203,8 +263,8 @@ class Network {
               });
             };
 
-            div.querySelector("#share-your-cam").onclick = function () {
-              this.disabled = true;
+            document.getElementById("share-your-cam").onclick = function () {
+              (this as HTMLButtonElement).disabled = true;
 
               if (!message.hasScreen) {
                 const session = { audio: true, video: true };
@@ -367,7 +427,7 @@ class Network {
       root.nameUI.disabled = root.nameUI.disabled = (this as any).disabled = true;
       const username = root.nameUI.value || "Anonymous";
 
-      (rtcMultiConnection as any).extra = {
+      root.rtcMultiConnection.extra = {
         username,
         color: getRandomColor(),
       };
@@ -379,7 +439,7 @@ class Network {
       });
 
       const roomid = root.roomUI.value;
-      (rtcMultiConnection as any).channel = root.roomUI.value;
+      root.rtcMultiConnection.channel = root.roomUI.value;
 
       const websocket = new WebSocket(root.engineConfig.getRemoteServerAddress());
 
@@ -392,14 +452,14 @@ class Network {
             userinfo: "<img class='.chatIcon' src='imgs/warning.png'>",
           });
 
-          (rtcMultiConnection as any).open();
+          root.rtcMultiConnection.open();
         } else {
           root.addNewMessage({
             header: username,
             message: "Room found. Joining the room...",
             userinfo: "",
           });
-          (rtcMultiConnection as any).join(root.roomUI.value);
+          root.rtcMultiConnection.join(root.roomUI.value);
         }
       };
 
@@ -450,14 +510,14 @@ class Network {
       if (e.keyCode !== 13) { return; }
 
       root.addNewMessage({
-        header: (rtcMultiConnection as any).extra.username,
+        header: root.rtcMultiConnection.extra.username,
         message: (window as any).linkify(root.senderUI.value),
         // userinfo: root.getUserinfo((rtcMultiConnection as any).blobURLs[(rtcMultiConnection as any).userid], "imgs/gcheckmark.png"),
         userinfo: "",
-        color: (rtcMultiConnection as any).extra.color,
+        color: root.rtcMultiConnection.extra.color,
       });
 
-      (rtcMultiConnection as any).send(root.senderUI.value);
+      root.rtcMultiConnection.send(root.senderUI.value);
       (byId("sender") as HTMLButtonElement).value = "";
 
     };

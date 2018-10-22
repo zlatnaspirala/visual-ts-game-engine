@@ -1,3 +1,5 @@
 /node_modules
 /build/
 /server/database/data
+server/database/nocommit.ts
+server/database/email/nocommit.js

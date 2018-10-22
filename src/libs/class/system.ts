@@ -23,3 +23,7 @@ export function bytesToSize(bytes) {
   const i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)) as any);
   return (Math.round(bytes / (Math.pow(1024, i), 2) as any)) + " " + sizes[i];
 }
+
+export function randomIntFromTo(min, max) {
+  return Math.floor(Math.random() * (max - min + 1) + min);
+}
