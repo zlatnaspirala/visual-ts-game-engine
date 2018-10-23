@@ -82,8 +82,9 @@ master.singlton(Platformer, master.get.Starter);
 |   └── app.ts
 └── server/
 |   ├── database/
-|   |   ├── app-icon.ts
-|   |   └── app.ts
+|   |   ├── data.js
+|   |   ├── email/
+|   |   └── data/ (ignored - db system folder)
 |   ├── rtc/
 |   |   ├── server.ts
 |   |   ├── self-cert/
@@ -94,11 +95,28 @@ master.singlton(Platformer, master.get.Starter);
 
 ### Installed database : mongodb@3.1.8 ###
 
+-No typescript here, we need keep state clear no.
+Node.js is best options.
+
+-Need manual installation for email support.
+
  ```node
- mongod --dbpath data
+ npm i gmail-send
  ```
 
+-Run services database server (Locally and leave it alive): 
+
+```javascript
+npm run dataserver
+```
+
+Running your server part app and work with database, simple :
 <pre> npm run database </pre>
+
+Looks like this : 
+ ```node
+mongod --dbpath ./server/database/data
+ ```
 
 Fix : "failed: address already in use"
 
@@ -118,10 +136,11 @@ Also important "Run Visual Studio Code as Administrator".
 ### Networking multimedia communication : WebSocketServer running on Node.js ###
 
 <pre> npm run rtc </pre>
+- implemented video chat based on webRTC protocol
 
 ## Documentation : ##
 
- In progress
+ In progress like whole project ...
 
 ## Code format : ##
 
@@ -142,4 +161,4 @@ or use :
  Muaz Khan     - www.MuazKhan.com
  MIT License   - www.WebRTC-Experiment.com/licence
 
-
+## Todo list ##

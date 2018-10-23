@@ -21,6 +21,7 @@ class MyDatabase {
       const dbo = db.db("masterdatabase");
       if (!dbo.collection("users")) {
         dbo.createCollection("users").createIndex({ "email": 1 }, { unique: true });
+        dbo.createCollection("users").createIndex({ "confirmed": 1 }, { unique: true });
       }
 
       dbo.collection("users").findOne({ "email": user.email }, function (err, result) {
@@ -31,7 +32,7 @@ class MyDatabase {
         }
 
         if (result == null) {
-          dbo.collection("users").insertOne({ "email": user.email, "password": user.password }, function (err, res) {
+          dbo.collection("users").insertOne({ "email": user.email, "password": user.password, confirmed: false }, function (err, res) {
             if (err) {
               console.log("err:" + err);
               db.close();
@@ -49,9 +50,12 @@ class MyDatabase {
       });
     });
 
+
   }
 }
 
-let userInput = { email: "zlatnaspirala@gmail.com", password: "qwqwqw" };
+let sender = require("./email/nocommit");
+let userInput = { email: "zlatna@gmail.com", password: "222222" };
 let test = new MyDatabase();
 test.register(userInput);
+sender()
