@@ -1,5 +1,4 @@
 let port = 12034; // change it to 443
-
 let fs = require("fs");
 
 function resolveURL(url) {
@@ -138,4 +137,4 @@ function truncateChannels(websocket) {
   }
 }
 
-console.warn("listening both websocket and HTTP at port " + port);
+console.warn("Listening at port " + port);

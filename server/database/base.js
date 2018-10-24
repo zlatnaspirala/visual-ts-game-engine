@@ -1,13 +1,12 @@
-
-
-
 let MongoClient = require("mongodb").MongoClient;
 let url = "mongodb://localhost:27017";
 
 class MyDatabase {
 
-  constructor() {
-    console.warn("GOOD");
+  constructor(user) {
+    console.warn("GOOD" + user);
+    this.user = user;
+
   }
 
   register(user) {
@@ -52,10 +51,11 @@ class MyDatabase {
 
 
   }
-}
 
-let sender = require("./email/nocommit");
-let userInput = { email: "zlatna@gmail.com", password: "222222" };
-let test = new MyDatabase();
-test.register(userInput);
-sender()
+  login(user) {
+    // test
+    console.log(this.user + "< user");
+  }
+
+}
+module.exports = (user) => { return new MyDatabase(user) }
