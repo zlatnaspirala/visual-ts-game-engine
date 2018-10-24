@@ -1,5 +1,6 @@
 let port = 12034; // change it to 443
 let fs = require("fs");
+let database = require("../database/base");
 
 function resolveURL(url) {
   const isWin = !!process.platform.match(/^win/);

@@ -7,7 +7,6 @@
  * visual ts game engine
 */
 
-var CONFIG = require('./config');
 var fs = require("fs");
 var express = require("express");
 var app = express();
@@ -46,15 +45,15 @@ io.sockets.on('connection', function (socket) {
 	//REGISTER EVENT
 	socket.on('register', function (email, password) {
 
-		if (validateEmail(email) == true) {
-			// socket.email = email;
-			// console.log("This email already exist : ", email);
-			// io.sockets.emit('realtime', "registerFeild", "Email already exist " + email);
-			// io.sockets.emit('realtime', "registerDoneMailVerification", "Just goto your email and click on confirmation link.");
-		}
-		else {
-			socket.emit('realtime', "registerDoneMailVerification", "Your email is not valid. You faild both verifycation (client and server) .");
-		}
+		//if (validateEmail(email) == true) {
+		// socket.email = email;
+		// console.log("This email already exist : ", email);
+		// io.sockets.emit('realtime', "registerFeild", "Email already exist " + email);
+		// io.sockets.emit('realtime', "registerDoneMailVerification", "Just goto your email and click on confirmation link.");
+		//	}
+		//else {
+		socket.emit('realtime', "registerDoneMailVerification", "Your email is not valid. You faild both verifycation (client and server) .");
+		//	}
 
 	});
 
