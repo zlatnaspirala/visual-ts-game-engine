@@ -1,6 +1,8 @@
-let port = 12034; // change it to 443
-let fs = require("fs");
-let database = require("../database/base");
+let serverConfig = require("../../server-config.js");
+const Connector = require("./connector.js");
+
+// let fs = require("fs");
+// let database = require("../database/base");
 
 function resolveURL(url) {
   const isWin = !!process.platform.match(/^win/);
@@ -8,11 +10,15 @@ function resolveURL(url) {
   return url.replace(/\//g, "\\");
 }
 
-// tslint:disable-next-line:variable-name
-let _static = require("node-static");
-let file = new _static.Server("./public");
+const TEST = new Connector();
 
-let http = require("http").createServer(function (request, response) {
+TEST.attach();
+
+// tslint:disable-next-line:variable-name
+// let _static = require("node-static");
+// let file = new _static.Server("./public");
+
+const http = require("http").createServer(function(request, response) {
   /*
   request.addListener("end", function () {
     if (request.url.search(/.png|.gif|.js|.css/g) === -1) {
@@ -20,7 +26,7 @@ let http = require("http").createServer(function (request, response) {
     } else { file.serve(request, response); }
   }).resume();
   */
-}).listen(port);
+}).listen(serverConfig.rtcServer.port);
 
 /* HTTPs
 let options = {
@@ -34,12 +40,11 @@ let https = require('https').createServer(options, function (request, response) 
             file.serveFile('/index.html', 402, {}, request, response);
         } else file.serve(request, response);
     }).resume();
-}).listen(port);
+}).listen(serverConfig.remoteServer.port);
 */
 
-let CHANNELS = {};
-
-let WebSocketServer = require("websocket").server;
+const CHANNELS = {};
+const WebSocketServer = require("websocket").server;
 
 new WebSocketServer({
   httpServer: http,
@@ -51,13 +56,13 @@ function onRequest(socket) {
   const origin = socket.origin + socket.resource;
   const websocket = socket.accept(null, origin);
 
-  websocket.on("message", function (message) {
+  websocket.on("message", function(message) {
     if (message.type === "utf8") {
       onMessage(JSON.parse(message.utf8Data), websocket);
     }
   });
 
-  websocket.on("close", function () {
+  websocket.on("close", function() {
     console.warn("Event: onClose");
     truncateChannels(websocket);
   });
@@ -138,4 +143,4 @@ function truncateChannels(websocket) {
   }
 }
 
-console.warn("Listening at port " + port);
+console.warn("Listening at port " + serverConfig.rtcServer.port);

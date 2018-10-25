@@ -1,6 +1,7 @@
 
 import EngineConfig from "../../engine-config";
 import { byId, bytesToSize, getElement, getRandomColor } from "../system";
+import ConnectorClient from "./connector";
 import "./rtc-multi-connection/linkify";
 import "./rtc-multi-connection/RTCMultiConnection2";
 
@@ -21,9 +22,16 @@ class Network {
   private getUserinfo;
   private fireClickEvent;
 
+  private connector;
+
   constructor(config: EngineConfig) {
 
     this.engineConfig = config;
+
+    if (this.engineConfig.isAppUseAccountsSystem()) {
+      this.connector = new ConnectorClient(config);
+    }
+
     this.loggerUI = byId("log-network") as HTMLDivElement;
     this.webCamView = byId("webCamView") as HTMLDivElement;
     this.senderUI = byId("sender") as HTMLTextAreaElement;

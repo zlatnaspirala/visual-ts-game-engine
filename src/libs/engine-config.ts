@@ -1,4 +1,5 @@
 import { runInThisContext } from "vm";
+const serverConfig = require("../../server-config.js");
 
 class EngineConfig {
 
@@ -6,12 +7,22 @@ class EngineConfig {
   private aspectRatio: number = 1.333;
 
   private networkDeepLogs: boolean = false;
-  private remoteServerPort: number = 12034;
-
+  private rtcServerPort: number = 12034;
   private masterServerKey: string = "multi-platformer-sever1.maximum";
+  private connectorPort: number = 1234;
+
+  private appUseAccountsSystem: boolean = true;
 
   constructor() {
     // no args
+  }
+
+  public isAppUseAccountsSystem(): boolean {
+    return this.appUseAccountsSystem;
+  }
+
+  public getConnectorPort() {
+    return this.connectorPort;
   }
 
   public getDrawRefference(): string {
@@ -27,7 +38,7 @@ class EngineConfig {
   }
 
   public getRemoteServerAddress() {
-    return (location.protocol === "https:" ? "wss" : "ws") + "://" + document.domain + ":" + this.remoteServerPort + "/";
+    return (location.protocol === "https:" ? "wss" : "ws") + "://" + document.domain + ":" + this.rtcServerPort + "/";
   }
 
   public setNetworkDeepLog(newState: boolean) {
