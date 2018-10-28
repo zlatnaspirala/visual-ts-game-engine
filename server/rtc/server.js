@@ -1,4 +1,4 @@
-let serverConfig = require("../../server-config.js");
+const ServerConfig = require("./server-config.js");
 const Connector = require("./connector.js");
 
 // let fs = require("fs");
@@ -10,23 +10,29 @@ function resolveURL(url) {
   return url.replace(/\//g, "\\");
 }
 
-const TEST = new Connector();
+const serverConfig = new ServerConfig();
+const TEST = new Connector(serverConfig);
 
-TEST.attach();
+setTimeout(function() {
+
+  TEST.sendMessage({ data: "simple data" }, this.websocket);
+
+}, 7000);
+
 
 // tslint:disable-next-line:variable-name
 // let _static = require("node-static");
 // let file = new _static.Server("./public");
 
-const http = require("http").createServer(function(request, response) {
+const httpRtc = require("http").createServer(function(request, response) {
   /*
   request.addListener("end", function () {
     if (request.url.search(/.png|.gif|.js|.css/g) === -1) {
       file.serveFile(resolveURL("/app.html"), 402, {}, request, response);
     } else { file.serve(request, response); }
   }).resume();
-  */
-}).listen(serverConfig.rtcServer.port);
+ */
+}).listen(serverConfig.rtcServerPort);
 
 /* HTTPs
 let options = {
@@ -47,7 +53,7 @@ const CHANNELS = {};
 const WebSocketServer = require("websocket").server;
 
 new WebSocketServer({
-  httpServer: http,
+  httpServer: httpRtc,
   autoAcceptConnections: false,
 }).on("request", onRequest);
 
@@ -57,6 +63,7 @@ function onRequest(socket) {
   const websocket = socket.accept(null, origin);
 
   websocket.on("message", function(message) {
+    console.warn("Server controller resive msg :", message);
     if (message.type === "utf8") {
       onMessage(JSON.parse(message.utf8Data), websocket);
     }
@@ -143,4 +150,5 @@ function truncateChannels(websocket) {
   }
 }
 
-console.warn("Listening at port " + serverConfig.rtcServer.port);
+console.warn("Listening at port " + serverConfig.getRemoteServerAddress);
+console.warn("Listening at port " + serverConfig.rtcServerPort);

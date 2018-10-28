@@ -1,11 +1,10 @@
-import { runInThisContext } from "vm";
-const serverConfig = require("../../server-config.js");
 
-class EngineConfig {
+class ClientConfig {
 
   private drawReference: string = "frame";
   private aspectRatio: number = 1.333;
-
+  // private domain: string = "192.168.0.14";
+  private domain: string = "127.0.0.1";
   private networkDeepLogs: boolean = false;
   private rtcServerPort: number = 12034;
   private masterServerKey: string = "multi-platformer-sever1.maximum";
@@ -19,6 +18,10 @@ class EngineConfig {
 
   public isAppUseAccountsSystem(): boolean {
     return this.appUseAccountsSystem;
+  }
+
+  public getDomain() {
+    return this.domain;
   }
 
   public getConnectorPort() {
@@ -41,6 +44,10 @@ class EngineConfig {
     return (location.protocol === "https:" ? "wss" : "ws") + "://" + document.domain + ":" + this.rtcServerPort + "/";
   }
 
+  public getRemoteServerAddressControlller() {
+    return (location.protocol === "https:" ? "wss" : "ws") + "://" + document.domain + ":" + this.connectorPort + "/";
+  }
+
   public setNetworkDeepLog(newState: boolean) {
     this.networkDeepLogs = newState;
   }
@@ -54,4 +61,4 @@ class EngineConfig {
   }
 
 }
-export default EngineConfig;
+export default ClientConfig;

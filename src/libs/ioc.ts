@@ -1,8 +1,9 @@
+
 import Browser from "./class/browser";
 import Network from "./class/networking/network";
 import ViewPort from "./class/view-port";
 import VisualRender from "./class/visual-render";
-import MasterConfig from "./engine-config";
+import ClientConfig from "./client-config";
 import { IUniVector } from "./interface/global";
 import GlobalEvent from "./multiplatform/global-event";
 import Starter from "./starter";
@@ -10,10 +11,11 @@ import Starter from "./starter";
 class Ioc {
 
   public get: IUniVector = {};
-  private config: MasterConfig;
+  private config: ClientConfig;
 
   constructor() {
-    this.config = new MasterConfig();
+
+    this.config = new ClientConfig();
     this.singlton(Browser, undefined);
     this.singlton(ViewPort, this.config.getDrawRefference());
     this.singlton(GlobalEvent, this.get.Browser);

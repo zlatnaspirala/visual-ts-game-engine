@@ -1,45 +1,61 @@
-import EngineConfig from "../../engine-config";
 import { byId } from "../system";
-import "./socket.io";
+import EngineConfig from "./../../client-config";
 
 class ConnectorClient {
 
-  private socket;
+  private webSocketController;
 
   constructor(config: EngineConfig) {
 
-    this.socket = (window as any).io.connect("http://" + "localhost" + ":" + config.getConnectorPort());
-
     console.warn("ConnectorClient running...");
 
-    this.socket.on("connect", function () {
-
-      console.warn("Connected with session socket!");
-
-    });
-
-    this.socket.on("realtime", function (eventConnector, dataConnector) {
-
-      if (eventConnector === "registerDoneMailVerification") {
-
-        console.warn("Client event : registerDoneMailVerification ");
-
-      } else if (eventConnector === "registerFeild") {
-
-        console.warn("Client event : registerDoneMailVerification ");
-
-      }
-
-    });
+    this.webSocketController = new WebSocket(config.getRemoteServerAddressControlller());
+    this.webSocketController.onopen = this.onOpen;
+    this.webSocketController.onclose = this.onClose;
+    this.webSocketController.onmessage = this.onMessage;
+    this.webSocketController.onerror = this.onError;
+    window.WWW = this;
 
   }
 
-  private register() {
+  private onOpen = () => {
 
-    this.socket.emit("register",
-      (byId("login") as HTMLInputElement).value,
-      (byId("password") as HTMLInputElement).value);
+    console.warn("CONNECTED", JSON.stringify({ data: "very good" }));
 
+    this.webSocketController.send(JSON.stringify({ data: "very good" }));
+
+    // this.webSocketController.send("very good2");
+  }
+
+  private sendM(message) {
+
+    message = JSON.stringify(message);
+
+    console.warn(message, "SEND!");
+
+    if (!message) {
+      console.error("no such channel exists");
+      return;
+    }
+
+    try {
+      // tslint:disable-next-line:no-unused-expression
+      () => this.webSocketController.sendUTF(message);
+    } catch (e) {
+      console.warn("Error", e);
+    }
+  }
+  private onClose(evt) {
+    console.warn("DISCONNECTED");
+  }
+
+  private onMessage(evt) {
+    console.warn("RESPONSE: " + evt.data);
+    // websocket.close();
+  }
+
+  private onError(evt) {
+    console.warn("onError" + evt.data);
   }
 
 }

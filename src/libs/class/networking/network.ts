@@ -1,5 +1,4 @@
 
-import EngineConfig from "../../engine-config";
 import { byId, bytesToSize, getElement, getRandomColor } from "../system";
 import ConnectorClient from "./connector";
 import "./rtc-multi-connection/linkify";
@@ -8,7 +7,7 @@ import "./rtc-multi-connection/RTCMultiConnection2";
 class Network {
 
   private rtcMultiConnection: any;
-  private engineConfig: EngineConfig;
+  private engineConfig: any;
   private loggerUI: HTMLDivElement;
   private webCamView: HTMLDivElement;
   private numbersOfUsers: number = 0;
@@ -24,7 +23,7 @@ class Network {
 
   private connector;
 
-  constructor(config: EngineConfig) {
+  constructor(config: any) {
 
     this.engineConfig = config;
 

@@ -1,79 +1,78 @@
-const serverConfig = require("../../server-config");
-const fs = require("fs");
-const express = require("express");
 
 class Connector {
 
-  constructor() {
+  constructor(serverConfig) {
 
     this.config = serverConfig;
-    this.socket = null;
 
-    if (this.config.connector.protocol === "http") {
-      this.http = require("http");
+    let protocol = "";
+    if (this.config.isSecure) {
+      protocol = "https";
     } else {
-      this.http = require("https");
+      protocol = "http";
     }
-    this.app = express();
 
-    this.server = this.http.createServer(this.app);
-    this.io = require("socket.io").listen(this.server);
-    this.server.listen(this.config.connector.port);
-    console.warn("Socket server listening on port: ", this.config.connector.port);
+    this.http = require(protocol).createServer(function(request, response) { }).listen(serverConfig.connectorPort);
 
-    this.attach();
+    const WebSocketServer = require("websocket").server;
+
+    this.wSocket = new WebSocketServer({
+      httpServer: this.http,
+      autoAcceptConnections: false,
+    }).on("request", this.onRequestConn);
+
+    console.log("controller constructed.")
+  }
+
+  sendMessage(message, websocket) {
+    message.data = JSON.stringify(message.data);
+
+    console.log(message, "SEND")
+
+    if (!message) {
+      console.error("no such channel exists");
+      return;
+    }
+
+    try {
+      websocket.sendUTF(message.data);
+    } catch (e) {
+      console.warn("Error", e);
+    }
 
   }
 
-  attach() {
+  onRequestConn(socket) {
 
-    this.io.sockets.on("connection", function(socket) {
+    const origin = socket.origin + socket.resource;
+    const websocket = socket.accept(null, origin);
 
-      this.socket = socket;
+    websocket.on("message", function(message) {
 
-      console.warn("-------------------------------------------------------------");
-      console.warn("CONNECTED WITH GAME SERVER Visual ts game engine version 1.0");
-      console.warn("-------------------------------------------------------------");
-      console.warn("Attaching events...");
+      console.warn("onMessage?:", message);
 
-      socket.on("register", this.userRegister);
-      socket.on("activateAccount", this.activateAccount);
-      socket.on("login", this.userLogin);
-      socket.on("newpass", this.userNewPass);
-      socket.on("disconnect", this.userDisconnect);
+      if (message.type === "utf8") {
+        // this.sendMessage("good")
+        try {
+          let test = JSON.parse(message.utf8Data);
+          console.warn("On message, utf8", test.data);
+        } catch (err) {
 
-      console.warn("Attached events : register, activateAccount, login, newpass, disconnect");
+          console.warn("On message : Message is simple string", err);
+        }
+      }
 
     });
 
-  }
+    websocket.on("close", function(e) {
+      console.warn("Event: onClose");
 
-  userRegister(userInput) {
-    // test
-    // socket.emit('realtime', "registerDoneMailVerification", "Your email is not valid");
-  }
+    });
 
-  activateAccount(code) {
+    websocket.on("error", function(e) {
+      console.warn("Event: error");
+    });
 
-    console.warn("activateAccount event : ", code);
-
-  }
-
-  userLogin(userInput) {
-
-    console.warn("userLogin event : ", userInput);
-
-  }
-
-  userNewPass(userInput) {
-    console.warn("userNewPass event : ", userInput);
-  }
-
-  userDisconnect() {
-    console.warn("userDisconnect event : ");
-    // io.sockets.emit('updateusers', usernames);
-    // echo globally that this client has left
-    this.socket.broadcast.emit("realtime", "SERVER", this.socket.username + " has disconnected");
   }
 
 }

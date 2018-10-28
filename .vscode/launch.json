@@ -6,15 +6,17 @@
   "configurations": [
     {
       "type": "node",
+      "protocol": "inspector",
       "request": "attach",
-      "name": "Attach",
+      "name": "Attach to Process",
+      "address": "127.0.0.1",
       "port": 9229
     },
     {
       "type": "node",
       "request": "launch",
       "name": "Launch Program",
-      "program": "${workspaceFolder}/server\\database\\base.js",
+      "program": "${workspaceFolder}/server\\rtc\\server.js",
       "outFiles": [
         "${workspaceFolder}/**/*.js"
       ]
