@@ -5,6 +5,7 @@ class MyDatabase {
 
   constructor(serverConfig) {
 
+    const self = this;
     this.config = serverConfig;
     console.warn("Database mongoDB is constructed.");
 
@@ -12,13 +13,16 @@ class MyDatabase {
 
   register(user) {
 
+    console.log("REGISTER IS CALLED");
+
+    const databaseName = this.config.databaseName;
     MongoClient.connect(url, { useNewUrlParser: true }, function(error, db) {
       if (error) {
         console.warn("err1:" + error);
-        return;
+        return null;
       }
 
-      const dbo = db.db(this.config.databaseName);
+      const dbo = db.db(databaseName);
       if (!dbo.collection("users")) {
         dbo.createCollection("users").createIndex({ "email": 1 }, { unique: true });
         dbo.createCollection("users").createIndex({ "confirmed": 1 }, { unique: true });
@@ -26,17 +30,18 @@ class MyDatabase {
 
       dbo.collection("users").findOne({ "email": user.email }, function(err, result) {
 
-        if (err) {console.log("err2:" + err); return;}
+        if (err) { console.log("err2:" + err); return null; }
 
         if (result == null) {
           dbo.collection("users").insertOne({ "email": user.email, "password": user.password, confirmed: false }, function(err, res) {
             if (err) {
               console.log("err3:" + err);
               db.close();
-              return;
+              return null;
             }
             console.log("success", res.ops);
             console.log("User registred.");
+            return "!REGISTRED!";
             db.close();
           });
         } else {

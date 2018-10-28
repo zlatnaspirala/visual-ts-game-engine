@@ -9,6 +9,8 @@ class Connector {
 
   constructor(serverConfig) {
 
+    const self = this;
+
     this.config = serverConfig;
     this.http = require(this.config.getProtocol).createServer(function(request, response) { }).listen(serverConfig.getConnectorPort);
     let WebSocketServer = require("websocket").server;
@@ -18,6 +20,8 @@ class Connector {
     }).on("request", this.onRequestConn);
     WebSocketServer = null;
 
+    this.wSocket.myRoot = root;
+
     if (this.config.IsDatabaseActive) {
 
       let MyDatabase = require("../database/database");
@@ -26,6 +30,7 @@ class Connector {
 
     }
 
+    shared.myBase = this;
     shared.regHandler = this.serverHandlerRegister;
 
   }
@@ -54,16 +59,15 @@ class Connector {
 
   onRequestConn(socket) {
 
-    const root = this;
     const origin = socket.origin + socket.resource;
-    const websocket = socket.accept(null, origin);
+    this.wSocket = socket.accept(null, origin);
 
     console.log("Controller session is up. resource tag is: ", socket.resource);
 
     /**
      * Server message event
      */
-    websocket.on("message", function(message) {
+    this.wSocket.on("message", function(message) {
 
       // console.warn("onMessage?:", message);
       /*if (typeof message.utf8Data === "string") {
@@ -76,8 +80,27 @@ class Connector {
 
           let test = JSON.parse(message.utf8Data);
           console.warn("On message, utf8Data parsed : ", test.data);
-          shared.whatIs(test);
-          this.send(JSON.stringify({ data: "Welcome here !" }));
+
+          if (typeof test.data === "string") {
+            console.log("test.data : " + test.data);
+
+            this.send(JSON.stringify({ data: "Welcome here !" }));
+
+          } else {
+
+            if (test.data.action) {
+
+              if (test.data.action === "REGISTER") {
+                shared.regHandler(test.data);
+              }
+
+            } else {
+              console.log("Object but not action in it.");
+            }
+          }
+
+
+
 
         } catch (err) {
 
@@ -87,12 +110,12 @@ class Connector {
 
     });
 
-    websocket.on("close", function(e) {
+    this.wSocket.on("close", function(e) {
       console.warn("Event: onClose");
 
     });
 
-    websocket.on("error", function(e) {
+    this.wSocket.on("error", function(e) {
       console.warn("Event: error");
     });
     console.log("controller constructed.")
@@ -100,14 +123,15 @@ class Connector {
 
   serverHandlerRegister(regTest) {
 
-    console.log("WHAT IS!!!!! :", test)
     // validate
     if (regTest.action === "REGISTER") {
 
       if (regTest.userRegData) {
         if (shared.validateEmail(regTest.userRegData.email) === null) {
-          this.database.register(regTest.userRegData);
-          console.log("EMAIL VALID");
+
+          let test2 = shared.myBase.database.register(regTest.userRegData);
+          console.log(test2)
+
         }
       }
 

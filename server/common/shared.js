@@ -1,5 +1,5 @@
 
-module.exports.myLib = {
+module.exports = {
 
   resolveURL: function(url) {
     const isWin = !!process.platform.match(/^win/);
@@ -23,6 +23,8 @@ module.exports.myLib = {
       return false;
     }
     return true;
-  }
+  },
+
+  myBase: {},
 
 };
