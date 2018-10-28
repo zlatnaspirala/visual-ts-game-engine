@@ -6,3 +6,8 @@ export interface IStaticItem {
   tex: literalImageSrc; tiles: number; collisionFilter?: ICollisionFilter;
 }
 export interface IUniVector { [key: string]: any; }
+
+export interface IUserRegData {
+  email: string;
+  password: string;
+}

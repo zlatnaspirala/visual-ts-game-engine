@@ -27,3 +27,19 @@ export function bytesToSize(bytes) {
 export function randomIntFromTo(min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
+
+export function validateEmail(email: string): string | null {
+  // tslint:disable-next-line:max-line-length
+  const regexp = new RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
+  if (regexp.test(email) === false) {
+    return "Email is not valid !";
+  }
+  return null;
+}
+
+export function validatePassword(pass: string): boolean {
+  if (pass.length < 8) {
+    return false;
+  }
+  return true;
+}

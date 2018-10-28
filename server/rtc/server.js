@@ -1,30 +1,16 @@
+/**
+ * visual-ts game engine server part
+ * @description Networking
+ */
+
 const ServerConfig = require("./server-config.js");
 const Connector = require("./connector.js");
 
 // let fs = require("fs");
-// let database = require("../database/base");
-
-function resolveURL(url) {
-  const isWin = !!process.platform.match(/^win/);
-  if (!isWin) { return url; }
-  return url.replace(/\//g, "\\");
-}
-
 const serverConfig = new ServerConfig();
-const TEST = new Connector(serverConfig);
+const sessionController = new Connector(serverConfig);
 
-setTimeout(function() {
-
-  TEST.sendMessage({ data: "simple data" }, this.websocket);
-
-}, 7000);
-
-
-// tslint:disable-next-line:variable-name
-// let _static = require("node-static");
-// let file = new _static.Server("./public");
-
-const httpRtc = require("http").createServer(function(request, response) {
+const httpRtc = require(serverConfig.getProtocol).createServer(function(request, response) {
   /*
   request.addListener("end", function () {
     if (request.url.search(/.png|.gif|.js|.css/g) === -1) {
@@ -150,5 +136,6 @@ function truncateChannels(websocket) {
   }
 }
 
-console.warn("Listening at port " + serverConfig.getRemoteServerAddress);
-console.warn("Listening at port " + serverConfig.rtcServerPort);
+console.warn("##########################################################################");
+console.warn("# MultiRtc 2.2 vs session controller ver 0.1 Created by Nikola Lukic.....#");
+console.warn("##########################################################################");

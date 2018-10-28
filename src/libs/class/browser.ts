@@ -8,19 +8,21 @@ class Browser {
     public os: string = "";
     public description: string = "";
 
-    private gecko: RegExpMatchArray | boolean;
-    private navIpad: RegExpMatchArray | boolean;
-    private operatablet: RegExpMatchArray | boolean;
-    private navIphone: RegExpMatchArray | boolean;
-    private navFirefox: RegExpMatchArray | boolean;
-    private navChrome: RegExpMatchArray | boolean;
-    private navOpera: RegExpMatchArray | boolean;
-    private navSafari: RegExpMatchArray | boolean;
-    private navandroid: RegExpMatchArray | boolean;
-    private mobile: RegExpMatchArray | boolean;
-    private navMozilla: RegExpMatchArray | boolean;
+    private gecko: RegExpMatchArray | boolean | any;
+    private navIpad: RegExpMatchArray | boolean | any;
+    private operatablet: RegExpMatchArray | boolean | any;
+    private navIphone: RegExpMatchArray | boolean | any;
+    private navFirefox: RegExpMatchArray | boolean | any;
+    private navChrome: RegExpMatchArray | boolean | any;
+    private navOpera: RegExpMatchArray | boolean | any;
+    private navSafari: RegExpMatchArray | boolean | any;
+    private navandroid: RegExpMatchArray | boolean | any;
+    private mobile: RegExpMatchArray | boolean | any;
+    private navMozilla: RegExpMatchArray | boolean | any;
     private navUbuntu: RegExpMatchArray | boolean;
     private navLinux: RegExpMatchArray | boolean;
+
+    private windowsOS: RegExpMatchArray | null = null;
 
     /**
      * @description This is possible value's for property description:
@@ -54,7 +56,9 @@ class Browser {
         this.navChrome = this.uAgent.match(/Chrome/gi);
         this.navSafari = this.uAgent.match(/safari/gi);
         this.navandroid = this.uAgent.match(/android/gi);
+        this.windowsOS = this.uAgent.match(/Windows NT/gi);
         this.mobile = this.uAgent.match(/mobile/gi);
+
 
         this.isMobile = (/iphone|ipad|ipod|android|blackberry|mini|windows\sce|palm/i.test(navigator.userAgent.toLowerCase()));
 
@@ -76,6 +80,11 @@ class Browser {
     }
 
     private check() {
+
+        if (this.windowsOS) {
+            this.device = "desktop";
+            this.os = "win";
+        }
 
         // FIREFOX on android
         if (this.navFirefox && this.navandroid && this.device === "ANDROID") {
@@ -114,6 +123,9 @@ class Browser {
         if (this.navChrome && this.navSafari && this.navMozilla && this.device === "ANDROID") {
             this.description = "mobile_chrome_android";
         }
+        if (this.navChrome && this.navSafari && this.navMozilla[0] && this.os === "win") {
+            this.description = "chrome";
+        }
         if (this.navChrome && this.device === "ANDROID") {
             this.description = "chrome_browser";
         }
@@ -137,6 +149,8 @@ class Browser {
             this.device = "desktop";
             this.description = "opera_desktop_linux";
         }
+
+
 
     }
 

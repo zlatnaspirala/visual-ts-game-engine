@@ -29,6 +29,7 @@ class Network {
 
     if (this.engineConfig.isAppUseAccountsSystem()) {
       this.connector = new ConnectorClient(config);
+      // this.connector.showRegisterForm();
     }
 
     this.loggerUI = byId("log-network") as HTMLDivElement;

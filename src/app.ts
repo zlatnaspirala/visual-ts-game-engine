@@ -11,3 +11,5 @@ const master = new Ioc();
 const appIcon: AppIcon = new AppIcon(master.get.Browser);
 
 master.singlton(Platformer, master.get.Starter);
+
+console.warn("Client browser: ", master.get.Browser.description);
