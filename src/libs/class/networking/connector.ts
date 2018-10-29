@@ -2,6 +2,7 @@
 import { IUserRegData } from "../../interface/global";
 import { byId, htmlHeader, validateEmail, validatePassword } from "../system";
 import EngineConfig from "./../../client-config";
+import { UniClick } from "../../types/global";
 
 class ConnectorClient {
 
@@ -40,7 +41,9 @@ class ConnectorClient {
 
   }
 
-  public registerUser = (e) => {
+  public registerUser = (e: UniClick) => {
+
+    e.preventDefault();
 
     const localEmail: string = (byId("login-user") as HTMLInputElement).value;
     const localPassword: string = (byId("login-pass") as HTMLInputElement).value;
