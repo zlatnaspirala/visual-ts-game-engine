@@ -1,6 +1,8 @@
+
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const TypedocWebpackPlugin = require('typedoc-webpack-plugin');
 
 module.exports = {
     mode: "development",
@@ -54,7 +56,20 @@ module.exports = {
             template: 'src/html-components/register.html'
 
         }),
-        new ExtractTextPlugin("styles.css")
+        new ExtractTextPlugin("styles.css"),
+        new TypedocWebpackPlugin({
+            out: './api-doc',
+            module: 'amd',
+            target: 'es5',
+            exclude: '**/node_modules/**/*.*',
+            experimentalDecorators: true,
+            excludeExternals: true,
+            name: 'sn-theme',
+            mode: 'file',
+            theme: './sn-theme/',
+            includeDeclarations: false,
+            ignoreCompilerErrors: true,
+        })
     ],
 
     /**

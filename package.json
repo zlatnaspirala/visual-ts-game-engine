@@ -29,6 +29,8 @@
     "source-map-loader": "^0.2.3",
     "style-loader": "^0.21.0",
     "ts-loader": "^4.4.2",
+    "typedoc": "^0.13.0",
+    "typedoc-webpack-plugin": "^1.1.4",
     "typescript": "^2.9.2",
     "webpack": "^4.14.0",
     "webpack-cli": "^2.0.13"
@@ -37,13 +39,24 @@
     "build": "webpack --config webpack.config.js",
     "dev": "webpack --config webpack.config.js",
     "rtc": "node ./server/rtc/server.js",
-    "database": "node ./server/database/base.js",
     "datadebug": "node --inspect=27017 ./server/database/base.js",
     "dataserver": "mongod --dbpath ./server/database/data",
     "fix": "tslint -c tslint.json 'src/**/*.ts' --fix",
-    "tslint": "tslint -c tslint.json 'src/**/*.ts'",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "tslint": "tslint -c tslint.json 'src/**/*.ts'"
   },
-  "author": "Nikola Lukic",
-  "license": "ISC"
+  "author": {
+    "name": "Nikola Lukic",
+    "email": "zlatnaspirala@gmail.com",
+    "url": "https://maximumroulette.com"
+  },
+  "license": "(MIT OR GPL-3.0)",
+  "homepage": "https://github.com/zlatnaspirala/visual-ts-game-engie",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/"
+  },
+  "bugs": {
+    "url": "https://github.com/zlatnaspirala/visual-ts-game-engie/issues",
+    "email": "greespiral@gmail.com"
+  }
 }
