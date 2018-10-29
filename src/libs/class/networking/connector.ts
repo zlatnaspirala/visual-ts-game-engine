@@ -1,6 +1,6 @@
-import { registerForm } from "../../../html-components/register.html";
+
 import { IUserRegData } from "../../interface/global";
-import { byId, validateEmail, validatePassword } from "../system";
+import { byId, htmlHeader, validateEmail, validatePassword } from "../system";
 import EngineConfig from "./../../client-config";
 
 class ConnectorClient {
@@ -25,13 +25,18 @@ class ConnectorClient {
 
   public showRegisterForm() {
 
-    try {
-      this.popupForm.innerHTML = registerForm;
-      byId("login-button").addEventListener("click", this.registerUser, false);
-      byId("forgotPassword").addEventListener("click", this.ForgotPassword, false);
-    } catch (err) {
-      console.warn("err in Controller.ShowRegisterForm :", err);
-    }
+    const myInstance = this;
+    fetch("./templates/register.html", {
+      headers: htmlHeader,
+    }).
+      then(function (res) {
+        return res.text();
+      }).then(function (html) {
+        // console.warn(html);
+        myInstance.popupForm.innerHTML = html;
+        byId("login-button").addEventListener("click", myInstance.registerUser, false);
+        byId("forgotPassword").addEventListener("click", myInstance.ForgotPassword, false);
+      });
 
   }
 

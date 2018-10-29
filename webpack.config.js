@@ -49,6 +49,11 @@ module.exports = {
             filename: 'app.html',
             template: 'src/index.html'
         }),
+        new HtmlWebpackPlugin({
+            filename: '/templates/register.html',
+            template: 'src/html-components/register.html'
+
+        }),
         new ExtractTextPlugin("styles.css")
     ],
 

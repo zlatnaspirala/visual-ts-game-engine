@@ -43,3 +43,29 @@ export function validatePassword(pass: string): boolean {
   }
   return true;
 }
+
+export const HeaderTypes = {
+  textPlan: "text/plain",
+  html: "text/html",
+  jpeg: "image/jpeg",
+  png: "image/png",
+  mpeg: "audio/mpeg",
+  ogg: "audio/ogg",
+  audio: "audio/*",
+  mp4: "video/mp4",
+  app: "application/*",
+  appJson: "application/json",
+  appJS: "application/javascript",
+  appECMA: "application/ecmascript",
+  appOctetSteam: "application/octet-stream",
+};
+
+export const jsonHeaders = new Headers({
+  "Content-Type": "application/json",
+  "Accept": "application/json",
+});
+
+export const htmlHeader = new Headers({
+  "Content-Type": "text/html",
+  "Accept": "text/plain",
+});
