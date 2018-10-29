@@ -129,7 +129,7 @@ class Connector {
       if (regTest.userRegData) {
         if (shared.validateEmail(regTest.userRegData.email) === null) {
 
-          let test2 = shared.myBase.database.register(regTest.userRegData);
+          let test2 = shared.myBase.database.register(regTest.userRegData, shared.myBase);
           console.log(test2)
 
         }

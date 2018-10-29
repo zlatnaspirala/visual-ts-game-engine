@@ -7,24 +7,27 @@ class MyDatabase {
 
     const self = this;
     this.config = serverConfig;
-    console.warn("Database mongoDB is constructed.");
 
   }
 
-  register(user) {
+  register(user, callerInstance) {
 
-    console.log("REGISTER IS CALLED");
+    if (callerInstance.constructor.name !== "Connector") {
+      console.error("Potencial Critical Secure Attack");
+      return;
+    }
 
     const databaseName = this.config.databaseName;
-    MongoClient.connect(url, { useNewUrlParser: true }, function(error, db) {
+    MongoClient.connect(this.config.getDatabaseRoot, { useNewUrlParser: true }, function(error, db) {
       if (error) {
         console.warn("err1:" + error);
-        return null;
+        return;
       }
 
       const dbo = db.db(databaseName);
       if (!dbo.collection("users")) {
         dbo.createCollection("users").createIndex({ "email": 1 }, { unique: true });
+        dbo.createCollection("users").createIndex({ "password": 1 }, { unique: true });
         dbo.createCollection("users").createIndex({ "confirmed": 1 }, { unique: true });
       }
 
@@ -37,11 +40,10 @@ class MyDatabase {
             if (err) {
               console.log("err3:" + err);
               db.close();
-              return null;
+              return;
             }
             console.log("success", res.ops);
             console.log("User registred.");
-            return "!REGISTRED!";
             db.close();
           });
         } else {
@@ -51,7 +53,6 @@ class MyDatabase {
 
       });
     });
-
 
   }
 

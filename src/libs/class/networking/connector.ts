@@ -1,8 +1,8 @@
 
 import { IUserRegData } from "../../interface/global";
+import { UniClick } from "../../types/global";
 import { byId, htmlHeader, validateEmail, validatePassword } from "../system";
 import EngineConfig from "./../../client-config";
-import { UniClick } from "../../types/global";
 
 class ConnectorClient {
 

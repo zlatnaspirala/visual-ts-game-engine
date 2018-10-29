@@ -12,8 +12,9 @@ class ServerConfig {
     this.isSecure = false;
     this.appUseAccountsSystem = true;
     this.databaseName = "masterdatabase";
+    this.databaseRoot = "mongodb://localhost:27017";
 
-    console.log("Server configuration : ");
+    console.log("Server running under configuration: ");
     console.log("-rtc domain", this.domain);
     console.log("-rtc masterServerKey", this.masterServerKey);
     console.log("-rtc rtcServerPort", this.rtcServerPort);
@@ -21,6 +22,8 @@ class ServerConfig {
     console.log("-rtc protocol", this.protocol);
     console.log("-rtc isSecure", this.isSecure);
     console.log("-rtc appUseAccountsSystem", this.appUseAccountsSystem);
+    console.log("-rtc databaseName", this.databaseName);
+    console.log("-rtc databaseRoot", this.databaseRoot);
 
   }
 
@@ -36,6 +39,10 @@ class ServerConfig {
 
   get getRtcServerPort() {
     return this.rtcServerPort;
+  }
+
+  get getDatabaseRoot() {
+    return this.databaseRoot;
   }
 
   get IsDatabaseActive() {
