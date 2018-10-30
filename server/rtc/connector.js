@@ -125,7 +125,6 @@ class Connector {
 
     // validate
     if (regTest.action === "REGISTER") {
-
       if (regTest.userRegData) {
         if (shared.validateEmail(regTest.userRegData.email) === null) {
 
@@ -134,9 +133,17 @@ class Connector {
 
         }
       }
-
     }
-    // this.database.register()
+
+  }
+
+  onRegisterResponse(result) {
+
+    console.log("onRegisterResponse" + result);
+    if (result == "USER_REGISTERED") {
+      let nik = require("../email/nocommit")("zlatnaspirala@gmail.com", "USER_REGISTERED", "USER_REGISTERED");
+      console.log("test", nik);
+    }
 
   }
 

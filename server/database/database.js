@@ -1,6 +1,10 @@
 let MongoClient = require("mongodb").MongoClient;
-let url = "mongodb://localhost:27017";
 
+/**
+ * MyDatabase class
+ * MongoDB Database used in this project.
+ * JavaScript fullstack project
+ */
 class MyDatabase {
 
   constructor(serverConfig) {
@@ -10,8 +14,18 @@ class MyDatabase {
 
   }
 
+  /**
+   * Method register is called on singup user action.
+   * @param {object} user
+   * @param {classInstance} callerInstance
+   */
   register(user, callerInstance) {
 
+    /**
+     * This line prevents method register
+     * to be used by others classes.
+     * Connector class is allowed.
+     */
     if (callerInstance.constructor.name !== "Connector") {
       console.error("Potencial Critical Secure Attack");
       return;
@@ -20,7 +34,7 @@ class MyDatabase {
     const databaseName = this.config.databaseName;
     MongoClient.connect(this.config.getDatabaseRoot, { useNewUrlParser: true }, function(error, db) {
       if (error) {
-        console.warn("err1:" + error);
+        console.warn("MyDatabase : err1:" + error);
         return;
       }
 
@@ -33,21 +47,21 @@ class MyDatabase {
 
       dbo.collection("users").findOne({ "email": user.email }, function(err, result) {
 
-        if (err) { console.log("err2:" + err); return null; }
+        if (err) { console.log("MyDatabase err2:" + err); return null; }
 
         if (result == null) {
           dbo.collection("users").insertOne({ "email": user.email, "password": user.password, confirmed: false }, function(err, res) {
             if (err) {
-              console.log("err3:" + err);
+              console.log("MyDatabase err3:" + err);
               db.close();
               return;
             }
-            console.log("success", res.ops);
-            console.log("User registred.");
+            // console.log("success", res.ops);
+            callerInstance.onRegisterResponse("USER_REGISTERED", res.ops[0].email);
             db.close();
           });
         } else {
-          console.log("User already registred!");
+          callerInstance.onRegisterResponse("USER_ALREADY_REGISTERED");
           db.close();
         }
 

@@ -3,7 +3,7 @@
  * @description Networking
  */
 
-const ServerConfig = require("./server-config.js");
+const ServerConfig = require("../server-config.js");
 const Connector = require("./connector.js");
 
 // let fs = require("fs");
