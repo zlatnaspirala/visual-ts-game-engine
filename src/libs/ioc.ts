@@ -55,7 +55,7 @@ class Ioc {
   }
 
   /**
-   * This classs return new Instance of passes class.
+   * This method return new Instance of passed class.
    */
   public gen(newInstance: any) {
     return new newInstance();
