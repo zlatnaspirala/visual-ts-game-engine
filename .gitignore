@@ -4,3 +4,4 @@
 server/database/nocommit.ts
 server/database/email/nocommit.js
 server/email/nocommit.js
+server/node_modules

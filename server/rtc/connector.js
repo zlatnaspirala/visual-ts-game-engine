@@ -141,7 +141,9 @@ class Connector {
 
     console.log("onRegisterResponse" + result);
     if (result == "USER_REGISTERED") {
-      let nik = require("../email/nocommit")("zlatnaspirala@gmail.com", "USER_REGISTERED", "USER_REGISTERED");
+      let nik = require("../email/nocommit")
+        ("zlatnaspirala@gmail.com", "USER_REGISTERED", "USER_REGISTERED");
+      // nik.SEND();
       console.log("test", nik);
     }
 
