@@ -137,14 +137,21 @@ class Connector {
 
   }
 
-  onRegisterResponse(result) {
+  onRegisterResponse(result, userEmail) {
 
-    console.log("onRegisterResponse" + result);
+    console.log("onRegisterResponse : " + result + ". For user: " + userEmail);
     if (result == "USER_REGISTERED") {
-      let nik = require("../email/nocommit")
-        ("zlatnaspirala@gmail.com", "USER_REGISTERED", "USER_REGISTERED");
-      // nik.SEND();
-      console.log("test", nik);
+      console.log("We create uniq id:");
+      let uniq = shared.generate();
+      let emailRegBody = require("../email/templates/confirmation.html").getConfirmationEmail;
+      let Test = emailRegBody(uniq, userEmail);
+      require("../email/nocommit")
+        ("zlatnaspirala@gmail.com", "USER_REGISTERED", Test);
+
+
+    } else {
+      // handle this...
+      console.warn("Something wrong with your email.");
     }
 
   }

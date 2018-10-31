@@ -43,6 +43,7 @@ class MyDatabase {
         dbo.createCollection("users").createIndex({ "email": 1 }, { unique: true });
         dbo.createCollection("users").createIndex({ "password": 1 }, { unique: true });
         dbo.createCollection("users").createIndex({ "confirmed": 1 }, { unique: true });
+        dbo.createCollection("users").createIndex({ "token": 1 }, { unique: true });
       }
 
       dbo.collection("users").findOne({ "email": user.email }, function(err, result) {
