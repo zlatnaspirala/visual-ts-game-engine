@@ -61,7 +61,6 @@ class Connector {
 
     const origin = socket.origin + socket.resource;
     this.wSocket = socket.accept(null, origin);
-
     console.log("Controller session is up. resource tag is: ", socket.resource);
 
     /**
@@ -69,22 +68,17 @@ class Connector {
      */
     this.wSocket.on("message", function(message) {
 
-      // console.warn("onMessage?:", message);
-      /*if (typeof message.utf8Data === "string") {
-        console.warn("Received message is type of string.");
-      }*/
-
       if (message.type === "utf8") {
 
         try {
 
           let test = JSON.parse(message.utf8Data);
-          console.warn("On message, utf8Data parsed : ", test.data);
+          console.warn("On message, utf8Data parsed: ", test.data);
 
           if (typeof test.data === "string") {
-            console.log("test.data : " + test.data);
 
-            this.send(JSON.stringify({ data: "Welcome here !" }));
+            console.log("test.data : " + test.data);
+            this.send(JSON.stringify({ data: "Welcome here!" }));
 
           } else {
 
@@ -95,7 +89,7 @@ class Connector {
               }
 
             } else {
-              console.log("Object but not action in it.");
+              console.warn("Object but not action in it.");
             }
           }
 
@@ -137,17 +131,16 @@ class Connector {
 
   }
 
-  onRegisterResponse(result, userEmail) {
+  onRegisterResponse(result, userEmail, uniq) {
 
     console.log("onRegisterResponse : " + result + ". For user: " + userEmail);
     if (result == "USER_REGISTERED") {
-      console.log("We create uniq id:");
-      let uniq = shared.generate();
-      let emailRegBody = require("../email/templates/confirmation.html").getConfirmationEmail;
-      let Test = emailRegBody(uniq, userEmail);
-      require("../email/nocommit")
-        ("zlatnaspirala@gmail.com", "USER_REGISTERED", Test);
 
+      console.log("We create uniq id:", uniq);
+      let emailRegBody = require("../email/templates/confirmation.html").getConfirmationEmail;
+      let contentRegBody = emailRegBody(uniq, userEmail);
+      require("../email/nocommit")
+        ("zlatnaspirala@gmail.com", "USER_REGISTERED", contentRegBody);
 
     } else {
       // handle this...

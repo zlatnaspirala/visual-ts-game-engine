@@ -54,23 +54,28 @@ module.exports = {
         new HtmlWebpackPlugin({
             filename: '/templates/register.html',
             template: 'src/html-components/register.html'
-
         }),
-        new ExtractTextPlugin("styles.css"),
-        new TypedocWebpackPlugin({
-            out: './api-doc',
-            module: 'amd',
-            target: 'es5',
-            exclude: '**/node_modules/**/*.*',
-            experimentalDecorators: true,
-            excludeExternals: true,
-            name: 'sn-theme',
-            mode: 'file',
-            theme: './sn-theme/',
-            includeDeclarations: false,
-            ignoreCompilerErrors: true,
-        })
-    ],
+        new HtmlWebpackPlugin({
+            filename: '/templates/login.html',
+            template: 'src/html-components/login.html'
+        }),
+        new ExtractTextPlugin("styles.css")
+    ]
+    /*
+    new TypedocWebpackPlugin({
+        out: './api-doc',
+        module: 'amd',
+        target: 'es5',
+        exclude: '** /node_modules / ** / *.* ',
+        experimentalDecorators: true,
+        excludeExternals: true,
+        name: 'sn-theme',
+        mode: 'file',
+        theme: './sn-theme/',
+        includeDeclarations: false,
+        ignoreCompilerErrors: true,
+    })
+    */
 
     /**
     * When importing a module whose path matches one of the following, just

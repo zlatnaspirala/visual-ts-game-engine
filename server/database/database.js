@@ -1,4 +1,5 @@
 let MongoClient = require("mongodb").MongoClient;
+const shared = require("./../common/shared");
 
 /**
  * MyDatabase class
@@ -51,14 +52,17 @@ class MyDatabase {
         if (err) { console.log("MyDatabase err2:" + err); return null; }
 
         if (result == null) {
-          dbo.collection("users").insertOne({ "email": user.email, "password": user.password, confirmed: false }, function(err, res) {
+
+          let uniqLocal = shared.generateToken();
+
+          dbo.collection("users").insertOne({ "email": user.email, "password": user.password, confirmed: false, token: uniqLocal }, function(err, res) {
             if (err) {
               console.log("MyDatabase err3:" + err);
               db.close();
               return;
             }
             // console.log("success", res.ops);
-            callerInstance.onRegisterResponse("USER_REGISTERED", res.ops[0].email);
+            callerInstance.onRegisterResponse("USER_REGISTERED", res.ops[0].email, res.ops[0].token);
             db.close();
           });
         } else {

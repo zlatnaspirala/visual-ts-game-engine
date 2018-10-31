@@ -27,13 +27,10 @@ module.exports = {
 
   myBase: {},
 
-  generate: function(count, k) {
-    var _sym = 'abcdefghijklmnopqrstuvwxyz1234567890';
-    var str = '';
-    for (var i = 0; i < count; i++) {
-      str += _sym[parseInt(Math.random() * (_sym.length))];
-    }
-    return str;
+  generateToken: function() {
+    let localToken = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15) +
+      Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+    return localToken;
   },
 
 };

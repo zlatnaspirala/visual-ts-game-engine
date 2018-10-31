@@ -19,12 +19,11 @@ class ConnectorClient {
     this.webSocketController.onmessage = this.onMessage;
     this.webSocketController.onerror = this.onError;
 
-    // window.WWW = this;
     this.showRegisterForm();
 
   }
 
-  public showRegisterForm() {
+  public showRegisterForm = () => {
 
     const myInstance = this;
     fetch("./templates/register.html", {
@@ -36,9 +35,26 @@ class ConnectorClient {
         // console.warn(html);
         myInstance.popupForm.innerHTML = html;
         byId("login-button").addEventListener("click", myInstance.registerUser, false);
-        byId("forgotPassword").addEventListener("click", myInstance.ForgotPassword, false);
+        byId("sing-in-tab").addEventListener("click", myInstance.showLoginForm, false);
       });
 
+  }
+
+  public showLoginForm = () => {
+
+    const myInstance = this;
+    fetch("./templates/login.html", {
+      headers: htmlHeader,
+    }).
+      then(function (res) {
+        return res.text();
+      }).then(function (html) {
+        // console.warn(html);
+        myInstance.popupForm.innerHTML = html;
+        byId("login-button").addEventListener("click", myInstance.registerUser, false);
+        byId("forgotPassword").addEventListener("click", myInstance.ForgotPassword, false);
+        byId("sing-up-tab").addEventListener("click", myInstance.showRegisterForm, false);
+      });
   }
 
   public registerUser = (e: UniClick) => {
