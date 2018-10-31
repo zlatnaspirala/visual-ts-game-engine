@@ -8,36 +8,36 @@
 class ClientConfig {
 
   private drawReference: string = "frame";
-  
+
   /**
    * aspectRatio default value , can be changed in run time.
    */
   private aspectRatio: number = 1.333;
-  
+
   /**
    * domain is simple url address,
    * recommendent to use for local propose LAN ip
-   * like : 192.168.0.12 if you wanna run ant test app with server.
+   * like : 192.168.0.XXX if you wanna run ant test app with server.
    */
   private domain: string = "127.0.0.1";
-  
+
   /**
    * networkDeepLogs control of dev logs.
    */
   private networkDeepLogs: boolean = false;
-  
+
   /**
    * rtcServerPort Port used to connect multimedia server.
    * Default value is 12034
    */
   private rtcServerPort: number = 12034;
-  
+
   /**
    * masterServerKey is channel access id used to connect
    * multimedia server channel.
    */
   private masterServerKey: string = "multi-platformer-sever1.maximum";
-  
+
   /**
    * connectorPort is access port used to connect
    * session web socket.
