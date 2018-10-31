@@ -8,25 +8,28 @@
 
 #### To make all dependency works in build proccess we need some plugins. ####
 
-<b>
- ```javascript
+```javascript
   npm install
- ```
-</b>
+```
 
-<b>
- ```javascript
+```javascript
   npm run build
- ```
-</b>
+```
 
 <b> Navigate in browser /build/app.html to see client app in action </b>
 
 ## Client part ##
 
- Client part is browser web application. No reloading or redirecting this is single page
+ -Client part is browser web application. No reloading or redirecting. This is single page
  application. I use html request only for loading local html (register, login etc.).
  Networking is based on webSocket full-duplex communication.
+ -webRTC Can be used for any proporsion.
+   Already implemented :
+   -video chat webRTC (SIP)
+   -chat or data communication
+
+ -Connector (native webSocket) used for user session staff.
+  in progress...
 
 ### Client config ###
 
@@ -37,8 +40,14 @@
  - No need for deactivation multi media webRTC support becouse
  this feature run only on user request for now.
 
+Find configuration at ./src/lib/client-config.ts
 
 ```javascript
+/**
+ * ClientConfig instance created in ioc.ts
+ * In scripts you need to use get methods
+ * like : getDomain() etc.
+ */
 class ClientConfig {
 
   private drawReference: string = "frame";
@@ -126,7 +135,7 @@ master.singlton(Platformer, master.get.Starter);
 ├── webpack.config.js
 ├── tsconfig.json
 ├── tslint.json
-├── build/
+├── build/  (This is auto generated)
 |   ├── imgs/
 |   ├── styles/
 |   |   └── favicon.ico
@@ -134,9 +143,23 @@ master.singlton(Platformer, master.get.Starter);
 |   ├── app.html
 ├── src/
 |   ├── style/
+|   |   ├── styles.css
 |   ├── libs/
 |   |   ├── class/
+|   |   |   ├── networking/
+|   |   |   ├── visual-methods/
+|   |   |   ├── browser.ts
+|   |   |   ├── math.ts
+|   |   |   ├── position.ts
+|   |   |   ├── resources.ts
+|   |   |   ├── sound.ts
+|   |   |   ├── system.ts
+|   |   |   ├── view-port.ts
+|   |   |   ├── visual-render.ts
 |   |   ├── interface/
+|   |   |   ├── drawI.ts
+|   |   |   ├── global.ts
+|   |   |   ├── visual-components.ts
 |   |   ├── multiplatform/
 |   |   ├── types/
 |   |   |   ├── global.ts
@@ -179,13 +202,15 @@ master.singlton(Platformer, master.get.Starter);
 -No typescript here, we need keep state clear no.
 Node.js is best options.
 
--Need manual installation for email support.
+- Not yet commited email support class.
+
+ I choose :
 
  ```node
  npm i gmail-send
  ```
 
--Run services database server (Locally and leave it alive):
+-Run services database server (Locally and leave it alive for develop proccess):
 
 ```javascript
 npm run dataserver
@@ -203,7 +228,8 @@ Fix : "failed: address already in use"
 
   taskkill /PID typeyourPIDhere /F
 ```
-Also important "Run Visual Studio Code as Administrator".
+
+<b>Also important "Run Visual Studio Code as Administrator".</b>
 
  -Command for kill all node.js procces for window users:
 ```node
@@ -213,14 +239,35 @@ Also important "Run Visual Studio Code as Administrator".
 
 ### Networking multimedia communication : WebSocketServer running on Node.js ###
 
-<pre> npm run rtc </pre>
-- implemented video chat based on webRTC protocol
+<b> - Running server is easy : </b>
+
+```javascript
+  npm run rtc
+```
+
+- Implemented video chat based on webRTC protocol
 
 ## Documentation : ##
 
- In progress like whole project ...
+ - In progress like whole project ...
+ If you wanna generate doc you will need manual remove comment
+ from plugin section in webpack.config.js.
+ Best way to fully build healty.
+ HTML/CSS is not prior in this project.
 
-## Code format : ##
+If you wanna insert some new html page just define it intro
+webpack.config.js :
+
+plugins : [
+        new HtmlWebpackPlugin({
+            filename: '/templates/myGameLobby.html',
+            template: 'src/html-components/myGameLobby.html'
+        }),
+...
+
+ - See register and login example.
+
+### Code format : ###
 
 ```javascript
   tslint -c tslint.json 'src/**/*.ts' --fix
@@ -235,8 +282,11 @@ or use :
 
 ## External licence in this project : ##
 
- - Networking based on :
- Muaz Khan     - www.MuazKhan.com
- MIT License   - www.WebRTC-Experiment.com/licence
+ <b>- Networking based on :</b>
+ Muaz Khan
+ MIT License www.WebRTC-Experiment.com/licence
+ <b>- Base physics beased on :</b>
+ Matter.js
+ https://github.com/liabru/matter-js
 
 ## Todo list ##
