@@ -3,6 +3,7 @@
 
 #### 2d canvas game engine based on Matter.js 2D physics engine for the web. ####
  - Writen in typescript current version 3.1.3.
+ - Text editor used and recommended: Visual Studio Code
 
 ![visualTS](https://github.com/zlatnaspirala/visual-ts/blob/master/logo.png)
 
@@ -283,24 +284,21 @@ or use :
 
 ## External licence in this project : ##
 
- <b>- Networking based on :</b>
+ <b>- Networking based on :</b> <br/>
+ Muaz Khan <br/>
+ MIT License www.WebRTC-Experiment.com/licence <br/>
 
- Muaz Khan
-
- MIT License www.WebRTC-Experiment.com/licence
-
- <b>- Base physics beased on :</b>
-
+ <b>- Base physics beased on :</b> <br/>
  Matter.js <br/>
- https://github.com/liabru/matter-js
+ https://github.com/liabru/matter-js <br/>
 
+## Todo list for 2019 ##
 
-## Todo list ##
-
-  I'am still far a away from project objective :
+  <b>I'am still far a away from project objective :</b>
 
  - Make visual nodes for editor mode in game play.
  - Item's selling for crypto values.
  - Create examples demos in minimum 20 game play variants
   (table games, actions , platformers , basic demo trow the api doc etc.).
+ - Implementing AR and webGL2.
 
