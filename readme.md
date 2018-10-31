@@ -258,35 +258,49 @@ Fix : "failed: address already in use"
 If you wanna insert some new html page just define it intro
 webpack.config.js :
 
+```javascript
 plugins : [
         new HtmlWebpackPlugin({
             filename: '/templates/myGameLobby.html',
             template: 'src/html-components/myGameLobby.html'
         }),
 ...
-
+```
  - See register and login example.
 
 ### Code format : ###
 
 ```javascript
-  tslint -c tslint.json 'src/**/*.ts' --fix
-  tslint -c tslint.json 'src/**/*.ts'
+  npm run fix
+  npm run tslint
 ```
 or use :
 
 ```javascript
-  npm run fix
-  npm run tslint
+  tslint -c tslint.json 'src/**/*.ts' --fix
+  tslint -c tslint.json 'src/**/*.ts'
 ```
 
 ## External licence in this project : ##
 
  <b>- Networking based on :</b>
+
  Muaz Khan
+
  MIT License www.WebRTC-Experiment.com/licence
+
  <b>- Base physics beased on :</b>
- Matter.js
+
+ Matter.js <br/>
  https://github.com/liabru/matter-js
 
+
 ## Todo list ##
+
+  I'am still far a away from project objective :
+
+ - Make visual nodes for editor mode in game play.
+ - Item's selling for crypto values.
+ - Create examples demos in minimum 20 game play variants
+  (table games, actions , platformers , basic demo trow the api doc etc.).
+
