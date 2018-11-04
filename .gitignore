@@ -3,5 +3,5 @@
 /server/database/data
 server/database/nocommit.ts
 server/database/email/nocommit.js
-server/email/nocommit.js
+server/email/mail-service.js
 server/node_modules
