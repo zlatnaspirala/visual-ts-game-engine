@@ -61,8 +61,7 @@ class MyDatabase {
               db.close();
               return;
             }
-            // console.log("success", res.ops);
-            callerInstance.onRegisterResponse("USER_REGISTERED", res.ops[0].email, res.ops[0].token);
+            callerInstance.onRegisterResponse("USER_REGISTERED", res.ops[0].email, res.ops[0].token, callerInstance);
             db.close();
           });
         } else {

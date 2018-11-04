@@ -9,18 +9,21 @@ class Connector {
 
   constructor(serverConfig) {
 
-    const self = this;
-
+    this.userSockCollection = {};
     this.config = serverConfig;
-    this.http = require(this.config.getProtocol).createServer(function(request, response) { }).listen(serverConfig.getConnectorPort);
+    this.http = require(this.config.getProtocol).createServer(function(request, response) {
+      // Prevent with end here...
+    }).listen(serverConfig.getConnectorPort);
+
+    /**
+     * Create main webSocket object
+     */
     let WebSocketServer = require("websocket").server;
     this.wSocket = new WebSocketServer({
       httpServer: this.http,
       autoAcceptConnections: false,
     }).on("request", this.onRequestConn);
     WebSocketServer = null;
-
-    this.wSocket.myRoot = root;
 
     if (this.config.IsDatabaseActive) {
 
@@ -31,7 +34,7 @@ class Connector {
     }
 
     shared.myBase = this;
-    shared.regHandler = this.serverHandlerRegister;
+    shared.serverHandlerRegister = this.serverHandlerRegister;
 
   }
 
@@ -60,13 +63,13 @@ class Connector {
   onRequestConn(socket) {
 
     const origin = socket.origin + socket.resource;
-    this.wSocket = socket.accept(null, origin);
+    let userSocket = socket.accept(null, origin);
     console.log("Controller session is up. resource tag is: ", socket.resource);
 
     /**
      * Server message event
      */
-    this.wSocket.on("message", function(message) {
+    userSocket.on("message", function(message) {
 
       if (message.type === "utf8") {
 
@@ -77,39 +80,35 @@ class Connector {
 
           if (typeof test.data === "string") {
 
-            console.log("test.data : " + test.data);
-            this.send(JSON.stringify({ data: "Welcome here!" }));
+            console.log("ignore this : " + test.data);
+            this.send(JSON.stringify({ data: "Welcome here !" }));
 
           } else {
 
             if (test.data.action) {
-
               if (test.data.action === "REGISTER") {
-                shared.regHandler(test.data);
+                const userId = shared.formatUserKeyLiteral(test.data.userRegData.email);
+                shared.myBase.userSockCollection[userId] = this;
+                shared.serverHandlerRegister(test.data);
               }
 
             } else {
               console.warn("Object but not action in it.");
             }
           }
-
-
-
-
         } catch (err) {
-
           console.warn("On message : Message is simple string", err);
         }
       }
 
     });
 
-    this.wSocket.on("close", function(e) {
+    userSocket.on("close", function(e) {
       console.warn("Event: onClose");
 
     });
 
-    this.wSocket.on("error", function(e) {
+    userSocket.on("error", function(e) {
       console.warn("Event: error");
     });
     console.log("controller constructed.")
@@ -121,30 +120,44 @@ class Connector {
     if (regTest.action === "REGISTER") {
       if (regTest.userRegData) {
         if (shared.validateEmail(regTest.userRegData.email) === null) {
-
-          let test2 = shared.myBase.database.register(regTest.userRegData, shared.myBase);
-          console.log(test2)
-
+          shared.myBase.database.register(regTest.userRegData, shared.myBase);
         }
       }
     }
 
   }
 
-  onRegisterResponse(result, userEmail, uniq) {
+  onRegisterResponse(result, userEmail, uniq, callerInstance) {
 
-    console.log("onRegisterResponse : " + result + ". For user: " + userEmail);
+    // console.log("onRegisterResponse : " + result + ". For user: " + userEmail);
     if (result == "USER_REGISTERED") {
 
-      console.log("We create uniq id:", uniq);
       let emailRegBody = require("../email/templates/confirmation.html").getConfirmationEmail;
       let contentRegBody = emailRegBody(uniq, userEmail);
-      require("../email/nocommit")
-        ("zlatnaspirala@gmail.com", "USER_REGISTERED", contentRegBody);
+      let connection;
+      let userId = shared.formatUserKeyLiteral(userEmail);
+
+      try {
+        connection = require("../email/mail-service")
+          ("zlatnaspirala@gmail.com", "USER_REGISTERED", contentRegBody).SEND();
+      } catch (error) {
+        console.warn("Connector error in sending reg email!", error);
+        let codeSended = { action: "ERROR_EMAIL", data: { text: "Please check your email again!, Something wrong with current email!" } };
+        codeSended = JSON.stringify(codeSended);
+        callerInstance.userSockCollection[userId].send(codeSended);
+        console.log("Email not sended. Notify client.");
+      } finally {
+        connection.then(function(data) {
+          let codeSended = { action: "CHECK_EMAIL", data: { text: "Please check your email to get verification code. Paste it here :" } };
+          codeSended = JSON.stringify(codeSended);
+          callerInstance.userSockCollection[userId].send(codeSended);
+          console.log("Email has sended. Notifu client.");
+        });
+      }
 
     } else {
       // handle this...
-      console.warn("Something wrong with your email.");
+      console.warn("Something wrong with your email. Result is : ", result);
     }
 
   }

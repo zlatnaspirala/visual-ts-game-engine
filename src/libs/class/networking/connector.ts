@@ -1,5 +1,5 @@
 
-import { IUserRegData } from "../../interface/global";
+import { IUserRegData, IMessageReceived } from "../../interface/global";
 import { UniClick } from "../../types/global";
 import { byId, htmlHeader, validateEmail, validatePassword } from "../system";
 import EngineConfig from "./../../client-config";
@@ -34,7 +34,7 @@ class ConnectorClient {
       }).then(function (html) {
         // console.warn(html);
         myInstance.popupForm.innerHTML = html;
-        byId("login-button").addEventListener("click", myInstance.registerUser, false);
+        byId("reg-button").addEventListener("click", myInstance.registerUser, false);
         byId("sing-in-tab").addEventListener("click", myInstance.showLoginForm, false);
       });
 
@@ -117,6 +117,7 @@ class ConnectorClient {
       console.warn("Error", e);
     }
   }
+
   private onClose(evt) {
     console.warn("Session controller disconnected");
   }
@@ -124,7 +125,16 @@ class ConnectorClient {
   private onMessage(evt) {
 
     try {
-      const dataReceive = JSON.parse(evt.data);
+      const dataReceive: IMessageReceived = JSON.parse(evt.data);
+      switch (dataReceive.action) {
+        case "":
+          {
+            // test
+          }
+
+        default:
+          console.log("Connector : Not handled : ", dataReceive.action);
+      }
       console.warn("response : " + dataReceive);
     } catch (err) {
       console.error("Connector.onMessage : Error :", err);
@@ -134,6 +144,10 @@ class ConnectorClient {
 
   private onError(evt) {
     console.warn("onError" + evt.data);
+  }
+
+  private onMsgCheckEmail = () => {
+    JSON.stringify({ data: "Welcome here !" });
   }
 
 }

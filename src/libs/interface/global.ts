@@ -11,3 +11,8 @@ export interface IUserRegData {
   email: string;
   password: string;
 }
+
+export interface IMessageReceived {
+  action: string;
+  data: any;
+}

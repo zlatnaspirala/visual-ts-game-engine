@@ -7,7 +7,7 @@ module.exports = {
     return url.replace(/\//g, "\\");
   },
 
-  regHandler: function(data) { },
+  serverHandlerRegister: function(data) { },
 
   validateEmail: function(email) {
     // tslint:disable-next-line:max-line-length
@@ -32,5 +32,12 @@ module.exports = {
       Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
     return localToken;
   },
+
+  formatUserKeyLiteral(userEmail) {
+    let local = userEmail;
+    local = local.replace("@", "ID");
+    local = local.replace(".", "ID");
+    return local;
+  }
 
 };
