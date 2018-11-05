@@ -13,7 +13,7 @@ module.exports = {
         path: __dirname + "/build"
     },
 
-    devtool: "inline-source-map",
+    devtool: "source-map",
 
     resolve: {
         extensions: [".js", ".ts", ".tsx", ".json"]
