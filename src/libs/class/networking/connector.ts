@@ -1,5 +1,5 @@
 
-import { IUserRegData, IMessageReceived } from "../../interface/global";
+import { IMessageReceived, IUserRegData } from "../../interface/global";
 import { UniClick } from "../../types/global";
 import { byId, htmlHeader, validateEmail, validatePassword } from "../system";
 import EngineConfig from "./../../client-config";
@@ -23,7 +23,7 @@ class ConnectorClient {
 
   }
 
-  public showRegisterForm = () => {
+  private showRegisterForm = () => {
 
     const myInstance = this;
     fetch("./templates/register.html", {
@@ -40,7 +40,7 @@ class ConnectorClient {
 
   }
 
-  public showLoginForm = () => {
+  private showLoginForm = () => {
 
     const myInstance = this;
     fetch("./templates/login.html", {
@@ -57,12 +57,12 @@ class ConnectorClient {
       });
   }
 
-  public registerUser = (e: UniClick) => {
+  private registerUser = (e: UniClick) => {
 
     e.preventDefault();
 
-    const localEmail: string = (byId("login-user") as HTMLInputElement).value;
-    const localPassword: string = (byId("login-pass") as HTMLInputElement).value;
+    const localEmail: string = (byId("reg-user") as HTMLInputElement).value;
+    const localPassword: string = (byId("reg-pass") as HTMLInputElement).value;
 
     if (validateEmail(localEmail) !== null) {
       byId("error-msg-reg").style.display = "block";
@@ -81,7 +81,7 @@ class ConnectorClient {
         password: localPassword,
       };
 
-      let localMsg = { data: { action: "REGISTER", userRegData: userData } };
+      let localMsg = { action: "REGISTER", data: { userRegData: userData } };
       this.sendObject(localMsg);
       localMsg = null;
 
@@ -89,7 +89,7 @@ class ConnectorClient {
 
   }
 
-  public ForgotPassword() {
+  private ForgotPassword() {
     console.log("Forgot password !");
   }
 
@@ -102,19 +102,18 @@ class ConnectorClient {
 
   private sendObject = (message) => {
 
-    message = JSON.stringify(message);
-
-    console.warn(message, "SEND!");
-
-    if (!message) {
-      console.error("no such channel exists");
+    try {
+      message = JSON.stringify(message);
+    } catch (err) {
+      console.error("Connector.sendObject : ", err);
       return;
     }
+    console.warn(message, "<SEND>");
 
     try {
       this.webSocketController.send(message);
     } catch (e) {
-      console.warn("Error", e);
+      console.warn("Connector.sendObject (2) : ", e);
     }
   }
 
@@ -122,20 +121,23 @@ class ConnectorClient {
     console.warn("Session controller disconnected");
   }
 
-  private onMessage(evt) {
+  private onMessage = (evt) => {
 
     try {
       const dataReceive: IMessageReceived = JSON.parse(evt.data);
       switch (dataReceive.action) {
-        case "":
+        case "CHECK_EMAIL":
           {
-            // test
+            this.onMsgCheckEmail();
           }
-
+        case "ERROR_EMAIL":
+          {
+            byId("error-msg-reg").innerHTML = dataReceive.data.errMsg;
+          }
         default:
-          console.log("Connector : Not handled : ", dataReceive.action);
+          console.log("Connector : Not handled case for dataReceive : ", dataReceive.action);
       }
-      console.warn("response : " + dataReceive);
+      console.log("response : " + dataReceive);
     } catch (err) {
       console.error("Connector.onMessage : Error :", err);
     }
@@ -147,7 +149,31 @@ class ConnectorClient {
   }
 
   private onMsgCheckEmail = () => {
-    JSON.stringify({ data: "Welcome here !" });
+
+    byId("reg-button").removeEventListener("click", this.registerUser);
+    byId("reg-button").addEventListener("click", this.verifyRegistration, false);
+    byId("reg-button").innerHTML = "VERIFY CODE";
+    byId("reg-pass-label").innerHTML = "Paste Verification code here";
+    (byId("reg-pass") as HTMLInputElement).innerHTML = "";
+    (byId("reg-pass") as HTMLInputElement).placeholder = "Paste Verification code here";
+
+  }
+
+  private verifyRegistration = (event: UniClick) => {
+
+    event.preventDefault();
+
+    let localPasswordToken: string = (byId("reg-pass") as HTMLInputElement).value;
+    let localEmail: string = (byId("reg-user") as HTMLInputElement).value;
+    let localMsg = { action: "REG_VALIDATE", data: { email: localEmail, userRegToken: localPasswordToken } };
+    this.sendObject(localMsg);
+    localMsg = null;
+    localPasswordToken = null;
+    localEmail = null;
+  }
+
+  private userAccountCreated() {
+    // test
   }
 
 }

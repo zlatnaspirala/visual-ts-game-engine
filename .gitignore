@@ -6,4 +6,3 @@ server/database/email/nocommit.js
 server/email/mail-service.js
 server/node_modules
 server/email/mail-service.js
-server/email/mail-service.js

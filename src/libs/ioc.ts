@@ -18,11 +18,11 @@ import Starter from "./starter";
 class Ioc {
 
   /**
-   * get is store variable , We make instance of core classes 
+   * get is store variable , We make instance of core classes
    * just one time in whole app live circle.
    */
   public get: IUniVector = {};
-  
+
   /**
    * config is instance of ClientConfig class.
    */
@@ -41,7 +41,7 @@ class Ioc {
 
   /**
    * singlton is method for instancing.
-   * @param Singlton This arg is type pf any becouse we can pass 
+   * @param Singlton This arg is type pf any becouse we can pass
    * any class with or without own args.
    * @param args Args is optimal. If our class have args then we pass args,
    * if dont have ti we pass undefined for now.

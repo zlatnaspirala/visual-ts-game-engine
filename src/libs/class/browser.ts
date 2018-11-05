@@ -59,7 +59,6 @@ class Browser {
         this.windowsOS = this.uAgent.match(/Windows NT/gi);
         this.mobile = this.uAgent.match(/mobile/gi);
 
-
         this.isMobile = (/iphone|ipad|ipod|android|blackberry|mini|windows\sce|palm/i.test(navigator.userAgent.toLowerCase()));
 
         if (this.isMobile) {
@@ -149,8 +148,6 @@ class Browser {
             this.device = "desktop";
             this.description = "opera_desktop_linux";
         }
-
-
 
     }
 

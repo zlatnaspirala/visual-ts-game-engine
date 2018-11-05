@@ -6,7 +6,7 @@ import { worldElement } from "./types/global";
 
 /**
  * Real begin of graphic canvas staff.
- * This is startup also storage for graphic orientend 
+ * This is startup also storage for graphic orientend
  * objects. Matter.js/ts also imported here.
  * @param ioc Ioc
  */
@@ -16,14 +16,14 @@ class Starter {
   public get: IUniVector = {};
   protected attach;
   protected view: ViewPort;
-  
-  /** 
+
+  /**
    * Map needs more space then our window screen.
    * This property handle global translate and zoom
    * for graphic surface.
    */
   private mapView: any = {};
-  
+
   /**
    * render is object extended from matter.js
    */
@@ -33,7 +33,7 @@ class Starter {
    * engine is object extended from matter.js
    */
   private engine: any;
-  
+
   /**
    * world is object extended from matter.js
    */

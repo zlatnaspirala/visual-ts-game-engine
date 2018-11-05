@@ -35,6 +35,7 @@ class Connector {
 
     shared.myBase = this;
     shared.serverHandlerRegister = this.serverHandlerRegister;
+    shared.serverHandlerRegValidation = this.serverHandlerRegValidation;
 
   }
 
@@ -75,21 +76,24 @@ class Connector {
 
         try {
 
-          let test = JSON.parse(message.utf8Data);
-          console.warn("On message, utf8Data parsed: ", test.data);
+          let msgFromCLient = JSON.parse(message.utf8Data);
+          console.warn("On message, utf8Data passed... ", msgFromCLient.data);
 
-          if (typeof test.data === "string") {
+          if (typeof msgFromCLient.data === "string") {
 
-            console.log("ignore this : " + test.data);
-            this.send(JSON.stringify({ data: "Welcome here !" }));
+            console.log("ignore this : " + msgFromCLient.data);
+            this.send(JSON.stringify({ action: "ignore", data: "Welcome here !" }));
 
           } else {
 
-            if (test.data.action) {
-              if (test.data.action === "REGISTER") {
-                const userId = shared.formatUserKeyLiteral(test.data.userRegData.email);
+            if (msgFromCLient.action) {
+
+              if (msgFromCLient.action === "REGISTER") {
+                const userId = shared.formatUserKeyLiteral(msgFromCLient.data.userRegData.email);
                 shared.myBase.userSockCollection[userId] = this;
-                shared.serverHandlerRegister(test.data);
+                shared.serverHandlerRegister(msgFromCLient);
+              } else if (msgFromCLient.action === "REG_VALIDATE") {
+                shared.serverHandlerRegValidation(msgFromCLient);
               }
 
             } else {
@@ -117,11 +121,9 @@ class Connector {
   serverHandlerRegister(regTest) {
 
     // validate
-    if (regTest.action === "REGISTER") {
-      if (regTest.userRegData) {
-        if (shared.validateEmail(regTest.userRegData.email) === null) {
-          shared.myBase.database.register(regTest.userRegData, shared.myBase);
-        }
+    if (regTest.data.userRegData) {
+      if (shared.validateEmail(regTest.data.userRegData.email) === null) {
+        shared.myBase.database.register(regTest.data.userRegData, shared.myBase);
       }
     }
 
@@ -142,16 +144,16 @@ class Connector {
           ("zlatnaspirala@gmail.com", "USER_REGISTERED", contentRegBody).SEND();
       } catch (error) {
         console.warn("Connector error in sending reg email!", error);
-        let codeSended = { action: "ERROR_EMAIL", data: { text: "Please check your email again!, Something wrong with current email!" } };
+        let codeSended = { action: "ERROR_EMAIL", data: { errMsg: "Please check your email again!, Something wrong with current email!" } };
         codeSended = JSON.stringify(codeSended);
         callerInstance.userSockCollection[userId].send(codeSended);
-        console.log("Email not sended. Notify client.");
+        console.log("Email reg error. Notify client.");
       } finally {
         connection.then(function(data) {
           let codeSended = { action: "CHECK_EMAIL", data: { text: "Please check your email to get verification code. Paste it here :" } };
           codeSended = JSON.stringify(codeSended);
           callerInstance.userSockCollection[userId].send(codeSended);
-          console.log("Email has sended. Notifu client.");
+          console.log("Email reg has sended. Notifu client.");
         });
       }
 
@@ -162,5 +164,19 @@ class Connector {
 
   }
 
+  serverHandlerRegValidation(regTest) {
+
+    if (regTest.data.userRegToken && regTest.data.email) {
+      const user = { email: regTest.data.email, token: regTest.data.userRegToken };
+      shared.myBase.database.regValidator(user, shared.myBase);
+    }
+
+  }
+
+  onRegValidationResponse(arg1) {
+
+    console.log("Nothing for now on server side - FINISH REG PROCESS FOR ", arg1);
+
+  }
 }
 module.exports = Connector;

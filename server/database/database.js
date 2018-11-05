@@ -45,6 +45,7 @@ class MyDatabase {
         dbo.createCollection("users").createIndex({ "password": 1 }, { unique: true });
         dbo.createCollection("users").createIndex({ "confirmed": 1 }, { unique: true });
         dbo.createCollection("users").createIndex({ "token": 1 }, { unique: true });
+        dbo.createCollection("users").createIndex({ "online": 1 }, { unique: true });
       }
 
       dbo.collection("users").findOne({ "email": user.email }, function(err, result) {
@@ -55,7 +56,13 @@ class MyDatabase {
 
           let uniqLocal = shared.generateToken();
 
-          dbo.collection("users").insertOne({ "email": user.email, "password": user.password, confirmed: false, token: uniqLocal }, function(err, res) {
+          dbo.collection("users").insertOne({
+            email: user.email,
+            password: user.password,
+            confirmed: false,
+            token: uniqLocal,
+            online: false
+          }, function(err, res) {
             if (err) {
               console.log("MyDatabase err3:" + err);
               db.close();
@@ -74,8 +81,77 @@ class MyDatabase {
 
   }
 
+  regValidator(user, callerInstance) {
+
+    const databaseName = this.config.databaseName;
+    MongoClient.connect(this.config.getDatabaseRoot, { useNewUrlParser: true }, function(error, db) {
+      if (error) {
+        console.warn("MyDatabase : err1:" + error);
+        return;
+      }
+
+      const dbo = db.db(databaseName);
+
+      dbo.collection("users").findOne({ email: user.email, token: user.token }, function(err, result) {
+
+        if (err) { console.log("MyDatabase.regValidator 2:" + err); return null; }
+
+        if (result !== null) {
+
+          dbo.collection("users").updateOne(
+            { email: user.email, },
+            { $set: { confirmed: true } },
+            function(err, result) {
+              console.warn("MyDatabase : err1:" + err);
+              console.warn("MyDatabase : result:" + result);
+              callerInstance.onRegValidationResponse(result);
+            }
+          );
+        }
+
+      });
+
+
+    });
+
+  }
+
   login(user) {
     // test
+
+    const databaseName = this.config.databaseName;
+    MongoClient.connect(this.config.getDatabaseRoot, { useNewUrlParser: true }, function(error, db) {
+      if (error) {
+        console.warn("MyDatabase.login :" + error);
+        return;
+      }
+
+      const dbo = db.db(databaseName);
+
+      dbo.collection("users").findOne({ email: user.email, password: user.password }, function(err, result) {
+
+        if (err) { console.log("MyDatabase.login :" + err); return null; }
+
+        if (result !== null) {
+
+          dbo.collection("users").updateOne(
+            { email: user.email, },
+            { $set: { online: true } },
+            function(err, result) {
+              console.warn("MyDatabase.login :" + err);
+              console.warn("MyDatabase.login result:" + result);
+              callerInstance.onUserLogin(result);
+            }
+          );
+
+        }
+
+      });
+
+
+    });
+
+
     console.log(this.user + "< user");
   }
 
