@@ -131,13 +131,13 @@ class Connector {
 
   onRegisterResponse(result, userEmail, uniq, callerInstance) {
 
+    let connection;
+    let userId = shared.formatUserKeyLiteral(userEmail);
     // console.log("onRegisterResponse : " + result + ". For user: " + userEmail);
     if (result == "USER_REGISTERED") {
 
       let emailRegBody = require("../email/templates/confirmation.html").getConfirmationEmail;
       let contentRegBody = emailRegBody(uniq, userEmail);
-      let connection;
-      let userId = shared.formatUserKeyLiteral(userEmail);
 
       try {
         connection = require("../email/mail-service")
@@ -150,16 +150,20 @@ class Connector {
         console.log("Email reg error. Notify client.");
       } finally {
         connection.then(function(data) {
-          let codeSended = { action: "CHECK_EMAIL", data: { text: "Please check your email to get verification code. Paste it here :" } };
+          let codeSended = { action: "CHECK_EMAIL", data: { text: "Please check your email to get verification code. Paste code here :" } };
           codeSended = JSON.stringify(codeSended);
           callerInstance.userSockCollection[userId].send(codeSended);
-          console.log("Email reg has sended. Notifu client.");
+          console.log("Email reg sended. Notify client.");
         });
       }
 
     } else {
       // handle this...
       console.warn("Something wrong with your email. Result is : ", result);
+      let msg = { action: "ERROR_EMAIL", data: { errMsg: "ERR: USER ALREADY REGISTERED" } };
+      msg = JSON.stringify(msg);
+      callerInstance.userSockCollection[userId].send(msg);
+      console.log("Email reg error. Notify client.");
     }
 
   }
@@ -173,9 +177,24 @@ class Connector {
 
   }
 
-  onRegValidationResponse(arg1) {
+  onRegValidationResponse(result, userEmail) {
 
-    console.log("Nothing for now on server side - FINISH REG PROCESS FOR ", arg1);
+    const userId = shared.formatUserKeyLiteral(userEmail);
+
+    if (result == null) {
+
+      let msg = { action: "ERROR_EMAIL", data: { errMsg: "ERR: WRONG CODE !" } };
+      msg = JSON.stringify(msg);
+      this.userSockCollection[userId].send(msg);
+      console.log("onRegValidationResponse .", this);
+
+    } else {
+      // VERIFIED
+      let msg = { action: "VERIFY_SUCCESS", data: { text: "VERIFY SUCCESS!" } };
+      msg = JSON.stringify(msg);
+      this.userSockCollection[userId].send(msg);
+      console.log("onRegValidationResponse .", this);
+    }
 
   }
 }

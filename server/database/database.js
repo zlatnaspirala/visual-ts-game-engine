@@ -94,7 +94,10 @@ class MyDatabase {
 
       dbo.collection("users").findOne({ email: user.email, token: user.token }, function(err, result) {
 
-        if (err) { console.log("MyDatabase.regValidator 2:" + err); return null; }
+        if (err) {
+          console.log("MyDatabase.regValidator 2:" + err);
+          return null;
+        }
 
         if (result !== null) {
 
@@ -102,11 +105,13 @@ class MyDatabase {
             { email: user.email, },
             { $set: { confirmed: true } },
             function(err, result) {
-              console.warn("MyDatabase : err1:" + err);
-              console.warn("MyDatabase : result:" + result);
-              callerInstance.onRegValidationResponse(result);
+              console.warn("MyDatabase, update confirmed err :" + err);
+              console.warn("MyDatabase, update confirmed result:" + result);
+              callerInstance.onRegValidationResponse(result, user.email);
             }
           );
+        } else {
+          callerInstance.onRegValidationResponse(result, user.email);
         }
 
       });

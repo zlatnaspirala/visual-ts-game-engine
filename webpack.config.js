@@ -5,15 +5,16 @@ const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const TypedocWebpackPlugin = require('typedoc-webpack-plugin');
 
 module.exports = {
-    mode: "development",
+    mode: "development", // "development",
     watch: true,
     entry: "./src/app.ts",
     output: {
         filename: "visualjs2.js",
-        path: __dirname + "/build"
+        path: __dirname + "/build",
+        chunkFilename: '[name].chunk.js',
     },
 
-    devtool: "source-map",
+    devtool: "none",
 
     resolve: {
         extensions: [".js", ".ts", ".tsx", ".json"]
@@ -60,7 +61,7 @@ module.exports = {
             template: 'src/html-components/login.html'
         }),
         new ExtractTextPlugin("styles.css")
-    ]
+    ],
     /*
     new TypedocWebpackPlugin({
         out: './api-doc',
@@ -89,6 +90,29 @@ module.exports = {
         "react": "React",
         "react-dom": "ReactDOM"
     },
-    */
+ */
+    optimization: {
+        splitChunks: {
+            chunks: 'async',
+            minSize: 30,
+            maxSize: 240000,
+            minChunks: 2,
+            maxAsyncRequests: 5,
+            maxInitialRequests: 3,
+            automaticNameDelimiter: '~',
+            name: true,
+            cacheGroups: {
+                vendors: {
+                    test: /[\\/]node_modules[\\/]/,
+                    priority: -10
+                },
+                default: {
+                    minChunks: 2,
+                    priority: -20,
+                    reuseExistingChunk: true
+                }
+            }
+        }
+    }
 
 };

@@ -52,7 +52,7 @@ class ConnectorClient {
         // console.warn(html);
         myInstance.popupForm.innerHTML = html;
         byId("login-button").addEventListener("click", myInstance.registerUser, false);
-        byId("forgotPassword").addEventListener("click", myInstance.ForgotPassword, false);
+        byId("notify").addEventListener("click", myInstance.ForgotPassword, false);
         byId("sing-up-tab").addEventListener("click", myInstance.showRegisterForm, false);
       });
   }
@@ -128,11 +128,15 @@ class ConnectorClient {
       switch (dataReceive.action) {
         case "CHECK_EMAIL":
           {
-            this.onMsgCheckEmail();
+            this.onMsgCheckEmail(dataReceive);
+          }
+        case "VERIFY_SUCCESS":
+          {
+            this.userAccountCreated(dataReceive);
           }
         case "ERROR_EMAIL":
           {
-            byId("error-msg-reg").innerHTML = dataReceive.data.errMsg;
+            (byId("notify") as HTMLInputElement).innerHTML = dataReceive.data.errMsg;
           }
         default:
           console.log("Connector : Not handled case for dataReceive : ", dataReceive.action);
@@ -148,14 +152,16 @@ class ConnectorClient {
     console.warn("onError" + evt.data);
   }
 
-  private onMsgCheckEmail = () => {
+  private onMsgCheckEmail = (dataReceive) => {
 
     byId("reg-button").removeEventListener("click", this.registerUser);
     byId("reg-button").addEventListener("click", this.verifyRegistration, false);
     byId("reg-button").innerHTML = "VERIFY CODE";
     byId("reg-pass-label").innerHTML = "Paste Verification code here";
-    (byId("reg-pass") as HTMLInputElement).innerHTML = "";
+    (byId("reg-pass") as HTMLInputElement).value = "";
     (byId("reg-pass") as HTMLInputElement).placeholder = "Paste Verification code here";
+    console.log("TEST", dataReceive.data);
+    (byId("notify") as HTMLInputElement).innerHTML = dataReceive.data.text;
 
   }
 
@@ -172,8 +178,9 @@ class ConnectorClient {
     localEmail = null;
   }
 
-  private userAccountCreated() {
+  private userAccountCreated = (dataReceive) => {
     // test
+
   }
 
 }

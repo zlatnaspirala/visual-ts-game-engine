@@ -1,10 +1,10 @@
 {
   "name": "visualjs2",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "This version 2 of visualjs game engine, export name lib name is visualjs2.js . Whole project is based fully dependency build. Main file is app.ts . Class ioc saves singlton instances also bind. In this project html and css is not priory. Based on canvas 2D. Used lib Matter.js in typescript variant. This project is for middle level programmers.",
   "main": ".src/index.html",
   "dependencies": {
-    "@types/matter-js": "^0.10.0",
+    "@types/matter-js": "^0.10.2",
     "express": "^4.16.4",
     "matter-attractors": "^0.1.6",
     "matter-js": "^0.14.1",
@@ -25,8 +25,8 @@
     "typedoc": "^0.13.0",
     "typedoc-webpack-plugin": "^1.1.4",
     "typescript": "^2.9.2",
-    "webpack": "^4.14.0",
-    "webpack-cli": "^2.0.13"
+    "webpack": "^4.25.1",
+    "webpack-cli": "^3.1.2"
   },
   "scripts": {
     "dev": "webpack --config webpack.config.js",
