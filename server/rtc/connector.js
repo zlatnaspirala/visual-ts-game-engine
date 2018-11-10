@@ -221,7 +221,7 @@ class Connector {
   onUserLogin(user, callerInstance) {
     let userId = shared.formatUserKeyLiteral(user.email);
     try {
-      let codeSended = { action: "ONLINE", data: { text: "Welcome to the game portal." } };
+      let codeSended = { action: "ONLINE", data: { text: "Welcome to the game portal.", user } };
       codeSended = JSON.stringify(codeSended);
       callerInstance.userSockCollection[userId].send(codeSended);
       console.warn("Online : ", user.email);

@@ -6,8 +6,8 @@ import EngineConfig from "./../../client-config";
 
 class ConnectorClient {
 
+  protected popupForm: HTMLDivElement;
   private webSocketController;
-  private popupForm: HTMLDivElement;
 
   constructor(config: EngineConfig) {
 
@@ -57,7 +57,7 @@ class ConnectorClient {
         myInstance.popupForm.innerHTML = html;
         byId("login-button").addEventListener("click", myInstance.loginUser, false);
         byId("sing-up-tab").addEventListener("click", myInstance.showRegisterForm, false);
-        if (data) {
+        if (data && data.data && data.data.test) {
           byId("error-msg-login").innerHTML = data.data.text;
         }
       });
@@ -135,6 +135,10 @@ class ConnectorClient {
 
     console.warn("Session controller connected.");
     this.webSocketController.send(JSON.stringify({ data: "i am here" }));
+
+    const instance = { self: this };
+    //this.create
+    // createEvent(menuActionEvents.showHome, instance),
 
   }
 
@@ -233,10 +237,37 @@ class ConnectorClient {
       then(function (res) {
         return res.text();
       }).then(function (html) {
-        // console.warn(html);
-        myInstance.popupForm.innerHTML = html;
 
+        myInstance.popupForm.innerHTML = html;
+        byId("user-profile-btn-ok").addEventListener("click", myInstance.minimizeUIPanel, false);
+        (byId("user-points") as HTMLInputElement).value = dataReceive.data.user.points;
+        (byId("user-rank") as HTMLInputElement).value = dataReceive.data.user.rank;
+        (byId("user-email") as HTMLInputElement).value = dataReceive.data.user.email;
       });
+
+  }
+
+  private minimizeUIPanel = (e) => {
+
+    e.preventDefault();
+    this.popupForm.style.width = "70px";
+    this.popupForm.style.height = "25px";
+
+    byId("user-profile-maximaze").style.display = "block";
+    byId("user-profile-maximaze").addEventListener("click", this.maximazeUIPanel, false);
+    byId("user-profile-form").style.display = "none";
+    byId("user-profile-btn-ok").style.display = "none";
+  }
+
+  private maximazeUIPanel = (e) => {
+
+    e.preventDefault();
+    (this.popupForm as any).style = "";
+    byId("user-profile-maximaze").style.display = "none";
+    byId("user-profile-maximaze").style.top = "-14px";
+    byId("user-profile-maximaze").style.left = "0";
+    byId("user-profile-form").style.display = "block";
+    byId("user-profile-btn-ok").style.display = "block";
 
   }
 

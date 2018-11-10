@@ -61,7 +61,9 @@ class MyDatabase {
             password: user.password,
             confirmed: false,
             token: uniqLocal,
-            online: false
+            online: false,
+            points: 0,
+            rank: "junior"
           }, function(err, res) {
             if (err) {
               console.log("MyDatabase err3:" + err);
@@ -72,7 +74,7 @@ class MyDatabase {
             db.close();
           });
         } else {
-          callerInstance.onRegisterResponse("USER_ALREADY_REGISTERED");
+          callerInstance.onRegisterResponse("USER_ALREADY_REGISTERED", user.email, null, callerInstance);
           db.close();
         }
 
@@ -103,7 +105,7 @@ class MyDatabase {
 
           dbo.collection("users").updateOne(
             { email: user.email, },
-            { $set: { confirmed: true } },
+            { $set: { confirmed: true, points: 1000 } },
             function(err, result) {
               if (err) {
                 console.warn("MyDatabase, update confirmed err :" + err);
@@ -144,6 +146,13 @@ class MyDatabase {
 
           if (result !== null) {
 
+            // Security staff
+            const userData = {
+              email: result.email,
+              points: result.points,
+              rank: result.rank,
+            };
+
             dbo.collection("users").updateOne(
               { email: user.email, },
               { $set: { online: true } },
@@ -154,7 +163,7 @@ class MyDatabase {
                 }
                 // console.warn("MyDatabase.login :" + err);
                 console.warn("MyDatabase.login GOOD result:" + result);
-                callerInstance.onUserLogin(user, callerInstance);
+                callerInstance.onUserLogin(userData, callerInstance);
               }
             );
 

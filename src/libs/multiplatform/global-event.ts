@@ -9,12 +9,24 @@ class GlobalEvent {
 
   public get: IUniVector = {};
   public activeKey: IUniVector = {};
-  public browser: Browser;
+  private browser: Browser;
 
   public constructor(browser: Browser) {
 
     this.browser = browser;
     // this.attachEvent("onmousedown" , function(e) {console.log("mouse down" + event); });
+
+  }
+
+  public createCustomEvent(name: string, myDetails: any) {
+    // test
+    return new CustomEvent(name, {
+      detail: {
+        eventName: name,
+        data: myDetails,
+      },
+      bubbles: true,
+    });
 
   }
 
