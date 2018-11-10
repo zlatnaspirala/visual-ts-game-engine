@@ -52,7 +52,7 @@ class MyDatabase {
 
         if (err) { console.log("MyDatabase err2:" + err); return null; }
 
-        if (result == null) {
+        if (result === null) {
 
           let uniqLocal = shared.generateToken();
 
@@ -105,7 +105,11 @@ class MyDatabase {
             { email: user.email, },
             { $set: { confirmed: true } },
             function(err, result) {
-              console.warn("MyDatabase, update confirmed err :" + err);
+              if (err) {
+                console.warn("MyDatabase, update confirmed err :" + err);
+                callerInstance.onRegValidationResponse(null, user.email);
+                return;
+              }
               console.warn("MyDatabase, update confirmed result:" + result);
               callerInstance.onRegValidationResponse(result, user.email);
             }
@@ -121,7 +125,7 @@ class MyDatabase {
 
   }
 
-  login(user) {
+  loginUser(user, callerInstance) {
     // test
 
     const databaseName = this.config.databaseName;
@@ -133,25 +137,30 @@ class MyDatabase {
 
       const dbo = db.db(databaseName);
 
-      dbo.collection("users").findOne({ email: user.email, password: user.password }, function(err, result) {
+      dbo.collection("users").findOne({ email: user.email, password: user.password, confirmed: true },
+        function(err, result) {
 
-        if (err) { console.log("MyDatabase.login :" + err); return null; }
+          if (err) { console.log("MyDatabase.login :" + err); return null; }
 
-        if (result !== null) {
+          if (result !== null) {
 
-          dbo.collection("users").updateOne(
-            { email: user.email, },
-            { $set: { online: true } },
-            function(err, result) {
-              console.warn("MyDatabase.login :" + err);
-              console.warn("MyDatabase.login result:" + result);
-              callerInstance.onUserLogin(result);
-            }
-          );
+            dbo.collection("users").updateOne(
+              { email: user.email, },
+              { $set: { online: true } },
+              function(err, result) {
+                if (err) {
+                  console.log("BAD_EMAIL_OR_PASSWORD");
+                  return;
+                }
+                // console.warn("MyDatabase.login :" + err);
+                console.warn("MyDatabase.login GOOD result:" + result);
+                callerInstance.onUserLogin(user, callerInstance);
+              }
+            );
 
-        }
+          }
 
-      });
+        });
 
 
     });

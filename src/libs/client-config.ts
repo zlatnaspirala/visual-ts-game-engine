@@ -51,6 +51,12 @@ class ClientConfig {
   private appUseAccountsSystem: boolean = true;
 
   /**
+   * Possible variant by default :
+   * "register", "login"
+   */
+  private startUpHtmlForm: string = "register";
+
+  /**
    * Empty constructor
    */
   constructor() {
@@ -59,6 +65,10 @@ class ClientConfig {
 
   public isAppUseAccountsSystem(): boolean {
     return this.appUseAccountsSystem;
+  }
+
+  public getStartUpHtmlForm(): string {
+    return this.startUpHtmlForm;
   }
 
   public getDomain() {

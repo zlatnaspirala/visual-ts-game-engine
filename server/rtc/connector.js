@@ -36,6 +36,7 @@ class Connector {
     shared.myBase = this;
     shared.serverHandlerRegister = this.serverHandlerRegister;
     shared.serverHandlerRegValidation = this.serverHandlerRegValidation;
+    shared.serverHandlerLoginValidation = this.serverHandlerLoginValidation;
 
   }
 
@@ -81,11 +82,18 @@ class Connector {
 
           if (typeof msgFromCLient.data === "string") {
 
-            console.log("ignore this : " + msgFromCLient.data);
+            /**
+             * Passed simple string is not my case
+             * Use for some custom non secure data flow.
+             */
+            console.log("ignore, this is just welcome message : " + msgFromCLient.data);
             this.send(JSON.stringify({ action: "ignore", data: "Welcome here !" }));
 
           } else {
 
+            /**
+             * Network Actions parsed here:
+             */
             if (msgFromCLient.action) {
 
               if (msgFromCLient.action === "REGISTER") {
@@ -94,6 +102,10 @@ class Connector {
                 shared.serverHandlerRegister(msgFromCLient);
               } else if (msgFromCLient.action === "REG_VALIDATE") {
                 shared.serverHandlerRegValidation(msgFromCLient);
+              } else if (msgFromCLient.action === "LOGIN") {
+                const userId = shared.formatUserKeyLiteral(msgFromCLient.data.userLoginData.email);
+                shared.myBase.userSockCollection[userId] = this;
+                shared.serverHandlerLoginValidation(msgFromCLient);
               }
 
             } else {
@@ -183,19 +195,40 @@ class Connector {
 
     if (result == null) {
 
-      let msg = { action: "ERROR_EMAIL", data: { errMsg: "ERR: WRONG CODE !" } };
+      let msg = { action: "ERROR_EMAIL", data: { errMsg: "ERR: WRONG CODE!" } };
       msg = JSON.stringify(msg);
       this.userSockCollection[userId].send(msg);
       console.log("onRegValidationResponse .", this);
 
     } else {
       // VERIFIED
-      let msg = { action: "VERIFY_SUCCESS", data: { text: "VERIFY SUCCESS!" } };
+      let msg = { action: "VERIFY_SUCCESS", data: { text: "VERIFY SUCCESS! PLEASE LOGIN " } };
       msg = JSON.stringify(msg);
       this.userSockCollection[userId].send(msg);
       console.log("onRegValidationResponse .", this);
     }
 
   }
+
+  serverHandlerLoginValidation(login) {
+
+    const user = { email: login.data.userLoginData.email, password: login.data.userLoginData.password };
+    shared.myBase.database.loginUser(user, shared.myBase);
+    // /onUserLogin
+
+  }
+
+  onUserLogin(user, callerInstance) {
+    let userId = shared.formatUserKeyLiteral(user.email);
+    try {
+      let codeSended = { action: "ONLINE", data: { text: "Welcome to the game portal." } };
+      codeSended = JSON.stringify(codeSended);
+      callerInstance.userSockCollection[userId].send(codeSended);
+      console.warn("Online : ", user.email);
+    } catch (err) {
+      console.log("Something wrong with onUserLogin :: userSockCollection[userId]. Err :", err);
+    }
+  }
+
 }
 module.exports = Connector;

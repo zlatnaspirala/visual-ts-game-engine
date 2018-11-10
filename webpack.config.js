@@ -60,6 +60,10 @@ module.exports = {
             filename: '/templates/login.html',
             template: 'src/html-components/login.html'
         }),
+        new HtmlWebpackPlugin({
+            filename: '/templates/user-profile.html',
+            template: 'src/html-components/user-profile.html'
+        }),
         new ExtractTextPlugin("styles.css")
     ],
     /*

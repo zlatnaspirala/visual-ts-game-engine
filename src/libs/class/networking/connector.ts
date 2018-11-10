@@ -19,7 +19,11 @@ class ConnectorClient {
     this.webSocketController.onmessage = this.onMessage;
     this.webSocketController.onerror = this.onError;
 
-    this.showRegisterForm();
+    if (config.getStartUpHtmlForm() === "register") {
+      this.showRegisterForm();
+    } else if (config.getStartUpHtmlForm() === "login") {
+      this.showLoginForm(null);
+    }
 
   }
 
@@ -40,7 +44,7 @@ class ConnectorClient {
 
   }
 
-  private showLoginForm = () => {
+  private showLoginForm = (data) => {
 
     const myInstance = this;
     fetch("./templates/login.html", {
@@ -51,9 +55,11 @@ class ConnectorClient {
       }).then(function (html) {
         // console.warn(html);
         myInstance.popupForm.innerHTML = html;
-        byId("login-button").addEventListener("click", myInstance.registerUser, false);
-        byId("notify").addEventListener("click", myInstance.ForgotPassword, false);
+        byId("login-button").addEventListener("click", myInstance.loginUser, false);
         byId("sing-up-tab").addEventListener("click", myInstance.showRegisterForm, false);
+        if (data) {
+          byId("error-msg-login").innerHTML = data.data.text;
+        }
       });
   }
 
@@ -82,6 +88,38 @@ class ConnectorClient {
       };
 
       let localMsg = { action: "REGISTER", data: { userRegData: userData } };
+      this.sendObject(localMsg);
+      localMsg = null;
+
+    }
+
+  }
+
+  private loginUser = (e: UniClick) => {
+
+    e.preventDefault();
+
+    const localEmail: string = (byId("login-user") as HTMLInputElement).value;
+    const localPassword: string = (byId("login-pass") as HTMLInputElement).value;
+
+    if (validateEmail(localEmail) !== null) {
+      byId("error-msg-login").style.display = "block";
+      byId("error-msg-login").innerText = validateEmail(localEmail);
+    }
+
+    if (validatePassword(localPassword) === false) {
+      byId("error-msg-login").style.display = "block";
+      byId("error-msg-login").innerText += "Password is not valid! length!";
+    }
+
+    if (validateEmail(localEmail) === null && validatePassword(localPassword) === true) {
+
+      const userData: IUserRegData = {
+        email: localEmail,
+        password: localPassword,
+      };
+
+      let localMsg = { action: "LOGIN", data: { userLoginData: userData } };
       this.sendObject(localMsg);
       localMsg = null;
 
@@ -118,7 +156,8 @@ class ConnectorClient {
   }
 
   private onClose(evt) {
-    console.warn("Session controller disconnected");
+    alert("Server session is disconnected.Please refresh this page.");
+    console.error("Session controller disconnected", evt);
   }
 
   private onMessage = (evt) => {
@@ -129,19 +168,26 @@ class ConnectorClient {
         case "CHECK_EMAIL":
           {
             this.onMsgCheckEmail(dataReceive);
+            break;
           }
         case "VERIFY_SUCCESS":
           {
-            this.userAccountCreated(dataReceive);
+            this.showLoginForm(dataReceive);
+            break;
+          }
+        case "ONLINE":
+          {
+            this.showUserAccountProfilePage(dataReceive);
+            break;
           }
         case "ERROR_EMAIL":
           {
             (byId("notify") as HTMLInputElement).innerHTML = dataReceive.data.errMsg;
+            break;
           }
         default:
-          console.log("Connector : Not handled case for dataReceive : ", dataReceive.action);
+          console.log("Connector : dataReceive action : ", dataReceive.action);
       }
-      console.log("response : " + dataReceive);
     } catch (err) {
       console.error("Connector.onMessage : Error :", err);
     }
@@ -178,8 +224,19 @@ class ConnectorClient {
     localEmail = null;
   }
 
-  private userAccountCreated = (dataReceive) => {
+  private showUserAccountProfilePage = (dataReceive) => {
     // test
+    const myInstance = this;
+    fetch("./templates/user-profile.html", {
+      headers: htmlHeader,
+    }).
+      then(function (res) {
+        return res.text();
+      }).then(function (html) {
+        // console.warn(html);
+        myInstance.popupForm.innerHTML = html;
+
+      });
 
   }
 
