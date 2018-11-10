@@ -302,3 +302,7 @@ or use :
   (table games, actions , platformers , basic demo trow the api doc etc.).
  - Implementing AR and webGL2.
 
+## Donate this project ##
+
+ - <a href="https://coingate.com/pay/cryptogamewars" rel="noopener noreferrer nofollow" target="_blank"><img alt="CoinGate Payment Button" src="https://static.coingate.com/images/buttons/4.png" /></a>
+ 
