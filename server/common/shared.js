@@ -10,6 +10,7 @@ module.exports = {
   serverHandlerRegister: function(data) { },
   serverHandlerRegValidation: function(data) { },
   serverHandlerLoginValidation: function(data) { },
+  serverHandlerGetUserData: function(data) { },
 
   validateEmail: function(email) {
     // tslint:disable-next-line:max-line-length

@@ -178,5 +178,44 @@ class MyDatabase {
     console.log(this.user + "< user");
   }
 
+  getUserData(user, callerInstance) {
+    // test
+
+    const databaseName = this.config.databaseName;
+    MongoClient.connect(this.config.getDatabaseRoot, { useNewUrlParser: true }, function(error, db) {
+      if (error) {
+        console.warn("MyDatabase.login :" + error);
+        return;
+      }
+
+      const dbo = db.db(databaseName);
+
+      dbo.collection("users").findOne({ email: user.data.email, online: true, confirmed: true },
+        function(err, result) {
+
+          if (err) { console.log("MyDatabase.getUserData :" + err); return null; }
+
+          if (result !== null) {
+
+            // Security staff
+            const userData = {
+              email: result.email,
+              points: result.points,
+              rank: result.rank,
+            };
+
+            console.warn("MyDatabase.getUserData :" + result);
+            callerInstance.onUserData(userData, callerInstance);
+
+          }
+
+        });
+
+
+    });
+
+
+    console.log(this.user + "< user");
+  }
 }
 module.exports = MyDatabase;

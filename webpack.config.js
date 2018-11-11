@@ -64,6 +64,14 @@ module.exports = {
             filename: '/templates/user-profile.html',
             template: 'src/html-components/user-profile.html'
         }),
+        new HtmlWebpackPlugin({
+            filename: '/templates/store.html',
+            template: 'src/html-components/store.html'
+        }),
+        new HtmlWebpackPlugin({
+            filename: '/templates/games-list.html',
+            template: 'src/html-components/games-list.html'
+        }),
         new ExtractTextPlugin("styles.css")
     ],
     /*

@@ -22,6 +22,9 @@ class Connector {
     this.wSocket = new WebSocketServer({
       httpServer: this.http,
       autoAcceptConnections: false,
+      keepalive: true,
+      keepaliveGracePeriod: 10000,
+      keepaliveInterval: 20000,
     }).on("request", this.onRequestConn);
     WebSocketServer = null;
 
@@ -37,6 +40,7 @@ class Connector {
     shared.serverHandlerRegister = this.serverHandlerRegister;
     shared.serverHandlerRegValidation = this.serverHandlerRegValidation;
     shared.serverHandlerLoginValidation = this.serverHandlerLoginValidation;
+    shared.serverHandlerGetUserData = this.serverHandlerGetUserData;
 
   }
 
@@ -106,6 +110,8 @@ class Connector {
                 const userId = shared.formatUserKeyLiteral(msgFromCLient.data.userLoginData.email);
                 shared.myBase.userSockCollection[userId] = this;
                 shared.serverHandlerLoginValidation(msgFromCLient);
+              } else if (msgFromCLient.action === "GET_USER_DATA") {
+                shared.serverHandlerGetUserData(msgFromCLient);
               }
 
             } else {
@@ -230,5 +236,25 @@ class Connector {
     }
   }
 
+  serverHandlerGetUserData(user) {
+    try {
+      shared.myBase.database.getUserData(user, shared.myBase);
+    } catch (err) {
+      console.log("Connector.serverHandlerGetUserData error : ", err);
+    }
+
+  }
+
+  onUserData(user, callerInstance) {
+    let userId = shared.formatUserKeyLiteral(user.email);
+    try {
+      let codeSended = { action: "GET_USER_DATA", data: { user } };
+      codeSended = JSON.stringify(codeSended);
+      callerInstance.userSockCollection[userId].send(codeSended);
+      console.warn("User data : ", user.email);
+    } catch (err) {
+      console.log("Something wrong with onUserLogin :: userSockCollection[userId]. Err :", err);
+    }
+  }
 }
 module.exports = Connector;

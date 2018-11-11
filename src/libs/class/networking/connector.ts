@@ -3,13 +3,17 @@ import { IMessageReceived, IUserRegData } from "../../interface/global";
 import { UniClick } from "../../types/global";
 import { byId, htmlHeader, validateEmail, validatePassword } from "../system";
 import EngineConfig from "./../../client-config";
+import Memo from "./../local-storage";
 
 class ConnectorClient {
 
   protected popupForm: HTMLDivElement;
   private webSocketController;
+  private memo: Memo;
 
   constructor(config: EngineConfig) {
+
+    this.memo = new Memo();
 
     this.popupForm = byId("popup") as HTMLDivElement;
 
@@ -136,8 +140,7 @@ class ConnectorClient {
     console.warn("Session controller connected.");
     this.webSocketController.send(JSON.stringify({ data: "i am here" }));
 
-    const instance = { self: this };
-    //this.create
+    // const instance = { self: this };
     // createEvent(menuActionEvents.showHome, instance),
 
   }
@@ -160,8 +163,11 @@ class ConnectorClient {
   }
 
   private onClose(evt) {
-    alert("Server session is disconnected.Please refresh this page.");
+    alert("Server session is disconnected.Please refresh this page. Automate refresh after 10 secounds.");
     console.error("Session controller disconnected", evt);
+    setTimeout(function () {
+      location.reload();
+    }, 10000);
   }
 
   private onMessage = (evt) => {
@@ -180,6 +186,11 @@ class ConnectorClient {
             break;
           }
         case "ONLINE":
+          {
+            this.showUserAccountProfilePage(dataReceive);
+            break;
+          }
+        case "GET_USER_DATA":
           {
             this.showUserAccountProfilePage(dataReceive);
             break;
@@ -243,6 +254,11 @@ class ConnectorClient {
         (byId("user-points") as HTMLInputElement).value = dataReceive.data.user.points;
         (byId("user-rank") as HTMLInputElement).value = dataReceive.data.user.rank;
         (byId("user-email") as HTMLInputElement).value = dataReceive.data.user.email;
+        byId("games-list").addEventListener("click", myInstance.showGamesList, false);
+        byId("store-form").addEventListener("click", myInstance.showStore, false);
+
+        myInstance.memo.save("localUserData", dataReceive.data.user.email);
+
       });
 
   }
@@ -269,6 +285,59 @@ class ConnectorClient {
     byId("user-profile-form").style.display = "block";
     byId("user-profile-btn-ok").style.display = "block";
 
+  }
+
+  private showStore = (e) => {
+    e.preventDefault();
+
+    const myInstance = this;
+    fetch("./templates/store.html", {
+      headers: htmlHeader,
+    }).
+      then(function (res) {
+        return res.text();
+      }).then(function (html) {
+
+        myInstance.popupForm.innerHTML = html;
+        // byId("user-profile-btn-ok").addEventListener("click", myInstance.minimizeUIPanel, false);
+        byId("myProfile").addEventListener("click", myInstance.getUserData, false);
+        byId("games-list").addEventListener("click", myInstance.showGamesList, false);
+
+      });
+
+  }
+
+  private showGamesList = (e) => {
+    e.preventDefault();
+
+    const myInstance = this;
+    fetch("./templates/games-list.html", {
+      headers: htmlHeader,
+    }).
+      then(function (res) {
+        return res.text();
+      }).then(function (html) {
+
+        myInstance.popupForm.innerHTML = html;
+        // byId("user-profile-btn-ok").addEventListener("click", myInstance.minimizeUIPanel, false);
+        byId("store-form").addEventListener("click", myInstance.showStore, false);
+        byId("myProfile").addEventListener("click", myInstance.getUserData, false);
+        byId("play-platformer").addEventListener("click", myInstance.openGamePlayFor, false);
+      });
+
+  }
+
+  private getUserData = () => {
+
+    const localMsg = { action: "GET_USER_DATA", data: { email: this.memo.load("localUserData") } };
+    this.sendObject(localMsg);
+
+  }
+
+  private openGamePlayFor(e) {
+    e.preventDefault();
+    // e.target.getAttribute("game")
+    console.log("Start game frmo here...", e);
   }
 
 }

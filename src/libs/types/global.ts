@@ -16,3 +16,5 @@ export type literalImageSrc = string | string[];
 
 // dom
 export type UniClick = MouseEvent | TouchEvent;
+// tslint:disable-next-line:interface-over-type-literal
+export type UniVector = { [key: string]: any };
