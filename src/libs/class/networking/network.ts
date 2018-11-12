@@ -32,7 +32,7 @@ class Network {
       // this.connector.showRegisterForm();
     }
 
-    this.loggerUI = byId("log-network") as HTMLDivElement;
+    this.loggerUI = byId("network-panel") as HTMLDivElement;
     this.webCamView = byId("webCamView") as HTMLDivElement;
     this.senderUI = byId("sender") as HTMLTextAreaElement;
     this.nameUI = this.loggerUI.querySelector("#your-name");

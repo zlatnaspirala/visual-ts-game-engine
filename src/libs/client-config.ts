@@ -56,11 +56,19 @@ class ClientConfig {
    */
   private startUpHtmlForm: string = "register";
 
+  private gameList: any[];
   /**
-   * Empty constructor
+   * constructor will save interest data for game platform
    */
-  constructor() {
-    // no args
+  constructor(gameList: any[]) {
+
+    // Interconnection Network.Connector vs app.ts
+    this.gameList = gameList;
+
+  }
+
+  public getGamesList() {
+    return this.gameList;
   }
 
   public isAppUseAccountsSystem(): boolean {

@@ -43,9 +43,10 @@ class MyDatabase {
       if (!dbo.collection("users")) {
         dbo.createCollection("users").createIndex({ "email": 1 }, { unique: true });
         dbo.createCollection("users").createIndex({ "password": 1 }, { unique: true });
-        dbo.createCollection("users").createIndex({ "confirmed": 1 }, { unique: true });
+        dbo.createCollection("users").createIndex({ "confirmed": 1 }, { unique: false });
         dbo.createCollection("users").createIndex({ "token": 1 }, { unique: true });
-        dbo.createCollection("users").createIndex({ "online": 1 }, { unique: true });
+        dbo.createCollection("users").createIndex({ "online": 1 }, { unique: false });
+        dbo.createCollection("users").createIndex({ "nickname": 1 }, { unique: false });
       }
 
       dbo.collection("users").findOne({ "email": user.email }, function(err, result) {
@@ -59,6 +60,7 @@ class MyDatabase {
           dbo.collection("users").insertOne({
             email: user.email,
             password: user.password,
+            nickname: "no-nick-name" + shared.getDefaultNickName(),
             confirmed: false,
             token: uniqLocal,
             online: false,
@@ -149,6 +151,7 @@ class MyDatabase {
             // Security staff
             const userData = {
               email: result.email,
+              nickname: result.nickname,
               points: result.points,
               rank: result.rank,
             };
@@ -202,6 +205,7 @@ class MyDatabase {
               email: result.email,
               points: result.points,
               rank: result.rank,
+              nickname: result.nickname
             };
 
             console.warn("MyDatabase.getUserData :" + result);

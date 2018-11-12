@@ -1,3 +1,4 @@
+import { IGamePlayModel } from "../../libs/interface/global";
 import Starter from "../../libs/starter";
 import { worldElement } from "../../libs/types/global";
 import { level1 } from "./scripts/level1/level1";
@@ -11,7 +12,7 @@ import { level1 } from "./scripts/level1/level1";
  * About resource we use require
  */
 
-class Platformer {
+class Platformer implements IGamePlayModel {
 
   public gameName: string = "platformer";
   public version: number = 0.02;
@@ -31,7 +32,7 @@ class Platformer {
     this.v = starter.getView();
 
     // Load level (in same class for now)
-    this.init("level1");
+    // this.init("level1");
   }
 
   private init(level: string) {

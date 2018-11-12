@@ -16,3 +16,7 @@ export interface IMessageReceived {
   action: string;
   data: any;
 }
+
+export interface IGamePlayModel {
+  
+}

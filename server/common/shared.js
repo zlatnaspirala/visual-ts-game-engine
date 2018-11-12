@@ -41,6 +41,10 @@ module.exports = {
     local = local.replace("@", "ID");
     local = local.replace(".", "ID");
     return local;
+  },
+
+  getDefaultNickName() {
+    return Math.random() * 1234 * Math.random();
   }
 
 };

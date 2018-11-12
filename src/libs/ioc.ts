@@ -28,9 +28,9 @@ class Ioc {
    */
   private config: ClientConfig;
 
-  constructor() {
+  constructor(gamesList: any[]) {
 
-    this.config = new ClientConfig();
+    this.config = new ClientConfig(gamesList);
     this.singlton(Browser, undefined);
     this.singlton(ViewPort, this.config.getDrawRefference());
     this.singlton(GlobalEvent, this.get.Browser);
