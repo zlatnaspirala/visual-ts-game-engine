@@ -18,5 +18,6 @@ export interface IMessageReceived {
 }
 
 export interface IGamePlayModel {
-  
+  init(level: string): void;
+  attachAppEvents(): void;
 }

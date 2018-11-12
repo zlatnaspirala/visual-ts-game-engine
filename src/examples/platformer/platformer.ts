@@ -22,24 +22,43 @@ class Platformer implements IGamePlayModel {
   public v: any;
 
   public player: any = {};
-  // private globalEvent: GlobalEvent;
   private levelAccess: { [key: string]: (r: Platformer) => void } = {};
 
   constructor(starter: Starter) {
 
     this.starter = starter;
-    this.levelAccess.level1 = level1;
     this.v = starter.getView();
+    this.levelAccess.level1 = level1;
 
     // Load level (in same class for now)
     // this.init("level1");
+
   }
 
-  private init(level: string) {
+  public attachAppEvents = () => {
+    const myInstance = this;
+    window.addEventListener("game-init", function (e) {
+      console.log(e);
+      myInstance.init("level1");
+      /*
+      setTimeout(function () {
+        alert();
+        myInstance.destroyGamePlay();
+      }, 3000);
+      */
+    });
+  }
+
+  public init = (level: string) => {
 
     const root = this;
     this.levelAccess[level](root);
 
+  }
+
+  public destroyGamePlay() {
+    this.levelAccess = null;
+    this.starter.destroyGamePlay();
   }
 
 }

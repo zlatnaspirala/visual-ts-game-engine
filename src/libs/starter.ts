@@ -205,5 +205,12 @@ class Starter {
 
   }
 
+  public destroyGamePlay() {
+    this.render.canvas.remove();
+    this.render.canvas = null;
+    this.render.context = null;
+    this.render.textures = {};
+  }
+
 }
 export default Starter;

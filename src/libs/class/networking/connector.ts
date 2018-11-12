@@ -1,7 +1,7 @@
 
 import { IMessageReceived, IUserRegData } from "../../interface/global";
 import { UniClick } from "../../types/global";
-import { byId, htmlHeader, validateEmail, validatePassword } from "../system";
+import { byId, htmlHeader, validateEmail, validatePassword, createAppEvent } from "../system";
 import EngineConfig from "./../../client-config";
 import Memo from "./../local-storage";
 
@@ -357,12 +357,15 @@ class ConnectorClient {
 
   private openGamePlayFor = (e) => {
     e.preventDefault();
-    const myInstance = this;
 
-    // e.target.getAttribute("game")
-    console.log("Start game frmo here...", e.target.getAttribute("game"));
-    // byId("your-name")
-    // byId("continue")
+    const appStartGamePlay = createAppEvent("game-init",
+      {
+        detail: {
+          game: e.target.getAttribute("game"),
+        },
+      });
+
+    window.dispatchEvent(appStartGamePlay);
 
   }
 

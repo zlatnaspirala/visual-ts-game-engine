@@ -18,18 +18,6 @@ class GlobalEvent {
 
   }
 
-  public createCustomEvent(name: string, myDetails: any) {
-    // test
-    return new CustomEvent(name, {
-      detail: {
-        eventName: name,
-        data: myDetails,
-      },
-      bubbles: true,
-    });
-
-  }
-
   public activateKeyDetection() {
     document.body.addEventListener("keydown", this.onKeyDownHandler, true);
     document.body.addEventListener("keyup", this.onKeyUpHandler, true);

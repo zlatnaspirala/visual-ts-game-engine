@@ -7,6 +7,16 @@ export function getElement(selector) {
   return document.querySelector(selector);
 }
 
+export function createAppEvent(name: string, myDetails: any): CustomEvent {
+  return new CustomEvent(name, {
+    detail: {
+      eventName: name,
+      data: myDetails,
+    },
+    bubbles: true,
+  });
+}
+
 export function getRandomColor() {
   const letters = "0123456789ABCDEF".split("");
   let color = "#";
