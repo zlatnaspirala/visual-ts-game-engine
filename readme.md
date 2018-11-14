@@ -103,20 +103,22 @@ class ClientConfig {
 #### Main dependency file ####
 
 ```typescript
-/**
- * Import global css
- */
-require("./style/styles.css");
 
-import AppIcon from "./app-icon";
-import Platformer from "./examples/platformer/platformer";
-import Ioc from "./libs/ioc";
+const plarformerGameInfo = {
+  name: "Crypto-Runner",
+  title: "PLAY PLATFORMER CRYPTO RUNNER!",
+};
 
-const master = new Ioc();
+const gamesList: any[] = [
+  plarformerGameInfo,
+];
+
+const master = new Ioc(gamesList);
 const appIcon: AppIcon = new AppIcon(master.get.Browser);
-
-// First demo is platformer
 master.singlton(Platformer, master.get.Starter);
+console.warn("Platformer: ", master.get.Platformer);
+
+master.get.Platformer.attachAppEvents();
 
 ```
 
@@ -127,7 +129,7 @@ master.singlton(Platformer, master.get.Starter);
    Main file : app.ts
  - src/libs/ is common and smart pack of classes, interfaces etc.
    easy access.
-
+ - server/ folder is fully indipendent server size.
 
 <pre>
 
@@ -136,6 +138,10 @@ master.singlton(Platformer, master.get.Starter);
 ├── webpack.config.js
 ├── tsconfig.json
 ├── tslint.json
+├── launch.json
+├── workplace.code-workspace
+logo.png
+LICENSE
 ├── build/  (This is auto generated)
 |   ├── imgs/
 |   ├── styles/
@@ -148,7 +154,16 @@ master.singlton(Platformer, master.get.Starter);
 |   ├── libs/
 |   |   ├── class/
 |   |   |   ├── networking/
+|   |   |   |   ├── rtc-multi-connection/
+|   |   |   |   |   ├── FileBufferReader.js
+|   |   |   |   |   ├── RTCMultiConnection2.js
+|   |   |   |   |   ├── RTCMultiConnection3.js
+|   |   |   |   |   ├── linkify.js
+|   |   |   |   ├── connector.ts
+|   |   |   |   ├── network.ts
 |   |   |   ├── visual-methods/
+|   |   |   |   ├── sprite-animation.ts
+|   |   |   |   ├── texture.ts
 |   |   |   ├── browser.ts
 |   |   |   ├── math.ts
 |   |   |   ├── position.ts
@@ -162,6 +177,9 @@ master.singlton(Platformer, master.get.Starter);
 |   |   |   ├── global.ts
 |   |   |   ├── visual-components.ts
 |   |   ├── multiplatform/
+|   |   |   ├── mobile/
+|   |   |   |   ├── player-controls.ts
+|   |   |   ├── global-event.ts
 |   |   ├── types/
 |   |   |   ├── global.ts
 |   |   ├── engine-config.ts
@@ -173,6 +191,9 @@ master.singlton(Platformer, master.get.Starter);
 |   ├── html-components/
 |   |   ├── register.html
 |   |   ├── login.html
+|   |   ├── games-list.html
+|   |   ├── user-profile.html
+|   |   ├── store.html
 |   ├── index.html
 |   ├── app-icon.ts
 |   └── app.ts
@@ -201,25 +222,18 @@ master.singlton(Platformer, master.get.Starter);
 ### Installed database : mongodb@3.1.8 ###
 
 -No typescript here, we need keep state clear no.
-Node.js is best options.
-
-- Not yet commited email support class.
-
- I choose :
-
- ```node
- npm i gmail-send
- ```
+Node.js is best options.For email staff i choose :
+ npm i gmail-send .
 
 -Run services database server (Locally and leave it alive for develop proccess):
 
 ```javascript
-npm run dataserver
+  npm run dataserver
 ```
 
 Looks like this :
  ```node
-mongod --dbpath ./server/database/data
+  mongod --dbpath ./server/database/data
  ```
 
 Fix : "failed: address already in use"
