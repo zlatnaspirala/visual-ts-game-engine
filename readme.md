@@ -318,5 +318,6 @@ or use :
 
 ## Donate this project ##
 
+<b>Donate with any crypto value</b>
 <a href="https://coingate.com/pay/visual-ts-game-engine" rel="noopener noreferrer nofollow" target="_blank"><img alt="CoinGate Payment Button" src="https://static.coingate.com/images/buttons/4.png" /></a>
  
