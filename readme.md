@@ -236,7 +236,7 @@ Looks like this :
   mongod --dbpath ./server/database/data
  ```
 
-Fix : "failed: address already in use"
+Fix : "failed: address already in use" :
 
 ```javascript
   netstat -ano | findstr :27017
@@ -246,7 +246,8 @@ Fix : "failed: address already in use"
 
 <b>Also important "Run Visual Studio Code as Administrator".</b>
 
- -Command for kill all node.js procces for window users:
+ -Command for kill all node.js procces for window users :
+ 
 ```node
   taskkill /im node.exe /F
 ```
@@ -254,12 +255,14 @@ Fix : "failed: address already in use"
 
 ### Networking multimedia communication : WebSocketServer running on Node.js ###
 
+ Text-based protocol SIP (Session Initiation Protocol) used for signaling and controlling multimedia sessions.
+
 <b> - Running server is easy : </b>
 
 ```javascript
   npm run rtc
 ```
-
+With this cmd : <i>npm run rtc</i> we run server.js and connector.ts websocket. Connector is our account session used for login , register etc.   
 - Implemented video chat based on webRTC protocol
 
 ## Documentation : ##
@@ -299,12 +302,10 @@ or use :
 ## External licence in this project : ##
 
  <b>- Networking based on :</b> <br/>
- Muaz Khan <br/>
- MIT License www.WebRTC-Experiment.com/licence <br/>
+ Muaz Khan MIT License www.WebRTC-Experiment.com/licence <br/>
 
  <b>- Base physics beased on :</b> <br/>
- Matter.js <br/>
- https://github.com/liabru/matter-js <br/>
+ Matter.js https://github.com/liabru/matter-js <br/>
 
 ## Todo list for 2019 ##
 
