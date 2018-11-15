@@ -41,6 +41,7 @@ class Connector {
     shared.serverHandlerRegValidation = this.serverHandlerRegValidation;
     shared.serverHandlerLoginValidation = this.serverHandlerLoginValidation;
     shared.serverHandlerGetUserData = this.serverHandlerGetUserData;
+    shared.serverHandlerSetNewNickname = this.serverHandlerSetNewNickname;
 
   }
 
@@ -103,6 +104,8 @@ class Connector {
               if (msgFromCLient.action === "REGISTER") {
                 const userId = shared.formatUserKeyLiteral(msgFromCLient.data.userRegData.email);
                 shared.myBase.userSockCollection[userId] = this;
+                msgFromCLient.data.socketId = userId;
+                console.log(msgFromCLient.data.socketId + ":::msgFromCLient.data.socketId");
                 shared.serverHandlerRegister(msgFromCLient);
               } else if (msgFromCLient.action === "REG_VALIDATE") {
                 shared.serverHandlerRegValidation(msgFromCLient);
@@ -112,6 +115,8 @@ class Connector {
                 shared.serverHandlerLoginValidation(msgFromCLient);
               } else if (msgFromCLient.action === "GET_USER_DATA") {
                 shared.serverHandlerGetUserData(msgFromCLient);
+              } else if (msgFromCLient.action === "NEW_NICKNAME") {
+                shared.serverHandlerSetNewNickname(msgFromCLient);
               }
 
             } else {
@@ -141,13 +146,13 @@ class Connector {
     // validate
     if (regTest.data.userRegData) {
       if (shared.validateEmail(regTest.data.userRegData.email) === null) {
-        shared.myBase.database.register(regTest.data.userRegData, shared.myBase);
+        shared.myBase.database.register(regTest.data, shared.myBase);
       }
     }
 
   }
 
-  onRegisterResponse(result, userEmail, uniq, callerInstance) {
+  onRegisterResponse(result, userEmail, uniq, socketId, callerInstance) {
 
     let connection;
     let userId = shared.formatUserKeyLiteral(userEmail);
@@ -164,13 +169,18 @@ class Connector {
         console.warn("Connector error in sending reg email!", error);
         let codeSended = { action: "ERROR_EMAIL", data: { errMsg: "Please check your email again!, Something wrong with current email!" } };
         codeSended = JSON.stringify(codeSended);
-        callerInstance.userSockCollection[userId].send(codeSended);
+        callerInstance.userSockCollection[socketId].send(codeSended);
         console.log("Email reg error. Notify client.");
       } finally {
         connection.then(function(data) {
-          let codeSended = { action: "CHECK_EMAIL", data: { text: "Please check your email to get verification code. Paste code here :" } };
+          let codeSended = {
+            action: "CHECK_EMAIL", data: {
+              accessToken: socketId,
+              text: "Please check your email to get verification code. Paste code here :"
+            }
+          };
           codeSended = JSON.stringify(codeSended);
-          callerInstance.userSockCollection[userId].send(codeSended);
+          callerInstance.userSockCollection[socketId].send(codeSended);
           console.log("Email reg sended. Notify client.");
         });
       }
@@ -180,37 +190,37 @@ class Connector {
       console.warn("Something wrong with your email. Result is : ", result);
       let msg = { action: "ERROR_EMAIL", data: { errMsg: "ERR: USER ALREADY REGISTERED" } };
       msg = JSON.stringify(msg);
-      callerInstance.userSockCollection[userId].send(msg);
+      callerInstance.userSockCollection[socketId].send(msg);
       console.log("Email reg error. Notify client.");
     }
 
   }
 
-  serverHandlerRegValidation(regTest) {
+  serverHandlerRegValidation(register) {
 
-    if (regTest.data.userRegToken && regTest.data.email) {
-      const user = { email: regTest.data.email, token: regTest.data.userRegToken };
+    if (register.data.userRegToken && register.data.email) {
+      const user = { email: register.data.email, token: register.data.userRegToken, accessToken: register.data.accessToken };
       shared.myBase.database.regValidator(user, shared.myBase);
     }
 
   }
 
-  onRegValidationResponse(result, userEmail) {
+  onRegValidationResponse(result, userEmail, accessToken) {
 
-    const userId = shared.formatUserKeyLiteral(userEmail);
+    // const userId = shared.formatUserKeyLiteral(userEmail);
 
     if (result == null) {
 
       let msg = { action: "ERROR_EMAIL", data: { errMsg: "ERR: WRONG CODE!" } };
       msg = JSON.stringify(msg);
-      this.userSockCollection[userId].send(msg);
+      this.userSockCollection[accessToken].send(msg);
       console.log("onRegValidationResponse .", this);
 
     } else {
       // VERIFIED
       let msg = { action: "VERIFY_SUCCESS", data: { text: "VERIFY SUCCESS! PLEASE LOGIN " } };
       msg = JSON.stringify(msg);
-      this.userSockCollection[userId].send(msg);
+      this.userSockCollection[accessToken].send(msg);
       console.log("onRegValidationResponse .", this);
     }
 
@@ -227,7 +237,7 @@ class Connector {
   onUserLogin(user, callerInstance) {
     let userId = shared.formatUserKeyLiteral(user.email);
     try {
-      let codeSended = { action: "ONLINE", data: { text: "Welcome to the game portal.", user } };
+      let codeSended = { action: "ONLINE", data: { accessToken: userId, text: "Welcome to the game portal.", user } };
       codeSended = JSON.stringify(codeSended);
       callerInstance.userSockCollection[userId].send(codeSended);
       console.warn("Online : ", user.email);
@@ -246,15 +256,32 @@ class Connector {
   }
 
   onUserData(user, callerInstance) {
-    let userId = shared.formatUserKeyLiteral(user.email);
     try {
       let codeSended = { action: "GET_USER_DATA", data: { user } };
       codeSended = JSON.stringify(codeSended);
-      callerInstance.userSockCollection[userId].send(codeSended);
+      callerInstance.userSockCollection[user.socketid].send(codeSended);
       console.warn("User data : ", user.email);
     } catch (err) {
       console.log("Something wrong with onUserLogin :: userSockCollection[userId]. Err :", err);
     }
   }
+
+  serverHandlerSetNewNickname(arg) {
+    if (arg !== undefined) {
+      shared.myBase.database.setNewNickname(arg, shared.myBase);
+    }
+  }
+
+  onUserNewNickname(arg) {
+    try {
+      let codeSended = { action: "NICKNAME_UPDATED", data: { arg } };
+      codeSended = JSON.stringify(codeSended);
+      callerInstance.userSockCollection[arg.socketId].send(codeSended);
+      console.warn("User data : ", user.email);
+    } catch (err) {
+      console.log("Something wrong with onUserLogin :: userSockCollection[userId]. Err :", err);
+    }
+  }
+
 }
 module.exports = Connector;

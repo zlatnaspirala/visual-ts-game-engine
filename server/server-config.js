@@ -3,6 +3,9 @@ class ServerConfig {
 
   constructor() {
 
+    /**
+     * Define backend staff
+     */
     this.networkDeepLogs = false;
     this.rtcServerPort = 12034;
     this.domain = "192.168.0.14";

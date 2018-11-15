@@ -11,6 +11,7 @@ module.exports = {
   serverHandlerRegValidation: function(data) { },
   serverHandlerLoginValidation: function(data) { },
   serverHandlerGetUserData: function(data) { },
+  serverHandlerSetNewNickname: function(data) { },
 
   validateEmail: function(email) {
     // tslint:disable-next-line:max-line-length
@@ -38,9 +39,10 @@ module.exports = {
 
   formatUserKeyLiteral(userEmail) {
     let local = userEmail;
-    local = local.replace("@", "ID");
-    local = local.replace(".", "ID");
-    return local;
+    local = local.replace("@", "_alpha_");
+    let encoded = new Buffer(local).toString('base64');
+    encoded = encoded.replace(/=/g, "ab");
+    return encoded;
   },
 
   getDefaultNickName() {

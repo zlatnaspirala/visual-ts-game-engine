@@ -28,7 +28,7 @@ class MyDatabase {
      * Connector class is allowed.
      */
     if (callerInstance.constructor.name !== "Connector") {
-      console.error("Potencial Critical Secure Attack");
+      console.error("Potencial Critical Hack Attack");
       return;
     }
 
@@ -43,13 +43,14 @@ class MyDatabase {
       if (!dbo.collection("users")) {
         dbo.createCollection("users").createIndex({ "email": 1 }, { unique: true });
         dbo.createCollection("users").createIndex({ "password": 1 }, { unique: true });
+        dbo.createCollection("users").createIndex({ "socketid": 1 }, { unique: true });
         dbo.createCollection("users").createIndex({ "confirmed": 1 }, { unique: false });
         dbo.createCollection("users").createIndex({ "token": 1 }, { unique: true });
         dbo.createCollection("users").createIndex({ "online": 1 }, { unique: false });
         dbo.createCollection("users").createIndex({ "nickname": 1 }, { unique: false });
       }
 
-      dbo.collection("users").findOne({ "email": user.email }, function(err, result) {
+      dbo.collection("users").findOne({ "email": user.userRegData.email }, function(err, result) {
 
         if (err) { console.log("MyDatabase err2:" + err); return null; }
 
@@ -58,11 +59,12 @@ class MyDatabase {
           let uniqLocal = shared.generateToken();
 
           dbo.collection("users").insertOne({
-            email: user.email,
-            password: user.password,
+            email: user.userRegData.email,
+            password: user.userRegData.password,
             nickname: "no-nick-name" + shared.getDefaultNickName(),
             confirmed: false,
             token: uniqLocal,
+            socketid: user.socketId,
             online: false,
             points: 0,
             rank: "junior"
@@ -72,11 +74,11 @@ class MyDatabase {
               db.close();
               return;
             }
-            callerInstance.onRegisterResponse("USER_REGISTERED", res.ops[0].email, res.ops[0].token, callerInstance);
+            callerInstance.onRegisterResponse("USER_REGISTERED", res.ops[0].email, res.ops[0].token, res.ops[0].socketid, callerInstance);
             db.close();
           });
         } else {
-          callerInstance.onRegisterResponse("USER_ALREADY_REGISTERED", user.email, null, callerInstance);
+          callerInstance.onRegisterResponse("USER_ALREADY_REGISTERED", user.userRegData.email, null, user.socketId, callerInstance);
           db.close();
         }
 
@@ -111,15 +113,15 @@ class MyDatabase {
             function(err, result) {
               if (err) {
                 console.warn("MyDatabase, update confirmed err :" + err);
-                callerInstance.onRegValidationResponse(null, user.email);
+                callerInstance.onRegValidationResponse(null, user.email, user.accessToken);
                 return;
               }
               console.warn("MyDatabase, update confirmed result:" + result);
-              callerInstance.onRegValidationResponse(result, user.email);
+              callerInstance.onRegValidationResponse(result, user.email, user.accessToken);
             }
           );
         } else {
-          callerInstance.onRegValidationResponse(result, user.email);
+          callerInstance.onRegValidationResponse(result, user.email, user.accessToken);
         }
 
       });
@@ -177,8 +179,6 @@ class MyDatabase {
 
     });
 
-
-    console.log(this.user + "< user");
   }
 
   getUserData(user, callerInstance) {
@@ -193,7 +193,7 @@ class MyDatabase {
 
       const dbo = db.db(databaseName);
 
-      dbo.collection("users").findOne({ email: user.data.email, online: true, confirmed: true },
+      dbo.collection("users").findOne({ socketid: user.data.accessToken, online: true, confirmed: true },
         function(err, result) {
 
           if (err) { console.log("MyDatabase.getUserData :" + err); return null; }
@@ -205,7 +205,8 @@ class MyDatabase {
               email: result.email,
               points: result.points,
               rank: result.rank,
-              nickname: result.nickname
+              nickname: result.nickname,
+              socketid: result.accessToken,
             };
 
             console.warn("MyDatabase.getUserData :" + result);
@@ -215,11 +216,56 @@ class MyDatabase {
 
         });
 
+    });
+
+  }
+
+  setNewNickname(user, callerInstance) {
+
+
+    const databaseName = this.config.databaseName;
+    MongoClient.connect(this.config.getDatabaseRoot, { useNewUrlParser: true }, function(error, db) {
+      if (error) {
+        console.warn("MyDatabase.login :" + error);
+        return;
+      }
+
+      const dbo = db.db(databaseName);
+
+      dbo.collection("users").findOne({ socketid: user.data.accessToken, online: true, confirmed: true },
+        function(err, result) {
+
+          if (err) { console.log("MyDatabase.setNewNickname (user socket id not found):" + err); return null; }
+
+          if (result !== null) {
+
+            const userData = {
+              socketId: result.accessToken,
+              newNickname: user.data.nickname,
+            };
+
+            dbo.collection("users").updateOne(
+              { nickname: user.data.nickname, },
+              function(err, result) {
+                if (err) {
+                  console.log("MyDatabase.setNewNickname (error in update):", err);
+                  return;
+                }
+                // console.warn("MyDatabase.login :" + err);
+                console.warn("MyDatabase.login GOOD result:" + result);
+                callerInstance.onUserNewNickname(userData, callerInstance);
+              }
+            );
+
+          }
+
+        });
+
 
     });
 
 
-    console.log(this.user + "< user");
+
   }
 }
 module.exports = MyDatabase;

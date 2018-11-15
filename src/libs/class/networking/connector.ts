@@ -1,7 +1,7 @@
 
 import { IMessageReceived, IUserRegData } from "../../interface/global";
 import { UniClick } from "../../types/global";
-import { byId, htmlHeader, validateEmail, validatePassword, createAppEvent } from "../system";
+import { byId, createAppEvent, encodeString, htmlHeader, validateEmail, validatePassword } from "../system";
 import EngineConfig from "./../../client-config";
 import Memo from "./../local-storage";
 
@@ -15,6 +15,7 @@ class ConnectorClient {
   constructor(config: EngineConfig) {
 
     this.memo = new Memo();
+    this.memo.save("online", false);
 
     this.gamesList = config.getGamesList();
     /**
@@ -144,7 +145,6 @@ class ConnectorClient {
 
     console.warn("Session controller connected.");
     this.webSocketController.send(JSON.stringify({ data: "i am here" }));
-
     // const instance = { self: this };
     // createEvent(menuActionEvents.showHome, instance),
 
@@ -192,6 +192,8 @@ class ConnectorClient {
           }
         case "ONLINE":
           {
+            this.memo.save("online", true);
+            this.memo.save("accessToken", dataReceive.data.accessToken);
             this.showUserAccountProfilePage(dataReceive);
             break;
           }
@@ -199,6 +201,10 @@ class ConnectorClient {
           {
             this.showUserAccountProfilePage(dataReceive);
             break;
+          }
+        case "NICKNAME_UPDATED":
+          {
+            this.showNewNickname(dataReceive);
           }
         case "ERROR_EMAIL":
           {
@@ -229,15 +235,23 @@ class ConnectorClient {
     console.log("TEST", dataReceive.data);
     (byId("notify") as HTMLInputElement).innerHTML = dataReceive.data.text;
 
+    this.memo.save("accessToken", dataReceive.data.accessToken);
   }
 
   private verifyRegistration = (event: UniClick) => {
 
     event.preventDefault();
-
+    const accessToken = this.memo.load("accessToken");
     let localPasswordToken: string = (byId("reg-pass") as HTMLInputElement).value;
     let localEmail: string = (byId("reg-user") as HTMLInputElement).value;
-    let localMsg = { action: "REG_VALIDATE", data: { email: localEmail, userRegToken: localPasswordToken } };
+    let localMsg = {
+      action: "REG_VALIDATE",
+      data: {
+        email: localEmail,
+        userRegToken: localPasswordToken,
+        accessToken,
+      },
+    };
     this.sendObject(localMsg);
     localMsg = null;
     localPasswordToken = null;
@@ -266,9 +280,12 @@ class ConnectorClient {
         byId("set-nickname-profile").addEventListener("click", myInstance.setNewNickName, false);
 
         myInstance.memo.save("localUserData", dataReceive.data.user.email);
+        const localToken = encodeString(dataReceive.data.user.email);
+        myInstance.memo.save("localUserDataE", localToken);
 
       });
 
+    this.memo.save("online", true);
   }
 
   private minimizeUIPanel = (e) => {
@@ -350,7 +367,7 @@ class ConnectorClient {
 
   private getUserData = () => {
 
-    const localMsg = { action: "GET_USER_DATA", data: { email: this.memo.load("localUserData") } };
+    const localMsg = { action: "GET_USER_DATA", data: { accessToken: this.memo.load("accessToken") } };
     this.sendObject(localMsg);
 
   }
@@ -369,11 +386,24 @@ class ConnectorClient {
 
   }
 
-  private setNewNickName(e) {
+  private setNewNickName = (e) => {
 
     e.preventDefault();
-    // byId("set-nickname-profile")
+    if (this.memo.load("online") === true) {
+      const localMsg = {
+        action: "NEW_NICKNAME",
+        data: {
+          newNickname: (byId("nick-name") as HTMLInputElement).value,
+          accessToken: this.memo.load("accessToken"),
+        },
+      };
+      this.sendObject(localMsg);
+    }
 
+  }
+
+  private showNewNickname = () => {
+    alert("Nickname field updated successfully.");
   }
 
 }
