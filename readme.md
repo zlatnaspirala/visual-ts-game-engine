@@ -103,20 +103,22 @@ class ClientConfig {
 #### Main dependency file ####
 
 ```typescript
-/**
- * Import global css
- */
-require("./style/styles.css");
 
-import AppIcon from "./app-icon";
-import Platformer from "./examples/platformer/platformer";
-import Ioc from "./libs/ioc";
+const plarformerGameInfo = {
+  name: "Crypto-Runner",
+  title: "PLAY PLATFORMER CRYPTO RUNNER!",
+};
 
-const master = new Ioc();
+const gamesList: any[] = [
+  plarformerGameInfo,
+];
+
+const master = new Ioc(gamesList);
 const appIcon: AppIcon = new AppIcon(master.get.Browser);
-
-// First demo is platformer
 master.singlton(Platformer, master.get.Starter);
+console.warn("Platformer: ", master.get.Platformer);
+
+master.get.Platformer.attachAppEvents();
 
 ```
 
@@ -127,7 +129,7 @@ master.singlton(Platformer, master.get.Starter);
    Main file : app.ts
  - src/libs/ is common and smart pack of classes, interfaces etc.
    easy access.
-
+ - server/ folder is fully indipendent server size.
 
 <pre>
 
@@ -136,6 +138,10 @@ master.singlton(Platformer, master.get.Starter);
 ├── webpack.config.js
 ├── tsconfig.json
 ├── tslint.json
+├── launch.json
+├── workplace.code-workspace
+logo.png
+LICENSE
 ├── build/  (This is auto generated)
 |   ├── imgs/
 |   ├── styles/
@@ -148,7 +154,16 @@ master.singlton(Platformer, master.get.Starter);
 |   ├── libs/
 |   |   ├── class/
 |   |   |   ├── networking/
+|   |   |   |   ├── rtc-multi-connection/
+|   |   |   |   |   ├── FileBufferReader.js
+|   |   |   |   |   ├── RTCMultiConnection2.js
+|   |   |   |   |   ├── RTCMultiConnection3.js
+|   |   |   |   |   ├── linkify.js
+|   |   |   |   ├── connector.ts
+|   |   |   |   ├── network.ts
 |   |   |   ├── visual-methods/
+|   |   |   |   ├── sprite-animation.ts
+|   |   |   |   ├── texture.ts
 |   |   |   ├── browser.ts
 |   |   |   ├── math.ts
 |   |   |   ├── position.ts
@@ -162,6 +177,9 @@ master.singlton(Platformer, master.get.Starter);
 |   |   |   ├── global.ts
 |   |   |   ├── visual-components.ts
 |   |   ├── multiplatform/
+|   |   |   ├── mobile/
+|   |   |   |   ├── player-controls.ts
+|   |   |   ├── global-event.ts
 |   |   ├── types/
 |   |   |   ├── global.ts
 |   |   ├── engine-config.ts
@@ -173,6 +191,9 @@ master.singlton(Platformer, master.get.Starter);
 |   ├── html-components/
 |   |   ├── register.html
 |   |   ├── login.html
+|   |   ├── games-list.html
+|   |   ├── user-profile.html
+|   |   ├── store.html
 |   ├── index.html
 |   ├── app-icon.ts
 |   └── app.ts
@@ -201,28 +222,21 @@ master.singlton(Platformer, master.get.Starter);
 ### Installed database : mongodb@3.1.8 ###
 
 -No typescript here, we need keep state clear no.
-Node.js is best options.
-
-- Not yet commited email support class.
-
- I choose :
-
- ```node
- npm i gmail-send
- ```
+Node.js is best options.For email staff i choose :
+ npm i gmail-send .
 
 -Run services database server (Locally and leave it alive for develop proccess):
 
 ```javascript
-npm run dataserver
+  npm run dataserver
 ```
 
 Looks like this :
  ```node
-mongod --dbpath ./server/database/data
+  mongod --dbpath ./server/database/data
  ```
 
-Fix : "failed: address already in use"
+Fix : "failed: address already in use" :
 
 ```javascript
   netstat -ano | findstr :27017
@@ -232,7 +246,8 @@ Fix : "failed: address already in use"
 
 <b>Also important "Run Visual Studio Code as Administrator".</b>
 
- -Command for kill all node.js procces for window users:
+ -Command for kill all node.js procces for window users :
+ 
 ```node
   taskkill /im node.exe /F
 ```
@@ -240,12 +255,14 @@ Fix : "failed: address already in use"
 
 ### Networking multimedia communication : WebSocketServer running on Node.js ###
 
+ Text-based protocol SIP (Session Initiation Protocol) used for signaling and controlling multimedia sessions.
+
 <b> - Running server is easy : </b>
 
 ```javascript
   npm run rtc
 ```
-
+With this cmd : <i>npm run rtc</i> we run server.js and connector.ts websocket. Connector is our account session used for login , register etc.   
 - Implemented video chat based on webRTC protocol
 
 ## Documentation : ##
@@ -285,12 +302,10 @@ or use :
 ## External licence in this project : ##
 
  <b>- Networking based on :</b> <br/>
- Muaz Khan <br/>
- MIT License www.WebRTC-Experiment.com/licence <br/>
+ Muaz Khan MIT License www.WebRTC-Experiment.com/licence <br/>
 
  <b>- Base physics beased on :</b> <br/>
- Matter.js <br/>
- https://github.com/liabru/matter-js <br/>
+ Matter.js https://github.com/liabru/matter-js <br/>
 
 ## Todo list for 2019 ##
 
@@ -304,5 +319,6 @@ or use :
 
 ## Donate this project ##
 
+<b>Donate with any crypto value</b>
 <a href="https://coingate.com/pay/visual-ts-game-engine" rel="noopener noreferrer nofollow" target="_blank"><img alt="CoinGate Payment Button" src="https://static.coingate.com/images/buttons/4.png" /></a>
  
