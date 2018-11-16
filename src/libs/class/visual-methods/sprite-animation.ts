@@ -10,7 +10,6 @@ import TextureComponent from "./texture";
  */
 
  /*
-
     void ctx.drawImage(image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight);
     JavaScript syntax:	context.drawImage(img,sx,sy,swidth,sheight,x,y,width,height);
     Parameter Values
@@ -25,13 +24,18 @@ import TextureComponent from "./texture";
     width	Optional. The width of the image to use (stretch or reduce the image)
     height	Optional. The height of the image to use (stretch or reduce the image)
   */
+
+/**
+ * Class SpriteTextureComponent extends TextureComponent and override
+ * main method drawComponent. We need to keep tiles system working!
+ */
 class SpriteTextureComponent extends TextureComponent {
 
-  constructor(name: string, imgRes: string | string[]) {
-    super(name, imgRes);
+  private shema: {byX: number, byY: number};
 
-    console.log("TEST1 :::" + this.assets);
-    console.log("TEST2 :::" + this.drawComponent);
+  constructor(name: string, imgRes: string | string[], shema: {byX: number, byY: number}) {
+    super(name, imgRes);
+    this.shema = shema;
   }
 
   // Override func
@@ -54,11 +58,24 @@ class SpriteTextureComponent extends TextureComponent {
 
           c.drawImage(
             this.assets.getImg(),
+            0,
+            0,
+            100,
+            100,
             originX - originW * (x),
             originY - originH * (j),
             originW,
             originH);
 
+          /*
+          ori
+          c.drawImage(
+            this.assets.getImg(),
+            originX - originW * (x),
+            originY - originH * (j),
+            originW,
+            originH)
+            */
         }
       }
     } else {
@@ -72,6 +89,6 @@ class SpriteTextureComponent extends TextureComponent {
     }
 
   }
-  
+
 }
 export default SpriteTextureComponent;

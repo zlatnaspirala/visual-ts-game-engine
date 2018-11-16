@@ -205,6 +205,7 @@ class ConnectorClient {
         case "NICKNAME_UPDATED":
           {
             this.showNewNickname(dataReceive);
+            break;
           }
         case "ERROR_EMAIL":
           {
@@ -382,7 +383,7 @@ class ConnectorClient {
         },
       });
 
-    window.dispatchEvent(appStartGamePlay);
+    (window as any).dispatchEvent(appStartGamePlay);
 
   }
 
@@ -402,7 +403,7 @@ class ConnectorClient {
 
   }
 
-  private showNewNickname = () => {
+  private showNewNickname = (dataReceive) => {
     alert("Nickname field updated successfully.");
   }
 

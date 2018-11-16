@@ -23,9 +23,14 @@ export function level1(r: Platformer): void {
   );
 
   const globalEvent = r.starter.ioc.get.GlobalEvent;
+
   const imgRes = [
     require("../../imgs/floor.png"),
     require("../../imgs/target.png"),
+  ];
+
+  const imgResMyPlayerSprite = [
+    require("../../imgs/walk-boy.png"),
   ];
 
   const playerRadius = 6;
@@ -44,7 +49,7 @@ export function level1(r: Platformer): void {
       mask: 1,
     },
     render: {
-      visualComponent: new SpriteTextureComponent("playerImage", imgRes),
+      visualComponent: new SpriteTextureComponent("playerImage", imgResMyPlayerSprite, {byX:5, byY:2}),
       // wireframes: true,
       fillStyle: "blue",
       sprite: {
