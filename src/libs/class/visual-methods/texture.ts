@@ -11,8 +11,8 @@ class TextureComponent implements IVisualComponent {
 
   public assets: Resources = new Resources();
   public keepAspectRatio: boolean = false;
-  private verticalTiles: number = 1;
-  private horizontalTiles: number = 1;
+  protected verticalTiles: number = 1;
+  protected horizontalTiles: number = 1;
 
   constructor(name: string, imgRes: string | string[]) {
 

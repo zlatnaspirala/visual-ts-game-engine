@@ -7,6 +7,8 @@
 
 ![visualTS](https://github.com/zlatnaspirala/visual-ts/blob/master/logo.png)
 
+## Client part ##
+
 #### To make all dependency works in build proccess we need some plugins. ####
 
 ```javascript
@@ -18,8 +20,6 @@
 ```
 
 <b> Navigate in browser /build/app.html to see client app in action </b>
-
-## Client part ##
 
  -Client part is browser web application. No reloading or redirecting. This is single page
  application. I use html request only for loading local html (register, login etc.).

@@ -31,6 +31,9 @@ class Platformer implements IGamePlayModel {
     this.levelAccess.level1 = level1;
 
     // Load level (in same class for now)
+    if (this.starter.ioc.getConfig().getAutoStartGamePlay()) {
+      this.init("level1");
+    }
     // this.init("level1");
 
   }

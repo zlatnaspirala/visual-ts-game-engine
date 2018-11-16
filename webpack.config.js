@@ -53,23 +53,23 @@ module.exports = {
             template: 'src/index.html'
         }),
         new HtmlWebpackPlugin({
-            filename: '/templates/register.html',
+            filename: 'templates/register.html',
             template: 'src/html-components/register.html'
         }),
         new HtmlWebpackPlugin({
-            filename: '/templates/login.html',
+            filename: 'templates/login.html',
             template: 'src/html-components/login.html'
         }),
         new HtmlWebpackPlugin({
-            filename: '/templates/user-profile.html',
+            filename: 'templates/user-profile.html',
             template: 'src/html-components/user-profile.html'
         }),
         new HtmlWebpackPlugin({
-            filename: '/templates/store.html',
+            filename: 'templates/store.html',
             template: 'src/html-components/store.html'
         }),
         new HtmlWebpackPlugin({
-            filename: '/templates/games-list.html',
+            filename: 'templates/games-list.html',
             template: 'src/html-components/games-list.html'
         }),
         new ExtractTextPlugin("styles.css")

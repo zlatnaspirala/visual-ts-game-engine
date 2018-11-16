@@ -57,6 +57,13 @@ class ClientConfig {
   private startUpHtmlForm: string = "register";
 
   private gameList: any[];
+
+  /**
+   * Implement default gamePlay variable's
+   */
+  private defaultGamePlayLevelName: string = "level1";
+  private autoStartGamePlay: boolean = true;
+
   /**
    * constructor will save interest data for game platform
    */
@@ -67,8 +74,16 @@ class ClientConfig {
 
   }
 
+  public getAutoStartGamePlay() {
+    return this.autoStartGamePlay;
+  }
+
   public getGamesList() {
     return this.gameList;
+  }
+
+  public getDefaultGamePlayLevelName(): string {
+    return this.defaultGamePlayLevelName;
   }
 
   public isAppUseAccountsSystem(): boolean {

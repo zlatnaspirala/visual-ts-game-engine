@@ -1,4 +1,5 @@
 import * as Matter from "matter-js";
+import SpriteTextureComponent from "../../../../libs/class/visual-methods/sprite-animation";
 import TextureComponent from "../../../../libs/class/visual-methods/texture";
 import { worldElement } from "../../../../libs/types/global";
 import Platformer from "../../platformer";
@@ -43,7 +44,7 @@ export function level1(r: Platformer): void {
       mask: 1,
     },
     render: {
-      visualComponent: new TextureComponent("playerImage", imgRes),
+      visualComponent: new SpriteTextureComponent("playerImage", imgRes),
       // wireframes: true,
       fillStyle: "blue",
       sprite: {

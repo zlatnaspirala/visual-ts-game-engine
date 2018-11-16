@@ -61,5 +61,9 @@ class Ioc {
     return new newInstance();
   }
 
+  public getConfig() {
+    return this.config;
+  }
+
 }
 export default Ioc;
