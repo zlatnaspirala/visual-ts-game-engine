@@ -30,10 +30,11 @@ export function level1(r: Platformer): void {
   ];
 
   const imgResMyPlayerSprite = [
-    require("../../imgs/walk-boy.png"),
+    require("../../imgs/walk-boy2.png"),
+    //require("../../imgs/test.jpg"),
   ];
 
-  const playerRadius = 6;
+  const playerRadius = 7;
   r.player = Matter.Bodies.circle(r.v.getWidth(50), r.v.getHeight(30), r.v.getWidth(playerRadius), {
     label: "player",
     density: 0.0005,
@@ -49,17 +50,18 @@ export function level1(r: Platformer): void {
       mask: 1,
     },
     render: {
-      visualComponent: new SpriteTextureComponent("playerImage", imgResMyPlayerSprite, {byX:5, byY:2}),
+      visualComponent: new SpriteTextureComponent("playerImage", imgResMyPlayerSprite, { byX: 5, byY: 2 }),
       // wireframes: true,
       fillStyle: "blue",
       sprite: {
-        xScale: r.v.getHeight(0.1),
-        yScale: r.v.getHeight(0.1),
+        xScale: r.v.getHeight(0.025),
+        yScale: r.v.getHeight(0.05),
         lalala: true,
       },
     } as any,
   } as Matter.IBodyDefinition);
   r.player.collisionFilter.group = -1;
+  r.player.render.visualComponent.keepAspectRatio = true;
   r.player.render.visualComponent.keepAspectRatio = true;
 
   gameMap.getStaticBackgrounds().forEach((item) => {

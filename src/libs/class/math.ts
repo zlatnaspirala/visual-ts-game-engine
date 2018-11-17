@@ -6,8 +6,8 @@ export class Counter {
   private start: number = 0;
   private finish: number = 10;
   private value: number = 0;
-  private delay: number = 200;
-  private delayInitial: number = 200;
+  private delay: number = 100;
+  private delayInitial: number = 100;
   private regimeType: string = "REPEAT";
 
   constructor(start: number, finish: number, step: number, regimeType?: string) {
@@ -20,7 +20,18 @@ export class Counter {
 
   }
 
+  public setDelay(newDelay) {
+    this.delay = newDelay;
+    this.delayInitial = newDelay;
+  }
+
+  public getRawValue(): number {
+    return this.value;
+  }
+
   public getValue(): number {
+
+    if (this.regimeType === "CONST") { return this.value; }
 
     if (this.delay > 0) {
       this.delay--;
@@ -44,6 +55,7 @@ export class Counter {
           case "REPEAT":
             {
               this.value = this.start;
+              this.onRepeat();
               return this.value;
             }
           default:
@@ -78,6 +90,9 @@ export class Counter {
     }
     return 0;
   }
+
+  // tslint:disable-next-line:no-empty
+  public onRepeat = () => { };
 
 }
 

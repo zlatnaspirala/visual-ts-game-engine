@@ -7,6 +7,11 @@ export interface IStaticItem {
 }
 export interface IUniVector { [key: string]: any; }
 
+export interface ISpriteShema {
+  byX: number;
+  byY: number;
+}
+
 export interface IUserRegData {
   email: string;
   password: string;

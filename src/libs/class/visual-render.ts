@@ -56,7 +56,8 @@ class VisualRender {
 
                     c.translate(part.position.x, part.position.y);
                     c.rotate(part.angle);
-                    // () => this.drawSolid(c, part, showInternalEdges, options);
+                    // tslint:disable-next-line:no-unused-expression
+                    () => this.drawSolid(c, part, showInternalEdges, options);
                     if (part.render.visualComponent) {
                         part.render.visualComponent.drawComponent(c, part);
                     }

@@ -18,5 +18,13 @@ class Position {
     return this.viewPort.getHeight(this.y);
   }
 
+  public setX(newX) {
+    this.x = newX;
+  }
+
+  public setY(newY) {
+    this.y = newY;
+  }
+
 }
 export default Position;

@@ -48,7 +48,7 @@ class ClientConfig {
    * appUseAccountsSystem If you don't want to use session
    * in your application just setup this variable to the false.
    */
-  private appUseAccountsSystem: boolean = true;
+  private appUseAccountsSystem: boolean = false;
 
   /**
    * Possible variant by default :

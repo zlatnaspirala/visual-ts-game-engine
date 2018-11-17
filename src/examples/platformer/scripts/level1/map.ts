@@ -19,8 +19,8 @@ class GameMap {
     return [
       { x: 0, y: 0, w: 100, h: 6, tex: imgRes, tiles: 2 },
       { x: 50, y: -20, w: 20, h: 6, tex: imgRes, tiles: 2 },
+      { x: 10, y: 90, w: 90, h: 3, tex: imgRes, tiles: 1 },
       /*
-      { x: 50, y: 90, w: 60, h: 6, tex: imgRes, tiles: 10 },
       { x: 10, y: 10, w: 30, h: 6, tex: imgRes, tiles: 5 },
       { x: 110, y: 30, w: 30, h: 6, tex: imgRes, tiles: 5 },
       { x: 70, y: 60, w: 30, h: 6, tex: imgRes, tiles: 5 },
