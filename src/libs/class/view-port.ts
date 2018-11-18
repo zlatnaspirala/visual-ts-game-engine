@@ -25,7 +25,7 @@ class ViewPort {
 
       this.reperH = function () {
 
-        if ((window as any).innerHeight > (window as any).innerWidth / this.aspectRatio - 200) {
+        if ((window as any).innerHeight > (window as any).innerWidth / this.aspectRatio) {
           return (window as any).innerWidth / this.aspectRatio;
         } else {
           return (window as any).innerHeight;

@@ -7,7 +7,7 @@
  */
 class ClientConfig {
 
-  private drawReference: string = "frame";
+  private drawReference: string = "frame"; // "diametric-fullscreen"; // "frame";
 
   /**
    * aspectRatio default value , can be changed in run time.

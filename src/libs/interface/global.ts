@@ -7,6 +7,11 @@ export interface IStaticItem {
 }
 export interface IUniVector { [key: string]: any; }
 
+export interface ICollectionItem extends IStaticItem {
+  colectionLabel: string;
+  points: number;
+}
+
 export interface ISpriteShema {
   byX: number;
   byY: number;

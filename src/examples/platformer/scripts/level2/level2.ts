@@ -2,7 +2,7 @@ import * as Matter from "matter-js";
 import TextureComponent from "../../../../libs/class/visual-methods/texture";
 import { worldElement } from "../../../../libs/types/global";
 import Platformer from "../../platformer";
-import { playerGroundCheck } from "../common";
+import { collisionCheck } from "../common";
 import GameMap from "./map";
 /**
  * @description Finally game start at here
@@ -135,17 +135,17 @@ export function level1(r: Platformer): void {
 
   // at the start of a colision for player
   Matter.Events.on(r.starter.getEngine(), "collisionStart", function (event) {
-    playerGroundCheck(event, true, r);
+    collisionCheck(event, true, r);
     // touchingPortals(event,portal0,portal1);
     // touchingPortals(event,portal1,portal0);
   });
   // ongoing checks for collisions for player
   Matter.Events.on(r.starter.getEngine(), "collisionActive", function (event) {
-    playerGroundCheck(event, true, r);
+    collisionCheck(event, true, r);
   });
   // at the end of a colision for player set ground to false
   Matter.Events.on(r.starter.getEngine(), "collisionEnd", function (event) {
-    playerGroundCheck(event, false, r);
+    collisionCheck(event, false, r);
     // exitingPortal(event,portal0);
     // exitingPortal(event,portal1);
   });

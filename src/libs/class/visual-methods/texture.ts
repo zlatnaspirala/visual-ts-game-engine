@@ -84,11 +84,11 @@ class TextureComponent implements IVisualComponent {
     return this;
   }
 
-  public setHorizontalFlip(newStatus) {
+  public setHorizontalFlip(newStatus: boolean) {
     this.horizontalFlip = newStatus;
   }
 
-  public setVerticalFlip(newStatus) {
+  public setVerticalFlip(newStatus: boolean) {
     this.verticalFlip = newStatus;
   }
 

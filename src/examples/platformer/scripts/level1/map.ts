@@ -1,4 +1,4 @@
-import { IStaticItem } from "../../../../libs/interface/global";
+import { ICollectionItem, IStaticItem } from "../../../../libs/interface/global";
 import Starter from "../../../../libs/starter";
 
 /**
@@ -17,9 +17,15 @@ class GameMap {
 
     const imgRes = [require("../../imgs/floor.png")];
     return [
-      { x: 0, y: 0, w: 100, h: 6, tex: imgRes, tiles: 2 },
-      { x: 50, y: -20, w: 20, h: 6, tex: imgRes, tiles: 2 },
-      { x: 10, y: 90, w: 90, h: 3, tex: imgRes, tiles: 1 },
+      { x: 20, y: 10, w: 50, h: 6, tex: imgRes, tiles: 2 },
+      { x: 20, y: 40, w: 50, h: 6, tex: imgRes, tiles: 2 },
+      { x: 20, y: 60, w: 150, h: 6, tex: imgRes, tiles: 1 },
+      { x: 40, y: 80, w: 50, h: 6, tex: imgRes, tiles: 2 },
+      { x: 100, y: 80, w: 50, h: 6, tex: imgRes, tiles: 2 },
+      { x: 160, y: 150, w: 150, h: 6, tex: imgRes, tiles: 1 },
+      { x: 170, y: 120, w: 50, h: 6, tex: imgRes, tiles: 2 },
+      { x: 180, y: 60, w: 50, h: 6, tex: imgRes, tiles: 2 },
+      { x: 190, y: 20, w: 150, h: 6, tex: imgRes, tiles: 1 },
       /*
       { x: 10, y: 10, w: 30, h: 6, tex: imgRes, tiles: 5 },
       { x: 110, y: 30, w: 30, h: 6, tex: imgRes, tiles: 5 },
@@ -30,7 +36,7 @@ class GameMap {
 
   public getStaticBackgrounds(): IStaticItem[] {
 
-    const backgroundWall = require("../../imgs/wallStock.jpg");
+    const backgroundWall = require("../../imgs/alu.jpg");
 
     const shema = {
       byX: 3,
@@ -46,7 +52,7 @@ class GameMap {
             y: this.starter.getView().getWidth(y * 10),
             w: this.starter.getView().getWidth(10),
             h: this.starter.getView().getWidth(10),
-            tex: backgroundWall, tiles: 2,
+            tex: backgroundWall, tiles: 1,
             collisionFilter: { category: 1, group: 1, mask: 1 },
           });
       }
@@ -55,13 +61,13 @@ class GameMap {
     return b as IStaticItem[];
   }
 
-  public getCollectitems(): IStaticItem[] {
+  public getCollectitems(): ICollectionItem[] {
     const imgRes = [require("../../imgs/collect-items/bitcoin.png")];
     return [
-      { x: 0, y: -10, w: 5, h: 6, tex: imgRes, tiles: 2 },
-      { x: 50, y: -46, w: 5, h: 6, tex: imgRes, tiles: 1 },
-      { x: 10, y: 80, w: 5, h: 5, tex: imgRes, tiles: 1 },
-    ] as IStaticItem[];
+      { x: 20, y: -20, w: 5, h: 6, tex: imgRes, tiles: 2, colectionLabel: "bitcoin", points: 2 },
+      { x: 50, y: -26, w: 5, h: 6, tex: imgRes, tiles: 1, colectionLabel: "bitcoin", points: 1 },
+      { x: 30, y: 40, w: 5, h: 5, tex: imgRes, tiles: 1, colectionLabel: "bitcoin", points: 1 },
+    ] as ICollectionItem[];
   }
 
 }

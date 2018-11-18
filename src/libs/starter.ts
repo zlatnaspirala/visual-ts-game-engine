@@ -88,7 +88,7 @@ class Starter {
     // create runner
     this.runner = Runner.create({
       delta: 1000 / 60,
-      isFixed: false,
+      isFixed: true,
     });
     Runner.run(this.runner, this.engine);
 

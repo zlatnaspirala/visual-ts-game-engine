@@ -3,7 +3,7 @@ import SpriteTextureComponent from "../../../../libs/class/visual-methods/sprite
 import TextureComponent from "../../../../libs/class/visual-methods/texture";
 import { worldElement } from "../../../../libs/types/global";
 import Platformer from "../../platformer";
-import { playerGroundCheck } from "../common";
+import { collisionCheck } from "../common";
 import GameMap from "./map";
 /**
  * @description Finally game start at here
@@ -129,11 +129,11 @@ export function level1(r: Platformer): void {
       r.v.getWidth(item.w),
       r.v.getHeight(item.h),
       {
-        isStatic: false,
-        label: "collect-item",
+        isStatic: true,
+        label: item.colectionLabel,
         collisionFilter: {
           category: 1,
-          group: 1,
+          group: 0,
           mask: 1,
         },
         render: {
@@ -170,19 +170,17 @@ export function level1(r: Platformer): void {
 
   // at the start of a colision for player
   Matter.Events.on(r.starter.getEngine(), "collisionStart", function (event) {
-    playerGroundCheck(event, true, r);
-    // touchingPortals(event,portal0,portal1);
-    // touchingPortals(event,portal1,portal0);
+    collisionCheck(event, true, r);
   });
+
   // ongoing checks for collisions for player
   Matter.Events.on(r.starter.getEngine(), "collisionActive", function (event) {
-    playerGroundCheck(event, true, r);
+    collisionCheck(event, true, r);
   });
+
   // at the end of a colision for player set ground to false
   Matter.Events.on(r.starter.getEngine(), "collisionEnd", function (event) {
-    playerGroundCheck(event, false, r);
-    // exitingPortal(event,portal0);
-    // exitingPortal(event,portal1);
+    collisionCheck(event, false, r);
   });
 
   Matter.Events.on(r.starter.getEngine(), "afterTick", function (event) {
@@ -191,19 +189,18 @@ export function level1(r: Platformer): void {
     if (globalEvent.activeKey[38] && r.player.ground) {
 
       r.player.ground = false;
-
-      // r.player.jumpCD = game.cycle + 1; //adds a cooldown to jump
       r.player.force = {
         x: 0,
-        y: -0.05,
+        y: -(r.starter.getView().getHeight(0.03)),
       };
       Matter.Body.applyForce(r.player, { x: r.player.position.x, y: r.player.position.y }, r.player.force);
+
 
     } else if (globalEvent.activeKey[37] && r.player.angularVelocity > -limit) {
 
       r.player.render.visualComponent.setHorizontalFlip(false);
       r.player.force = {
-        x: -0.001,
+        x: -r.starter.getView().getHeight(0.001),
         y: 0,
       };
       Matter.Body.applyForce(r.player, { x: r.player.position.x, y: r.player.position.y }, r.player.force);
@@ -212,7 +209,7 @@ export function level1(r: Platformer): void {
 
       r.player.render.visualComponent.setHorizontalFlip(true);
       r.player.force = {
-        x: 0.001,
+        x: r.starter.getView().getHeight(0.001),
         y: 0,
       };
       Matter.Body.applyForce(r.player, { x: r.player.position.x, y: r.player.position.y }, r.player.force);
@@ -229,7 +226,7 @@ export function level1(r: Platformer): void {
     // ctx.translate(window.innerWidth / 25, window.innerHeight / 25);
     // ctx.scale(this.zoom, this.zoom);
     // ctx.translate(-window.innerWidth / 25, -window.innerHeight / 25);
-
+    // console.log("XXX", r.player.position.y);
   });
 
 }
