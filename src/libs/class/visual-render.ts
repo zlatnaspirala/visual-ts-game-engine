@@ -1,7 +1,8 @@
 import { Render } from "matter-js";
 
 /**
- * @description Override method for matter-js render
+ * @description Override method for matter-js render. This is most importan part
+ * of this project. Must be improved.
  * @class VisualRender
  */
 class VisualRender {
@@ -48,11 +49,12 @@ class VisualRender {
                     c.globalAlpha = part.render.opacity;
                 }
 
-                if (part.render.sprite && part.render.visualComponent && !options.wireframes) {
+                // debug line - remove on prod
+                if (part.render.wireframes === true) {
+                    this.drawSolid(c, part, showInternalEdges, options);
+                }
 
-                    // part sprite
-                    // const sprite = part.render.sprite;
-                    // const texture = part.render.visualComponent.assets.getImg("tex0");
+                if (part.render.sprite && part.render.visualComponent && !options.wireframes) {
 
                     c.translate(part.position.x, part.position.y);
                     c.rotate(part.angle);
@@ -61,20 +63,9 @@ class VisualRender {
                     if (part.render.visualComponent) {
                         part.render.visualComponent.drawComponent(c, part);
                     }
-
-                    /**
-                     * else {  c.drawImage(
-                     * texture,
-                     * texture.width * -sprite.xOffset * sprite.xScale,
-                     * texture.height * -sprite.yOffset * sprite.yScale,
-                     * exture.width * sprite.xScale,
-                     * texture.height * sprite.yScale);
-                     * }
-                     */
-
-                    // revert translation, hopefully faster than save / restore
                     c.rotate(-part.angle);
                     c.translate(-part.position.x, -part.position.y);
+
                 } else {
 
                     this.drawSolid(c, part, showInternalEdges, options);
@@ -89,22 +80,15 @@ class VisualRender {
     private getTexture(render, imagePath): HTMLImageElement {
 
         let image = render.textures[imagePath];
-
-        if (image) {
-            return image;
-        }
-        // console.log(".................");
+        if (image) { return image; }
         image = render.textures[imagePath] = new Image();
         image.src = imagePath;
-
         return image;
 
     }
 
-    // Draw solid
     private drawSolid(c, part, showInternalEdges, options) {
 
-        // part polygon
         if (part.circleRadius) {
             c.beginPath();
             c.arc(part.position.x, part.position.y, part.circleRadius, 0, 2 * Math.PI);

@@ -14,6 +14,9 @@ class TextureComponent implements IVisualComponent {
   protected verticalTiles: number = 1;
   protected horizontalTiles: number = 1;
 
+  protected horizontalFlip: boolean = false;
+  protected verticalFlip: boolean = false;
+
   constructor(name: string, imgRes: string | string[]) {
 
     if (name === undefined) {
@@ -75,9 +78,18 @@ class TextureComponent implements IVisualComponent {
     this.verticalTiles = newVerticalTiles;
     return this;
   }
+
   public setHorizontalTiles(newHorinzontalTiles: number) {
     this.horizontalTiles = newHorinzontalTiles;
     return this;
+  }
+
+  public setHorizontalFlip(newStatus) {
+    this.horizontalFlip = newStatus;
+  }
+
+  public setVerticalFlip(newStatus) {
+    this.verticalFlip = newStatus;
   }
 
 }

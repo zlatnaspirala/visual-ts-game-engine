@@ -13,6 +13,7 @@ import GameMap from "./map";
 
 export function level1(r: Platformer): void {
 
+  const globalEvent = r.starter.ioc.get.GlobalEvent;
   const gameMap = new GameMap(r.starter);
 
   r.starter.setWorldBounds(
@@ -22,8 +23,6 @@ export function level1(r: Platformer): void {
     r.starter.getView().getWidth(100) * 3,
   );
 
-  const globalEvent = r.starter.ioc.get.GlobalEvent;
-
   const imgRes = [
     require("../../imgs/floor.png"),
     require("../../imgs/target.png"),
@@ -31,10 +30,9 @@ export function level1(r: Platformer): void {
 
   const imgResMyPlayerSprite = [
     require("../../imgs/walk-boy2.png"),
-    //require("../../imgs/test.jpg"),
   ];
 
-  const playerRadius = 7;
+  const playerRadius = 5;
   r.player = Matter.Bodies.circle(r.v.getWidth(50), r.v.getHeight(30), r.v.getWidth(playerRadius), {
     label: "player",
     density: 0.0005,
@@ -54,15 +52,14 @@ export function level1(r: Platformer): void {
       // wireframes: true,
       fillStyle: "blue",
       sprite: {
-        xScale: r.v.getHeight(0.025),
-        yScale: r.v.getHeight(0.05),
-        lalala: true,
+        xScale: 1,
+        yScale: 1,
       },
     } as any,
   } as Matter.IBodyDefinition);
   r.player.collisionFilter.group = -1;
   r.player.render.visualComponent.keepAspectRatio = true;
-  r.player.render.visualComponent.keepAspectRatio = true;
+  r.player.render.visualComponent.setHorizontalFlip(true);
 
   gameMap.getStaticBackgrounds().forEach((item) => {
 
@@ -174,6 +171,7 @@ export function level1(r: Platformer): void {
 
     } else if (globalEvent.activeKey[37] && r.player.angularVelocity > -limit) {
 
+      r.player.render.visualComponent.setHorizontalFlip(false);
       r.player.force = {
         x: -0.001,
         y: 0,
@@ -182,6 +180,7 @@ export function level1(r: Platformer): void {
 
     } else if (globalEvent.activeKey[39] && r.player.angularVelocity < limit) {
 
+      r.player.render.visualComponent.setHorizontalFlip(true);
       r.player.force = {
         x: 0.001,
         y: 0,

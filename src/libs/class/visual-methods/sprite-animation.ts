@@ -32,11 +32,15 @@ import TextureComponent from "./texture";
  */
 class SpriteTextureComponent extends TextureComponent {
 
+  // Override - TextureComponent
+  public keepAspectRatio: boolean = true;
+
   private shema: { byX: number, byY: number };
   private seqFrameX: Counter;
   private seqFrameY: Counter;
 
   constructor(name: string, imgRes: string | string[], shema: ISpriteShema) {
+
     super(name, imgRes);
     this.shema = shema;
     const localSumX = shema.byX - 1;
@@ -46,58 +50,43 @@ class SpriteTextureComponent extends TextureComponent {
     this.seqFrameX.setDelay(20);
     this.seqFrameY.onRepeat = this.nextColumn;
     this.seqFrameX.onRepeat = this.nextRow;
+
   }
 
   // Override func
   public drawComponent(c: CanvasRenderingContext2D, part: any): void {
 
     // if (part.vertices.length === 4) {
-    if (this.keepAspectRatio === false) {
+    if (this.keepAspectRatio === true) {
 
-      const dist1 = getDistance(part.vertices[0], part.vertices[1]);
-      const dist2 = getDistance(part.vertices[0], part.vertices[3]);
+      const dist2 = getDistance(part.vertices[part.vertices.length / 2], part.vertices[part.vertices.length - 1]);
+      const dist1 = getDistance(part.vertices[0], part.vertices[part.vertices.length / 2 - 1]);
+      const originW = dist1 / this.verticalTiles * part.render.sprite.xScale;
+      const originH = dist2 / this.horizontalTiles * part.render.sprite.yScale;
       let originX = dist1 * -part.render.sprite.xOffset * part.render.sprite.xScale;
       let originY = dist2 * -part.render.sprite.yOffset * part.render.sprite.yScale;
-      const originW = dist1 / this.verticalTiles;
-      const originH = dist2 / this.horizontalTiles;
       originX = originX / this.verticalTiles - originW / 2;
       originY = originY / this.horizontalTiles - originH / 2;
 
       for (let x = -this.verticalTiles / 2; x < this.verticalTiles / 2; x++) {
         for (let j = -this.horizontalTiles / 2; j < this.horizontalTiles / 2; j++) {
 
-          c.drawImage(
-            this.assets.getImg(),
-            0,
-            0,
-            12,
-            12,
-            originX - originW * (x),
-            originY - originH * (j),
-            originW,
-            originH);
+          const sx = this.seqFrameX.getValue() * this.assets.getImg().width / this.shema.byX;
+          const sy = this.seqFrameY.getRawValue() * this.assets.getImg().height / this.shema.byY;
+          const sw = (this.assets.getImg().width) / this.shema.byX;
+          const sh = (this.assets.getImg().height) / this.shema.byY;
+          const dx = originX - originW * (x);
+          const dy = originY - originH * (j);
+          const dw = originW;
+          const dh = originH;
 
-          /*
-          ori
-          c.drawImage(
-            this.assets.getImg(),
-            originX - originW * (x),
-            originY - originH * (j),
-            originW,
-            originH)
-            */
+          this.flipImage(this.assets.getImg(), c, sx, sy, sw, sh, dx, dy, dw, dh, this.horizontalFlip, this.verticalFlip);
+          // c.drawImage(this.assets.getImg(), sx, sy, sw, sh, dx, dy, dw, dh);
+
         }
+
       }
     } else {
-
-      /**
-       *  c.drawImage(
-       *  this.assets.getImg(),
-       *  this.assets.getImg().width * -part.render.sprite.xOffset * part.render.sprite.xScale,
-       *  this.assets.getImg().height * -part.render.sprite.yOffset * part.render.sprite.yScale,
-       *  this.assets.getImg().width * part.render.sprite.xScale,
-       *  this.assets.getImg().height * part.render.sprite.yScale);
-       */
 
       const sx = this.seqFrameX.getValue() * this.assets.getImg().width / this.shema.byX;
       const sy = this.seqFrameY.getRawValue() * this.assets.getImg().height / this.shema.byY;
@@ -121,6 +110,15 @@ class SpriteTextureComponent extends TextureComponent {
 
   private nextColumn() {
     // test
+  }
+
+  private flipImage(image, ctx, sx, sy, sw, sh, dx, dy, dw, dh, flipH, flipV) {
+    const scaleH = flipH ? -1 : 1, scaleV = flipV ? -1 : 1;
+    ctx.save();
+    ctx.scale(scaleH, scaleV);
+    ctx.drawImage(
+      this.assets.getImg(), sx, sy, sw, sh, dx, dy, dw, dh);
+    ctx.restore();
   }
 
 }

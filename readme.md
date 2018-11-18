@@ -247,7 +247,7 @@ Fix : "failed: address already in use" :
 <b>Also important "Run Visual Studio Code as Administrator".</b>
 
  -Command for kill all node.js procces for window users :
- 
+
 ```node
   taskkill /im node.exe /F
 ```
@@ -262,7 +262,7 @@ Fix : "failed: address already in use" :
 ```javascript
   npm run rtc
 ```
-With this cmd : <i>npm run rtc</i> we run server.js and connector.ts websocket. Connector is our account session used for login , register etc.   
+With this cmd : <i>npm run rtc</i> we run server.js and connector.ts websocket. Connector is our account session used for login , register etc.
 - Implemented video chat based on webRTC protocol
 
 ## Documentation : ##
@@ -307,6 +307,9 @@ or use :
  <b>- Base physics beased on :</b> <br/>
  Matter.js https://github.com/liabru/matter-js <br/>
 
+ <b>Crypto icons downloaded from :</b>
+ https://www.behance.net/JunikStudio
+
 ## Todo list for 2019 ##
 
   <b>I'am still far a away from project objective :</b>
@@ -321,4 +324,4 @@ or use :
 
 <b>Donate with any crypto value</b>
 <a href="https://coingate.com/pay/visual-ts-game-engine" rel="noopener noreferrer nofollow" target="_blank"><img alt="CoinGate Payment Button" src="https://static.coingate.com/images/buttons/4.png" /></a>
- 
+

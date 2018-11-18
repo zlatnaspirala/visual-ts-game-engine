@@ -8,6 +8,7 @@ class Network {
 
   private rtcMultiConnection: any;
   private engineConfig: any;
+  private popupUI: HTMLDivElement;
   private loggerUI: HTMLDivElement;
   private webCamView: HTMLDivElement;
   private numbersOfUsers: number = 0;
@@ -30,6 +31,8 @@ class Network {
     if (this.engineConfig.isAppUseAccountsSystem()) {
       this.connector = new ConnectorClient(config);
       // this.connector.showRegisterForm();
+      this.popupUI = (byId("popup") as HTMLDivElement);
+      this.popupUI.style.display = "block";
     }
 
     this.loggerUI = byId("network-panel") as HTMLDivElement;
