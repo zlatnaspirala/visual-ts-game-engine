@@ -121,6 +121,36 @@ export function level1(r: Platformer): void {
 
   });
 
+  gameMap.getCollectitems().forEach((item) => {
+
+    const newStaticElement: worldElement = Matter.Bodies.rectangle(
+      r.v.getWidth(item.x),
+      r.v.getHeight(item.y),
+      r.v.getWidth(item.w),
+      r.v.getHeight(item.h),
+      {
+        isStatic: false,
+        label: "collect-item",
+        collisionFilter: {
+          category: 1,
+          group: 1,
+          mask: 1,
+        },
+        render: {
+          visualComponent: new TextureComponent("imgCollectItem", item.tex),
+          sprite: {
+            olala: true,
+          },
+        } as any | Matter.IBodyRenderOptions,
+      });
+    // newStaticElement.collisionFilter.group = -1;
+    r.grounds.push(newStaticElement);
+
+    ((r.grounds[r.grounds.length - 1] as Matter.Body).render as any).visualComponent.setVerticalTiles(item.tiles).
+      setHorizontalTiles(item.tiles);
+
+  });
+
   r.starter.AddNewBodies(r.grounds as worldElement);
   r.starter.AddNewBodies(r.player as worldElement);
 

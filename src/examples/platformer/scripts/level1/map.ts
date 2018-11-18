@@ -55,5 +55,14 @@ class GameMap {
     return b as IStaticItem[];
   }
 
+  public getCollectitems(): IStaticItem[] {
+    const imgRes = [require("../../imgs/collect-items/bitcoin.png")];
+    return [
+      { x: 0, y: -10, w: 5, h: 6, tex: imgRes, tiles: 2 },
+      { x: 50, y: -46, w: 5, h: 6, tex: imgRes, tiles: 1 },
+      { x: 10, y: 80, w: 5, h: 5, tex: imgRes, tiles: 1 },
+    ] as IStaticItem[];
+  }
+
 }
 export default GameMap;

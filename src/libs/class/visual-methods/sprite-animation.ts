@@ -5,30 +5,27 @@ import Resources from "../resources";
 import TextureComponent from "./texture";
 
 /**
- * Objective :
- * new instance - bind
- * store and manipulate with image data!
- */
-
-/*
-   void ctx.drawImage(image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight);
-   JavaScript syntax:	context.drawImage(img,sx,sy,swidth,sheight,x,y,width,height);
-   Parameter Values
-   Parameter	Description	Play it
-   img	Specifies the image, canvas, or video element to use
-   sx	Optional. The x coordinate where to start clipping
-   sy	Optional. The y coordinate where to start clipping
-   swidth	Optional. The width of the clipped image
-   sheight	Optional. The height of the clipped image
-   x	The x coordinate where to place the image on the canvas
-   y	The y coordinate where to place the image on the canvas
-   width	Optional. The width of the image to use (stretch or reduce the image)
-   height	Optional. The height of the image to use (stretch or reduce the image)
- */
-
-/**
  * Class SpriteTextureComponent extends TextureComponent and override
  * main method drawComponent. We need to keep tiles system working!
+ * Objective :
+ * Store and manipulate with image texture data.
+ * Render element
+ * Tile
+ * flip
+ *
+ * void ctx.drawImage(image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight);
+ * JavaScript syntax: context.drawImage(img,sx,sy,swidth,sheight,x,y,width,height);
+ * Parameter Values
+ * Parameter Description Play it
+ * img Specifies the image, canvas, or video element to use
+ * sx Optional. The x coordinate where to start clipping
+ * sy Optional. The y coordinate where to start clipping
+ * swidth	Optional. The width of the clipped image
+ * sheight Optional. The height of the clipped image
+ * x The x coordinate where to place the image on the canvas
+ * y The y coordinate where to place the image on the canvas
+ * width Optional. The width of the image to use (stretch or reduce the image)
+ * height Optional. The height of the image to use (stretch or reduce the image)
  */
 class SpriteTextureComponent extends TextureComponent {
 
