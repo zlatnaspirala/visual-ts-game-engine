@@ -36,7 +36,7 @@ class GameMap {
 
   public getStaticBackgrounds(): IStaticItem[] {
 
-    const backgroundWall = require("../../imgs/alu.jpg");
+    const backgroundWall = require("../../imgs/wall2.jpg");
 
     const shema = {
       byX: 3,
