@@ -127,7 +127,7 @@ class Starter {
       this.view.setCanvasHeight("100vh");
       console.warn("diametric-fullscreen view constructed");
     }
-
+    this.view.initCanvasDom();
     // console.log(this.engine.bounds);
 
     this.mapView = {

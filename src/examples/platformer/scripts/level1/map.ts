@@ -36,8 +36,7 @@ class GameMap {
 
   public getStaticBackgrounds(): IStaticItem[] {
 
-    const backgroundWall = require("../../imgs/alu.jpg");
-
+    const backgroundWall = require("../../imgs/wallStock.jpg");
     const shema = {
       byX: 3,
       byY: 3,
@@ -45,7 +44,6 @@ class GameMap {
     const b: IStaticItem[] = [];
     for (let x = 0; x < shema.byX; x++) {
       for (let y = 0; y < shema.byY; y++) {
-
         b.push(
           {
             x: this.starter.getView().getWidth(x * 10),
@@ -64,8 +62,10 @@ class GameMap {
   public getCollectitems(): ICollectionItem[] {
     const imgRes = [require("../../imgs/collect-items/bitcoin.png")];
     return [
-      { x: 20, y: -20, w: 5, h: 6, tex: imgRes, tiles: 2, colectionLabel: "bitcoin", points: 2 },
-      { x: 50, y: -26, w: 5, h: 6, tex: imgRes, tiles: 1, colectionLabel: "bitcoin", points: 1 },
+      { x: 20, y: 10, w: 5, h: 6, tex: imgRes, tiles: 2, colectionLabel: "bitcoin", points: 2 },
+      { x: 50, y: 16, w: 5, h: 6, tex: imgRes, tiles: 1, colectionLabel: "bitcoin", points: 1 },
+      { x: 10, y: 40, w: 5, h: 5, tex: imgRes, tiles: 1, colectionLabel: "bitcoin", points: 1 },
+      { x: 20, y: 40, w: 5, h: 5, tex: imgRes, tiles: 1, colectionLabel: "bitcoin", points: 1 },
       { x: 30, y: 40, w: 5, h: 5, tex: imgRes, tiles: 1, colectionLabel: "bitcoin", points: 1 },
     ] as ICollectionItem[];
   }

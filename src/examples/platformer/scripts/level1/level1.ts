@@ -188,13 +188,14 @@ export function level1(r: Platformer): void {
     // jump
     if (globalEvent.activeKey[38] && r.player.ground) {
 
+      const s = Math.log(r.starter.getView().getCanvasWidth()) / 100;
       r.player.ground = false;
       r.player.force = {
         x: 0,
-        y: -(r.starter.getView().getHeight(0.03)),
+        y: -(s),
       };
       Matter.Body.applyForce(r.player, { x: r.player.position.x, y: r.player.position.y }, r.player.force);
-
+      console.log("test", s);
 
     } else if (globalEvent.activeKey[37] && r.player.angularVelocity > -limit) {
 

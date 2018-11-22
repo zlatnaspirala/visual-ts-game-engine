@@ -44,6 +44,11 @@ class ViewPort {
 
   }
 
+  public initCanvasDom() {
+    // important, first canvas for now only
+    this.canvasDom = document.getElementsByTagName("canvas")[0];
+  }
+
   public getWidth(percente: number): number {
 
     return this.reperW() / 100 * percente;
@@ -62,10 +67,17 @@ class ViewPort {
 
   }
 
+  public getCanvasWidth() {
+    return document.getElementsByTagName("canvas")[0].clientWidth;
+  }
+
+  public getCanvasHeight() {
+    return document.getElementsByTagName("canvas")[0].clientHeight;
+  }
+
   public setCanvasWidth(width: string) {
 
     let canvasCss;
-    this.canvasDom = document.getElementsByTagName("canvas");
     canvasCss = this.canvasDom[0].style;
     canvasCss.width = width;
 
@@ -74,10 +86,8 @@ class ViewPort {
   public setCanvasHeight(height: string) {
 
     let canvasCss;
-    this.canvasDom = document.getElementsByTagName("canvas");
     canvasCss = this.canvasDom[0].style;
     canvasCss.height = height;
-    // console.log(canvasCss.height);
 
   }
 }
