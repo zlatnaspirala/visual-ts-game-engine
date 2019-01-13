@@ -79,7 +79,7 @@ class Starter {
 
     this.setWorldBounds(-this.view.getWidth(100),
       -this.view.getWidth(100),
-      this.view.getWidth(100), 3000);
+      this.view.getWidth(100), 3 * this.view.getHeight(100));
 
     this.render.options.background = "black";
 
@@ -87,7 +87,7 @@ class Starter {
 
     // create runner
     this.runner = Runner.create({
-      delta: 1000 / 120,
+      delta: 1000 / 60,
       isFixed: true,
     });
     Runner.run(this.runner, this.engine);
