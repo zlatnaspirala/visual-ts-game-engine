@@ -1,31 +1,28 @@
+import ClientConfig from "../client-config";
 
 class ViewPort {
 
-  public drawRefference: string;
+  public config: ClientConfig;
 
   private canvasDom;
   private reperW: any;
   private reperH: any;
   private aspectRatio: number = 1.333;
 
-  constructor(viewPortType) {
+  constructor(config: ClientConfig) {
 
-    this.drawRefference = viewPortType;
-    if (viewPortType === "diametric-fullscreen") {
+    this.config = config;
+    if (this.config.getDrawRefference() === "diametric-fullscreen") {
       this.reperH = function () {
         return (window as any).innerHeight;
       };
       this.reperW = function () {
-
         return (window as any).innerWidth;
-
       };
 
-    } else if (viewPortType === "frame") {
-
+    } else if (this.config.getDrawRefference() === "frame") {
       this.reperH = function () {
-
-        if ((window as any).innerHeight > (window as any).innerWidth / this.aspectRatio) {
+        if ((window as any).innerHeight >= (window as any).innerWidth / this.aspectRatio) {
           return (window as any).innerWidth / this.aspectRatio;
         } else {
           return (window as any).innerHeight;
@@ -33,8 +30,7 @@ class ViewPort {
 
       };
       this.reperW = function () {
-
-        if ((window as any).innerWidth > (window as any).innerHeight * this.aspectRatio) {
+        if ((window as any).innerWidth >= (window as any).innerHeight * this.aspectRatio) {
           return (window as any).innerHeight * this.aspectRatio;
         } else {
           return (window as any).innerWidth;

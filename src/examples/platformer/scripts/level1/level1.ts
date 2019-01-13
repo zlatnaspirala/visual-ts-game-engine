@@ -19,8 +19,8 @@ export function level1(r: Platformer): void {
   r.starter.setWorldBounds(
     -r.starter.getView().getWidth(100),
     -r.starter.getView().getWidth(100),
-    r.starter.getView().getWidth(100) * 3,
-    r.starter.getView().getWidth(100) * 3,
+    r.starter.getView().getHeight(100) * 3,
+    r.starter.getView().getHeight(100) * 3,
   );
 
   const imgRes = [
@@ -188,20 +188,21 @@ export function level1(r: Platformer): void {
     // jump
     if (globalEvent.activeKey[38] && r.player.ground) {
 
-      const s = Math.log(r.starter.getView().getCanvasWidth()) / 100;
+      const s = (r.player.circleRadius / 500);
       r.player.ground = false;
       r.player.force = {
         x: 0,
         y: -(s),
       };
-      Matter.Body.applyForce(r.player, { x: r.player.position.x, y: r.player.position.y }, r.player.force);
+      // Matter.Body.applyForce(r.player, { x: r.player.position.x, y: r.player.position.y }, r.player.force);
+      Matter.Body.setVelocity(r.player, { x: 0, y: -s });
       console.log("test", s);
 
     } else if (globalEvent.activeKey[37] && r.player.angularVelocity > -limit) {
 
       r.player.render.visualComponent.setHorizontalFlip(false);
       r.player.force = {
-        x: -r.starter.getView().getHeight(0.001),
+        x: -r.starter.getView().getHeight(0.0005),
         y: 0,
       };
       Matter.Body.applyForce(r.player, { x: r.player.position.x, y: r.player.position.y }, r.player.force);
@@ -210,7 +211,7 @@ export function level1(r: Platformer): void {
 
       r.player.render.visualComponent.setHorizontalFlip(true);
       r.player.force = {
-        x: r.starter.getView().getHeight(0.001),
+        x: r.starter.getView().getHeight(0.0005),
         y: 0,
       };
       Matter.Body.applyForce(r.player, { x: r.player.position.x, y: r.player.position.y }, r.player.force);

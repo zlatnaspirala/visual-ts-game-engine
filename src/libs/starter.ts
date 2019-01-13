@@ -87,7 +87,7 @@ class Starter {
 
     // create runner
     this.runner = Runner.create({
-      delta: 1000 / 60,
+      delta: 1000 / 120,
       isFixed: true,
     });
     Runner.run(this.runner, this.engine);
@@ -122,7 +122,7 @@ class Starter {
       },
     });
 
-    if (this.view.drawRefference === "diametric-fullscreen") {
+    if (this.view.config.getDrawRefference() === "diametric-fullscreen") {
       this.view.setCanvasWidth("100vw");
       this.view.setCanvasHeight("100vh");
       console.warn("diametric-fullscreen view constructed");
@@ -200,9 +200,8 @@ class Starter {
   public setWorldBounds(minX: number, minY: number, maxX: number, maxY: number) {
     this.world.bounds.min.x = minX;
     this.world.bounds.min.y = minY;
-    this.world.bounds.max.x = maxX + minX;
+    this.world.bounds.max.x = maxX;
     this.world.bounds.max.y = maxY;
-
   }
 
   public destroyGamePlay() {

@@ -207,15 +207,11 @@ class Connector {
 
   onRegValidationResponse(result, userEmail, accessToken) {
 
-    // const userId = shared.formatUserKeyLiteral(userEmail);
-
     if (result == null) {
-
       let msg = { action: "ERROR_EMAIL", data: { errMsg: "ERR: WRONG CODE!" } };
       msg = JSON.stringify(msg);
       this.userSockCollection[accessToken].send(msg);
       console.log("onRegValidationResponse .", this);
-
     } else {
       // VERIFIED
       let msg = { action: "VERIFY_SUCCESS", data: { text: "VERIFY SUCCESS! PLEASE LOGIN " } };
@@ -227,11 +223,8 @@ class Connector {
   }
 
   serverHandlerLoginValidation(login) {
-
     const user = { email: login.data.userLoginData.email, password: login.data.userLoginData.password };
     shared.myBase.database.loginUser(user, shared.myBase);
-    // /onUserLogin
-
   }
 
   onUserLogin(user, callerInstance) {
@@ -252,7 +245,6 @@ class Connector {
     } catch (err) {
       console.log("Connector.serverHandlerGetUserData error : ", err);
     }
-
   }
 
   onUserData(user, callerInstance) {

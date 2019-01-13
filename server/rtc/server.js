@@ -136,6 +136,7 @@ function truncateChannels(websocket) {
   }
 }
 
-console.warn("##########################################################################");
-console.warn("# MultiRtc 2.2 vs session controller ver 0.1 Created by Nikola Lukic.....#");
-console.warn("##########################################################################");
+console.warn("#################");
+console.warn("#.MultiRtc.2.2..#");
+console.warn("#.supported.....#");
+console.warn("#################");
