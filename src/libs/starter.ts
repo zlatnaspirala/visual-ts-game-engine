@@ -88,10 +88,11 @@ class Starter {
     // create runner
     this.runner = Runner.create({
       delta: 1000 / 60,
-      isFixed: true,
+      isFixed: false,
     });
     Runner.run(this.runner, this.engine);
 
+    console.log("xxx");
     // add mouse control
     const mouse = Mouse.create(this.render.canvas);
 

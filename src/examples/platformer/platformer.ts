@@ -9,7 +9,7 @@ import { level1 } from "./scripts/level1/level1";
  * @param Starter
  * @description This is game logic part
  * we stil use class based methodology.
- * About resource we use require
+ * About resource we use requir
  */
 
 class Platformer implements IGamePlayModel {

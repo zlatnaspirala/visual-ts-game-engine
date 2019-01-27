@@ -7,6 +7,7 @@ import ClientConfig from "./client-config";
 import { IUniVector } from "./interface/global";
 import GlobalEvent from "./multiplatform/global-event";
 import Starter from "./starter";
+import Broadcaster from "./class/networking/broadcaster";
 
 /**
  * Ioc is main dependency controller class.
@@ -36,6 +37,7 @@ class Ioc {
     this.singlton(GlobalEvent, this.get.Browser);
     this.singlton(VisualRender, undefined);
     this.singlton(Network, this.config);
+    this.singlton(Broadcaster, this.config);
     this.singlton(Starter, this);
   }
 

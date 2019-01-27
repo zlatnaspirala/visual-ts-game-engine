@@ -2,16 +2,17 @@
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const CopyWebpackPlugin = require('copy-webpack-plugin')
 const TypedocWebpackPlugin = require('typedoc-webpack-plugin');
 
 module.exports = {
     mode: "development", // "development",
     watch: true,
-    entry: "./src/app.ts",
+    entry: ["./src/app.ts"],
     output: {
-        filename: "visualjs2.js",
+        filename: "beta.js",
         path: __dirname + "/build",
-        chunkFilename: '[name].chunk.js',
+        // chunkFilename: '[name].beta.js',
     },
 
     devtool: "none",
@@ -72,7 +73,21 @@ module.exports = {
             filename: 'templates/games-list.html',
             template: 'src/html-components/games-list.html'
         }),
-        new ExtractTextPlugin("styles.css")
+        new HtmlWebpackPlugin({
+            filename: 'templates/video-conference.html',
+            template: 'src/html-components/video-conference.html'
+        }),
+        new HtmlWebpackPlugin({
+            filename: 'templates/broadcaster.html',
+            template: 'src/html-components/broadcaster.html'
+        }),
+        new ExtractTextPlugin("styles.css"),
+        new CopyWebpackPlugin([
+            { from: 'src/externals/bootstrap.min.js', to: 'externals/bootstrap.min.js' },
+            { from: 'src/externals/jquery-3.3.1.slim.min.js', to: 'externals/jquery-3.3.1.slim.min.js' },
+            { from: 'src/style/bootstrap.css', to: 'styles/bootstrap.min.css' },
+            { from: 'src/style/getHTMLMediaElement.css', to: 'styles/getHTMLMediaElement.css' },
+        ], { debug: 'info' })
     ],
     /*
     new TypedocWebpackPlugin({
@@ -103,14 +118,15 @@ module.exports = {
         "react-dom": "ReactDOM"
     },
  */
+
     optimization: {
         splitChunks: {
             chunks: 'async',
             minSize: 30,
             maxSize: 240000,
-            minChunks: 2,
-            maxAsyncRequests: 5,
-            maxInitialRequests: 3,
+            minChunks: 4,
+            maxAsyncRequests: 6,
+            maxInitialRequests: 4,
             automaticNameDelimiter: '~',
             name: true,
             cacheGroups: {
@@ -119,7 +135,7 @@ module.exports = {
                     priority: -10
                 },
                 default: {
-                    minChunks: 2,
+                    minChunks: 3,
                     priority: -20,
                     reuseExistingChunk: true
                 }

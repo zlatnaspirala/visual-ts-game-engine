@@ -15,7 +15,7 @@ class GameMap {
 
   public getStaticGrounds(): IStaticItem[] {
 
-    const imgRes = [require("../../imgs/floor.png")];
+    const imgRes = ["https://maximumroulette.com/visual-ts/beta/imgs/floor.png"];
     return [
       { x: 20, y: 10, w: 50, h: 6, tex: imgRes, tiles: 2 },
       { x: 20, y: 40, w: 50, h: 6, tex: imgRes, tiles: 2 },
@@ -36,7 +36,7 @@ class GameMap {
 
   public getStaticBackgrounds(): IStaticItem[] {
 
-    const backgroundWall = require("../../imgs/wall3.jpg");
+    const backgroundWall = "https://maximumroulette.com/visual-ts/beta/imgs/wall3.jpg";
 
     const shema = {
       byX: 3,
@@ -61,7 +61,7 @@ class GameMap {
   }
 
   public getCollectitems(): ICollectionItem[] {
-    const imgRes = [require("../../imgs/collect-items/bitcoin.png")];
+    const imgRes = ["https://maximumroulette.com/visual-ts/beta/imgs/bitcoin.png"];
     return [
       { x: 20, y: 10, w: 5, h: 6, tex: imgRes, tiles: 2, colectionLabel: "bitcoin", points: 2 },
       { x: 50, y: 16, w: 5, h: 6, tex: imgRes, tiles: 1, colectionLabel: "bitcoin", points: 1 },
