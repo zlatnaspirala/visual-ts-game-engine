@@ -5171,8 +5171,11 @@ var RTCMultiConnection3 = function(roomid, forceOptions) {
         };
 
         connection.onstream = function(e) {
+            console.log("connection.onstream ??????")
+
             var parentNode = connection.videosContainer;
             parentNode.insertBefore(e.mediaElement, parentNode.firstChild);
+
             var played = e.mediaElement.play();
 
             if (typeof played !== 'undefined') {

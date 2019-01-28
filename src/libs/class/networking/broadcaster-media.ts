@@ -1,5 +1,6 @@
 import Broadcaster from "./broadcaster";
 import * as RTCMultiConnection3 from "./rtc-multi-connection/RTCMultiConnection3";
+require("./rtc-multi-connection/getHTMLMediaElement.js");
 
 class BroadcasterMedia {
 
@@ -7,6 +8,8 @@ class BroadcasterMedia {
   private rtcBroadcaster;
 
   constructor(broadcaster: Broadcaster, params) {
+
+
 
     this.params = {};
     const r = /([^&=]+)=?([^&]*)/g;
@@ -53,6 +56,8 @@ class BroadcasterMedia {
 
     this.rtcBroadcaster.videosContainer = document.getElementById("videos-container");
     this.rtcBroadcaster.onstream = function (event) {
+
+
       const existing = document.getElementById(event.streamid);
       if (existing && existing.parentNode) {
         existing.parentNode.removeChild(existing);
@@ -81,18 +86,18 @@ class BroadcasterMedia {
           video.setAttribute("muted", true);
         }
       }
+
       video.srcObject = event.stream;
 
-      const width = parseInt((this.rtcBroadcaster.videosContainer.clientWidth / 3) as any, 10) - 20;
-      const mediaElement = getHTMLMediaElement(video, {
+      const width = parseInt((root.rtcBroadcaster.videosContainer.clientWidth / 3) as any, 10) - 20;
+      const mediaElement = (window as any).getHTMLMediaElement(video, {
         title: event.userid,
         buttons: ["full-screen"],
         width,
         showOnMouseEnter: false,
       });
 
-      console.log("what ???");
-      this.rtcBroadcaster.videosContainer.appendChild(mediaElement);
+      root.rtcBroadcaster.videosContainer.appendChild(mediaElement);
 
       setTimeout(function () {
         (mediaElement as any).media.play();
@@ -101,8 +106,8 @@ class BroadcasterMedia {
       mediaElement.id = event.streamid;
 
       if (event.type === "local") {
-        this.rtcBroadcaster.socket.on("disconnect", function () {
-          if (!this.rtcBroadcaster.getAllParticipants().length) {
+        root.rtcBroadcaster.socket.on("disconnect", function () {
+          if (!root.rtcBroadcaster.getAllParticipants().length) {
             location.reload();
           }
         });

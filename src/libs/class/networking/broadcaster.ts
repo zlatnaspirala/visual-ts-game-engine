@@ -57,22 +57,16 @@ class Broadcaster {
         location.reload();
       });
 
-      socket.on("connect", function () {
-        console.log("connected!!!!!");
-        alert('good 1')
-      });
-
     });
   }
 
-  private looper() {
+  private looper = () => {
     const root = this;
     if (!$("#rooms-list").length) { return; }
 
     this.rtcMultiConnection.socket.emit("get-public-rooms", this.publicRoomIdentifier, function (listOfRooms) {
       root.updateListOfRooms(listOfRooms);
-
-      setTimeout(this.looper, 3000);
+      setTimeout(root.looper, 3000);
     });
   }
 
@@ -100,12 +94,12 @@ class Broadcaster {
   }
 
   private updateListOfRooms = (rooms) => {
-    $("active-rooms").html(rooms.length);
+    $("#active-rooms").html(rooms.length);
 
-    $("rooms-list").html("");
+    $("#rooms-list").html("");
 
     if (!rooms.length) {
-      $("rooms-list").html("<tr><td colspan=9>No active room found for this demo.</td></tr>");
+      $("#rooms-list").html("<tr><td colspan=9>No active room found for this demo.</td></tr>");
       return;
     }
 
