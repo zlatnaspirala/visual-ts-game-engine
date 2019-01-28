@@ -245,6 +245,11 @@ canvas {
   - register form
   - login form
 */
+
+.make-center {
+  height: 480px;
+}
+
 .popup {
   position: absolute;
   margin: 0;
@@ -290,13 +295,13 @@ canvas {
   border-bottom: 1px solid rgba(255,255,255, 0.25);
 }
 
-.nav{
+.nav {
   position: relative;
   padding: 0;
   margin: 0 0 6em 1rem;
 }
 
-.nav-item{
+.nav-item {
   list-style: none;
   display: inline-block;
 }
@@ -305,7 +310,7 @@ canvas {
   margin-left: 2.25rem;
 }
 
-.nav-item a{
+.nav-item a {
   position: relative;
   color: rgba(255, 255, 255, 0.5);
   text-decoration: none;

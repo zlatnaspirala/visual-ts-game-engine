@@ -4,57 +4,55 @@ import * as RTCMultiConnection3 from "./rtc-multi-connection/RTCMultiConnection3
 class BroadcasterMedia {
 
   private params;
+  private rtcBroadcaster;
 
-  constructor(broadcaster: Broadcaster) {
+  constructor(broadcaster: Broadcaster, params) {
 
-    //(function () {
-    const params = {},
-      r = /([^&=]+)=?([^&]*)/g;
-
+    this.params = {};
+    const r = /([^&=]+)=?([^&]*)/g;
     function d(s) {
       return decodeURIComponent(s.replace(/\+/g, " "));
     }
     // tslint:disable-next-line:prefer-const
-    let match, search = window.location.search;
+    let match, search = params; // (window as any).location.search;
     // tslint:disable-next-line:no-conditional-assignment
     while (match = r.exec(search.substring(1))) {
-      params[d(match[1])] = d(match[2]);
+      this.params[d(match[1])] = d(match[2]);
     }
-    (window as any).params = params;
-    this.params = params;
-    //})();
+    (window as any).params = this.params;
 
     this.startVideoConference(broadcaster);
   }
 
   private startVideoConference(broadcaster) {
 
-    const connection = new RTCMultiConnection3();
+    const root = this;
+    this.rtcBroadcaster = new (RTCMultiConnection3 as any)();
+    // let connection = broadcaster.rtcmulticonnection;
 
-    //let connection = broadcaster.rtcmulticonnection;
-    connection.autoCloseEntireSession = true;
-    connection.publicRoomIdentifier = (window as any).params.publicRoomIdentifier;
+    this.rtcBroadcaster.autoCloseEntireSession = true;
+    this.rtcBroadcaster.publicRoomIdentifier = (window as any).params.publicRoomIdentifier;
 
-    // by default, socket.io server is assumed to be deployed on your own URL
-    connection.socketURL = "http://localhost:9001/";
+    console.log(" TEST connection.publicRoomIdentifier: ", this.rtcBroadcaster.publicRoomIdentifier);
+    this.rtcBroadcaster.socketURL = "http://localhost:9001/";
 
     // comment-out below line if you do not have your own socket.io server
     // connection.socketURL = 'https://rtcmulticonnection.herokuapp.com:443/';
 
-    connection.socketMessageEvent = "video-conference-demo";
+    this.rtcBroadcaster.socketMessageEvent = "video-conference-demo";
 
-    connection.session = {
+    this.rtcBroadcaster.session = {
       audio: true,
       video: true,
     };
 
-    connection.sdpConstraints.mandatory = {
+    this.rtcBroadcaster.sdpConstraints.mandatory = {
       OfferToReceiveAudio: true,
       OfferToReceiveVideo: true,
     };
 
-    connection.videosContainer = document.getElementById("videos-container");
-    connection.onstream = function (event) {
+    this.rtcBroadcaster.videosContainer = document.getElementById("videos-container");
+    this.rtcBroadcaster.onstream = function (event) {
       const existing = document.getElementById(event.streamid);
       if (existing && existing.parentNode) {
         existing.parentNode.removeChild(existing);
@@ -85,7 +83,7 @@ class BroadcasterMedia {
       }
       video.srcObject = event.stream;
 
-      const width = parseInt(connection.videosContainer.clientWidth / 3) - 20;
+      const width = parseInt((this.rtcBroadcaster.videosContainer.clientWidth / 3) as any, 10) - 20;
       const mediaElement = getHTMLMediaElement(video, {
         title: event.userid,
         buttons: ["full-screen"],
@@ -93,82 +91,84 @@ class BroadcasterMedia {
         showOnMouseEnter: false,
       });
 
-      connection.videosContainer.appendChild(mediaElement);
+      console.log("what ???");
+      this.rtcBroadcaster.videosContainer.appendChild(mediaElement);
 
       setTimeout(function () {
-        mediaElement.media.play();
+        (mediaElement as any).media.play();
       }, 5000);
 
       mediaElement.id = event.streamid;
 
       if (event.type === "local") {
-        connection.socket.on("disconnect", function () {
-          if (!connection.getAllParticipants().length) {
+        this.rtcBroadcaster.socket.on("disconnect", function () {
+          if (!this.rtcBroadcaster.getAllParticipants().length) {
             location.reload();
           }
         });
       }
     };
 
-    connection.onstreamended = function (event) {
+    this.rtcBroadcaster.onstreamended = function (event) {
       const mediaElement = document.getElementById(event.streamid);
       if (mediaElement) {
         mediaElement.parentNode.removeChild(mediaElement);
       }
     };
 
-    connection.onMediaError = function (e) {
+    this.rtcBroadcaster.onMediaError = function (e) {
       if (e.message === "Concurrent mic process limit.") {
-        if (DetectRTC.audioInputDevices.length <= 1) {
+        if (root.rtcBroadcaster.DetectRTC.audioInputDevices.length <= 1) {
           alert("Please select external microphone. Check github issue number 483.");
           return;
         }
 
-        const secondaryMic = DetectRTC.audioInputDevices[1].deviceId;
-        connection.mediaConstraints.audio = {
+        const secondaryMic = root.rtcBroadcaster.DetectRTC.audioInputDevices[1].deviceId;
+        root.rtcBroadcaster.mediaConstraints.audio = {
           deviceId: secondaryMic,
         };
 
-        connection.join(connection.sessionid);
+        root.rtcBroadcaster.join(root.rtcBroadcaster.sessionid);
       }
     };
 
     if (!!this.params.password) {
-      connection.password = this.params.password;
+      this.rtcBroadcaster.password = this.params.password;
     }
 
     if (this.params.open === true || this.params.open === "true") {
-      connection.open(this.params.sessionid, function (isRoomOpened, roomid, error) {
+      this.rtcBroadcaster.open(this.params.sessionid, function (isRoomOpened, roomid, error) {
         if (error) {
-          if (error === connection.errors.ROOM_NOT_AVAILABLE) {
+          if (error === root.rtcBroadcaster.errors.ROOM_NOT_AVAILABLE) {
             alert("Someone already created this room. Please either join or create a separate room.");
             return;
           }
           alert(error);
         }
 
-        connection.socket.on("disconnect", function () {
+        root.rtcBroadcaster.socket.on("disconnect", function () {
           location.reload();
         });
       });
     } else {
-      connection.join(this.params.sessionid, function (isRoomJoined, roomid, error) {
+      root.rtcBroadcaster.join(this.params.sessionid, function (isRoomJoined, roomid, error) {
         if (error) {
-          if (error === connection.errors.ROOM_NOT_AVAILABLE) {
+          console.log(" check root.rtcBroadcaster.join ERROR")
+          if (error === root.rtcBroadcaster.errors.ROOM_NOT_AVAILABLE) {
             alert("This room does not exist. Please either create it or wait for moderator to enter in the room.");
             return;
           }
-          if (error === connection.errors.ROOM_FULL) {
+          if (error === root.rtcBroadcaster.errors.ROOM_FULL) {
             alert("Room is full.");
             return;
           }
-          if (error === connection.errors.INVALID_PASSWORD) {
-            connection.password = prompt("Please enter room password.") || "";
-            if (!connection.password.length) {
+          if (error === root.rtcBroadcaster.errors.INVALID_PASSWORD) {
+            root.rtcBroadcaster.password = prompt("Please enter room password.") || "";
+            if (!root.rtcBroadcaster.password.length) {
               alert("Invalid password.");
               return;
             }
-            connection.join(params.sessionid, function (isRoomJoined, roomid, error) {
+            root.rtcBroadcaster.join(root.params.sessionid, function (isRoomJoined, roomid, error) {
               if (error) {
                 alert(error);
               }
@@ -178,20 +178,20 @@ class BroadcasterMedia {
           alert(error);
         }
 
-        connection.socket.on("disconnect", function () {
+        root.rtcBroadcaster.socket.on("disconnect", function () {
           location.reload();
         });
       });
     }
 
     // detect 2G
-    if (navigator.connection &&
-      navigator.connection.type === "cellular" &&
-      navigator.connection.downlinkMax <= 0.115) {
+    if ((navigator as any).connection &&
+      (navigator as any).connection.type === "cellular" &&
+      (navigator as any).connection.downlinkMax <= 0.115) {
       alert("2G is not supported. Please use a better internet service.");
     }
 
-    console.log("loaded all")
+    console.log("loaded all");
 
   }
 

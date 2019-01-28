@@ -351,7 +351,7 @@ class Broadcaster {
 
     $("#startRoomModel").modal("hide");
     // let href
-    let href = location.href + "?open=" +
+    let params = /*location.href*/ "?open=" +
       root.rtcMultiConnection.isInitiator + "&sessionid=" + root.rtcMultiConnection.sessionid +
       "&publicRoomIdentifier=" + root.rtcMultiConnection.publicRoomIdentifier +
       "&userFullName=" + root.rtcMultiConnection.extra.userFullName;
@@ -360,7 +360,8 @@ class Broadcaster {
       href += "&password=" + root.rtcMultiConnection.password;
     }
 
-    let TEST = new BroadcasterMedia(root);
+
+    let TEST = new BroadcasterMedia(root, params);
 
     /*
     const newWin = window.open(href);

@@ -1,3 +1,4 @@
+import { Script } from "vm";
 
 export let SCRIPT = {
   SCRIPT_ID: 0,
@@ -7,7 +8,7 @@ export let SCRIPT = {
     s.onload = function () {
 
       SCRIPT.SCRIPT_ID++;
-      console.log("Script id loaded : " + SCRIPT.SCRIPT_ID + " with src : " + this.src + ">>>>>>>>>" + this.src);
+      console.log("Script id loaded : " + SCRIPT.SCRIPT_ID + " with src : " + (this as any).src + ">>>>>>>>>" + (this as any).src);
 
       // let filename = this.src.substring(this.src.lastIndexOf("/") + 1, this.src.lastIndexOf("."));
       // console.log(filename)
