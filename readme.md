@@ -319,6 +319,8 @@ or use :
  - Create examples demos in minimum 20 game play variants
   (table games, actions , platformers , basic demo trow the api doc etc.).
  - Implementing AR and webGL2.
+ 
+## [Live demo Platformer](https://codepen.io/zlatnaspirala/full/exxvQq) ##
 
 ## Donate this project ##
 
