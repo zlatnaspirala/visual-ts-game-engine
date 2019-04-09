@@ -1,9 +1,14 @@
 # Project : Visual ts game engine #
-## Version : new era - 2018/2019 ##
+## Version : Sunshine - 2019 ##
 
 #### 2d canvas game engine based on Matter.js 2D physics engine for the web. ####
+
  - Writen in typescript current version 3.1.3.
- - Text editor used and recommended: Visual Studio Code
+ - Text editor used and recommended: Visual Studio Code. Luanch debugger configuration comes with 
+   this project.
+ - Physics engine based on Matter.js.
+ - Multiplatform video chat (for all browsers) implemented. SocketIO used for session staff.
+   MultiRTC2 used for data transfer also for video chat. MultiRTC3 alias 'broadcaster' used for video chat.
 
 ![visualTS](https://github.com/zlatnaspirala/visual-ts/blob/master/logo.png)
 
@@ -256,6 +261,25 @@ Fix : "failed: address already in use" :
 ### Networking multimedia communication : WebSocketServer running on Node.js ###
 
  Text-based protocol SIP (Session Initiation Protocol) used for signaling and controlling multimedia sessions.
+ 
+ #### General networking config: ####
+ 
+ Config property defined in constructor from ServerConfig class. 
+  
+```javascript
+    this.networkDeepLogs = false;
+    this.rtcServerPort = 12034;
+    this.rtc3ServerPort = 12034;
+    this.connectorPort = 1234;
+    this.domain = "192.168.0.14";
+    this.masterServerKey = "multi-platformer-sever1.maximum";
+    this.protocol = "http";
+    this.isSecure = false;
+    this.appUseAccountsSystem = true;
+    this.appUseVideoChat = true;
+    this.databaseName = "masterdatabase";
+    this.databaseRoot = "mongodb://localhost:27017";
+```
 
 <b> - Running server is easy : </b>
 
@@ -263,14 +287,26 @@ Fix : "failed: address already in use" :
   npm run rtc
 ```
 With this cmd : <i>npm run rtc</i> we run server.js and connector.ts websocket. Connector is our account session used for login , register etc.
-- Implemented video chat based on webRTC protocol
+- Implemented video chat based on webRTC protocol.
+
+<b> - Running rtc3 server is also easy : </b>
+
+Command 'npm run broadcaster' is not nessesery for begin. 
+Features comes with broadcaster:
+ - Multiplatform video chat works with other hybrid frameworks or custom implementation throw the native
+   mobile application web control (Chrome implementation usually).
+ 
+
+```javascript
+  npm run broadcaster
+```
 
 ## Documentation : ##
 
- - In progress like whole project ...
+ - In progress like whole project ... Api doc will come with first release branch.
  If you wanna generate doc you will need manual remove comment
- from plugin section in webpack.config.js.
- Best way to fully build healty.
+ from plugin section in webpack.config.js. Restart 'npm run dev'
+ Best way to fully healty build.
  HTML/CSS is not prior in this project.
 
 If you wanna insert some new html page just define it intro
