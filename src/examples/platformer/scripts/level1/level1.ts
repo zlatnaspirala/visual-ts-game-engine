@@ -24,12 +24,12 @@ export function level1(r: Platformer): void {
   );
 
   const imgRes = [
-    "https://maximumroulette.com/visual-ts/beta/imgs/floor.png",
+    require("../../imgs/floor.png"),
     require("../../imgs/target.png"),
   ];
 
   const imgResMyPlayerSprite = [
-    "https://maximumroulette.com/visual-ts/beta/imgs/walk-boy2.png",
+    require("../../imgs/walk-boy2.png"),
   ];
 
   const playerRadius = 5;

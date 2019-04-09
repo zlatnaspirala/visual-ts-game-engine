@@ -8,12 +8,14 @@ class ServerConfig {
      */
     this.networkDeepLogs = false;
     this.rtcServerPort = 12034;
+    this.rtc3ServerPort = 12034;
+    this.connectorPort = 1234;
     this.domain = "192.168.0.14";
     this.masterServerKey = "multi-platformer-sever1.maximum";
-    this.connectorPort = 1234;
     this.protocol = "http";
     this.isSecure = false;
     this.appUseAccountsSystem = true;
+    this.appUseVideoChat = true;
     this.databaseName = "masterdatabase";
     this.databaseRoot = "mongodb://localhost:27017";
 
@@ -21,6 +23,7 @@ class ServerConfig {
     console.log("-rtc domain", this.domain);
     console.log("-rtc masterServerKey", this.masterServerKey);
     console.log("-rtc rtcServerPort", this.rtcServerPort);
+    console.log("-rtc rtc3ServerPort", this.rtc3ServerPort);
     console.log("-rtc connectorPort", this.connectorPort);
     console.log("-rtc protocol", this.protocol);
     console.log("-rtc isSecure", this.isSecure);
@@ -42,6 +45,10 @@ class ServerConfig {
 
   get getRtcServerPort() {
     return this.rtcServerPort;
+  }
+
+  get getRtc3ServerPort() {
+    return this.rtc3ServerPort;
   }
 
   get getDatabaseRoot() {

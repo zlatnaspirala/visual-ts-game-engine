@@ -10,7 +10,7 @@ module.exports = {
     watch: true,
     entry: ["./src/app.ts"],
     output: {
-        filename: "beta.js",
+        filename: "visualjs2.js",
         path: __dirname + "/build",
         // chunkFilename: '[name].beta.js',
     },
@@ -81,11 +81,13 @@ module.exports = {
             filename: 'templates/broadcaster.html',
             template: 'src/html-components/broadcaster.html'
         }),
-        new ExtractTextPlugin("styles.css"),
+        new ExtractTextPlugin("src/style/styles.css"),
         new CopyWebpackPlugin([
+            { from: 'src/style/styles.css', to: 'styles/styles.css' },
             { from: 'src/externals/bootstrap.min.js', to: 'externals/bootstrap.min.js' },
             { from: 'src/externals/jquery-3.3.1.slim.min.js', to: 'externals/jquery-3.3.1.slim.min.js' },
             { from: 'src/style/bootstrap.css', to: 'styles/bootstrap.min.css' },
+            { from: 'src/style/broadcaster.css', to: 'styles/broadcaster.css' },
             { from: 'src/style/getHTMLMediaElement.css', to: 'styles/getHTMLMediaElement.css' },
         ], { debug: 'info' })
     ],
@@ -119,6 +121,7 @@ module.exports = {
     },
  */
 
+ /*
     optimization: {
         splitChunks: {
             chunks: 'async',
@@ -142,5 +145,5 @@ module.exports = {
             }
         }
     }
-
+*/
 };
