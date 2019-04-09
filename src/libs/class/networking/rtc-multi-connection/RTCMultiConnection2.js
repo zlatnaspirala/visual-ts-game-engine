@@ -3878,7 +3878,15 @@ function getUserMedia(options) {
 
         var video = options.video;
         if (video) {
-            video[isFirefox ? 'mozSrcObject' : 'src'] = isFirefox ? stream : (window.URL || window.webkitURL).createObjectURL(stream);
+
+            try {
+                video.srcObject = stream;
+            } catch (e) {
+                video[isFirefox ? 'mozSrcObject' : 'src'] = isFirefox ? stream : (window.URL || window.webkitURL).createObjectURL(stream);
+            }
+
+
+
             video.play();
         }
 
