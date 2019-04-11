@@ -8,7 +8,7 @@ class ServerConfig {
      */
     this.networkDeepLogs = false;
     this.rtcServerPort = 12034;
-    this.rtc3ServerPort = 12034;
+    this.rtc3ServerPort = 9001;
     this.connectorPort = 1234;
     this.domain = "192.168.0.14";
     this.masterServerKey = "multi-platformer-sever1.maximum";

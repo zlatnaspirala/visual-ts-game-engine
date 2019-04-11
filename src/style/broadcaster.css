@@ -3,3 +3,15 @@
   background: deepskyblue;
   min-height: 400px;
 }
+
+.broadcaster {
+  width:80%;
+  margin: 0 auto;
+}
+
+.video-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 40%;
+}
