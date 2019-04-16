@@ -36,6 +36,7 @@
     "dev": "webpack --config webpack.config.js",
     "prod": "webpack --config webpack.config.js",
     "rtc": "node ./server/rtc/server.js",
+    "broadcaster": "node ./server/rtc/broadcaster.js",
     "datadebug": "node --inspect=27017 ./server/database/base.js",
     "dataserver": "mongod --dbpath ./server/database/data",
     "fix": "tslint -c tslint.json 'src/**/*.ts' --fix",

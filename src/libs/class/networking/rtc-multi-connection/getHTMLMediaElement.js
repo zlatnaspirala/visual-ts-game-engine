@@ -1,6 +1,4 @@
-// __________________
-// getHTMLMediaElement.js
-alert()
+
 window.getHTMLMediaElement = function(mediaElement, config) {
     config = config || {};
 
@@ -277,7 +275,8 @@ window.getHTMLMediaElement = function(mediaElement, config) {
             volumeControl.style.marginLeft = (mediaElementContainer.clientWidth - volumeControl.clientWidth - 2) + 'px';
         }
 
-        volumeControl.style.marginTop = (mediaElementContainer.clientHeight - volumeControl.clientHeight - 2) + 'px';
+        // volumeControl.style.marginTop = (mediaElementContainer.clientHeight - volumeControl.clientHeight - 2) + 'px';
+        volumeControl.style.marginTop = "0";
 
         if (times < 10) {
             times++;
@@ -331,9 +330,6 @@ window.getHTMLMediaElement = function(mediaElement, config) {
 
     return mediaElementContainer;
 }
-
-// __________________
-// getAudioElement.js
 
 function getAudioElement(mediaElement, config) {
     config = config || {};

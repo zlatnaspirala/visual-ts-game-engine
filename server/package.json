@@ -1,7 +1,7 @@
 {
   "name": "visualjs2",
-  "version": "0.0.2",
-  "description": "This version 0.1 of visualjs game engine server. Main file is server.ts , used MongoDB database , webSocket for networking.",
+  "version": "0.0.3",
+  "description": "This version 0.1 of visual-ts game engine server. Main file is server.ts , used MongoDB database , webSocket for networking.",
   "main": ".rtc/server.js",
   "dependencies": {
     "@types/node": "^10.12.0",
@@ -15,17 +15,13 @@
     "websocket": "^1.0.28"
   },
   "devDependencies": {},
-  "scripts": {
-    "rtc": "node ./rtc/server.js",
-    "broadcaster": "node ./rtc/broadcaster.js",
-    "dataserver": "mongod --dbpath ./database/data"
-  },
+  "scripts": {},
   "author": {
     "name": "Nikola Lukic",
     "email": "zlatnaspirala@gmail.com",
     "url": "https://maximumroulette.com"
   },
-  "license": "(MIT OR GPL-3.0)",
+  "license": "MIT",
   "homepage": "https://github.com/zlatnaspirala/visual-ts-game-engie",
   "repository": {
     "type": "git",
@@ -33,6 +29,6 @@
   },
   "bugs": {
     "url": "https://github.com/zlatnaspirala/visual-ts-game-engie/issues",
-    "email": "greespiral@gmail.com"
+    "email": "zlatnaspirala@gmail.com"
   }
 }
