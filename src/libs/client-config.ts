@@ -1,3 +1,5 @@
+import { Addson } from "./types/global";
+
 /**
  * ClientConfig is config file for whole client part of application.
  * It is a better to not mix with server config staff.
@@ -6,6 +8,17 @@
  * Class don't have any args passed.
  */
 class ClientConfig {
+
+  /**
+   * Addson
+   */
+  private addson: Addson = [
+    {
+      name: "hackerTimer",
+      enabled: true,
+      scriptPath: "externals/hack-timer.js",
+    },
+  ];
 
   private drawReference: string = "frame"; // "diametric-fullscreen"; // "frame";
 
@@ -72,6 +85,10 @@ class ClientConfig {
     // Interconnection Network.Connector vs app.ts
     this.gameList = gameList;
 
+  }
+
+  public getAddson(): Addson {
+    return this.addson;
   }
 
   public getAutoStartGamePlay() {

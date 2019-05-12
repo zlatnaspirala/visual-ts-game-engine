@@ -1,19 +1,22 @@
 import { Script } from "vm";
 
-export let SCRIPT = {
-  SCRIPT_ID: 0,
-  SINHRO_LOAD: {},
-  LOAD: function addScript(src) {
+export let scriptManager = {
+  scriptManager_ID: 0,
+  loaded: {},
+  load: function addScript(src: string) {
     const s = document.createElement("script");
     s.onload = function () {
 
-      SCRIPT.SCRIPT_ID++;
-      console.log("Script id loaded : " + SCRIPT.SCRIPT_ID + " with src : " + (this as any).src + ">>>>>>>>>" + (this as any).src);
-
-      // let filename = this.src.substring(this.src.lastIndexOf("/") + 1, this.src.lastIndexOf("."));
-      // console.log(filename)
-      // filename = filename.replace(".", "_");
-      // eval("try{SCRIPT.SINHRO_LOAD._" + filename + "(s)}catch(e){}");
+      scriptManager.scriptManager_ID++;
+      console.log("Script id loaded : "
+        + scriptManager.scriptManager_ID + " >>> " + (this as any).src);
+      if (typeof (this as HTMLScriptElement).src !== "undefined") {
+        let filename = (this as HTMLScriptElement).src.substring((this as HTMLScriptElement).src.lastIndexOf("/") + 1,
+          (this as HTMLScriptElement).src.lastIndexOf("."));
+        filename = filename.replace(".", "_");
+        // tslint:disable-next-line:no-eval
+        eval("try{scriptManager.loaded._" + filename + "(s)}catch(e){}");
+      }
 
     };
     s.setAttribute("src", src);

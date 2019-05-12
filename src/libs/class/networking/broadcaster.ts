@@ -354,7 +354,6 @@ class Broadcaster {
       href += "&password=" + root.rtcMultiConnection.password;
     }
 
-
     let TEST = new BroadcasterMedia(root, params);
 
     /*

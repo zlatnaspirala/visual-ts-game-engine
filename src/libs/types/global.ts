@@ -18,3 +18,5 @@ export type literalImageSrc = string | string[];
 export type UniClick = MouseEvent | TouchEvent;
 // tslint:disable-next-line:interface-over-type-literal
 export type UniVector = { [key: string]: any };
+
+export type Addson = [{ name: string, enabled: boolean, scriptPath: string }];

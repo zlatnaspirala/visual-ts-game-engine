@@ -83,12 +83,13 @@ module.exports = {
         }),
         new ExtractTextPlugin("src/style/styles.css"),
         new CopyWebpackPlugin([
-           // { from: 'src/style/styles.css', to: 'styles/styles.css' },
             { from: 'src/externals/bootstrap.min.js', to: 'externals/bootstrap.min.js' },
             { from: 'src/externals/jquery-3.3.1.slim.min.js', to: 'externals/jquery-3.3.1.slim.min.js' },
             { from: 'src/style/bootstrap.css', to: 'styles/bootstrap.min.css' },
             { from: 'src/style/broadcaster.css', to: 'styles/broadcaster.css' },
             { from: 'src/style/getHTMLMediaElement.css', to: 'styles/getHTMLMediaElement.css' },
+            { from: './src/libs/addons/hacker-timer/hack-timer.js', to: 'externals/hack-timer.js'},
+            { from: './src/libs/addons/hacker-timer/hack-timer-worker.js', to: 'externals/hack-timer-worker.js' }
         ], { debug: 'info' })
     ],
     /*

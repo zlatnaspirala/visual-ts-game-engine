@@ -8,6 +8,8 @@ import ClientConfig from "./client-config";
 import { IUniVector } from "./interface/global";
 import GlobalEvent from "./multiplatform/global-event";
 import Starter from "./starter";
+import { config } from "shelljs";
+import { scriptManager } from "./class/system";
 
 /**
  * Ioc is main dependency controller class.
@@ -32,6 +34,9 @@ class Ioc {
   constructor(gamesList: any[]) {
 
     this.config = new ClientConfig(gamesList);
+
+    this.loadAddson();
+
     this.singlton(Browser, undefined);
     this.singlton(ViewPort, this.config);
     this.singlton(GlobalEvent, this.get.Browser);
@@ -65,6 +70,16 @@ class Ioc {
 
   public getConfig() {
     return this.config;
+  }
+
+  private loadAddson(): void {
+    this.config.getAddson().forEach(function (addson) {
+      if (addson.enabled) {
+        scriptManager.load(addson.scriptPath);
+        console.log("Addson: " + addson.name + " loaded.");
+      }
+
+    });
   }
 
 }

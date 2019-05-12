@@ -74,8 +74,8 @@ class BroadcasterMedia {
         video.setAttributeNode(document.createAttribute("autoplay"));
         video.setAttributeNode(document.createAttribute("playsinline"));
       } catch (e) {
-        video.setAttribute("autoplay", true);
-        video.setAttribute("playsinline", true);
+        video.setAttribute("autoplay", "true");
+        video.setAttribute("playsinline", "true");
       }
 
       if (event.type === "local") {
@@ -83,7 +83,7 @@ class BroadcasterMedia {
         try {
           video.setAttributeNode(document.createAttribute("muted"));
         } catch (e) {
-          video.setAttribute("muted", true);
+          video.setAttribute("muted", "true");
         }
       }
 
