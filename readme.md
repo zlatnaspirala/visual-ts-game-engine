@@ -4,7 +4,7 @@
 #### 2d canvas game engine based on Matter.js 2D physics engine for the web. ####
 
  - Writen in typescript current version 3.1.3.
- - Text editor used and recommended: Visual Studio Code. Luanch debugger configuration comes with 
+ - Text editor used and recommended: Visual Studio Code. Luanch debugger configuration comes with
    this project.
  - Physics engine based on Matter.js.
  - Multiplatform video chat (for all browsers) implemented. SocketIO used for session staff.
@@ -50,13 +50,17 @@ Find configuration at ./src/lib/client-config.ts
 
 ```javascript
 /**
- * ClientConfig instance created in ioc.ts
- * In scripts you need to use get methods
- * like : getDomain() etc.
- */
-class ClientConfig {
+   * Addson
+   */
+  private addson: Addson = [
+    {
+      name: "hackerTimer",
+      enabled: true,
+      scriptPath: "externals/hack-timer.js",
+    },
+  ];
 
-  private drawReference: string = "frame";
+  private drawReference: string = "frame"; // "diametric-fullscreen"; // "frame";
 
   /**
    * aspectRatio default value , can be changed in run time.
@@ -97,14 +101,28 @@ class ClientConfig {
    * appUseAccountsSystem If you don't want to use session
    * in your application just setup this variable to the false.
    */
-  private appUseAccountsSystem: boolean = true;
+  private appUseAccountsSystem: boolean = false;
+
+  /**
+   * Possible variant by default :
+   * "register", "login"
+   */
+  private startUpHtmlForm: string = "register";
+
+  private gameList: any[];
+
+  /**
+   * Implement default gamePlay variable's
+   */
+  private defaultGamePlayLevelName: string = "level1";
+  private autoStartGamePlay: boolean = true;
 
 ```
 
 ### Start dependency system from app.ts ###
 
  - Fisrt game template is Platformer.
-
+ - gamesList args for ioc constructor is for now just simbolic.
 #### Main dependency file ####
 
 ```typescript
@@ -261,11 +279,11 @@ Fix : "failed: address already in use" :
 ### Networking multimedia communication : WebSocketServer running on Node.js ###
 
  Text-based protocol SIP (Session Initiation Protocol) used for signaling and controlling multimedia sessions.
- 
+
  #### General networking config: ####
- 
- Config property defined in constructor from ServerConfig class. 
-  
+
+ Config property defined in constructor from ServerConfig class.
+
 ```javascript
     this.networkDeepLogs = false;
     this.rtcServerPort = 12034;
@@ -291,11 +309,11 @@ With this cmd : <i>npm run rtc</i> we run server.js and connector.ts websocket. 
 
 <b> - Running rtc3 server is also easy : </b>
 
-Command 'npm run broadcaster' is not nessesery for begin. 
+Command 'npm run broadcaster' is not nessesery for begin.
 Features comes with broadcaster:
  - Multiplatform video chat works with other hybrid frameworks or custom implementation throw the native
    mobile application web control (Chrome implementation usually).
- 
+
 
 ```javascript
   npm run broadcaster
@@ -355,7 +373,7 @@ or use :
  - Create examples demos in minimum 20 game play variants
   (table games, actions , platformers , basic demo trow the api doc etc.).
  - Implementing AR and webGL2.
- 
+
 ## [Live demo Platformer](https://codepen.io/zlatnaspirala/full/exxvQq) ##
 
 ## Donate this project ##
