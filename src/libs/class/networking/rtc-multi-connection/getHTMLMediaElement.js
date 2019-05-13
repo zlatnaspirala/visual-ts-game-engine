@@ -1,5 +1,6 @@
 
 window.getHTMLMediaElement = function(mediaElement, config) {
+
     config = config || {};
 
     if (!mediaElement.nodeName || (mediaElement.nodeName.toLowerCase() != 'audio' && mediaElement.nodeName.toLowerCase() != 'video')) {
@@ -41,6 +42,8 @@ window.getHTMLMediaElement = function(mediaElement, config) {
 
     var mediaElementContainer = document.createElement('div');
     mediaElementContainer.className = 'media-container';
+    mediaElementContainer.id = "mediaHolder" + config.title;
+    mediaElementContainer.setAttribute('style', 'position:absolute;');
 
     var mediaControls = document.createElement('div');
     mediaControls.className = 'media-controls';
@@ -239,7 +242,9 @@ window.getHTMLMediaElement = function(mediaElement, config) {
     }
 
     var mediaBox = document.createElement('div');
-    mediaBox.className = 'media-box';
+    mediaBox.className = 'dragging';
+    mediaBox.onmousedown = function() { dragging.startMoving(this, mediaElementContainer.id, event) };
+    mediaBox.onmouseup = function() { dragging.stopMoving(mediaElementContainer.id) };
     mediaElementContainer.appendChild(mediaBox);
 
     if (config.title) {

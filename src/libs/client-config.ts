@@ -18,6 +18,11 @@ class ClientConfig {
       enabled: true,
       scriptPath: "externals/hack-timer.js",
     },
+    {
+      name: "dragging",
+      enabled: true,
+      scriptPath: "externals/drag.ts",
+    },
   ];
 
   private drawReference: string = "frame"; // "diametric-fullscreen"; // "frame";

@@ -89,6 +89,7 @@ module.exports = {
             { from: 'src/style/broadcaster.css', to: 'styles/broadcaster.css' },
             { from: 'src/style/getHTMLMediaElement.css', to: 'styles/getHTMLMediaElement.css' },
             { from: './src/libs/addons/hacker-timer/hack-timer.js', to: 'externals/hack-timer.js'},
+            { from: './src/libs/addons/drag/drag.ts', to: 'externals/drag.ts' },
             { from: './src/libs/addons/hacker-timer/hack-timer-worker.js', to: 'externals/hack-timer-worker.js' }
         ], { debug: 'info' })
     ],

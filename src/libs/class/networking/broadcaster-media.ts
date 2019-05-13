@@ -9,8 +9,6 @@ class BroadcasterMedia {
 
   constructor(broadcaster: Broadcaster, params) {
 
-
-
     this.params = {};
     const r = /([^&=]+)=?([^&]*)/g;
     function d(s) {
@@ -36,7 +34,8 @@ class BroadcasterMedia {
     this.rtcBroadcaster.autoCloseEntireSession = true;
     this.rtcBroadcaster.publicRoomIdentifier = (window as any).params.publicRoomIdentifier;
 
-    console.log(" TEST connection.publicRoomIdentifier: ", this.rtcBroadcaster.publicRoomIdentifier);
+    // console.log(" TEST connection.publicRoomIdentifier: ", this.rtcBroadcaster.publicRoomIdentifier);
+    // Must be fixed !
     this.rtcBroadcaster.socketURL = "http://localhost:9001/";
 
     // comment-out below line if you do not have your own socket.io server
