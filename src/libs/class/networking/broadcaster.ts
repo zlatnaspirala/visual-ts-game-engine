@@ -1,5 +1,5 @@
 
-require("../../../externals/jquery-3.3.1.slim.min");
+require("../../../externals/jquery.slim.min");
 const $ = require("jquery");
 import "popper.js";
 // require("../../../externals/popper.min");
@@ -10,6 +10,7 @@ import BroadcasterMedia from "./broadcaster-media";
 import "./rtc-multi-connection/linkify";
 import * as RTCMultiConnection3 from "./rtc-multi-connection/RTCMultiConnection3";
 import * as io from "./rtc-multi-connection/socket.io";
+
 class Broadcaster {
 
   private rtcMultiConnection: any;
@@ -41,7 +42,7 @@ class Broadcaster {
     // this object is used to get uniquie rooms based on this demo
     // i.e. only those rooms that are created on this page
     this.publicRoomIdentifier = "video-conference-dashboard";
-    this.rtcMultiConnection = new RTCMultiConnection3();
+    this.rtcMultiConnection = new (RTCMultiConnection3 as any)();
     this.rtcMultiConnection.socketURL = "http://localhost:9001/";
     // connection.socketURL = 'https://rtcmulticonnection.herokuapp.com:443/';
     /// make this room public

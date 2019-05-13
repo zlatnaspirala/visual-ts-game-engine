@@ -12,11 +12,11 @@
 .video-container {
   display: block;
   position: absolute;
-  bottom: 0;
+  top: 50px;
   left: 0;
   margin: 0 auto;
-  width: 100%;
-  height: 30%;
+  width: 35%;
+  height: auto;
 }
 
 .media-elements {

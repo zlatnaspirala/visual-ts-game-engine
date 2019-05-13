@@ -89,11 +89,15 @@ class BroadcasterMedia {
 
       video.srcObject = event.stream;
 
-      const width = parseInt((root.rtcBroadcaster.videosContainer.clientWidth / 3) as any, 10) - 20;
+      // const width = parseInt((root.rtcBroadcaster.videosContainer.clientWidth / 3) as any, 10) - 20;
+      const width = 480;
+      const height = 320;
+
       const mediaElement = (window as any).getHTMLMediaElement(video, {
         title: event.userid,
         buttons: ["full-screen"],
         width,
+        height,
         showOnMouseEnter: false,
       });
 
