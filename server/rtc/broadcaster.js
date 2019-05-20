@@ -13,7 +13,7 @@ var PORT = 9001;
 var isUseHTTPs = false;
 
 const jsonPath = {
-  config: './broadcaster-config.json',
+  config: 'broadcaster-config.json',
   logs: 'logs.json'
 };
 
@@ -226,9 +226,9 @@ if (isUseHTTPs) {
   // See how to use a valid certificate:
   // https://github.com/muaz-khan/WebRTC-Experiment/issues/62
   var options = {
-    key: null,
-    cert: null,
-    ca: null
+    key: "/etc/httpd/conf/ssl/maximumroulette.com.key",
+    cert: "/etc/httpd/conf/ssl/maximumroulette_com.crt",
+    ca: "/etc/httpd/conf/ssl/maximumroulette.ca-bundle"
   };
 
   var pfx = false;
@@ -275,9 +275,6 @@ httpApp = httpApp.listen(process.env.PORT || PORT, process.env.IP || "0.0.0.0", 
 
 ioServer(httpApp).on('connection', function(socket) {
   RTCMultiConnectionServer.addSocket(socket, config);
-
-  // ----------------------
-  // below code is optional
 
   const params = socket.handshake.query;
 

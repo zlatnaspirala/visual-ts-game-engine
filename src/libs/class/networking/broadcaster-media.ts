@@ -35,11 +35,10 @@ class BroadcasterMedia {
     this.rtcBroadcaster.publicRoomIdentifier = (window as any).params.publicRoomIdentifier;
 
     // console.log(" TEST connection.publicRoomIdentifier: ", this.rtcBroadcaster.publicRoomIdentifier);
-    // Must be fixed !
-    this.rtcBroadcaster.socketURL = "http://localhost:9001/";
-
-    // comment-out below line if you do not have your own socket.io server
-    // connection.socketURL = 'https://rtcmulticonnection.herokuapp.com:443/';
+    this.rtcBroadcaster.socketURL =
+      broadcaster.engineConfig.getProtocolFromAddressBar() +
+      broadcaster.engineConfig.getDomain() + ":" +
+      broadcaster.engineConfig.getBroadcasterPort() + "/";
 
     this.rtcBroadcaster.socketMessageEvent = "video-conference-demo";
 
@@ -55,7 +54,6 @@ class BroadcasterMedia {
 
     this.rtcBroadcaster.videosContainer = document.getElementById("videos-container");
     this.rtcBroadcaster.onstream = function (event) {
-
 
       const existing = document.getElementById(event.streamid);
       if (existing && existing.parentNode) {

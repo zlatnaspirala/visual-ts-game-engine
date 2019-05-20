@@ -5,7 +5,24 @@ const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const TypedocWebpackPlugin = require('typedoc-webpack-plugin');
 
-module.exports = {
+var internalConfig = {
+    createDocumentation : true,
+};
+
+let documentationPlugin = new TypedocWebpackPlugin({
+    out: './api-doc',
+    module: 'amd',
+    target: 'es5',
+    experimentalDecorators: true,
+    excludeExternals: true,
+    name: 'sn-theme',
+    mode: 'file',
+    theme: './sn-theme/',
+    includeDeclarations: false,
+    ignoreCompilerErrors: true,
+});
+
+let webPackModule = {
     mode: "development", // "development",
     watch: true,
     entry: ["./src/app.ts"],
@@ -91,24 +108,9 @@ module.exports = {
             { from: './src/libs/addons/hacker-timer/hack-timer.js', to: 'externals/hack-timer.js'},
             { from: './src/libs/addons/drag/drag.ts', to: 'externals/drag.ts' },
             { from: './src/libs/addons/hacker-timer/hack-timer-worker.js', to: 'externals/hack-timer-worker.js' }
-        ], { debug: 'info' })
-    ],
-    /*
-    new TypedocWebpackPlugin({
-        out: './api-doc',
-        module: 'amd',
-        target: 'es5',
-        exclude: '** /node_modules / ** / *.* ',
-        experimentalDecorators: true,
-        excludeExternals: true,
-        name: 'sn-theme',
-        mode: 'file',
-        theme: './sn-theme/',
-        includeDeclarations: false,
-        ignoreCompilerErrors: true,
-    })
-    */
+        ], { debug: 'info' }),
 
+    ],
     /**
     * When importing a module whose path matches one of the following, just
     * assume a corresponding global variable exists and use that instead.
@@ -116,14 +118,15 @@ module.exports = {
     * dependencies, which allows browsers to cache those libraries between builds.
     *
     * No active for now , looks like no benefit from react for canvas drawing
+    *
+    * externals: {
+    *   "react": "React",
+    *   "react-dom": "ReactDOM"
+    * },
+    *
+    */
 
-    externals: {
-        "react": "React",
-        "react-dom": "ReactDOM"
-    },
- */
-
- /*
+    /*
     optimization: {
         splitChunks: {
             chunks: 'async',
@@ -147,5 +150,12 @@ module.exports = {
             }
         }
     }
-*/
+    */
+
 };
+
+if (internalConfig.createDocumentation == true) {
+    webPackModule.plugins.push(documentationPlugin);
+}
+
+module.exports = webPackModule;

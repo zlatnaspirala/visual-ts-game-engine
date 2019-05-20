@@ -25,7 +25,7 @@ const gamesList: any[] = [
 const master = new Ioc(gamesList);
 const appIcon: AppIcon = new AppIcon(master.get.Browser);
 master.singlton(Platformer, master.get.Starter);
-console.warn("Platformer: ", master.get.Platformer);
+console.log("Platformer: ", master.get.Platformer);
 
 master.get.Platformer.attachAppEvents();
 

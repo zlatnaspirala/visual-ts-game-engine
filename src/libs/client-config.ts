@@ -25,10 +25,16 @@ class ClientConfig {
     },
   ];
 
-  private drawReference: string = "frame"; // "diametric-fullscreen"; // "frame";
+  /**
+   * @description This is main coordinary types of positions
+   * Can be "diametric-fullscreen" or "frame".
+   * @property drawReference
+   * @type  string
+   */
+  private drawReference: string = "frame";
 
   /**
-   * aspectRatio default value , can be changed in run time.
+   * aspectRatio default value, can be changed in run time.
    */
   private aspectRatio: number = 1.333;
 
@@ -37,18 +43,12 @@ class ClientConfig {
    * recommendent to use for local propose LAN ip
    * like : 192.168.0.XXX if you wanna run ant test app with server.
    */
-  private domain: string = "127.0.0.1";
+  private domain: string = "maximumroulette.com";
 
   /**
    * networkDeepLogs control of dev logs.
    */
   private networkDeepLogs: boolean = false;
-
-  /**
-   * rtcServerPort Port used to connect multimedia server.
-   * Default value is 12034
-   */
-  private rtcServerPort: number = 12034;
 
   /**
    * masterServerKey is channel access id used to connect
@@ -57,10 +57,23 @@ class ClientConfig {
   private masterServerKey: string = "multi-platformer-sever1.maximum";
 
   /**
+   * rtcServerPort Port used to connect multimedia server.
+   * Default value is 12034
+   */
+  private rtcServerPort: number = 12034;
+
+  /**
    * connectorPort is access port used to connect
    * session web socket.
    */
   private connectorPort: number = 1234;
+
+  /**
+   * broadcasterPort Port used to connect multimedia server MultiRTC3.
+   * I will use it for explicit video chat multiplatform support.
+   * Default value is 9001
+   */
+  private broadcasterPort: number = 9001;
 
   /**
    * appUseAccountsSystem If you don't want to use session
@@ -117,7 +130,14 @@ class ClientConfig {
   }
 
   public getDomain() {
+    if (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1") {
+      return window.location.hostname;
+    }
     return this.domain;
+  }
+
+  public getBroadcasterPort() {
+    return this.broadcasterPort;
   }
 
   public getConnectorPort() {
@@ -134,6 +154,10 @@ class ClientConfig {
 
   public setAspectRatio(newAspectRatio: number) {
     this.aspectRatio = newAspectRatio;
+  }
+
+  public getProtocolFromAddressBar(): string {
+    return (location.protocol === "https:" ? "https://" : "http://");
   }
 
   public getRemoteServerAddress() {

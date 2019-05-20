@@ -161,15 +161,14 @@ var RTCMultiConnection3 = function(roomid, forceOptions) {
         }
 
         if (connection.socketURL.substr(connection.socketURL.length - 1, 1) != '/') {
-            // connection.socketURL = 'https://domain.com:9001/';
-            throw '"socketURL" MUST end with a slash.';
+            throw '"socketURL" must end with a slash!';
         }
 
         if (connection.enableLogs) {
             if (connection.socketURL == '/') {
-                console.info('socket.io url is: ', location.origin + '/');
+                console.info('socket.io url: ', location.origin + '/');
             } else {
-                console.info('socket.io url is: ', connection.socketURL);
+                console.info('socket.io url: ', connection.socketURL);
             }
         }
 

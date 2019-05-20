@@ -92,7 +92,6 @@ class Starter {
     });
     Runner.run(this.runner, this.engine);
 
-    console.log("xxx");
     // add mouse control
     const mouse = Mouse.create(this.render.canvas);
 

@@ -18,9 +18,7 @@ class Broadcaster {
   private popupUI: HTMLDivElement = null;
   private webCamView: HTMLDivElement;
   private txtRoomId: HTMLElement;
-
   private publicRoomIdentifier: string;
-
   private connector;
 
   constructor(config: any) {
@@ -30,11 +28,12 @@ class Broadcaster {
     const root = this;
     this.engineConfig = config;
     // this.webCamView = byId("webCamView") as HTMLDivElement;
-
-    // (window as any).rtcMultiConnection = new (window as any).RTCMultiConnection();
-
     this.showBroadcaster();
 
+  }
+
+  public closeAllPeers(): void {
+    this.rtcMultiConnection.close();
   }
 
   private initWebRtc = () => {
@@ -43,8 +42,10 @@ class Broadcaster {
     // i.e. only those rooms that are created on this page
     this.publicRoomIdentifier = "video-conference-dashboard";
     this.rtcMultiConnection = new (RTCMultiConnection3 as any)();
-    this.rtcMultiConnection.socketURL = "http://localhost:9001/";
-    // connection.socketURL = 'https://rtcmulticonnection.herokuapp.com:443/';
+    this.rtcMultiConnection.socketURL =
+      location.protocol + "//" +
+      root.engineConfig.getDomain() + ":" +
+      root.engineConfig.getBroadcasterPort() + "/";
     /// make this room public
     this.rtcMultiConnection.publicRoomIdentifier = this.publicRoomIdentifier;
     this.rtcMultiConnection.socketMessageEvent = this.publicRoomIdentifier;

@@ -41,7 +41,8 @@
     "datadebug": "node --inspect=27017 ./server/database/base.js",
     "dataserver": "mongod --dbpath ./server/database/data",
     "fix": "tslint -c tslint.json 'src/**/*.ts' --fix",
-    "tslint": "tslint -c tslint.json 'src/**/*.ts'"
+    "tslint": "tslint -c tslint.json 'src/**/*.ts'",
+    "doc": "E://web_server/xampp/htdocs/PRIVATE_SERVER/visual-ts/doc-style"
   },
   "author": {
     "name": "Nikola Lukic",
