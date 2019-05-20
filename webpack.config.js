@@ -13,6 +13,7 @@ let documentationPlugin = new TypedocWebpackPlugin({
     out: './api-doc',
     module: 'amd',
     target: 'es5',
+    exclude: '**/node_modules/**/*.*',
     experimentalDecorators: true,
     excludeExternals: true,
     name: 'sn-theme',

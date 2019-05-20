@@ -2,14 +2,13 @@
 import Browser from "./class/browser";
 import Broadcaster from "./class/networking/broadcaster";
 import Network from "./class/networking/network";
+import { scriptManager } from "./class/system";
 import ViewPort from "./class/view-port";
 import VisualRender from "./class/visual-render";
 import ClientConfig from "./client-config";
 import { IUniVector } from "./interface/global";
 import GlobalEvent from "./multiplatform/global-event";
 import Starter from "./starter";
-import { config } from "shelljs";
-import { scriptManager } from "./class/system";
 
 /**
  * Ioc is main dependency controller class.
