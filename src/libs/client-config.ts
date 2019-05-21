@@ -46,7 +46,7 @@ class ClientConfig {
   private domain: string = "maximumroulette.com";
 
   /**
-   * networkDeepLogs control of dev logs.
+   * networkDeepLogs control of dev logs for webRTC context only.
    */
   private networkDeepLogs: boolean = false;
 
@@ -76,10 +76,24 @@ class ClientConfig {
   private broadcasterPort: number = 9001;
 
   /**
+   * @description Important note for this property: if you
+   * disable (false) you cant use Account system or any other
+   * network. Use 'false' if you wanna make single player game.
+   * In other way keep it 'true'.
+   */
+  private appUseNetwork = false;
+
+  /**
    * appUseAccountsSystem If you don't want to use session
    * in your application just setup this variable to the false.
    */
   private appUseAccountsSystem: boolean = false;
+
+  /**
+   * appUseBroadcaster Disable or enable broadcaster for
+   * video chats.
+   */
+  private appUseBroadcaster: boolean = false;
 
   /**
    * Possible variant by default :
@@ -121,8 +135,16 @@ class ClientConfig {
     return this.defaultGamePlayLevelName;
   }
 
-  public isAppUseAccountsSystem(): boolean {
+  public didAppUseNetwork() {
+    return this.appUseNetwork;
+  }
+
+  public didAppUseAccountsSystem(): boolean {
     return this.appUseAccountsSystem;
+  }
+
+  public didAppUseBroadcast(): boolean {
+    return this.appUseBroadcaster;
   }
 
   public getStartUpHtmlForm(): string {

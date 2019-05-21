@@ -10,6 +10,7 @@ class Network {
   private engineConfig: any;
   private popupUI: HTMLDivElement;
   private loggerUI: HTMLDivElement;
+  private loggerMediaUI: HTMLDivElement;
   private webCamView: HTMLDivElement;
   private numbersOfUsers: number = 0;
 
@@ -22,13 +23,13 @@ class Network {
   private getUserinfo;
   private fireClickEvent;
 
-  private connector;
+  private connector: ConnectorClient;
 
   constructor(config: any) {
 
     this.engineConfig = config;
 
-    if (this.engineConfig.isAppUseAccountsSystem()) {
+    if (this.engineConfig.didAppUseAccountsSystem()) {
       this.connector = new ConnectorClient(config);
       // this.connector.showRegisterForm();
       this.popupUI = (byId("popup") as HTMLDivElement);
@@ -36,7 +37,11 @@ class Network {
     }
 
     this.loggerUI = byId("network-panel") as HTMLDivElement;
+    this.loggerMediaUI = byId("media-rtc2-controls") as HTMLDivElement;
+    this.loggerMediaUI.style.display = "block";
+    this.loggerUI.style.display = "block";
     this.webCamView = byId("webCamView") as HTMLDivElement;
+    this.webCamView.style.display = "block";
     this.senderUI = byId("sender") as HTMLTextAreaElement;
     this.nameUI = this.loggerUI.querySelector("#your-name");
     this.roomUI = this.loggerUI.querySelector("#room-name");
@@ -45,7 +50,7 @@ class Network {
     this.chatUI = this.loggerUI.querySelector("#log-chat");
 
     if (this.engineConfig.getNetworkDeepLog() === false) {
-      (window as any).log = function () { /* empty */ };
+      (window as any).log = function () {/* empty */};
     }
 
     this.roomUI.value = this.engineConfig.getMasterServerKey();
@@ -416,7 +421,7 @@ class Network {
       (root.connectUI as any).onclick();
     };
 
-    // this.roomUI.value = ;
+    // this.roomUI.value
 
     if (localStorage.getItem("roomname")) {
       // this.roomUI.value = localStorage.getItem("roomname");

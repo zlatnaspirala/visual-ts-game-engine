@@ -33,6 +33,8 @@ export function level1(r: Platformer): void {
   ];
 
   const playerRadius = 5;
+  const playerSpeed = 0.005;
+
   r.player = Matter.Bodies.circle(r.v.getWidth(50), r.v.getHeight(30), r.v.getWidth(playerRadius), {
     label: "player",
     density: 0.0005,
@@ -188,7 +190,7 @@ export function level1(r: Platformer): void {
     // jump
     if (globalEvent.activeKey[38] && r.player.ground) {
 
-      const s = (r.player.circleRadius / 500);
+      const s = (r.player.circleRadius * playerSpeed);
       r.player.ground = false;
       r.player.force = {
         x: 0,

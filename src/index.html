@@ -22,7 +22,7 @@
 </head>
 
 <body>
-  <div id="network-panel" class="log-network" style="display:block">
+  <div id="network-panel" class="log-network" style="display:none">
     <div id="log-chat" class="log-chat" style="display:block">
     </div>
     <input type="text" id="room-name" placeholder="Private ID" title="id.required" value="MAINSERVER" class="myButton"
@@ -30,17 +30,17 @@
     <input type="text" id="your-name" placeholder="Username" title="Recommended" class="myButton" style="width:170px;">
     <button id="continue" title="Click to join the room!" class="myButton">continue</button>
     <div id="who-is-typing" class="whoIsTyping"></div>
-    <input type="text" id="sender" placeholder="" value="Hello" style="position:absolute;top:110%;left:0;width:64%;z-index: 100;"
+    <input type="text" id="sender" placeholder="" value="Hello" style="position:absolute;bottom:10%;left:0;width:64%;z-index: 100;"
       class="myButton">
     <div id="logger" class="logger"></div>
   </div>
-  <div class="controls" style="display: block">
+  <div id="media-rtc2-controls" class="controls" style="display:none">
     <button id="allow-webcam" class="icon myButton" disabled title="Enable Your Webcam"></button>
     <button id="allow-mic" class="icon myButton" disabled title="Enable Your Microphone"></button>
     <button id="allow-screen" class="icon myButton" disabled title="Enable Your Screen"></button>
     <button id="share-files" class="icon myButton" disabled title="Select and Share Your Files"></button>
   </div>
-  <div id="webCamView" class="webCamView myButton" style="display: block"></div>
+  <div id="webCamView" class="webCamView myButton" style="display:none"></div>
   <div id="popup" class="popup" style="display:none"></div>
 </body>
 

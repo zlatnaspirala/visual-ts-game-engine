@@ -6,7 +6,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin')
 const TypedocWebpackPlugin = require('typedoc-webpack-plugin');
 
 var internalConfig = {
-    createDocumentation : true,
+    createDocumentation: false,
 };
 
 let documentationPlugin = new TypedocWebpackPlugin({

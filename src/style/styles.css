@@ -87,6 +87,7 @@ canvas {
   left: 0;
   top: 0;
   width: 480px;
+  height: 100%;
 }
 
 .logger {
@@ -99,11 +100,18 @@ canvas {
 
 .log-chat {
   position: absolute;
-  top: 12%;
+  top: 6%;
   height: 182px !important;
   width: 100%;
   overflow: auto;
-  margin-top: 38px;
+}
+
+.log-sender {
+  position:absolute;
+  bottom:10%;
+  left:0;
+  width:64%;
+  z-index: 100;
 }
 
 .textMessageNode {

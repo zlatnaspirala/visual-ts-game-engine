@@ -159,7 +159,7 @@ class BroadcasterMedia {
     } else {
       root.rtcBroadcaster.join(this.params.sessionid, function (isRoomJoined, roomid, error) {
         if (error) {
-          console.log(" check root.rtcBroadcaster.join ERROR")
+          console.log(" check root.rtcBroadcaster.join ERROR");
           if (error === root.rtcBroadcaster.errors.ROOM_NOT_AVAILABLE) {
             alert("This room does not exist. Please either create it or wait for moderator to enter in the room.");
             return;
@@ -174,10 +174,11 @@ class BroadcasterMedia {
               alert("Invalid password.");
               return;
             }
-            root.rtcBroadcaster.join(root.params.sessionid, function (isRoomJoined, roomid, error) {
-              if (error) {
-                alert(error);
+            root.rtcBroadcaster.join(root.params.sessionid, function (__, _, err) {
+              if (err) {
+                alert(err);
               }
+              // console.log(isRoomJoined, roomid);
             });
             return;
           }

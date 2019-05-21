@@ -343,7 +343,9 @@ class Broadcaster {
   }
 
   private openInNewWindow = () => {
+
     const root = this;
+    let href_: any;
 
     $("#startRoomModel").modal("hide");
     // let href
@@ -353,17 +355,17 @@ class Broadcaster {
       "&userFullName=" + root.rtcMultiConnection.extra.userFullName;
 
     if (!!root.rtcMultiConnection.password) {
-      href += "&password=" + root.rtcMultiConnection.password;
+      href_ += "&password=" + root.rtcMultiConnection.password;
     }
 
-    let TEST = new BroadcasterMedia(root, params);
+    let broadcasterMedia = new BroadcasterMedia(root, params);
 
     /*
-    const newWin = window.open(href);
+    const newWin = window.open(href_);
     if (!newWin || newWin.closed || typeof newWin.closed === "undefined") {
       let html = "";
       html += "<p>Please click following link:</p>";
-      html += '<p><a href="' + href + '" target="_blank">';
+      html += '<p><a href="' + href_ + '" target="_blank">';
       if (root.rtcMultiConnection.isInitiator) {
         html += "Click To Open The Room";
       } else {

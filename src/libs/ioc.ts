@@ -30,6 +30,10 @@ class Ioc {
    */
   private config: ClientConfig;
 
+  /**
+   * Constructor for ioc class is in samo time
+   * register for application classes.
+   */
   constructor(gamesList: any[]) {
 
     this.config = new ClientConfig(gamesList);
@@ -40,9 +44,19 @@ class Ioc {
     this.singlton(ViewPort, this.config);
     this.singlton(GlobalEvent, this.get.Browser);
     this.singlton(VisualRender, undefined);
-    this.singlton(Network, this.config);
-    this.singlton(Broadcaster, this.config);
+
+    if (this.config.didAppUseNetwork()) {
+
+      this.singlton(Network, this.config);
+
+      if (this.config.didAppUseBroadcast()) {
+        this.singlton(Broadcaster, this.config);
+      }
+
+    }
+
     this.singlton(Starter, this);
+
   }
 
   /**

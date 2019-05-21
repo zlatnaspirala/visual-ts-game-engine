@@ -23,11 +23,17 @@ let dragging = function () {
       divLeft = divLeft.replace("px", "");
       const diffX = posX - divLeft,
         diffY = posY - divTop;
-      document.onmousemove = function (event) {
-        const e = event || window.event;
 
-        let aX = e.clientX - diffX,
+      document.onmousemove = function (event) {
+
+        const e = event || window.event;
+        let aX, aY;
+        try {
+          aX = e.clientX - diffX,
           aY = e.clientY - diffY;
+        } catch (err) {
+          console.log(err);
+        }
         if (aX < 0) { aX = 0; }
         if (aY < 0) { aY = 0; }
         if (aX + eWi > cWi) { aX = cWi - eWi; }
