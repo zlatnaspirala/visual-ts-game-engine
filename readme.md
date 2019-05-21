@@ -58,12 +58,23 @@ Find configuration at ./src/lib/client-config.ts
       enabled: true,
       scriptPath: "externals/hack-timer.js",
     },
+    {
+      name: "dragging",
+      enabled: true,
+      scriptPath: "externals/drag.ts",
+    },
   ];
 
-  private drawReference: string = "frame"; // "diametric-fullscreen"; // "frame";
+  /**
+   * @description This is main coordinary types of positions
+   * Can be "diametric-fullscreen" or "frame".
+   * @property drawReference
+   * @type  string
+   */
+  private drawReference: string = "frame";
 
   /**
-   * aspectRatio default value , can be changed in run time.
+   * aspectRatio default value, can be changed in run time.
    */
   private aspectRatio: number = 1.333;
 
@@ -72,18 +83,12 @@ Find configuration at ./src/lib/client-config.ts
    * recommendent to use for local propose LAN ip
    * like : 192.168.0.XXX if you wanna run ant test app with server.
    */
-  private domain: string = "127.0.0.1";
+  private domain: string = "maximumroulette.com";
 
   /**
-   * networkDeepLogs control of dev logs.
+   * networkDeepLogs control of dev logs for webRTC context only.
    */
   private networkDeepLogs: boolean = false;
-
-  /**
-   * rtcServerPort Port used to connect multimedia server.
-   * Default value is 12034
-   */
-  private rtcServerPort: number = 12034;
 
   /**
    * masterServerKey is channel access id used to connect
@@ -92,16 +97,43 @@ Find configuration at ./src/lib/client-config.ts
   private masterServerKey: string = "multi-platformer-sever1.maximum";
 
   /**
+   * rtcServerPort Port used to connect multimedia server.
+   * Default value is 12034
+   */
+  private rtcServerPort: number = 12034;
+
+  /**
    * connectorPort is access port used to connect
    * session web socket.
    */
   private connectorPort: number = 1234;
 
   /**
+   * broadcasterPort Port used to connect multimedia server MultiRTC3.
+   * I will use it for explicit video chat multiplatform support.
+   * Default value is 9001
+   */
+  private broadcasterPort: number = 9001;
+
+  /**
+   * @description Important note for this property: if you
+   * disable (false) you cant use Account system or any other
+   * network. Use 'false' if you wanna make single player game.
+   * In other way keep it 'true'.
+   */
+  private appUseNetwork = false;
+
+  /**
    * appUseAccountsSystem If you don't want to use session
    * in your application just setup this variable to the false.
    */
   private appUseAccountsSystem: boolean = false;
+
+  /**
+   * appUseBroadcaster Disable or enable broadcaster for
+   * video chats.
+   */
+  private appUseBroadcaster: boolean = false;
 
   /**
    * Possible variant by default :
@@ -122,7 +154,9 @@ Find configuration at ./src/lib/client-config.ts
 ### Start dependency system from app.ts ###
 
  - Fisrt game template is Platformer.
- - gamesList args for ioc constructor is for now just simbolic.
+ - gamesList args for ioc constructor is for now just simbolic for now.
+ - In ioc you can make strong class dependency relations.
+
 #### Main dependency file ####
 
 ```typescript
@@ -184,6 +218,10 @@ LICENSE
 |   |   |   |   |   ├── RTCMultiConnection2.js
 |   |   |   |   |   ├── RTCMultiConnection3.js
 |   |   |   |   |   ├── linkify.js
+|   |   |   |   |   ├── getHTMLMediaElement.js
+|   |   |   |   |   ├── socket.io.js
+|   |   |   |   ├── broadcaster-media.ts
+|   |   |   |   ├── broadcaster.ts
 |   |   |   |   ├── connector.ts
 |   |   |   |   ├── network.ts
 |   |   |   ├── visual-methods/
@@ -219,6 +257,7 @@ LICENSE
 |   |   ├── games-list.html
 |   |   ├── user-profile.html
 |   |   ├── store.html
+|   |   ├── broadcaster.html
 |   ├── index.html
 |   ├── app-icon.ts
 |   └── app.ts
