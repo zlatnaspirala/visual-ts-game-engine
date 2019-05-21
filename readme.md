@@ -29,7 +29,7 @@
  -Client part is browser web application. No reloading or redirecting. This is single page
  application. I use html request only for loading local/staged html (like register, login etc.).
  Networking is based on webSocket full-duplex communication only. This is bad for old fasion programmers.
- You must be comform with classic socket connection methodollogy.
+ You must be conform with classic socket connection methodology.
  -webRTC can be used for any proporsion.
    Already implemented :
    -video chat webRTC (SIP) chat and data communication.
@@ -43,7 +43,7 @@ If you want web app without any networking then setup:
 
 <code>  appUseNetwork: boolean = false; </code>
 
-You want to use communication for multiplayer but you don't want to use server databased
+You want to use communication for multiplayer but you don't want to use server database
 account sessions. The setup this on false in main client config class.
 <code>  appUseAccountsSystem: boolean = false; </code>
 
