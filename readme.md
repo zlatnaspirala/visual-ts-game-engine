@@ -373,7 +373,9 @@ Features comes with broadcaster:
 
 ## Documentation : ##
 
- - In progress like whole project ... Api doc will come with first release branch.
+ Beta version for documentation.
+ <a href="https://maximumroulette.com/applications/visual-typescript-game-engine/build/api-doc/globals.html" rel="noopener noreferrer nofollow" target="_blank"></a>
+
  If you wanna generate doc you will need manual remove comment
  from plugin section in webpack.config.js. Restart 'npm run dev'
  Best way to fully healty build.
@@ -432,4 +434,3 @@ or use :
 
 <b>Donate with any crypto value</b>
 <a href="https://coingate.com/pay/visual-ts-game-engine" rel="noopener noreferrer nofollow" target="_blank"><img alt="CoinGate Payment Button" src="https://static.coingate.com/images/buttons/4.png" /></a>
-
