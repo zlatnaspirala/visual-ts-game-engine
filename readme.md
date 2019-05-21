@@ -27,24 +27,27 @@
 <b> Navigate in browser /build/app.html to see client app in action </b>
 
  -Client part is browser web application. No reloading or redirecting. This is single page
- application. I use html request only for loading local html (register, login etc.).
- Networking is based on webSocket full-duplex communication.
- -webRTC Can be used for any proporsion.
+ application. I use html request only for loading local/staged html (like register, login etc.).
+ Networking is based on webSocket full-duplex communication only. This is bad for old fasion programmers.
+ You must be comform with classic socket connection methodollogy.
+ -webRTC can be used for any proporsion.
    Already implemented :
-   -video chat webRTC (SIP)
-   -chat or data communication
+   -video chat webRTC (SIP) chat and data communication.
 
- -Connector (native webSocket) used for user session staff.
-  in progress...
+ -Class 'Connector' (native webSocket) used for user session staff.
+  For main account session staff like login, register etc.
 
 ### Client config ###
 
- if you want web app without networking then setup :
+If you want web app without any networking then setup:
 
+<code>  appUseNetwork: boolean = false; </code>
+
+You want to use communication for multiplayer but you don't want to use server databased
+account sessions. The setup this on false in main client config class.
 <code>  appUseAccountsSystem: boolean = false; </code>
 
- - No need for deactivation multi media webRTC support becouse
- this feature run only on user request for now.
+ - Networking is disabled by default.
 
 Find configuration at ./src/lib/client-config.ts
 
@@ -154,18 +157,24 @@ Find configuration at ./src/lib/client-config.ts
 ### Start dependency system from app.ts ###
 
  - Fisrt game template is Platformer.
- - gamesList args for ioc constructor is for now just simbolic for now.
+     This is high level programming in this software. Class Platformer run
+     with procedural (method) level1. Class Starter is base class for my canvas part.
+     It is injected to the Platformer to make full operated work.
+ - gamesList args for ioc constructor is for now just simbolic for now. (WIP)
  - In ioc you can make strong class dependency relations.
+   Use it for your own structural changes.
 
 #### Main dependency file ####
 
 ```typescript
 
+// Symbolic for now
 const plarformerGameInfo = {
   name: "Crypto-Runner",
   title: "PLAY PLATFORMER CRYPTO RUNNER!",
 };
 
+// Symbolic for now
 const gamesList: any[] = [
   plarformerGameInfo,
 ];
@@ -174,7 +183,6 @@ const master = new Ioc(gamesList);
 const appIcon: AppIcon = new AppIcon(master.get.Browser);
 master.singlton(Platformer, master.get.Starter);
 console.log("Platformer: ", master.get.Platformer);
-
 master.get.Platformer.attachAppEvents();
 
 ```
@@ -186,7 +194,10 @@ master.get.Platformer.attachAppEvents();
    Main file : app.ts
  - src/libs/ is common and smart pack of classes, interfaces etc.
    easy access.
- - server/ folder is fully indipendent server size.
+ - server/ folder is fully indipendent server size. I use one git repo
+   but consider '/server' represent standalone application. There's server
+   package.json independently from client part also config is not the common.
+   I just like it like that.
 
 <pre>
 
