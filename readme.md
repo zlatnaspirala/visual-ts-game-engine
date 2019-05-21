@@ -374,7 +374,7 @@ Features comes with broadcaster:
 ## Documentation : ##
 
  Beta version for documentation.
- <a href="https://maximumroulette.com/applications/visual-typescript-game-engine/build/api-doc/globals.html" rel="noopener noreferrer nofollow" target="_blank"></a>
+ <a href="https://maximumroulette.com/applications/visual-typescript-game-engine/build/api-doc/globals.html" rel="noopener noreferrer nofollow" target="_blank">Application documentation</a>
 
  If you wanna generate doc you will need manual remove comment
  from plugin section in webpack.config.js. Restart 'npm run dev'
