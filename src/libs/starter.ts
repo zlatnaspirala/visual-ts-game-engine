@@ -51,6 +51,7 @@ class Starter {
 
   public constructor(ioc: Ioc) {
 
+    let root = this;
     this.ioc = ioc;
 
     const Engine = Matter.Engine,
@@ -73,13 +74,15 @@ class Starter {
       element: (document as Document).body,
       engine: this.engine,
       options: {
+        width: 800,
+        height: 600,
         wireframes: false,
       },
     });
 
-    this.setWorldBounds(-this.view.getWidth(100),
-      -this.view.getWidth(100),
-      this.view.getWidth(100), 3 * this.view.getHeight(100));
+    this.setWorldBounds(-300,
+      -300,
+      1100, 900);
 
     this.render.options.background = "black";
 
@@ -117,8 +120,8 @@ class Starter {
         y: 0,
       },
       max: {
-        x: this.view.getWidth(100),
-        y: this.view.getHeight(100),
+        x: 800,
+        y: 600,
       },
     });
 
@@ -146,6 +149,17 @@ class Starter {
         y: 1,
       },
     };
+
+    window.addEventListener("resize", function () {
+     root.keepLookAt();
+    }, false);
+
+  }
+
+  public keepLookAt () {
+
+
+
 
   }
 

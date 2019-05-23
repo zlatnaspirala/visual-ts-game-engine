@@ -16,12 +16,9 @@ export function level1(r: Platformer): void {
   const globalEvent = r.starter.ioc.get.GlobalEvent;
   const gameMap = new GameMap(r.starter);
 
-  r.starter.setWorldBounds(
-    -r.starter.getView().getWidth(100),
-    -r.starter.getView().getWidth(100),
-    r.starter.getView().getHeight(100) * 3,
-    r.starter.getView().getHeight(100) * 3,
-  );
+  r.starter.setWorldBounds(-300,
+    -2000,
+    10000, 1000);
 
   const imgRes = [
     require("../../imgs/floor.png"),
@@ -32,10 +29,10 @@ export function level1(r: Platformer): void {
     require("../../imgs/walk-boy2.png"),
   ];
 
-  const playerRadius = 5;
+  const playerRadius = 50;
   const playerSpeed = 0.005;
 
-  r.player = Matter.Bodies.circle(r.v.getWidth(50), r.v.getHeight(30), r.v.getWidth(playerRadius), {
+  r.player = Matter.Bodies.circle(100, 100, playerRadius, {
     label: "player",
     density: 0.0005,
     friction: 0.01,
@@ -65,11 +62,7 @@ export function level1(r: Platformer): void {
 
   gameMap.getStaticBackgrounds().forEach((item) => {
 
-    const newStaticElement: worldElement = Matter.Bodies.rectangle(
-      r.v.getWidth(item.x),
-      r.v.getHeight(item.y),
-      r.v.getWidth(item.w),
-      r.v.getHeight(item.h),
+    const newStaticElement: worldElement = Matter.Bodies.rectangle(item.x, item.y, item.w, item.h,
       {
         isStatic: true,
         label: "background",
@@ -95,11 +88,7 @@ export function level1(r: Platformer): void {
 
   gameMap.getStaticGrounds().forEach((item) => {
 
-    const newStaticElement: worldElement = Matter.Bodies.rectangle(
-      r.v.getWidth(item.x),
-      r.v.getHeight(item.y),
-      r.v.getWidth(item.w),
-      r.v.getHeight(item.h),
+    const newStaticElement: worldElement = Matter.Bodies.rectangle(item.x, item.y, item.w, item.h,
       {
         isStatic: true,
         label: "ground",
@@ -126,10 +115,10 @@ export function level1(r: Platformer): void {
   gameMap.getCollectitems().forEach((item) => {
 
     const newStaticElement: worldElement = Matter.Bodies.rectangle(
-      r.v.getWidth(item.x),
-      r.v.getHeight(item.y),
-      r.v.getWidth(item.w),
-      r.v.getHeight(item.h),
+      item.x,
+      item.y,
+      item.w,
+      item.h,
       {
         isStatic: true,
         label: item.colectionLabel,
@@ -162,7 +151,7 @@ export function level1(r: Platformer): void {
 
     Matter.Bounds.shift(r.starter.getRender().bounds,
       {
-        x: r.player.position.x - (window as any).innerWidth / 5,
+        x: r.player.position.x - (window as any).innerHeight / 1.7,
         y: r.player.position.y - (window as any).innerHeight / 2,
       });
 
@@ -224,13 +213,7 @@ export function level1(r: Platformer): void {
 
   globalEvent.activateKeyDetection();
 
-  Matter.Events.on(r.starter.getEngine(), "beforeTick", function (event) {
-
-    // let ctx = r.starter.getRender().canvas.getContext("2d");
-    // ctx.translate(window.innerWidth / 25, window.innerHeight / 25);
-    // ctx.scale(this.zoom, this.zoom);
-    // ctx.translate(-window.innerWidth / 25, -window.innerHeight / 25);
-    // console.log("XXX", r.player.position.y);
-  });
+  // Disabled for now.
+  // Matter.Events.on(r.starter.getEngine(), "beforeTick", function (event) {});
 
 }

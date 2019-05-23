@@ -28,7 +28,7 @@ master.singlton(Platformer, master.get.Starter);
 console.log("Platformer: ", master.get.Platformer);
 
 master.get.Platformer.attachAppEvents();
-
+window.platformer = master.get.Platformer;
 setTimeout(function () {
   // master.get.Platformer.destroyGamePlay();
 }, 3000);

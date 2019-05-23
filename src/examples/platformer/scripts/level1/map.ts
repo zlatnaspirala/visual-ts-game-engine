@@ -17,20 +17,15 @@ class GameMap {
 
     const imgRes = [require("../../imgs/floor.png")];
     return [
-      { x: 20, y: 10, w: 50, h: 6, tex: imgRes, tiles: 2 },
-      { x: 20, y: 40, w: 50, h: 6, tex: imgRes, tiles: 2 },
-      { x: 20, y: 60, w: 150, h: 6, tex: imgRes, tiles: 1 },
-      { x: 40, y: 80, w: 50, h: 6, tex: imgRes, tiles: 2 },
-      { x: 100, y: 80, w: 50, h: 6, tex: imgRes, tiles: 2 },
-      { x: 160, y: 150, w: 150, h: 6, tex: imgRes, tiles: 1 },
-      { x: 170, y: 120, w: 50, h: 6, tex: imgRes, tiles: 2 },
-      { x: 180, y: 60, w: 50, h: 6, tex: imgRes, tiles: 2 },
-      { x: 190, y: 20, w: 150, h: 6, tex: imgRes, tiles: 1 },
-      /*
-      { x: 10, y: 10, w: 30, h: 6, tex: imgRes, tiles: 5 },
-      { x: 110, y: 30, w: 30, h: 6, tex: imgRes, tiles: 5 },
-      { x: 70, y: 60, w: 30, h: 6, tex: imgRes, tiles: 5 },
-      */
+      { x: 200, y: 100, w: 500, h: 60, tex: imgRes, tiles: 2 },
+      { x: 200, y: 400, w: 500, h: 60, tex: imgRes, tiles: 2 },
+      { x: 200, y: 600, w: 1500, h: 60, tex: imgRes, tiles: 1 },
+      { x: 400, y: 800, w: 500, h: 60, tex: imgRes, tiles: 2 },
+      { x: 1000, y: 800, w: 500, h: 60, tex: imgRes, tiles: 2 },
+      { x: 1600, y: 1500, w: 1500, h: 60, tex: imgRes, tiles: 1 },
+      { x: 1700, y: 1200, w: 500, h: 60, tex: imgRes, tiles: 2 },
+      { x: 1800, y: 600, w: 500, h: 60, tex: imgRes, tiles: 2 },
+      { x: 1900, y: 200, w: 1500, h: 60, tex: imgRes, tiles: 1 },
     ] as IStaticItem[];
   }
 
@@ -47,10 +42,10 @@ class GameMap {
       for (let y = 0; y < shema.byY; y++) {
         b.push(
           {
-            x: this.starter.getView().getWidth(x * 10),
-            y: this.starter.getView().getWidth(y * 10),
-            w: this.starter.getView().getWidth(10),
-            h: this.starter.getView().getWidth(10),
+            x: x * 100,
+            y: y * 100,
+            w: 100,
+            h: 100,
             tex: backgroundWall, tiles: 1,
             collisionFilter: { category: 1, group: 1, mask: 1 },
           });
@@ -63,11 +58,11 @@ class GameMap {
   public getCollectitems(): ICollectionItem[] {
     const imgRes = [require("../../imgs/collect-items/bitcoin.png")];
     return [
-      { x: 20, y: 10, w: 5, h: 6, tex: imgRes, tiles: 2, colectionLabel: "bitcoin", points: 2 },
-      { x: 50, y: 16, w: 5, h: 6, tex: imgRes, tiles: 1, colectionLabel: "bitcoin", points: 1 },
-      { x: 10, y: 40, w: 5, h: 5, tex: imgRes, tiles: 1, colectionLabel: "bitcoin", points: 1 },
-      { x: 20, y: 40, w: 5, h: 5, tex: imgRes, tiles: 1, colectionLabel: "bitcoin", points: 1 },
-      { x: 30, y: 40, w: 5, h: 5, tex: imgRes, tiles: 1, colectionLabel: "bitcoin", points: 1 },
+      { x: 200, y: 100, w: 50, h: 60, tex: imgRes, tiles: 2, colectionLabel: "bitcoin", points: 2 },
+      { x: 500, y: 160, w: 50, h: 60, tex: imgRes, tiles: 1, colectionLabel: "bitcoin", points: 1 },
+      { x: 100, y: 400, w: 50, h: 50, tex: imgRes, tiles: 1, colectionLabel: "bitcoin", points: 1 },
+      { x: 200, y: 400, w: 50, h: 50, tex: imgRes, tiles: 1, colectionLabel: "bitcoin", points: 1 },
+      { x: 300, y: 400, w: 50, h: 50, tex: imgRes, tiles: 1, colectionLabel: "bitcoin", points: 1 },
     ] as ICollectionItem[];
   }
 
