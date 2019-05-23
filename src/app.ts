@@ -4,7 +4,7 @@
 require("./style/styles.css");
 
 import AppIcon from "./app-icon";
-import Platformer from "./examples/platformer/platformer";
+import GamePlay from "./examples/platformer/scripts/game-play";
 import Ioc from "./libs/ioc";
 
 /**
@@ -24,11 +24,13 @@ const gamesList: any[] = [
 
 const master = new Ioc(gamesList);
 const appIcon: AppIcon = new AppIcon(master.get.Browser);
-master.singlton(Platformer, master.get.Starter);
-console.log("Platformer: ", master.get.Platformer);
+master.singlton(GamePlay, master.get.Starter);
+console.log("Platformer: ", master.get.GamePlay);
 
-master.get.Platformer.attachAppEvents();
+master.get.GamePlay.attachAppEvents();
+
+window.platformer = master.get.GamePlay;
 
 setTimeout(function () {
-  // master.get.Platformer.destroyGamePlay();
+  // master.get.GamePlay.destroyGamePlay();
 }, 3000);

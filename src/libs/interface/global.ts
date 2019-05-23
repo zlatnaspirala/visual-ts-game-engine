@@ -1,4 +1,5 @@
-import { literalImageSrc } from "../types/global";
+import Starter from "../starter";
+import { literalImageSrc, worldElement } from "../types/global";
 
 export interface ICollisionFilter { category: number; group: number; mask: number; }
 export interface IStaticItem {
@@ -28,6 +29,8 @@ export interface IMessageReceived {
 }
 
 export interface IGamePlayModel {
-  init(level: string): void;
-  attachAppEvents(): void;
+   gameName: string;
+   version: number;
+   starter: Starter;
+   player: any;
 }
