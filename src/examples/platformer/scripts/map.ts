@@ -1,5 +1,5 @@
-import { ICollectionItem, IStaticItem } from "../../../../libs/interface/global";
-import Starter from "../../../../libs/starter";
+import { ICollectionItem, IStaticItem } from "../../../libs/interface/global";
+import Starter from "../../../libs/starter";
 
 /**
  * Static body elements, backgrounds etc.
@@ -15,7 +15,7 @@ class GameMap {
 
   public getStaticGrounds(): IStaticItem[] {
 
-    const imgRes = [require("../../imgs/floor.png")];
+    const imgRes = [require("../imgs/floor.png")];
     return [
       { x: 200, y: 100, w: 500, h: 60, tex: imgRes, tiles: 2 },
       { x: 200, y: 400, w: 500, h: 60, tex: imgRes, tiles: 2 },
@@ -31,7 +31,7 @@ class GameMap {
 
   public getStaticBackgrounds(): IStaticItem[] {
 
-    const backgroundWall = require("../../imgs/wall3.jpg");
+    const backgroundWall = require("../imgs/wall3.jpg");
 
     const shema = {
       byX: 3,
@@ -42,10 +42,10 @@ class GameMap {
       for (let y = 0; y < shema.byY; y++) {
         b.push(
           {
-            x: x * 100,
-            y: y * 100,
-            w: 100,
-            h: 100,
+            x: x * 1000,
+            y: y * 1000,
+            w: 1000,
+            h: 1000,
             tex: backgroundWall, tiles: 1,
             collisionFilter: { category: 1, group: 1, mask: 1 },
           });
@@ -56,7 +56,7 @@ class GameMap {
   }
 
   public getCollectitems(): ICollectionItem[] {
-    const imgRes = [require("../../imgs/collect-items/bitcoin.png")];
+    const imgRes = [require("../imgs/collect-items/bitcoin.png")];
     return [
       { x: 200, y: 100, w: 50, h: 60, tex: imgRes, tiles: 2, colectionLabel: "bitcoin", points: 2 },
       { x: 500, y: 160, w: 50, h: 60, tex: imgRes, tiles: 1, colectionLabel: "bitcoin", points: 1 },

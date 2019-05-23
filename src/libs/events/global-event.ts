@@ -14,7 +14,7 @@ class GlobalEvent {
   public constructor(browser: Browser) {
 
     this.browser = browser;
-    // this.attachEvent("onmousedown" , function(e) {console.log("mouse down" + event); });
+    console.log("Is mobile: ", this.browser.isMobile);
 
   }
 

@@ -51,7 +51,7 @@ class Starter {
 
   public constructor(ioc: Ioc) {
 
-    let root = this;
+    const root = this;
     this.ioc = ioc;
 
     const Engine = Matter.Engine,
@@ -149,17 +149,6 @@ class Starter {
         y: 1,
       },
     };
-
-    window.addEventListener("resize", function () {
-     root.keepLookAt();
-    }, false);
-
-  }
-
-  public keepLookAt () {
-
-
-
 
   }
 

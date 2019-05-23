@@ -6,8 +6,8 @@ import { scriptManager } from "./class/system";
 import ViewPort from "./class/view-port";
 import VisualRender from "./class/visual-render";
 import ClientConfig from "./client-config";
+import GlobalEvent from "./events/global-event";
 import { IUniVector } from "./interface/global";
-import GlobalEvent from "./multiplatform/global-event";
 import Starter from "./starter";
 
 /**
