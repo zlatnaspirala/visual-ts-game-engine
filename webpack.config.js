@@ -108,7 +108,11 @@ let webPackModule = {
             { from: 'src/style/getHTMLMediaElement.css', to: 'styles/getHTMLMediaElement.css' },
             { from: './src/libs/addons/hacker-timer/hack-timer.js', to: 'externals/hack-timer.js'},
             { from: './src/libs/addons/drag/drag.ts', to: 'externals/drag.ts' },
-            { from: './src/libs/addons/hacker-timer/hack-timer-worker.js', to: 'externals/hack-timer-worker.js' }
+            { from: './src/libs/addons/hacker-timer/hack-timer-worker.js', to: 'externals/hack-timer-worker.js' },
+            { from: './src/manifest.web', to: 'manifest.web' },
+            { from: './src/libs/addons/cache/worker.js', to: 'worker.js' },
+            { from: './src/libs/addons/cache/offline.html', to: 'offline.html' },
+
         ], { debug: 'info' }),
 
     ],

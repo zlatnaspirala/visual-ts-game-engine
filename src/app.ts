@@ -31,6 +31,10 @@ master.get.GamePlay.attachAppEvents();
 
 window.platformer = master.get.GamePlay;
 
-setTimeout(function () {
-  // master.get.GamePlay.destroyGamePlay();
-}, 3000);
+if ("serviceWorker" in navigator) {
+  // Recommended to register onLoad
+  window.addEventListener("load", function () {
+    navigator.serviceWorker.register("worker.js");
+    console.log("log worker");
+  });
+}
