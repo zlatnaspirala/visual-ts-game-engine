@@ -7,11 +7,7 @@ import Starter from "../../../libs/starter";
 
 class GameMap {
 
-  private starter: Starter;
-
-  constructor(r: Starter) {
-    this.starter = r;
-  }
+  constructor() {/* Empty for now. */}
 
   public getStaticGrounds(): IStaticItem[] {
 
@@ -31,12 +27,13 @@ class GameMap {
 
   public getStaticBackgrounds(): IStaticItem[] {
 
-    const backgroundWall = require("../imgs/wall3.jpg");
+    const backgroundWall = require("../imgs/wall3.png");
 
     const shema = {
       byX: 3,
       byY: 3,
     };
+
     const b: IStaticItem[] = [];
     for (let x = 0; x < shema.byX; x++) {
       for (let y = 0; y < shema.byY; y++) {
@@ -63,6 +60,16 @@ class GameMap {
       { x: 100, y: 400, w: 50, h: 50, tex: imgRes, tiles: 1, colectionLabel: "bitcoin", points: 1 },
       { x: 200, y: 400, w: 50, h: 50, tex: imgRes, tiles: 1, colectionLabel: "bitcoin", points: 1 },
       { x: 300, y: 400, w: 50, h: 50, tex: imgRes, tiles: 1, colectionLabel: "bitcoin", points: 1 },
+    ] as ICollectionItem[];
+  }
+
+  public getEnemys(): ICollectionItem[] {
+
+    const imgRes = [require("../imgs/crapmunch/crapmunch.png")];
+    return [
+      { x: 0, y: 0, w: 120, h: 120, tex: imgRes, tiles: 1, colectionLabel: "enemy_crapmunch"},
+      { x: 500, y: 0, w: 120, h: 120, tex: imgRes, tiles: 1, colectionLabel: "enemy_crapmunch" },
+      { x: 1000, y: 0, w: 120, h: 120, tex: imgRes, tiles: 1, colectionLabel: "enemy_crapmunch" },
     ] as ICollectionItem[];
   }
 

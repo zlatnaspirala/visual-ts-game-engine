@@ -1,6 +1,6 @@
 {
   "name": "VTGE",
-  "short_name": "Typescript game engine",
+  "short_name": "Visual typescript game engine",
   "start_url": "app.html",
   "orientation": "portrait-primary",
   "theme_color": "aliceblue",
@@ -10,12 +10,12 @@
   "lang": "en-US",
   "icons": [
     {
-      "src": "src/icon/favicon-96x96.png",
+      "src": "imgs/favicon-96x96.png",
       "sizes": "96x96",
       "type": "image/png"
     },
     {
-      "src": "src/icon/apple-icon.png",
+      "src": "imgs/apple-icon.png",
       "sizes": "192x192",
       "type": "image/png"
     }

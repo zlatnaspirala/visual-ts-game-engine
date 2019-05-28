@@ -11,7 +11,14 @@ self.addEventListener("install", function (event) {
   self.skipWaiting();
   event.waitUntil(
     caches.open("static-files-v1").then(function (cache) {
-      return cache.addAll(["/", offlineUrl, "visualjs2.js", "app.html", "styles/getHTMLMediaElement.css"]);
+      return cache.addAll([
+        "/",
+        offlineUrl,
+        "visualjs2.js",
+        "app.html",
+        "styles/getHTMLMediaElement.css",
+        "externals/drag.ts"
+      ]);
     })
   );
 });

@@ -18,6 +18,7 @@ class Platformer implements IGamePlayModel {
   public version: number = 0.2;
   public starter: Starter;
   public grounds: worldElement[] = [];
+  public enemys: worldElement[] = [];
   public v: any;
   public player: any = {};
 
@@ -43,6 +44,11 @@ class Platformer implements IGamePlayModel {
     if (pair.activeContacts) {
 
       if (pair.bodyA.label === "player" && pair.bodyB.label === "bitcoin") {
+        const collectitem = pair.bodyB;
+        this.starter.destroyBody(collectitem);
+      }
+
+      if (pair.bodyA.label === "player" && pair.bodyB.label === "enemy_crapmunch") {
         const collectitem = pair.bodyB;
         this.starter.destroyBody(collectitem);
       }

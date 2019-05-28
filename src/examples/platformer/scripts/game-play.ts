@@ -98,20 +98,25 @@ class GamePlay extends Platformer {
 
     globalEvent.activateKeyDetection();
 
+    // TEST
+    setInterval (function () {
+
+      Matter.Body.setVelocity(root.enemys[0] as Matter.Body, { x: 15, y: -1 });
+
+     // Matter.Body.applyForce(root.enemys[2] as Matter.Body,
+   //     { x: (root.enemys[2] as Matter.Body).position.x, y: (root.enemys[2] as Matter.Body).position.y }, { x: 25, y: 1 }  );
+
+    }, 2000);
+
   }
 
   private load () {
 
     const root = this;
-    const gameMap = new GameMap(this.starter);
+    const gameMap: GameMap = new GameMap();
 
     // Override data from starter.
     this.starter.setWorldBounds(0, 0, 10000, 3000);
-
-    const imgRes = [
-      require("../imgs/floor.png"),
-      require("../imgs/target.png"),
-    ];
 
     const imgResMyPlayerSprite = [
       require("../imgs/walk-boy2.png"),
@@ -228,10 +233,49 @@ class GamePlay extends Platformer {
 
     });
 
+    gameMap.getEnemys().forEach((item) => {
+
+      const newStaticElement: worldElement = Matter.Bodies.rectangle(
+        item.x,
+        item.y,
+        item.w,
+        item.h,
+        {
+          isStatic: false,
+          label: item.colectionLabel,
+          density: 0.0005,
+          friction: 0.01,
+          frictionAir: 0.06,
+          restitution: 0.3,
+          collisionFilter: {
+            category: 1,
+            group: -1,
+            mask: 1,
+          },
+          render: {
+            visualComponent: new SpriteTextureComponent("enemy_", item.tex, { byX: 10, byY: 1 }),
+            sprite: {
+              olala: true,
+              xScale: 1,
+              yScale: 1,
+            },
+          } as any | Matter.IBodyRenderOptions,
+        });
+
+      // newStaticElement.collisionFilter.group = -1;
+      (newStaticElement.render as any).visualComponent.keepAspectRatio = true;
+      (newStaticElement.render as any).visualComponent.setHorizontalFlip(true);
+      // newStaticElement.collisionFilter.group = -1;
+      this.enemys.push(newStaticElement);
+
+    });
+
     this.starter.AddNewBodies(this.grounds as worldElement);
     this.starter.AddNewBodies(this.player as worldElement);
+    this.starter.AddNewBodies(this.enemys as worldElement);
 
     this.attachMatterEvents();
+
     }
 
 }
