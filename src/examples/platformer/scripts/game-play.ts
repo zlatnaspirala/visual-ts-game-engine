@@ -175,8 +175,8 @@ class GamePlay extends Platformer {
       newStaticElement.collisionFilter.group = -1;
       this.grounds.push(newStaticElement);
 
-      ((this.grounds[this.grounds.length - 1] as Matter.Body).render as any).visualComponent.setVerticalTiles(item.tiles).
-        setHorizontalTiles(item.tiles);
+      ((this.grounds[this.grounds.length - 1] as Matter.Body).render as any).visualComponent.setVerticalTiles(item.tiles.tilesY).
+        setHorizontalTiles(item.tiles.tilesX);
 
     });
 
@@ -199,8 +199,8 @@ class GamePlay extends Platformer {
 
       this.grounds.push(newStaticElement);
 
-      ((this.grounds[this.grounds.length - 1] as Matter.Body).render as any).visualComponent.setVerticalTiles(item.tiles).
-        setHorizontalTiles(item.tiles);
+      ((this.grounds[this.grounds.length - 1] as Matter.Body).render as any).visualComponent.setVerticalTiles(item.tiles.tilesX).
+        setHorizontalTiles(item.tiles.tilesY);
 
     });
 
@@ -235,6 +235,14 @@ class GamePlay extends Platformer {
 
     gameMap.getEnemys().forEach((item) => {
 
+      let enemySprite;
+
+      if (item.colectionLabel === "enemy_crapmunch") {
+        enemySprite = new SpriteTextureComponent("enemy", item.tex, { byX: 10, byY: 1 });
+      } else if (item.colectionLabel === "enemy_chopper") {
+        enemySprite = new SpriteTextureComponent("enemy", item.tex, { byX: 5, byY: 1 });
+      }
+
       const newStaticElement: worldElement = Matter.Bodies.rectangle(
         item.x,
         item.y,
@@ -252,7 +260,7 @@ class GamePlay extends Platformer {
             mask: playerCategory,
           } as any,
           render: {
-            visualComponent: new SpriteTextureComponent("enemy", item.tex, { byX: 10, byY: 1 }),
+            visualComponent: enemySprite,
             sprite: {
               olala: true,
               xScale: 1,
@@ -264,6 +272,44 @@ class GamePlay extends Platformer {
       (newStaticElement.render as any).visualComponent.keepAspectRatio = true;
       (newStaticElement.render as any).visualComponent.setHorizontalFlip(true);
       this.enemys.push(newStaticElement);
+
+    });
+
+    gameMap.getEnemys().forEach((item) => {
+
+      let enemySprite;
+      enemySprite = new SpriteTextureComponent("enemy", item.tex, { byX: 7, byY: 1 });
+
+      const newStaticElement: worldElement = Matter.Bodies.rectangle(
+        item.x,
+        item.y,
+        item.w,
+        item.h,
+        {
+          isStatic: false,
+          label: item.colectionLabel,
+          density: 0.0005,
+          friction: 0.01,
+          frictionAir: 0.06,
+          restitution: 0.3,
+          collisionFilter: {
+            group: staticCategory,
+            mask: playerCategory,
+          } as any,
+          render: {
+            visualComponent: enemySprite,
+            sprite: {
+              olala: true,
+              xScale: 1,
+              yScale: 1,
+            },
+          } as any | Matter.IBodyRenderOptions,
+        });
+
+      (newStaticElement.render as any).visualComponent.keepAspectRatio = true;
+      (newStaticElement.render as any).visualComponent.setHorizontalFlip(true);
+      this.starter.AddNewBodies(newStaticElement as worldElement);
+      // this.enemys.push(newStaticElement);
 
     });
 

@@ -1,27 +1,36 @@
-import { ICollectionItem, IStaticItem } from "../../../libs/interface/global";
-import Starter from "../../../libs/starter";
+import { ICollectionEnemys, ICollectionItem, IGamePlayPlatformerMap, IStaticItem } from "../../../libs/interface/global";
 
 /**
- * Static body elements, backgrounds etc.
+ * Static body elements, backgrounds, enemys returns
+ * Prepared for next level, 'loading from generated content'
  */
 
-class GameMap {
+class GameMap implements IGamePlayPlatformerMap {
 
   constructor() {/* Empty for now. */}
 
   public getStaticGrounds(): IStaticItem[] {
 
-    const imgRes = [require("../imgs/floor.png")];
+    const imgRes = [require("../imgs/floor2.png")];
     return [
-      { x: 200, y: 100, w: 500, h: 60, tex: imgRes, tiles: 2 },
-      { x: 200, y: 400, w: 500, h: 60, tex: imgRes, tiles: 2 },
-      { x: 200, y: 600, w: 1500, h: 60, tex: imgRes, tiles: 1 },
-      { x: 400, y: 800, w: 500, h: 60, tex: imgRes, tiles: 2 },
-      { x: 1000, y: 800, w: 500, h: 60, tex: imgRes, tiles: 2 },
-      { x: 1600, y: 1500, w: 1500, h: 60, tex: imgRes, tiles: 1 },
-      { x: 1700, y: 1200, w: 500, h: 60, tex: imgRes, tiles: 2 },
-      { x: 1800, y: 600, w: 500, h: 60, tex: imgRes, tiles: 2 },
-      { x: 1900, y: 200, w: 1500, h: 60, tex: imgRes, tiles: 1 },
+      { x: 100, y: 0, w: 400, h: 60, tex: imgRes, tiles: { tilesX: 6, tilesY: 1 } },
+      { x: 100, y: 500, w: 400, h: 60, tex: imgRes, tiles: { tilesX: 6, tilesY: 1 } },
+      { x: 100, y: 1000, w: 150, h: 60, tex: imgRes, tiles: { tilesX: 2, tilesY: 1 } },
+      { x: 100, y: 1500, w: 400, h: 60, tex: imgRes, tiles: { tilesX: 6, tilesY: 1 } },
+      { x: 100, y: 2000, w: 400, h: 60, tex: imgRes, tiles: { tilesX: 6, tilesY: 1 } },
+      { x: 100, y: 2500, w: 400, h: 60, tex: imgRes, tiles: { tilesX: 6, tilesY: 1 } },
+      { x: 500, y: 0, w: 150, h: 60, tex: imgRes, tiles: { tilesX: 2, tilesY: 1 } },
+      { x: 500, y: 200, w: 400, h: 60, tex: imgRes, tiles: { tilesX: 6, tilesY: 1 } },
+      { x: 500, y: 400, w: 400, h: 60, tex: imgRes, tiles: { tilesX: 6, tilesY: 1 } },
+      { x: 500, y: 800, w: 400, h: 60, tex: imgRes, tiles: { tilesX: 6, tilesY: 1 } },
+      { x: 500, y: 1500, w: 400, h: 60, tex: imgRes, tiles: { tilesX: 6, tilesY: 1 } },
+      { x: 1800, y: 0, w: 400, h: 60, tex: imgRes, tiles:  { tilesX: 6, tilesY: 1 } },
+      { x: 1800, y: 300, w: 400, h: 60, tex: imgRes, tiles: { tilesX: 6, tilesY: 1} },
+      { x: 1800, y: 800, w: 400, h: 60, tex: imgRes, tiles: { tilesX: 6, tilesY: 1 } },
+      { x: 1800, y: 1200, w: 400, h: 60, tex: imgRes, tiles: { tilesX: 6, tilesY: 1 } },
+      { x: 1800, y: 1800, w: 400, h: 60, tex: imgRes, tiles: { tilesX: 6, tilesY: 1 } },
+      { x: 2800, y: 250, w: 400, h: 60, tex: imgRes, tiles: { tilesX: 6, tilesY: 1 } },
+      { x: 2800, y: 3100, w: 400, h: 60, tex: imgRes, tiles: { tilesX: 6, tilesY: 1 } },
     ] as IStaticItem[];
   }
 
@@ -43,8 +52,7 @@ class GameMap {
             y: y * 1000,
             w: 1000,
             h: 1000,
-            tex: backgroundWall, tiles: 1,
-            collisionFilter: { category: 1, group: 1, mask: 1 },
+            tex: backgroundWall, tiles: { tilesX: 1, tilesY: 1 },
           });
       }
     }
@@ -55,21 +63,35 @@ class GameMap {
   public getCollectitems(): ICollectionItem[] {
     const imgRes = [require("../imgs/collect-items/bitcoin.png")];
     return [
-      { x: 200, y: 100, w: 50, h: 60, tex: imgRes, tiles: 2, colectionLabel: "bitcoin", points: 2 },
-      { x: 500, y: 160, w: 50, h: 60, tex: imgRes, tiles: 1, colectionLabel: "bitcoin", points: 1 },
-      { x: 100, y: 400, w: 50, h: 50, tex: imgRes, tiles: 1, colectionLabel: "bitcoin", points: 1 },
-      { x: 200, y: 400, w: 50, h: 50, tex: imgRes, tiles: 1, colectionLabel: "bitcoin", points: 1 },
-      { x: 300, y: 400, w: 50, h: 50, tex: imgRes, tiles: 1, colectionLabel: "bitcoin", points: 1 },
+      { x: 0, y: 100, w: 50, h: 60, tex: imgRes, tiles: { tilesX: 2, tilesY: 2 }, colectionLabel: "bitcoin", points: 2 },
+      { x: 0, y: 160, w: 50, h: 60, tex: imgRes, tiles: { tilesX: 1, tilesY: 1 }, colectionLabel: "bitcoin", points: 1 },
+      { x: 300, y: 400, w: 50, h: 50, tex: imgRes, tiles: { tilesX: 1, tilesY: 1 }, colectionLabel: "bitcoin", points: 1 },
+      { x: 300, y: 800, w: 50, h: 50, tex: imgRes, tiles: { tilesX: 1, tilesY: 1 }, colectionLabel: "bitcoin", points: 1 },
+      { x: 600, y: 800, w: 50, h: 50, tex: imgRes, tiles: { tilesX: 1, tilesY: 1 }, colectionLabel: "bitcoin", points: 1 },
     ] as ICollectionItem[];
   }
 
-  public getEnemys(): ICollectionItem[] {
+  public getEnemys(): ICollectionEnemys[] {
 
-    const imgRes = [require("../imgs/crapmunch/crapmunch.png")];
+    const imgCrap = [require("../imgs/crapmunch/crapmunch.png")];
+    const imgCooper = [require("../imgs/chopper/chopper.png")];
     return [
-      { x: 0, y: 0, w: 120, h: 120, tex: imgRes, tiles: 1, colectionLabel: "enemy_crapmunch"},
-      { x: 500, y: 0, w: 120, h: 120, tex: imgRes, tiles: 1, colectionLabel: "enemy_crapmunch" },
-      { x: 1000, y: 0, w: 120, h: 120, tex: imgRes, tiles: 1, colectionLabel: "enemy_crapmunch" },
+      { x: 0, y: -200, w: 120, h: 120, tex: imgCrap, tiles: { tilesX: 1, tilesY: 1 }, colectionLabel: "enemy_crapmunch"},
+      { x: 0, y: 0, w: 120, h: 120, tex: imgCrap, tiles: { tilesX: 1, tilesY: 1 }, colectionLabel: "enemy_crapmunch" },
+      { x: 200, y: 0, w: 60, h: 60, tex: imgCooper, tiles: { tilesX: 1, tilesY: 1 }, colectionLabel: "enemy_chopper" },
+      { x: 200, y: 0, w: 60, h: 60, tex: imgCooper, tiles: { tilesX: 1, tilesY: 1 }, colectionLabel: "enemy_chopper" },
+    ] as ICollectionItem[];
+  }
+
+  public getDeadLines(): ICollectionEnemys[] {
+
+    const imgCrap = [require("../imgs/dead-line/dead-line.png")];
+
+    return [
+      { x: 0, y: -200, w: 120, h: 120, tex: imgCrap, tiles: { tilesX: 1, tilesY: 1 }, colectionLabel: "enemy_crapmunch" },
+      { x: 0, y: 0, w: 120, h: 120, tex: imgCrap, tiles: { tilesX: 1, tilesY: 1 }, colectionLabel: "enemy_crapmunch" },
+      { x: 200, y: 0, w: 60, h: 60, tex: imgCrap, tiles: { tilesX: 1, tilesY: 1 }, colectionLabel: "enemy_chopper" },
+      { x: 200, y: 0, w: 60, h: 60, tex: imgCrap, tiles: { tilesX: 1, tilesY: 1 }, colectionLabel: "enemy_chopper" },
     ] as ICollectionItem[];
   }
 

@@ -419,6 +419,9 @@ or use :
  <b>Crypto icons downloaded from :</b>
  https://www.behance.net/JunikStudio
 
+ <b>Sprites downloaded from :</b>
+ www.dumbmanex.com
+
 ## Todo list for 2019 ##
 
   <b>I'am still far a away from project objective :</b>
