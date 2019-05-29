@@ -57,7 +57,7 @@ class Platformer implements IGamePlayModel {
         if (element.vertex.body.label === "player" &&
           element.vertex.index > 5 && element.vertex.index < 8) {
           this.player.ground = ground;
-        } else {
+        } else if (element.vertex.body.label === "player") {
           this.player.ground = false;
         }
       });

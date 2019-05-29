@@ -36,6 +36,8 @@ class GamePlay extends Platformer {
 
       Matter.Body.setAngle(root.player, -Math.PI * 0);
 
+      Matter.Body.setAngle(root.enemys[0] as Matter.Body, -Math.PI * 0);
+
       Matter.Bounds.shift(root.starter.getRender().bounds,
         {
           x: root.player.position.x - 400,
@@ -115,6 +117,9 @@ class GamePlay extends Platformer {
     const root = this;
     const gameMap: GameMap = new GameMap();
 
+    const playerCategory = 0x0002,
+          staticCategory = 0x0004;
+
     // Override data from starter.
     this.starter.setWorldBounds(0, 0, 10000, 3000);
 
@@ -134,10 +139,8 @@ class GamePlay extends Platformer {
       jumpCD: 0,
       portal: -1,
       collisionFilter: {
-        category: 1,
-        group: 1,
-        mask: 1,
-      },
+        category: playerCategory,
+      } as any,
       render: {
         visualComponent: new SpriteTextureComponent("playerImage", imgResMyPlayerSprite, { byX: 5, byY: 2 }),
         fillStyle: "blue",
@@ -157,11 +160,11 @@ class GamePlay extends Platformer {
         {
           isStatic: true,
           label: "background",
-          collisionFilter: {
-            category: item.collisionFilter.category,
-            group: item.collisionFilter.group,
-            mask: item.collisionFilter.mask,
-          },
+        //  collisionFilter: {
+         //   category: backgroundCategory,
+            // group: item.collisionFilter.group,
+            // mask: item.collisionFilter.mask,
+        //  } as any,
           render: {
             visualComponent: new TextureComponent("wall", item.tex),
             sprite: {
@@ -184,10 +187,8 @@ class GamePlay extends Platformer {
           isStatic: true,
           label: "ground",
           collisionFilter: {
-            category: 1,
-            group: 1,
-            mask: 1,
-          },
+            group: staticCategory,
+          } as any,
           render: {
             visualComponent: new TextureComponent("imgGround", item.tex),
             sprite: {
@@ -195,7 +196,7 @@ class GamePlay extends Platformer {
             },
           } as any | Matter.IBodyRenderOptions,
         });
-      // newStaticElement.collisionFilter.group = -1;
+
       this.grounds.push(newStaticElement);
 
       ((this.grounds[this.grounds.length - 1] as Matter.Body).render as any).visualComponent.setVerticalTiles(item.tiles).
@@ -214,10 +215,9 @@ class GamePlay extends Platformer {
           isStatic: true,
           label: item.colectionLabel,
           collisionFilter: {
-            category: 1,
-            group: 0,
-            mask: 1,
-          },
+            group: staticCategory,
+            mask: playerCategory,
+          } as any,
           render: {
             visualComponent: new TextureComponent("imgCollectItem", item.tex),
             sprite: {
@@ -225,7 +225,7 @@ class GamePlay extends Platformer {
             },
           } as any | Matter.IBodyRenderOptions,
         });
-      // newStaticElement.collisionFilter.group = -1;
+
       this.grounds.push(newStaticElement);
 
       ((this.grounds[this.grounds.length - 1] as Matter.Body).render as any).visualComponent.setVerticalTiles(item.tiles).
@@ -248,12 +248,11 @@ class GamePlay extends Platformer {
           frictionAir: 0.06,
           restitution: 0.3,
           collisionFilter: {
-            category: 1,
-            group: -1,
-            mask: 1,
-          },
+            group: staticCategory,
+            mask: playerCategory,
+          } as any,
           render: {
-            visualComponent: new SpriteTextureComponent("enemy_", item.tex, { byX: 10, byY: 1 }),
+            visualComponent: new SpriteTextureComponent("enemy", item.tex, { byX: 10, byY: 1 }),
             sprite: {
               olala: true,
               xScale: 1,
@@ -262,10 +261,8 @@ class GamePlay extends Platformer {
           } as any | Matter.IBodyRenderOptions,
         });
 
-      // newStaticElement.collisionFilter.group = -1;
       (newStaticElement.render as any).visualComponent.keepAspectRatio = true;
       (newStaticElement.render as any).visualComponent.setHorizontalFlip(true);
-      // newStaticElement.collisionFilter.group = -1;
       this.enemys.push(newStaticElement);
 
     });
