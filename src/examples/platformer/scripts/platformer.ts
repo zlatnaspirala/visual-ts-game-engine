@@ -19,6 +19,7 @@ class Platformer implements IGamePlayModel {
   public starter: Starter;
   public grounds: worldElement[] = [];
   public enemys: worldElement[] = [];
+  public deadLines: worldElement[] = [];
   public v: any;
   public player: any = {};
 

@@ -160,11 +160,6 @@ class GamePlay extends Platformer {
         {
           isStatic: true,
           label: "background",
-        //  collisionFilter: {
-         //   category: backgroundCategory,
-            // group: item.collisionFilter.group,
-            // mask: item.collisionFilter.mask,
-        //  } as any,
           render: {
             visualComponent: new TextureComponent("wall", item.tex),
             sprite: {
@@ -204,7 +199,7 @@ class GamePlay extends Platformer {
 
     });
 
-    gameMap.getCollectitems().forEach((item) => {
+    gameMap.getCollectItems().forEach((item) => {
 
       const newStaticElement: worldElement = Matter.Bodies.rectangle(
         item.x,
@@ -214,10 +209,7 @@ class GamePlay extends Platformer {
         {
           isStatic: true,
           label: item.colectionLabel,
-          collisionFilter: {
-            group: staticCategory,
-            mask: playerCategory,
-          } as any,
+
           render: {
             visualComponent: new TextureComponent("imgCollectItem", item.tex),
             sprite: {
@@ -225,7 +217,7 @@ class GamePlay extends Platformer {
             },
           } as any | Matter.IBodyRenderOptions,
         });
-
+      newStaticElement.collisionFilter.group = -1;
       this.grounds.push(newStaticElement);
 
       ((this.grounds[this.grounds.length - 1] as Matter.Body).render as any).visualComponent.setVerticalTiles(item.tiles).
@@ -275,10 +267,10 @@ class GamePlay extends Platformer {
 
     });
 
-    gameMap.getEnemys().forEach((item) => {
+    gameMap.getDeadLines().forEach((item) => {
 
       let enemySprite;
-      enemySprite = new SpriteTextureComponent("enemy", item.tex, { byX: 7, byY: 1 });
+      enemySprite = new SpriteTextureComponent("deadline", item.tex, { byX: 7, byY: 1 });
 
       const newStaticElement: worldElement = Matter.Bodies.rectangle(
         item.x,
@@ -308,14 +300,15 @@ class GamePlay extends Platformer {
 
       (newStaticElement.render as any).visualComponent.keepAspectRatio = true;
       (newStaticElement.render as any).visualComponent.setHorizontalFlip(true);
-      this.starter.AddNewBodies(newStaticElement as worldElement);
-      // this.enemys.push(newStaticElement);
+
+      this.deadLines.push(newStaticElement);
 
     });
 
     this.starter.AddNewBodies(this.grounds as worldElement);
     this.starter.AddNewBodies(this.player as worldElement);
     this.starter.AddNewBodies(this.enemys as worldElement);
+    this.starter.AddNewBodies(this.deadLines as worldElement);
 
     this.attachMatterEvents();
 
