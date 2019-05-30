@@ -209,19 +209,26 @@ class GamePlay extends Platformer {
         {
           isStatic: true,
           label: item.colectionLabel,
-
+          collisionFilter: {
+            group: staticCategory,
+            mask: playerCategory,
+          } as any,
           render: {
-            visualComponent: new TextureComponent("imgCollectItem", item.tex),
+            visualComponent: new TextureComponent("imgCollectItem1", item.tex),
             sprite: {
               olala: true,
+              xScale: 1,
+              yScale: 1,
             },
           } as any | Matter.IBodyRenderOptions,
         });
       newStaticElement.collisionFilter.group = -1;
+      (newStaticElement.render as any).visualComponent.setVerticalTiles(item.tiles.tilesY).
+        setHorizontalTiles(item.tiles.tilesX);
       this.grounds.push(newStaticElement);
 
-      ((this.grounds[this.grounds.length - 1] as Matter.Body).render as any).visualComponent.setVerticalTiles(item.tiles).
-        setHorizontalTiles(item.tiles);
+      // ((this.grounds[this.grounds.length - 1] as Matter.Body).render as any).visualComponent.setVerticalTiles(item.tiles).
+      // setHorizontalTiles(item.tiles);
 
     });
 
