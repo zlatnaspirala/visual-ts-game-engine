@@ -52,7 +52,7 @@ class GameMap implements IGamePlayPlatformerMap {
             y: y * 1000,
             w: 1000,
             h: 1000,
-            tex: backgroundWall, tiles: { tilesX: 1, tilesY: 1 },
+            tex: backgroundWall, tiles: { tilesX: 4, tilesY: 2 },
           });
       }
     }
@@ -85,10 +85,10 @@ class GameMap implements IGamePlayPlatformerMap {
 
   public getDeadLines(): ICollectionEnemys[] {
 
-    const img = [require("../imgs/dead-line/dead-line.png")];
+    const img = [require("../imgs/flame.png")];
 
     return [
-      { x: 100, y: 0, w: 100, h: 10, tex: img, tiles:   { tilesX: 1, tilesY: 1 }, colectionLabel: "deadline" },
+      { x: 100, y: 2500, w: 555, h: 50, tex: img, tiles:   { tilesX: 3, tilesY: 6 }, colectionLabel: "deadline" },
     ] as ICollectionEnemys[];
   }
 

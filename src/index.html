@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!--html manifest=""-->
+<!--html manifest="" user-scalable=no -->
 <html lang="en">
 
 <head>
@@ -7,7 +7,7 @@
   <link rel="manifest" href="manifest.web">
   <meta name="robots" content="all" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no,minimal-ui">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,minimal-ui">
   <meta name="theme-color" content="#000000">
   <meta name="Description" content="Typescript project based on matter.ts implementation. This version 2 of visualjs game engine totally different approach , export name lib name is visualjs2.js . Whole project is based fully dependency build. Main file is app.ts . Class ioc saves singlton instances also bind. In this project html and css is also present. Based on canvas2D. Used lib Matter.js/ts in typescript variant.">
   <meta http-equiv="Cache-control" content="public">
@@ -22,10 +22,12 @@
   <intercept-url pattern="styles/favicon.ico" access="ROLE_ANONYMOUS"> </intercept-url>
   <meta name="msapplication-TileImage" content="imgs/ms-icon-310x310.png">
   <title>TS Game engine</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
 </head>
 
 <body>
+  <noscript>
+    You need to allow JavaScript in you browser.
+  </noscript>
   <div id="network-panel" class="log-network" style="display:none">
     <div id="log-chat" class="log-chat" style="display:block">
     </div>

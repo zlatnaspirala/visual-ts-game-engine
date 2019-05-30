@@ -4,6 +4,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const TypedocWebpackPlugin = require('typedoc-webpack-plugin');
+const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
 
 var internalConfig = {
     createDocumentation: false,
@@ -98,6 +99,9 @@ let webPackModule = {
         new HtmlWebpackPlugin({
             filename: 'templates/broadcaster.html',
             template: 'src/html-components/broadcaster.html'
+        }),
+        new ScriptExtHtmlWebpackPlugin({
+            defaultAttribute: 'defer'
         }),
         new ExtractTextPlugin("src/style/styles.css"),
         new CopyWebpackPlugin([

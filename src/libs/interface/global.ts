@@ -42,6 +42,6 @@ export interface IGamePlayModel {
 export interface IGamePlayPlatformerMap {
   getStaticGrounds(): IStaticItem[];
   getStaticBackgrounds(): IStaticItem[];
-  getCollectitems(): ICollectionItem[];
+  getCollectItems(): ICollectionItem[];
   getEnemys(): ICollectionEnemys[];
 }

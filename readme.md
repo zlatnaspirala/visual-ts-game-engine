@@ -420,7 +420,8 @@ or use :
  https://www.behance.net/JunikStudio
 
  <b>Sprites downloaded from :</b>
- www.dumbmanex.com
+  dumbmanex.com
+  opengameart.org/content/animated-flame-texture
 
 ## Todo list for 2019 ##
 

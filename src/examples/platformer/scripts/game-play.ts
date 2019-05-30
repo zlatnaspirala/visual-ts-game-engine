@@ -277,7 +277,7 @@ class GamePlay extends Platformer {
     gameMap.getDeadLines().forEach((item) => {
 
       let enemySprite;
-      enemySprite = new SpriteTextureComponent("deadline", item.tex, { byX: 7, byY: 1 });
+      enemySprite = new SpriteTextureComponent("deadline", item.tex, { byX: item.tiles.tilesX, byY: item.tiles.tilesY });
 
       const newStaticElement: worldElement = Matter.Bodies.rectangle(
         item.x,
@@ -285,14 +285,14 @@ class GamePlay extends Platformer {
         item.w,
         item.h,
         {
-          isStatic: false,
+          isStatic: true,
           label: item.colectionLabel,
           density: 0.0005,
           friction: 0.01,
           frictionAir: 0.06,
           restitution: 0.3,
           collisionFilter: {
-            group: staticCategory,
+            group: -1,
             mask: playerCategory,
           } as any,
           render: {
