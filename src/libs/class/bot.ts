@@ -21,6 +21,7 @@ class Bot {
     const root = this;
     setTimeout(function () {
       Matter.Body.setVelocity(root.enemy as Matter.Body,
+        { x: 15 * root.patrolDirection, y: -1 });
       root.checkPatrol();
     }, this.patrolPeriod);
 
