@@ -1,4 +1,5 @@
 import * as Matter from "matter-js";
+import Bot from "../../../libs/class/bot";
 import SpriteTextureComponent from "../../../libs/class/visual-methods/sprite-animation";
 import TextureComponent from "../../../libs/class/visual-methods/texture";
 import Starter from "../../../libs/starter";
@@ -23,11 +24,14 @@ class GamePlay extends Platformer {
 
   }
 
-  private attachMatterEvents () {
+  private attachMatterEvents() {
 
     const root = this;
     const globalEvent = this.starter.ioc.get.GlobalEvent;
     const playerSpeed = 0.005;
+
+    const test = new Bot(root.enemys[0]);
+    test.patrol();
 
     // Disabled for now.
     // Matter.Events.on(this.starter.getEngine(), "beforeTick", function (event) {});
@@ -100,28 +104,18 @@ class GamePlay extends Platformer {
 
     globalEvent.activateKeyDetection();
 
-    // TEST
-    setInterval (function () {
-
-      Matter.Body.setVelocity(root.enemys[0] as Matter.Body, { x: 15, y: -1 });
-
-     // Matter.Body.applyForce(root.enemys[2] as Matter.Body,
-   //     { x: (root.enemys[2] as Matter.Body).position.x, y: (root.enemys[2] as Matter.Body).position.y }, { x: 25, y: 1 }  );
-
-    }, 2000);
-
   }
 
-  private load () {
+  private load() {
 
     const root = this;
     const gameMap: GameMap = new GameMap();
 
     const playerCategory = 0x0002,
-          staticCategory = 0x0004;
+      staticCategory = 0x0004;
 
     // Override data from starter.
-    this.starter.setWorldBounds(0, 0, 10000, 3000);
+    this.starter.setWorldBounds(0, -300, 10000, 3000);
 
     const imgResMyPlayerSprite = [
       require("../imgs/walk-boy2.png"),
@@ -318,8 +312,8 @@ class GamePlay extends Platformer {
     this.starter.AddNewBodies(this.deadLines as worldElement);
 
     this.attachMatterEvents();
-
-    }
+    // test.patrol(this.enemys[0]);
+  }
 
 }
 

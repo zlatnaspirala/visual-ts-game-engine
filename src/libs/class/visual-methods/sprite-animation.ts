@@ -44,7 +44,7 @@ class SpriteTextureComponent extends TextureComponent {
     const localSumY = shema.byY - 1;
     this.seqFrameX = new Counter(0, localSumX, 1);
     this.seqFrameY = new Counter(0, localSumY, 1);
-    this.seqFrameX.setDelay(20);
+    this.seqFrameX.setDelay(10);
     this.seqFrameY.onRepeat = this.nextColumn;
     this.seqFrameX.onRepeat = this.nextRow;
 

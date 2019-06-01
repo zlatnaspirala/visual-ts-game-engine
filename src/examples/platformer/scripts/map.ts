@@ -63,7 +63,7 @@ class GameMap implements IGamePlayPlatformerMap {
   public getCollectItems(): ICollectionItem[] {
     const imgRes = [require("../imgs/collect-items/bitcoin.png")];
     return [
-      { x: 0, y: -600, w: 50, h: 60, tex: imgRes, tiles: { tilesX: 2, tilesY: 2 }, colectionLabel: "bitcoin", points: 2 },
+      { x: 0, y: 0, w: 50, h: 60, tex: imgRes, tiles: { tilesX: 2, tilesY: 2 }, colectionLabel: "bitcoin", points: 2 },
       { x: 0, y: 160, w: 50, h: 60, tex: imgRes, tiles: { tilesX: 1, tilesY: 1 }, colectionLabel: "bitcoin", points: 1 },
       { x: 300, y: 400, w: 50, h: 50, tex: imgRes, tiles: { tilesX: 1, tilesY: 1 }, colectionLabel: "bitcoin", points: 1 },
       { x: 300, y: 800, w: 50, h: 50, tex: imgRes, tiles: { tilesX: 1, tilesY: 1 }, colectionLabel: "bitcoin", points: 1 },
