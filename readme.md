@@ -433,6 +433,8 @@ or use :
   (table games, actions , platformers , basic demo trow the api doc etc.).
  - Implementing AR and webGL2.
 
+![Platformer](https://github.com/zlatnaspirala/visual-ts/blob/master/platformer-typescript.png)
+
 ## [Live demo Platformer](https://codepen.io/zlatnaspirala/full/exxvQq) ##
 
 ## Donate this project ##
