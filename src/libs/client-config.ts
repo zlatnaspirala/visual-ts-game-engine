@@ -14,6 +14,11 @@ class ClientConfig {
    */
   private addson: Addson = [
     {
+      name: "cache",
+      enabled: true,
+      scriptPath: "externals/cacheInit.ts",
+    },
+    {
       name: "hackerTimer",
       enabled: true,
       scriptPath: "externals/hack-timer.js",

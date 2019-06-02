@@ -29,8 +29,7 @@ console.log("Platformer: ", master.get.GamePlay);
 
 master.get.GamePlay.attachAppEvents();
 
-window.platformer = master.get.GamePlay;
-
-setTimeout(function () {
-  // master.get.GamePlay.destroyGamePlay();
-}, 3000);
+/**
+ * Make it global for fast access in console testing.
+ * (window as any).platformer = master.get.GamePlay;
+ */

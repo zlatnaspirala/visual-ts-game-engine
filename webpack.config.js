@@ -4,6 +4,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const TypedocWebpackPlugin = require('typedoc-webpack-plugin');
+const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
 
 var internalConfig = {
     createDocumentation: false,
@@ -24,13 +25,12 @@ let documentationPlugin = new TypedocWebpackPlugin({
 });
 
 let webPackModule = {
-    mode: "development", // "development",
+    mode: "development",
     watch: true,
     entry: ["./src/app.ts"],
     output: {
         filename: "visualjs2.js",
         path: __dirname + "/build",
-        // chunkFilename: '[name].beta.js',
     },
 
     devtool: "none",
@@ -99,6 +99,9 @@ let webPackModule = {
             filename: 'templates/broadcaster.html',
             template: 'src/html-components/broadcaster.html'
         }),
+        new ScriptExtHtmlWebpackPlugin({
+            defaultAttribute: 'defer'
+        }),
         new ExtractTextPlugin("src/style/styles.css"),
         new CopyWebpackPlugin([
             { from: 'src/externals/bootstrap.min.js', to: 'externals/bootstrap.min.js' },
@@ -108,7 +111,12 @@ let webPackModule = {
             { from: 'src/style/getHTMLMediaElement.css', to: 'styles/getHTMLMediaElement.css' },
             { from: './src/libs/addons/hacker-timer/hack-timer.js', to: 'externals/hack-timer.js'},
             { from: './src/libs/addons/drag/drag.ts', to: 'externals/drag.ts' },
-            { from: './src/libs/addons/hacker-timer/hack-timer-worker.js', to: 'externals/hack-timer-worker.js' }
+            { from: './src/libs/addons/hacker-timer/hack-timer-worker.js', to: 'externals/hack-timer-worker.js' },
+            { from: './src/manifest.web', to: 'manifest.web' },
+            { from: './src/libs/addons/cache/cacheInit.ts', to: 'externals/cacheInit.ts' },
+            { from: './src/libs/addons/cache/worker.js', to: 'worker.js' },
+            { from: './src/libs/addons/cache/offline.html', to: 'offline.html' },
+
         ], { debug: 'info' }),
 
     ],

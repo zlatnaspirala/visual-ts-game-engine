@@ -18,8 +18,11 @@ class Platformer implements IGamePlayModel {
   public version: number = 0.2;
   public starter: Starter;
   public grounds: worldElement[] = [];
+  public enemys: worldElement[] = [];
+  public deadLines: worldElement[] = [];
   public v: any;
   public player: any = {};
+  private lives: number = 3;
 
   constructor(starter: Starter) {
 
@@ -35,6 +38,12 @@ class Platformer implements IGamePlayModel {
     });
   }
 
+  protected playerDie(collectitem) {
+
+    this.starter.destroyBody(collectitem);
+    this.lives = this.lives - 1;
+  }
+
   protected collisionCheck(event, ground: boolean) {
 
   const pairs = event.pairs;
@@ -47,11 +56,16 @@ class Platformer implements IGamePlayModel {
         this.starter.destroyBody(collectitem);
       }
 
+      if (pair.bodyA.label === "player" && pair.bodyB.label === "enemy_crapmunch") {
+        const collectitem = pair.bodyA;
+        this.playerDie(collectitem);
+      }
+
       pair.activeContacts.forEach((element) => {
         if (element.vertex.body.label === "player" &&
           element.vertex.index > 5 && element.vertex.index < 8) {
           this.player.ground = ground;
-        } else {
+        } else if (element.vertex.body.label === "player") {
           this.player.ground = false;
         }
       });
