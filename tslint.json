@@ -9,7 +9,6 @@
             "severity": "warning",
             "options": [
                 "debug",
-                "info",
                 "time",
                 "timeEnd",
                 "trace"

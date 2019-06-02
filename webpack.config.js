@@ -25,13 +25,12 @@ let documentationPlugin = new TypedocWebpackPlugin({
 });
 
 let webPackModule = {
-    mode: "development", // "development",
+    mode: "development",
     watch: true,
     entry: ["./src/app.ts"],
     output: {
         filename: "visualjs2.js",
         path: __dirname + "/build",
-        // chunkFilename: '[name].beta.js',
     },
 
     devtool: "none",
@@ -114,6 +113,7 @@ let webPackModule = {
             { from: './src/libs/addons/drag/drag.ts', to: 'externals/drag.ts' },
             { from: './src/libs/addons/hacker-timer/hack-timer-worker.js', to: 'externals/hack-timer-worker.js' },
             { from: './src/manifest.web', to: 'manifest.web' },
+            { from: './src/libs/addons/cache/cacheInit.ts', to: 'externals/cacheInit.ts' },
             { from: './src/libs/addons/cache/worker.js', to: 'worker.js' },
             { from: './src/libs/addons/cache/offline.html', to: 'offline.html' },
 

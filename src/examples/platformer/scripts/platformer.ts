@@ -22,6 +22,7 @@ class Platformer implements IGamePlayModel {
   public deadLines: worldElement[] = [];
   public v: any;
   public player: any = {};
+  private lives: number = 3;
 
   constructor(starter: Starter) {
 
@@ -37,6 +38,12 @@ class Platformer implements IGamePlayModel {
     });
   }
 
+  protected playerDie(collectitem) {
+
+    this.starter.destroyBody(collectitem);
+    this.lives = this.lives - 1;
+  }
+
   protected collisionCheck(event, ground: boolean) {
 
   const pairs = event.pairs;
@@ -50,8 +57,8 @@ class Platformer implements IGamePlayModel {
       }
 
       if (pair.bodyA.label === "player" && pair.bodyB.label === "enemy_crapmunch") {
-        const collectitem = pair.bodyB;
-        this.starter.destroyBody(collectitem);
+        const collectitem = pair.bodyA;
+        this.playerDie(collectitem);
       }
 
       pair.activeContacts.forEach((element) => {

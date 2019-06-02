@@ -29,12 +29,7 @@ console.log("Platformer: ", master.get.GamePlay);
 
 master.get.GamePlay.attachAppEvents();
 
-window.platformer = master.get.GamePlay;
-
-if ("serviceWorker" in navigator) {
-  // Recommended to register onLoad
-  window.addEventListener("load", function () {
-    navigator.serviceWorker.register("worker.js");
-    console.log("log worker");
-  });
-}
+/**
+ * Make it global for fast access in console testing.
+ * (window as any).platformer = master.get.GamePlay;
+ */

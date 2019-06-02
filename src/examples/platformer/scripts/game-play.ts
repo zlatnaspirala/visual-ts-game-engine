@@ -1,17 +1,17 @@
 import * as Matter from "matter-js";
-import Bot from "../../../libs/class/bot";
+import BotBehavior from "../../../libs/class/bot";
 import SpriteTextureComponent from "../../../libs/class/visual-methods/sprite-animation";
 import TextureComponent from "../../../libs/class/visual-methods/texture";
 import Starter from "../../../libs/starter";
 import { worldElement } from "../../../libs/types/global";
 import GameMap from "./map";
 import Platformer from "./Platformer";
+
 /**
  * @description Finally game start at here
  * @function level1
  * @return void
  */
-
 class GamePlay extends Platformer {
 
   constructor(starter: Starter) {
@@ -29,18 +29,24 @@ class GamePlay extends Platformer {
     const root = this;
     const globalEvent = this.starter.ioc.get.GlobalEvent;
     const playerSpeed = 0.005;
+    const deadZoneByY = 2700;
 
-    const test = new Bot(root.enemys[0]);
-    test.patrol();
+    this.enemys.forEach(function (item) {
+      const test = new BotBehavior(item);
+      test.patrol();
+    });
 
     // Disabled for now.
     // Matter.Events.on(this.starter.getEngine(), "beforeTick", function (event) {});
 
     Matter.Events.on(this.starter.getEngine(), "beforeUpdate", function (event) {
 
-      Matter.Body.setAngle(root.player, -Math.PI * 0);
+      if (root.player.position.y > deadZoneByY) {
+        root.playerDie(root.player);
+      }
 
-      Matter.Body.setAngle(root.enemys[0] as Matter.Body, -Math.PI * 0);
+      Matter.Body.setAngle(root.player, -Math.PI * 0);
+      // Matter.Body.setAngle(root.enemys[0] as Matter.Body, -Math.PI * 0);
 
       Matter.Bounds.shift(root.starter.getRender().bounds,
         {
@@ -106,24 +112,16 @@ class GamePlay extends Platformer {
 
   }
 
-  private load() {
-
-    const root = this;
-    const gameMap: GameMap = new GameMap();
-
-    const playerCategory = 0x0002,
-      staticCategory = 0x0004;
-
-    // Override data from starter.
-    this.starter.setWorldBounds(0, -300, 10000, 3000);
+  private playerSpawn () {
 
     const imgResMyPlayerSprite = [
       require("../imgs/walk-boy2.png"),
     ];
 
     const playerRadius = 50;
-
-    this.player = Matter.Bodies.circle(100, 100, playerRadius, {
+    const playerCategory = 0x0002,
+      staticCategory = 0x0004;
+    this.player = Matter.Bodies.circle(120, 200, playerRadius, {
       label: "player",
       density: 0.0005,
       friction: 0.01,
@@ -147,6 +145,20 @@ class GamePlay extends Platformer {
     this.player.collisionFilter.group = -1;
     this.player.render.visualComponent.keepAspectRatio = true;
     this.player.render.visualComponent.setHorizontalFlip(true);
+  }
+
+  private load() {
+
+    const root = this;
+    const gameMap: GameMap = new GameMap();
+
+    const playerCategory = 0x0002,
+      staticCategory = 0x0004;
+
+    // Override data from starter.
+    this.starter.setWorldBounds(-300, -300, 10000, 2700);
+
+    this.playerSpawn();
 
     gameMap.getStaticBackgrounds().forEach((item) => {
 
@@ -205,7 +217,7 @@ class GamePlay extends Platformer {
           label: item.colectionLabel,
           collisionFilter: {
             group: staticCategory,
-            mask: playerCategory,
+             mask: playerCategory,
           } as any,
           render: {
             visualComponent: new TextureComponent("imgCollectItem1", item.tex),
@@ -216,7 +228,7 @@ class GamePlay extends Platformer {
             },
           } as any | Matter.IBodyRenderOptions,
         });
-      newStaticElement.collisionFilter.group = -1;
+      // newStaticElement.collisionFilter.group = -1;
       (newStaticElement.render as any).visualComponent.setVerticalTiles(item.tiles.tilesY).
         setHorizontalTiles(item.tiles.tilesX);
       this.grounds.push(newStaticElement);

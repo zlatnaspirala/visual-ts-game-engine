@@ -3,7 +3,7 @@ import GamePlay from "../../examples/platformer/scripts/game-play";
 import { UniVector } from "../types/global";
 import ViewPort from "./view-port";
 
-class Bot {
+class BotBehavior {
 
   private periods: [] = [];
   private patrolDirection: number = 1;
@@ -37,4 +37,4 @@ class Bot {
   }
 
 }
-export default Bot;
+export default BotBehavior;
