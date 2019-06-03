@@ -92,34 +92,35 @@ class Platformer implements IGamePlayModel {
 
   public collisionCheck(event, ground: boolean) {
 
-  const pairs = event.pairs;
-  for (let i = 0, j = pairs.length; i !== j; ++i) {
-    const pair = pairs[i];
-    if (pair.activeContacts) {
+    const pairs = event.pairs;
+    for (let i = 0, j = pairs.length; i !== j; ++i) {
+      const pair = pairs[i];
+      if (pair.activeContacts) {
 
-      if (pair.bodyA.label === "player" && pair.bodyB.label === "bitcoin") {
-        const collectitem = pair.bodyB;
-        this.starter.destroyBody(collectitem);
-      }
-
-      if (pair.bodyA.label === "player" && pair.bodyB.label === "enemy_crapmunch") {
-        const collectitem = pair.bodyA;
-        this.playerDie(collectitem);
-      } else if (pair.bodyB.label === "player" && pair.bodyA.label === "enemy_crapmunch") {
-        const collectitem = pair.bodyB;
-        this.playerDie(collectitem);
-      }
-
-      pair.activeContacts.forEach((element) => {
-        if (element.vertex.body.label === "player" &&
-          element.vertex.index > 5 && element.vertex.index < 8) {
-          this.player.ground = ground;
-        } else if (element.vertex.body.label === "player") {
-          this.player.ground = false;
+        if (pair.bodyA.label === "player" && pair.bodyB.label === "bitcoin") {
+          const collectitem = pair.bodyB;
+          this.starter.destroyBody(collectitem);
         }
-      });
+
+        if (pair.bodyA.label === "player" && pair.bodyB.label === "enemy_crapmunch") {
+          const collectitem = pair.bodyA;
+          this.playerDie(collectitem);
+        } else if (pair.bodyB.label === "player" && pair.bodyA.label === "enemy_crapmunch") {
+          const collectitem = pair.bodyB;
+          this.playerDie(collectitem);
+        }
+
+        pair.activeContacts.forEach((element) => {
+          if (element.vertex.body.label === "player" &&
+            element.vertex.index > 5 && element.vertex.index < 8) {
+            this.player.ground = ground;
+          } else if (element.vertex.body.label === "player") {
+            this.player.ground = false;
+          }
+        });
+        }
       }
-    }
+
   }
 
   protected playerDie(collectitem) {
