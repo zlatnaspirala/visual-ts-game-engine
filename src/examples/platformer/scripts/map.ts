@@ -79,19 +79,19 @@ class GameMap implements IGamePlayPlatformerMap {
 
     return [
       {
-        x: 100, y: -300 + deltaYLocal, w: enemyWidth, h: 100,
+        x: 0, y: -300 + deltaYLocal, w: enemyWidth, h: 100,
          tex: imgCrap, tiles: { tilesX: 1, tilesY: 1 }, colectionLabel: "enemy_crapmunch"},
       {
-        x: 100, y: 500 + deltaYLocal, w: enemyWidth, h: 100,
+        x: 0, y: 500 + deltaYLocal, w: enemyWidth, h: 100,
          tex: imgCrap, tiles: { tilesX: 1, tilesY: 1 }, colectionLabel: "enemy_crapmunch"},
       {
-        x: 100, y: 1000 + deltaYLocal, w: enemyWidth, h: 100,
+        x: 0, y: 1000 + deltaYLocal, w: enemyWidth, h: 100,
          tex: imgCrap, tiles: { tilesX: 2, tilesY: 1 }, colectionLabel: "enemy_crapmunch"},
       {
-        x: 100, y: 1500 + deltaYLocal, w: enemyWidth, h: 100,
+        x: 0, y: 1500 + deltaYLocal, w: enemyWidth, h: 100,
          tex: imgCrap, tiles: { tilesX: 1, tilesY: 1 }, colectionLabel: "enemy_crapmunch" },
       {
-        x: 100, y: 2000 + deltaYLocal, w: enemyWidth, h: 100,
+        x: 0, y: 2000 + deltaYLocal, w: enemyWidth, h: 100,
          tex: imgCrap, tiles: { tilesX: 1, tilesY: 1 }, colectionLabel: "enemy_crapmunch" },
       {
         x: 100, y: 2500 + deltaYLocal, w: enemyWidth, h: 100,
