@@ -24,7 +24,7 @@
         "max-line-length": [
             true,
             {
-                "limit": 140,
+                "limit": 200,
                 "ignore-pattern": "^import |^export {(.*?)}"
             }
         ],

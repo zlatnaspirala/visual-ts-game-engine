@@ -22,6 +22,12 @@ export interface ISpriteShema {
   byY: number;
 }
 
+export interface IBotBehaviorOptions {
+  patrolType: string;
+  patrolPeriod: number;
+  patrolLoop: boolean;
+}
+
 export interface IUserRegData {
   email: string;
   password: string;
@@ -44,4 +50,9 @@ export interface IGamePlayPlatformerMap {
   getStaticBackgrounds(): IStaticItem[];
   getCollectItems(): ICollectionItem[];
   getEnemys(): ICollectionEnemys[];
+}
+
+export interface IPoint {
+  x: number;
+  y: number;
 }

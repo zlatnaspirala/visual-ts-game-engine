@@ -1,5 +1,5 @@
 import * as Matter from "matter-js";
-import BotBehavior from "../../../libs/class/bot";
+import BotBehavior from "../../../libs/class/bot-behavior";
 import SpriteTextureComponent from "../../../libs/class/visual-methods/sprite-animation";
 import TextureComponent from "../../../libs/class/visual-methods/texture";
 import Starter from "../../../libs/starter";
@@ -112,48 +112,10 @@ class GamePlay extends Platformer {
 
   }
 
-  private playerSpawn () {
-
-    const imgResMyPlayerSprite = [
-      require("../imgs/walk-boy2.png"),
-    ];
-
-    const playerRadius = 50;
-    const playerCategory = 0x0002,
-      staticCategory = 0x0004;
-    this.player = Matter.Bodies.circle(120, 200, playerRadius, {
-      label: "player",
-      density: 0.0005,
-      friction: 0.01,
-      frictionAir: 0.06,
-      restitution: 0.3,
-      ground: true,
-      jumpCD: 0,
-      portal: -1,
-      collisionFilter: {
-        category: playerCategory,
-      } as any,
-      render: {
-        visualComponent: new SpriteTextureComponent("playerImage", imgResMyPlayerSprite, { byX: 5, byY: 2 }),
-        fillStyle: "blue",
-        sprite: {
-          xScale: 1,
-          yScale: 1,
-        },
-      } as any,
-    } as Matter.IBodyDefinition);
-    this.player.collisionFilter.group = -1;
-    this.player.render.visualComponent.keepAspectRatio = true;
-    this.player.render.visualComponent.setHorizontalFlip(true);
-  }
-
   private load() {
 
     const root = this;
     const gameMap: GameMap = new GameMap();
-
-    const playerCategory = 0x0002,
-      staticCategory = 0x0004;
 
     // Override data from starter.
     this.starter.setWorldBounds(-300, -300, 10000, 2700);
@@ -188,7 +150,7 @@ class GamePlay extends Platformer {
           isStatic: true,
           label: "ground",
           collisionFilter: {
-            group: staticCategory,
+            group: this.staticCategory,
           } as any,
           render: {
             visualComponent: new TextureComponent("imgGround", item.tex),
@@ -216,8 +178,8 @@ class GamePlay extends Platformer {
           isStatic: true,
           label: item.colectionLabel,
           collisionFilter: {
-            group: staticCategory,
-             mask: playerCategory,
+            group: this.staticCategory,
+             mask: this.playerCategory,
           } as any,
           render: {
             visualComponent: new TextureComponent("imgCollectItem1", item.tex),
@@ -228,13 +190,9 @@ class GamePlay extends Platformer {
             },
           } as any | Matter.IBodyRenderOptions,
         });
-      // newStaticElement.collisionFilter.group = -1;
       (newStaticElement.render as any).visualComponent.setVerticalTiles(item.tiles.tilesY).
         setHorizontalTiles(item.tiles.tilesX);
       this.grounds.push(newStaticElement);
-
-      // ((this.grounds[this.grounds.length - 1] as Matter.Body).render as any).visualComponent.setVerticalTiles(item.tiles).
-      // setHorizontalTiles(item.tiles);
 
     });
 
@@ -261,8 +219,8 @@ class GamePlay extends Platformer {
           frictionAir: 0.06,
           restitution: 0.3,
           collisionFilter: {
-            group: staticCategory,
-            mask: playerCategory,
+            group: this.staticCategory,
+            mask: this.playerCategory,
           } as any,
           render: {
             visualComponent: enemySprite,
@@ -299,7 +257,7 @@ class GamePlay extends Platformer {
           restitution: 0.3,
           collisionFilter: {
             group: -1,
-            mask: playerCategory,
+            mask: this.playerCategory,
           } as any,
           render: {
             visualComponent: enemySprite,
@@ -319,12 +277,11 @@ class GamePlay extends Platformer {
     });
 
     this.starter.AddNewBodies(this.grounds as worldElement);
-    this.starter.AddNewBodies(this.player as worldElement);
     this.starter.AddNewBodies(this.enemys as worldElement);
     this.starter.AddNewBodies(this.deadLines as worldElement);
-
+    this.starter.AddNewBodies(this.player as worldElement);
     this.attachMatterEvents();
-    // test.patrol(this.enemys[0]);
+
   }
 
 }

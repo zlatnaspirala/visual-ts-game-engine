@@ -33,3 +33,4 @@ master.get.GamePlay.attachAppEvents();
  * Make it global for fast access in console testing.
  * (window as any).platformer = master.get.GamePlay;
  */
+(window as any).platformer = master.get.GamePlay;

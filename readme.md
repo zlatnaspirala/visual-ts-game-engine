@@ -373,14 +373,13 @@ Features comes with broadcaster:
 
 ## Documentation : ##
 
- Beta version for documentation.
- ![Application documentation](https://maximumroulette.com/applications/visual-typescript-game-engine/build/api-doc/globals.html)
+ Follow link for API:
+ [Application documentation](https://maximumroulette.com/applications/visual-typescript-game-engine/build/api-doc/globals.html)
 
 
  If you wanna generate doc you will need manual remove comment
  from plugin section in webpack.config.js. Restart 'npm run dev'
  Best way to fully healty build.
- HTML/CSS is not prior in this project.
 
 If you wanna insert some new html page just define it intro
 webpack.config.js :
