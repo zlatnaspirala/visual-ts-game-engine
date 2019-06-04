@@ -51,3 +51,8 @@ export interface IGamePlayPlatformerMap {
   getCollectItems(): ICollectionItem[];
   getEnemys(): ICollectionEnemys[];
 }
+
+export interface IPoint {
+  x: number;
+  y: number;
+}

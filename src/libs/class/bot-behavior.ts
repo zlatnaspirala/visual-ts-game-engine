@@ -8,8 +8,10 @@ class BotBehavior implements IBotBehaviorOptions {
   public patrolPeriod: number = 3000;
   public patrolLoop: boolean = true;
   public patrol: () => void;
+  public intesity: number = 20;
   private patrolDirection: number = 1;
-  private enemy: worldElement;
+  private enemy: Matter.Body | any;
+  private imageFlip: boolean = false;
 
   public constructor(enemy: any, options?: IBotBehaviorOptions) {
     this.enemy = enemy;
@@ -22,9 +24,9 @@ class BotBehavior implements IBotBehaviorOptions {
       }
       this.patrolPeriod = options.patrolPeriod;
       this.patrolLoop = options.patrolLoop;
-      console.log("bot options loaded");
+      console.log("Bot options loaded.");
     } else {
-      // console.log("bot default options loaded.");
+      console.log("Bot default options loaded.");
       this.patrol = this.patrolLeftRight;
     }
   }
@@ -33,8 +35,10 @@ class BotBehavior implements IBotBehaviorOptions {
 
     const root = this;
     setTimeout(function () {
+      root.imageFlip = !root.imageFlip;
+      root.enemy.render.visualComponent.setHorizontalFlip(root.imageFlip);
       Matter.Body.setVelocity(root.enemy as Matter.Body,
-        { x: 0, y: 15 * root.patrolDirection });
+        { x: 0, y: root.intesity * root.patrolDirection });
       root.checkPatrol();
     }, this.patrolPeriod);
 
@@ -44,8 +48,10 @@ class BotBehavior implements IBotBehaviorOptions {
 
     const root = this;
     setTimeout(function () {
+      root.imageFlip = !root.imageFlip;
+      root.enemy.render.visualComponent.setHorizontalFlip(root.imageFlip);
       Matter.Body.setVelocity(root.enemy as Matter.Body,
-        { x: 15 * root.patrolDirection, y: -1 });
+        { x: root.intesity * root.patrolDirection, y: -1 });
       root.checkPatrol();
     }, this.patrolPeriod);
 

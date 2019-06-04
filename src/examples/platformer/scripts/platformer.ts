@@ -1,6 +1,6 @@
 import Matter = require("matter-js");
 import SpriteTextureComponent from "../../../libs/class/visual-methods/sprite-animation";
-import { IGamePlayModel } from "../../../libs/interface/global";
+import { IGamePlayModel, IPoint } from "../../../libs/interface/global";
 import Starter from "../../../libs/starter";
 import { worldElement } from "../../../libs/types/global";
 
@@ -25,10 +25,12 @@ class Platformer implements IGamePlayModel {
   public enemys: worldElement[] = [];
   public deadLines: worldElement[] = [];
   public v: any;
-  public player: any = null;
+  public player: Matter.Body | any = null;
 
   private lives: number = 3;
   private preventDoubleExecution: boolean = false;
+
+  private playerStartPositions: IPoint[] = [{x: 120, y: 200}];
 
   constructor(starter: Starter) {
 
@@ -85,7 +87,7 @@ class Platformer implements IGamePlayModel {
      if (this.player === null) {
        this.createPlayer();
      } else if (this.player.type === "body") {
-       // console.log("test");
+       // empty for now
      }
 
   }
@@ -113,9 +115,9 @@ class Platformer implements IGamePlayModel {
         pair.activeContacts.forEach((element) => {
           if (element.vertex.body.label === "player" &&
             element.vertex.index > 5 && element.vertex.index < 8) {
-            this.player.ground = ground;
+            (this.player as any).ground = ground;
           } else if (element.vertex.body.label === "player") {
-            this.player.ground = false;
+            (this.player as any).ground = false;
           }
         });
         }
@@ -128,9 +130,15 @@ class Platformer implements IGamePlayModel {
     if (!this.preventDoubleExecution) {
       this.preventDoubleExecution = true;
       const root = this;
+
+      // Hard dead
       // this.starter.destroyBody(collectitem);
-      Matter.Body.setPosition(this.player, { x: 120, y: 200 });
+
+      // Soft dead for now
+      Matter.Body.setPosition(this.player, this.playerStartPositions[0]);
+
       this.lives = this.lives - 1;
+
       setTimeout(function () {
         root.playerSpawn();
         root.preventDoubleExecution = false;
