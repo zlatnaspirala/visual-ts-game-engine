@@ -28,7 +28,7 @@
     "source-map-loader": "^0.2.3",
     "style-loader": "^0.21.0",
     "ts-loader": "^4.4.2",
-    "typedoc": "^0.13.0",
+    "typedoc": "^0.14.2",
     "typedoc-webpack-plugin": "^1.1.4",
     "typescript": "^3.5.1",
     "webpack": "^4.33.0",
