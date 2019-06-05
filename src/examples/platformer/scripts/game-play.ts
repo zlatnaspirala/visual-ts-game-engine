@@ -280,6 +280,7 @@ class GamePlay extends Platformer {
     this.starter.AddNewBodies(this.enemys as worldElement);
     this.starter.AddNewBodies(this.deadLines as worldElement);
     this.starter.AddNewBodies(this.player as worldElement);
+    this.createHud();
     this.attachMatterEvents();
 
   }

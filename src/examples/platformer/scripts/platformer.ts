@@ -1,5 +1,6 @@
 import Matter = require("matter-js");
 import SpriteTextureComponent from "../../../libs/class/visual-methods/sprite-animation";
+import TextComponent from "../../../libs/class/visual-methods/text";
 import { IGamePlayModel, IPoint } from "../../../libs/interface/global";
 import Starter from "../../../libs/starter";
 import { worldElement } from "../../../libs/types/global";
@@ -25,11 +26,12 @@ class Platformer implements IGamePlayModel {
   public enemys: worldElement[] = [];
   public deadLines: worldElement[] = [];
   public v: any;
+
   public player: Matter.Body | any = null;
+  public hudLives: Matter.Body | any = null;
 
   private lives: number = 3;
   private preventDoubleExecution: boolean = false;
-
   private playerStartPositions: IPoint[] = [{x: 120, y: 200}];
 
   constructor(starter: Starter) {
@@ -46,7 +48,29 @@ class Platformer implements IGamePlayModel {
     });
   }
 
+  public createHud () {
+
+    const playerRadius = 50;
+    this.hudLives = Matter.Bodies.rectangle(50, 220, 300, 200, {
+      label: "HUD",
+      isStatic: true,
+      render: {
+        visualComponent: new TextComponent("Platformer demo"),
+        fillStyle: "blue",
+        sprite: {
+          xScale: 1,
+          yScale: 1,
+        },
+      } as any,
+    } as Matter.IBodyDefinition);
+    this.hudLives.collisionFilter.group = -1;
+
+    this.starter.AddNewBodies(this.hudLives as worldElement);
+
+  }
+
   public createPlayer() {
+
     const imgResMyPlayerSprite = [
       require("../imgs/walk-boy2.png"),
     ];
