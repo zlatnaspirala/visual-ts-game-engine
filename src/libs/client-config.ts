@@ -11,6 +11,10 @@ class ClientConfig {
 
   /**
    * Addson
+   * All addson are ansync loaded scripts.
+   *  - Cache is based on webWorkers.
+   *  - hackerTimer is for better performace also based on webWorkers.
+   *  - dragging is script for dragging dom elements.
    */
   private addson: Addson = [
     {
@@ -33,6 +37,8 @@ class ClientConfig {
   /**
    * @description This is main coordinary types of positions
    * Can be "diametric-fullscreen" or "frame".
+   *  - diametric-fullscreen is simple fullscreen canvas element.
+   *  - frame keeps aspect ratio in any aspect.
    * @property drawReference
    * @type  string
    */
@@ -40,6 +46,7 @@ class ClientConfig {
 
   /**
    * aspectRatio default value, can be changed in run time.
+   * This is 800x600 
    */
   private aspectRatio: number = 1.333;
 
