@@ -1,5 +1,11 @@
 import ClientConfig from "../client-config";
 
+/**
+ * @description This class contain canvas dom operation.
+ * Getter and setter for  width and height of canvas or
+ * percent of innerHeight or innerWidth.
+ * @param config {CLientCofig}
+ */
 class ViewPort {
 
   public config: ClientConfig;
@@ -12,6 +18,7 @@ class ViewPort {
   constructor(config: ClientConfig) {
 
     this.config = config;
+    this.aspectRatio = this.config.getAspectRatio();
     if (this.config.getDrawRefference() === "diametric-fullscreen") {
       this.reperH = function () {
         return (window as any).innerHeight;

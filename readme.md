@@ -238,6 +238,7 @@ LICENSE
 |   |   |   |   ├── network.ts
 |   |   |   ├── visual-methods/
 |   |   |   |   ├── sprite-animation.ts
+|   |   |   |   ├── text.ts
 |   |   |   |   ├── texture.ts
 |   |   |   ├── browser.ts
 |   |   |   ├── math.ts
@@ -257,7 +258,7 @@ LICENSE
 |   |   |   ├── global-event.ts
 |   |   ├── types/
 |   |   |   ├── global.ts
-|   |   ├── engine-config.ts
+|   |   ├── client-config.ts
 |   |   ├── ioc.ts
 |   |   ├── starter.ts
 |   ├── icon/ ...
