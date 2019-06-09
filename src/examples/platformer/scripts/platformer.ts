@@ -1,5 +1,7 @@
 import Matter = require("matter-js");
+import { byId, bytesToSize, getElement, getRandomColor, htmlHeader } from "../../../libs/class/system";
 import SpriteTextureComponent from "../../../libs/class/visual-methods/sprite-animation";
+import TextComponent from "../../../libs/class/visual-methods/text";
 import { IGamePlayModel, IPoint } from "../../../libs/interface/global";
 import Starter from "../../../libs/starter";
 import { worldElement } from "../../../libs/types/global";
@@ -25,17 +27,30 @@ class Platformer implements IGamePlayModel {
   public enemys: worldElement[] = [];
   public deadLines: worldElement[] = [];
   public v: any;
+
   public player: Matter.Body | any = null;
+
+  // move to maps 'labes text'
+  public hudLives: Matter.Body | any = null;
 
   private lives: number = 3;
   private preventDoubleExecution: boolean = false;
-
   private playerStartPositions: IPoint[] = [{x: 120, y: 200}];
+  private playerDeadPauseInterval: number = 550;
+
+  private UIPlayerBoard: HTMLDivElement;
 
   constructor(starter: Starter) {
 
     this.starter = starter;
     this.v = starter.getView();
+
+    this.UIPlayerBoard = document.createElement("div");
+    this.UIPlayerBoard.id = "UIPlayerBoard";
+    this.UIPlayerBoard.className = "leftPanelUni";
+
+    document.getElementsByTagName("body")[0].appendChild(this.UIPlayerBoard);
+    this.showPlayerBoardUI();
 
   }
 
@@ -46,26 +61,14 @@ class Platformer implements IGamePlayModel {
     });
   }
 
-  public createPlayer() {
-    const imgResMyPlayerSprite = [
-      require("../imgs/walk-boy2.png"),
-    ];
+  public createHud () {
 
     const playerRadius = 50;
-    this.player = Matter.Bodies.circle(120, 200, playerRadius, {
-      label: "player",
-      density: 0.0005,
-      friction: 0.01,
-      frictionAir: 0.06,
-      restitution: 0.3,
-      ground: true,
-      jumpCD: 0,
-      portal: -1,
-      collisionFilter: {
-        category: this.playerCategory,
-      } as any,
+    this.hudLives = Matter.Bodies.rectangle(50, 220, 300, 200, {
+      label: "HUD",
+      isStatic: true,
       render: {
-        visualComponent: new SpriteTextureComponent("playerImage", imgResMyPlayerSprite, { byX: 5, byY: 2 }),
+        visualComponent: new TextComponent("Platformer demo"),
         fillStyle: "blue",
         sprite: {
           xScale: 1,
@@ -73,7 +76,48 @@ class Platformer implements IGamePlayModel {
         },
       } as any,
     } as Matter.IBodyDefinition);
+    this.hudLives.collisionFilter.group = -1;
+
+    this.starter.AddNewBodies(this.hudLives as worldElement);
+
+  }
+
+  public createPlayer() {
+
+    const imgResMyPlayerSprite = [
+      require("../imgs/walk-boy2.png"),
+      require("../imgs/explosion/explosion.png"),
+    ];
+
+    const playerRadius = 50;
+    this.player = Matter.Bodies.circle(
+      this.playerStartPositions[0].x,
+      this.playerStartPositions[0].y,
+      playerRadius, {
+        label: "player",
+        density: 0.0005,
+        friction: 0.01,
+        frictionAir: 0.06,
+        restitution: 0.3,
+        ground: true,
+        jumpCD: 0,
+        portal: -1,
+        collisionFilter: {
+          category: this.playerCategory,
+        } as any,
+        render: {
+          visualComponent: new SpriteTextureComponent("playerImage",
+           imgResMyPlayerSprite,
+           { byX: 5, byY: 2 }),
+          fillStyle: "blue",
+          sprite: {
+            xScale: 1,
+            yScale: 1,
+          },
+        } as any,
+    } as Matter.IBodyDefinition);
     this.player.collisionFilter.group = -1;
+    this.player.render.visualComponent.assets.SeqFrame.setNewSeqFrameRegimeType("CONST");
     this.player.render.visualComponent.keepAspectRatio = true;
     this.player.render.visualComponent.setHorizontalFlip(true);
 
@@ -125,24 +169,43 @@ class Platformer implements IGamePlayModel {
 
   }
 
+  public showPlayerBoardUI = () => {
+
+    const myInstance = this;
+    fetch("./templates/ui/player-board.html", {
+      headers: htmlHeader,
+    }).
+      then(function (res) {
+        return res.text();
+      }).then(function (html) {
+        // console.warn(html);
+
+        myInstance.UIPlayerBoard = byId("UIPlayerBoard") as HTMLDivElement;
+        myInstance.UIPlayerBoard.innerHTML = html;
+        myInstance.UIPlayerBoard.style.display = "block";
+
+      });
+
+  }
+
   protected playerDie(collectitem) {
 
     if (!this.preventDoubleExecution) {
-      this.preventDoubleExecution = true;
       const root = this;
-
+      this.preventDoubleExecution = true;
       // Hard dead
       // this.starter.destroyBody(collectitem);
-
-      // Soft dead for now
-      Matter.Body.setPosition(this.player, this.playerStartPositions[0]);
-
+      this.player.render.visualComponent.shema = { byX: 4, byY: 4 };
+      this.player.render.visualComponent.assets.SeqFrame.setNewValue(1);
       this.lives = this.lives - 1;
-
       setTimeout(function () {
+        root.player.render.visualComponent.assets.SeqFrame.setNewValue(0);
+        root.player.render.visualComponent.shema = { byX: 5, byY: 2 };
+        // Soft dead for now
+        Matter.Body.setPosition(root.player, root.playerStartPositions[0]);
         root.playerSpawn();
         root.preventDoubleExecution = false;
-      }, 500);
+      }, this.playerDeadPauseInterval);
     }
 
   }

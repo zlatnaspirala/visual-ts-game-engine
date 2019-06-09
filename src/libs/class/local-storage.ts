@@ -1,5 +1,8 @@
 import { UniVector } from "../types/global";
 
+/**
+ * LocalStorageMemory save and load js objects in localStorage.
+ */
 class LocalStorageMemory {
 
   constructor() {
@@ -12,26 +15,28 @@ class LocalStorageMemory {
    * @method save
    * @param {String} Name Name of localstorage key
    * @param {object} Value Any object we can store.
-   * @return {Any} What ever we are stored intro localStorage.
+   * @return {false | object} What ever we are stored intro localStorage.
    */
   public save(name, obj) {
     try {
-      localStorage.setItem(name, JSON.stringify(obj));
+      return localStorage.setItem(name, JSON.stringify(obj));
     } catch (e) {
       console.log("Something wrong in LocalStorageMemory class , method save!");
+      return false;
     }
   }
 
   /**
-   * load  Load a object from storage. Retrieve the object from storage
-   * @example Usage : load("MyObjectKey")
+   * Load saved object from storage. Retrieve the object from storage or
+   * return false.
+   * @example Usage : var giveMeMyObject = load("MyObjectKey")
    * @function load
    * @param {String} Name Name of localstorage key
-   * @return {Any} What ever we are stored intro localStorage.
+   * @return {false | object} What ever we are stored intro localStorage.
    */
   public load(name) {
     if (localStorage.getItem(name) === "undefined" || localStorage.getItem(name) == null || localStorage.getItem(name) === "") {
-      console.warn("LocalStorageMemory method load return false!");
+      console.warn("LocalStorageMemory method load return's: ", localStorage.getItem(name));
       return false;
     } else {
       return JSON.parse(localStorage.getItem(name));

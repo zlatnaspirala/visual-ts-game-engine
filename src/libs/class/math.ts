@@ -20,6 +20,14 @@ export class Counter {
 
   }
 
+  public setNewSeqFrameRegimeType(newSeqType: string) {
+    this.regimeType = newSeqType;
+  }
+
+  public setNewValue(newValue: number) {
+    this.value = newValue;
+  }
+
   public setDelay(newDelay) {
     this.delay = newDelay;
     this.delayInitial = newDelay;
@@ -48,12 +56,10 @@ export class Counter {
 
         switch (this.regimeType) {
 
-          case "STOP":
-            {
+          case "STOP": {
               return this.value;
             }
-          case "REPEAT":
-            {
+          case "REPEAT": {
               this.value = this.start;
               this.onRepeat();
               return this.value;

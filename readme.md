@@ -3,7 +3,7 @@
 
 #### 2d canvas game engine based on Matter.js 2D physics engine for the web. ####
 
- - Writen in typescript current version 3.1.3.
+ - Writen in typescript current version 3.5.1.
  - Text editor used and recommended: Visual Studio Code. Luanch debugger configuration comes with
    this project.
  - Physics engine based on Matter.js.
@@ -52,7 +52,7 @@ account sessions. The setup this on false in main client config class.
 Find configuration at ./src/lib/client-config.ts
 
 ```javascript
-/**
+  /**
    * Addson
    */
   private addson: Addson = [
@@ -208,6 +208,7 @@ master.get.Platformer.attachAppEvents();
 ├── tslint.json
 ├── launch.json
 ├── workplace.code-workspace
+├── LICENCE
 logo.png
 LICENSE
 ├── build/  (This is auto generated)
@@ -237,6 +238,7 @@ LICENSE
 |   |   |   |   ├── network.ts
 |   |   |   ├── visual-methods/
 |   |   |   |   ├── sprite-animation.ts
+|   |   |   |   ├── text.ts
 |   |   |   |   ├── texture.ts
 |   |   |   ├── browser.ts
 |   |   |   ├── math.ts
@@ -256,7 +258,7 @@ LICENSE
 |   |   |   ├── global-event.ts
 |   |   ├── types/
 |   |   |   ├── global.ts
-|   |   ├── engine-config.ts
+|   |   ├── client-config.ts
 |   |   ├── ioc.ts
 |   |   ├── starter.ts
 |   ├── icon/ ...
@@ -272,6 +274,7 @@ LICENSE
 |   ├── index.html
 |   ├── app-icon.ts
 |   └── app.ts
+|   └── manifest.web
 └── server/
 |   ├── package.json
 |   ├── package-lock.json

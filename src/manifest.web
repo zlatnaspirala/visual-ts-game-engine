@@ -1,6 +1,6 @@
 {
-  "name": "VTGE",
-  "short_name": "Visual typescript game engine",
+  "name": "Visual typescript game engine",
+  "short_name": "VTGE",
   "start_url": "app.html",
   "orientation": "portrait-primary",
   "theme_color": "aliceblue",
