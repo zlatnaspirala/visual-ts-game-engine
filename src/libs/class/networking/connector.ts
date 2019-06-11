@@ -37,7 +37,7 @@ class ConnectorClient {
 
   }
 
-  private showRegisterForm = () => {
+  public showRegisterForm = () => {
 
     const myInstance = this;
     fetch("./templates/register.html", {
@@ -87,7 +87,7 @@ class ConnectorClient {
 
     if (validatePassword(localPassword) === false) {
       byId("error-msg-reg").style.display = "block";
-      byId("error-msg-reg").innerText += "Password is not valid! length!";
+      byId("error-msg-reg").innerText = "Password is not valid! length!";
     }
 
     if (validateEmail(localEmail) === null && validatePassword(localPassword) === true) {
@@ -143,7 +143,7 @@ class ConnectorClient {
 
   private onOpen = () => {
 
-    console.warn("Session controller connected.");
+    console.info("Session controller connected.");
     this.webSocketController.send(JSON.stringify({ data: "i am here" }));
     // const instance = { self: this };
     // createEvent(menuActionEvents.showHome, instance),

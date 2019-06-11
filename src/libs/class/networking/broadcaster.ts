@@ -21,6 +21,8 @@ class Broadcaster {
   private publicRoomIdentifier: string;
   private connector;
 
+  private showBroadcastOnInit: boolean = false;
+
   constructor(config: any) {
 
     (window as any).io = io;
@@ -28,7 +30,9 @@ class Broadcaster {
     const root = this;
     this.engineConfig = config;
     // this.webCamView = byId("webCamView") as HTMLDivElement;
-    this.showBroadcaster();
+    if (this.showBroadcastOnInit) {
+      this.showBroadcaster();
+    }
 
   }
 

@@ -121,18 +121,19 @@ class Platformer implements IGamePlayModel {
     this.player.render.visualComponent.keepAspectRatio = true;
     this.player.render.visualComponent.setHorizontalFlip(true);
 
-    if (this.lives < 3) {
-      // this.starter.AddNewBodies(this.player as worldElement);
+    if (this.lives < 1) {
+       this.starter.AddNewBodies(this.player as worldElement);
+       console.info("Player body added to the stage from hard 'dead'.");
     }
   }
 
   public playerSpawn() {
 
-     if (this.player === null) {
-       this.createPlayer();
-     } else if (this.player.type === "body") {
-       // empty for now
-     }
+    if (this.player === null) {
+      this.createPlayer();
+    } else if (this.player.type === "body") {
+      // empty for now
+    }
 
   }
 
@@ -178,12 +179,9 @@ class Platformer implements IGamePlayModel {
       then(function (res) {
         return res.text();
       }).then(function (html) {
-        // console.warn(html);
-
         myInstance.UIPlayerBoard = byId("UIPlayerBoard") as HTMLDivElement;
         myInstance.UIPlayerBoard.innerHTML = html;
         myInstance.UIPlayerBoard.style.display = "block";
-
       });
 
   }
@@ -198,6 +196,21 @@ class Platformer implements IGamePlayModel {
       this.player.render.visualComponent.shema = { byX: 4, byY: 4 };
       this.player.render.visualComponent.assets.SeqFrame.setNewValue(1);
       this.lives = this.lives - 1;
+      (this.UIPlayerBoard.getElementsByClassName("UIPlayerLives")[0] as HTMLSpanElement).innerText = this.lives.toString();
+
+      if (this.lives === 0) {
+          this.starter.destroyBody(collectitem);
+          this.player = null;
+
+          /* Re born from hard dead
+             hard dead - body removed from scene
+          setTimeout(function () {
+            root.playerSpawn();
+          }, this.playerDeadPauseInterval);
+          */
+
+          return;
+      }
       setTimeout(function () {
         root.player.render.visualComponent.assets.SeqFrame.setNewValue(0);
         root.player.render.visualComponent.shema = { byX: 5, byY: 2 };

@@ -31,7 +31,7 @@ class Network {
 
     if (this.engineConfig.didAppUseAccountsSystem()) {
       this.connector = new ConnectorClient(config);
-      // this.connector.showRegisterForm();
+      this.connector.showRegisterForm();
       this.popupUI = (byId("popup") as HTMLDivElement);
       this.popupUI.style.display = "block";
     }
