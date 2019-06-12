@@ -1,10 +1,10 @@
-// http://127.0.0.1:9001
-// http://localhost:9001
+// https://maximumroulette.com:9001
+// http://maximumroulette.com:9001
 
 const fs = require('fs');
 const path = require('path');
 const url = require('url');
-var httpServer = require('http');
+var httpServer;// = require('http');
 
 const ioServer = require('socket.io');
 const RTCMultiConnectionServer = require('rtcmulticonnection-server');
@@ -198,6 +198,7 @@ function serverHandler(request, response) {
       }
 
       try {
+        console.log("WWWWW !!")
         file = file.replace('connection.socketURL = \'/\';', 'connection.socketURL = \'' + config.socketURL + '\';');
       } catch (e) { }
 
@@ -259,15 +260,17 @@ if (isUseHTTPs) {
       pfx: sslKey
     };
   }
-
+  console.log("SSLENABLED !!")
   httpApp = httpServer.createServer(options, serverHandler);
 } else {
+  httpServer = require('http');
   httpApp = httpServer.createServer(serverHandler);
 }
 
 RTCMultiConnectionServer.beforeHttpListen(httpApp, config);
 httpApp = httpApp.listen(process.env.PORT || PORT, process.env.IP || "0.0.0.0", function() {
   RTCMultiConnectionServer.afterHttpListen(httpApp, config);
+  console.log("listening !!")
 });
 
 // --------------------------

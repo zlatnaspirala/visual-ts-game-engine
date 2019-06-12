@@ -10,10 +10,25 @@ class ServerConfig {
     this.rtcServerPort = 12034;
     this.rtc3ServerPort = 9001;
     this.connectorPort = 1234;
-    this.domain = "localhost";
+    this.domain = "maximumroulette.com";
     this.masterServerKey = "multi-platformer-sever1.maximum";
-    this.protocol = "http";
-    this.isSecure = false;
+    this.protocol = "https";
+    this.isSecure = true;
+
+    // localhost
+    this.certPathSelfCert = {
+      pKeyPath: "self-cert\privatekey.pem",
+      pCertPath: "self-cert\certificate.pem",
+      pCA: "",
+    };
+
+    // production
+    this.certPathProd = {
+      pKeyPath: "/etc/httpd/conf/ssl/maximumroulette.com.key",
+      pCertPath: "/etc/httpd/conf/ssl/maximumroulette_com.crt",
+      pCBPath: "/etc/httpd/conf/ssl/maximumroulette.ca-bundle"
+    };
+
     this.appUseAccountsSystem = true;
     this.appUseVideoChat = true;
     this.databaseName = "masterdatabase";
