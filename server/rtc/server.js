@@ -11,9 +11,6 @@ const sessionController = new Connector(serverConfig);
 const CHANNELS = {};
 const WebSocketServer = require("websocket").server;
 
-let pKeyPath = "self-cert\privatekey.pem";
-let pCertPath = "self-cert\certificate.pem";
-let pCBPath = "";
 let httpRtc = null;
 
 if (serverConfig.getProtocol == "http") {
