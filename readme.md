@@ -379,6 +379,10 @@ Features comes with broadcaster:
  Follow link for API:
  [Application documentation](https://maximumroulette.com/applications/visual-typescript-game-engine/build/api-doc/globals.html)
 
+ Possible to install from :
+```
+   npm visual-ts
+```
 
  If you wanna generate doc you will need manual remove comment
  from plugin section in webpack.config.js. Restart 'npm run dev'
