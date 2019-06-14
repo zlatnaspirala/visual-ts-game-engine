@@ -251,6 +251,7 @@ class Connector {
 
   onUserLogin(user, callerInstance) {
     let userId = shared.formatUserKeyLiteral(user.email);
+    console.log("userId", userId);
     try {
       let codeSended = { action: "ONLINE", data: { accessToken: userId, text: "Welcome to the game portal.", user } };
       codeSended = JSON.stringify(codeSended);
@@ -271,29 +272,32 @@ class Connector {
 
   onUserData(user, callerInstance) {
     try {
+      let userId = shared.formatUserKeyLiteral(user.email);
       let codeSended = { action: "GET_USER_DATA", data: { user } };
       codeSended = JSON.stringify(codeSended);
-      callerInstance.userSockCollection[user.socketid].send(codeSended);
+      callerInstance.userSockCollection[userId].send(codeSended);
       console.warn("User data : ", user.email);
     } catch (err) {
-      console.log("Something wrong with onUserLogin :: userSockCollection[userId]. Err :", err);
+      console.log("Something wrong with onUserData :: userSockCollection[userId]. Err :", err);
     }
   }
 
   serverHandlerSetNewNickname(arg) {
     if (arg !== undefined) {
+      console.log(arg);
       shared.myBase.database.setNewNickname(arg, shared.myBase);
     }
   }
 
-  onUserNewNickname(arg) {
+  onUserNewNickname(userData, callerInstance) {
     try {
-      let codeSended = { action: "NICKNAME_UPDATED", data: { arg } };
+      let userId = shared.formatUserKeyLiteral(userData.email);
+      let codeSended = { action: "NICKNAME_UPDATED", data: { userData } };
       codeSended = JSON.stringify(codeSended);
-      callerInstance.userSockCollection[arg.socketId].send(codeSended);
-      console.warn("User data : ", user.email);
+      callerInstance.userSockCollection[userId].send(codeSended);
+      console.warn("lokkks ok onUserNewNickname : ", userData.email);
     } catch (err) {
-      console.log("Something wrong with onUserLogin :: userSockCollection[userId]. Err :", err);
+      console.log("Something wrong with onUserNewNickname :: userSockCollection[userId]. Err :", err);
     }
   }
 

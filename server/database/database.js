@@ -137,7 +137,7 @@ class MyDatabase {
     const databaseName = this.config.databaseName;
     MongoClient.connect(this.config.getDatabaseRoot, { useNewUrlParser: true }, function(error, db) {
       if (error) {
-        console.warn("MyDatabase.login :" + error);
+        console.warn("MyDatabase.login error:" + error);
         return;
       }
 
@@ -166,8 +166,7 @@ class MyDatabase {
                   console.log("BAD_EMAIL_OR_PASSWORD");
                   return;
                 }
-                // console.warn("MyDatabase.login :" + err);
-                console.warn("MyDatabase.login GOOD result:" + result);
+                console.warn("ONLINE: ", userData.nickname);
                 callerInstance.onUserLogin(userData, callerInstance);
               }
             );
@@ -209,7 +208,6 @@ class MyDatabase {
               socketid: result.accessToken,
             };
 
-            console.warn("MyDatabase.getUserData :" + result);
             callerInstance.onUserData(userData, callerInstance);
 
           }
@@ -221,7 +219,6 @@ class MyDatabase {
   }
 
   setNewNickname(user, callerInstance) {
-
 
     const databaseName = this.config.databaseName;
     MongoClient.connect(this.config.getDatabaseRoot, { useNewUrlParser: true }, function(error, db) {
@@ -238,21 +235,20 @@ class MyDatabase {
           if (err) { console.log("MyDatabase.setNewNickname (user socket id not found):" + err); return null; }
 
           if (result !== null) {
-
             const userData = {
-              socketId: result.accessToken,
-              newNickname: user.data.nickname,
+              accessToken: user.data.accessToken,
+              newNickname: user.data.newNickname,
+              email: user.data.email
             };
 
             dbo.collection("users").updateOne(
-              { nickname: user.data.nickname, },
-              function(err, result) {
+              { email: user.data.email, },
+              { $set: {nickname: user.data.newNickname} },
+              function(err, result2) {
                 if (err) {
                   console.log("MyDatabase.setNewNickname (error in update):", err);
                   return;
                 }
-                // console.warn("MyDatabase.login :" + err);
-                console.warn("MyDatabase.login GOOD result:" + result);
                 callerInstance.onUserNewNickname(userData, callerInstance);
               }
             );
