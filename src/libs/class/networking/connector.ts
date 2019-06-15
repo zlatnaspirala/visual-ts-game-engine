@@ -1,6 +1,6 @@
 
-import { IMessageReceived, IUserRegData, IConnectorMsg } from "../../interface/global";
-import { UniClick, NetMsg } from "../../types/global";
+import { IMessageReceived, IUserRegData } from "../../interface/global";
+import { NetMsg, UniClick } from "../../types/global";
 import { byId, createAppEvent, encodeString, htmlHeader, validateEmail, validatePassword } from "../system";
 import EngineConfig from "./../../client-config";
 import Memo from "./../local-storage";
@@ -63,13 +63,14 @@ class ConnectorClient {
       then(function (res) {
         return res.text();
       }).then(function (html) {
-        // console.warn(html);
         myInstance.popupForm.innerHTML = html;
         byId("login-button").addEventListener("click", myInstance.loginUser, false);
         byId("sing-up-tab").addEventListener("click", myInstance.showRegisterForm, false);
         if (data && data.data && data.data.test) {
           byId("error-msg-login").innerHTML = data.data.text;
         }
+      }).catch(function (err) {
+        console.warn("Error in showLoginForm : ", err);
       });
   }
 
@@ -142,12 +143,8 @@ class ConnectorClient {
   }
 
   private onOpen = () => {
-
     console.info("Session controller connected.");
     this.webSocketController.send(JSON.stringify({ data: "i am here" }));
-    // const instance = { self: this };
-    // createEvent(menuActionEvents.showHome, instance),
-
   }
 
   private sendObject = (message: NetMsg) => {

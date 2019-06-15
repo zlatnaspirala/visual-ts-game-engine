@@ -1,6 +1,4 @@
-// https://maximumroulette.com:9001
-// http://maximumroulette.com:9001
-
+// \visual-ts\server\server-config.js
 const fs = require('fs');
 const path = require('path');
 const url = require('url');
@@ -198,7 +196,6 @@ function serverHandler(request, response) {
       }
 
       try {
-        console.log("WWWWW !!")
         file = file.replace('connection.socketURL = \'/\';', 'connection.socketURL = \'' + config.socketURL + '\';');
       } catch (e) { }
 
@@ -227,9 +224,9 @@ if (isUseHTTPs) {
   // See how to use a valid certificate:
   // https://github.com/muaz-khan/WebRTC-Experiment/issues/62
   var options = {
-    key: "/etc/httpd/conf/ssl/maximumroulette.com.key",
-    cert: "/etc/httpd/conf/ssl/maximumroulette_com.crt",
-    ca: "/etc/httpd/conf/ssl/maximumroulette.ca-bundle"
+    key: "",
+    cert: "",
+    ca: ""
   };
 
   var pfx = false;
@@ -260,7 +257,6 @@ if (isUseHTTPs) {
       pfx: sslKey
     };
   }
-  console.log("SSLENABLED !!")
   httpApp = httpServer.createServer(options, serverHandler);
 } else {
   httpServer = require('http');
