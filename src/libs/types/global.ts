@@ -1,3 +1,5 @@
+import { IConnectorMsg } from "../interface/global";
+
 /**
  * Make all clear here
  */
@@ -14,9 +16,10 @@ export type drawableObject = HTMLImageElement | HTMLCanvasElement | HTMLVideoEle
 export type imagesResource = HTMLImageElement | HTMLImageElement[];
 export type literalImageSrc = string | string[];
 
-// dom
 export type UniClick = MouseEvent | TouchEvent;
 // tslint:disable-next-line:interface-over-type-literal
 export type UniVector = { [key: string]: any };
 
 export type Addson = Array<{ name: string, enabled: boolean, scriptPath: string }>;
+
+export type NetMsg = IConnectorMsg | string;

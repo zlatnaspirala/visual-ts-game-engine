@@ -251,7 +251,6 @@ class Connector {
 
   onUserLogin(user, callerInstance) {
     let userId = shared.formatUserKeyLiteral(user.email);
-    console.log("userId", userId);
     try {
       let codeSended = { action: "ONLINE", data: { accessToken: userId, text: "Welcome to the game portal.", user } };
       codeSended = JSON.stringify(codeSended);
@@ -276,7 +275,6 @@ class Connector {
       let codeSended = { action: "GET_USER_DATA", data: { user } };
       codeSended = JSON.stringify(codeSended);
       callerInstance.userSockCollection[userId].send(codeSended);
-      console.warn("User data : ", user.email);
     } catch (err) {
       console.log("Something wrong with onUserData :: userSockCollection[userId]. Err :", err);
     }
@@ -295,9 +293,8 @@ class Connector {
       let codeSended = { action: "NICKNAME_UPDATED", data: { userData } };
       codeSended = JSON.stringify(codeSended);
       callerInstance.userSockCollection[userId].send(codeSended);
-      console.warn("lokkks ok onUserNewNickname : ", userData.email);
     } catch (err) {
-      console.log("Something wrong with onUserNewNickname :: userSockCollection[userId]. Err :", err);
+      console.log("Something wrong with :: userSockCollection[userId]. Err :", err);
     }
   }
 

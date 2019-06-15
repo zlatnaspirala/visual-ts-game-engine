@@ -1,6 +1,6 @@
 
-import { IMessageReceived, IUserRegData } from "../../interface/global";
-import { UniClick } from "../../types/global";
+import { IMessageReceived, IUserRegData, IConnectorMsg } from "../../interface/global";
+import { UniClick, NetMsg } from "../../types/global";
 import { byId, createAppEvent, encodeString, htmlHeader, validateEmail, validatePassword } from "../system";
 import EngineConfig from "./../../client-config";
 import Memo from "./../local-storage";
@@ -150,7 +150,7 @@ class ConnectorClient {
 
   }
 
-  private sendObject = (message) => {
+  private sendObject = (message: NetMsg) => {
 
     try {
       message = JSON.stringify(message);
@@ -168,8 +168,8 @@ class ConnectorClient {
   }
 
   private onClose(evt) {
-    alert("Server session is disconnected.Please refresh this page. Automate refresh after 10 secounds.");
-    console.error("Session controller disconnected", evt);
+    console.warn("Server session is disconnected.Please refresh this page. Automate refresh after 10 secounds.");
+    console.warn("Session controller disconnected", evt);
     setTimeout(function () {
       location.reload();
     }, 10000);
@@ -180,35 +180,29 @@ class ConnectorClient {
     try {
       const dataReceive: IMessageReceived = JSON.parse(evt.data);
       switch (dataReceive.action) {
-        case "CHECK_EMAIL":
-          {
+        case "CHECK_EMAIL": {
             this.onMsgCheckEmail(dataReceive);
             break;
           }
-        case "VERIFY_SUCCESS":
-          {
+        case "VERIFY_SUCCESS": {
             this.showLoginForm(dataReceive);
             break;
           }
-        case "ONLINE":
-          {
+        case "ONLINE": {
             this.memo.save("online", true);
             this.memo.save("accessToken", dataReceive.data.accessToken);
             this.showUserAccountProfilePage(dataReceive);
             break;
           }
-        case "GET_USER_DATA":
-          {
+        case "GET_USER_DATA": {
             this.showUserAccountProfilePage(dataReceive);
             break;
           }
-        case "NICKNAME_UPDATED":
-          {
+        case "NICKNAME_UPDATED": {
             this.showNewNickname(dataReceive);
             break;
           }
-        case "ERROR_EMAIL":
-          {
+        case "ERROR_EMAIL": {
             (byId("notify") as HTMLInputElement).innerHTML = dataReceive.data.errMsg;
             break;
           }
