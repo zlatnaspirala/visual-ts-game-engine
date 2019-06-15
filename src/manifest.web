@@ -1,8 +1,8 @@
 {
   "name": "Visual typescript game engine",
-  "short_name": "VTGE",
+  "short_name": "Visual ts",
   "start_url": "app.html",
-  "orientation": "portrait-primary",
+  "orientation": "landscape",
   "theme_color": "aliceblue",
   "background_color": "purple",
   "description": "Typescript project based on matter.ts implementation. This version 2 of visualjs game engine totally different approach , export name lib name is visualjs2.js . Whole project is based fully dependency build. Main file is app.ts . Class ioc saves singlton instances also bind. In this project html and css is also present. Based on canvas2D. Used lib Matter.js/ts in typescript variant. ",
@@ -24,5 +24,11 @@
       "sizes": "192x192",
       "type": "image/png"
     }
-  ]
+  ],
+  "author": {
+		  "name": "Nikola Lukic",
+		  "website": "https://maximumroulette.com",
+		  "github": "https://github.com/zlatnaspirala",
+		  "source-repo": "https://github.com/zlatnaspirala/visual-ts-game-engine"
+	}
 }

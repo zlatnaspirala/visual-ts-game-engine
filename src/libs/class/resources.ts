@@ -1,12 +1,12 @@
 import { Counter } from "./math";
 
-interface ImageRes { [key: string]: HTMLImageElement; }
+interface IImageRes { [key: string]: HTMLImageElement; }
 
 class Resources {
 
   public getImg: () => HTMLImageElement;
 
-  private images: ImageRes = {};
+  private images: IImageRes = {};
   private totalImages: number = 0;
   private activeSlotIndex: string = "";
   private SeqFrame: Counter;

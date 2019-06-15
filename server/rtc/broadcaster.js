@@ -1,10 +1,8 @@
-// http://127.0.0.1:9001
-// http://localhost:9001
-
+// \visual-ts\server\server-config.js
 const fs = require('fs');
 const path = require('path');
 const url = require('url');
-var httpServer = require('http');
+var httpServer;// = require('http');
 
 const ioServer = require('socket.io');
 const RTCMultiConnectionServer = require('rtcmulticonnection-server');
@@ -226,9 +224,9 @@ if (isUseHTTPs) {
   // See how to use a valid certificate:
   // https://github.com/muaz-khan/WebRTC-Experiment/issues/62
   var options = {
-    key: "/etc/httpd/conf/ssl/maximumroulette.com.key",
-    cert: "/etc/httpd/conf/ssl/maximumroulette_com.crt",
-    ca: "/etc/httpd/conf/ssl/maximumroulette.ca-bundle"
+    key: "",
+    cert: "",
+    ca: ""
   };
 
   var pfx = false;
@@ -259,15 +257,16 @@ if (isUseHTTPs) {
       pfx: sslKey
     };
   }
-
   httpApp = httpServer.createServer(options, serverHandler);
 } else {
+  httpServer = require('http');
   httpApp = httpServer.createServer(serverHandler);
 }
 
 RTCMultiConnectionServer.beforeHttpListen(httpApp, config);
 httpApp = httpApp.listen(process.env.PORT || PORT, process.env.IP || "0.0.0.0", function() {
   RTCMultiConnectionServer.afterHttpListen(httpApp, config);
+  console.log("listening !!")
 });
 
 // --------------------------

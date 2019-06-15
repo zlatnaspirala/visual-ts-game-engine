@@ -3,6 +3,7 @@
  * based on native webSocket server/client.
  * Supported with mongoDB database platform.
  */
+const fs = require("fs");
 const shared = require("./../common/shared");
 
 class Connector {
@@ -11,9 +12,30 @@ class Connector {
 
     this.userSockCollection = {};
     this.config = serverConfig;
-    this.http = require(this.config.getProtocol).createServer(function(request, response) {
-      // Prevent with end here...
-    }).listen(serverConfig.getConnectorPort);
+    this.http = null;
+
+    if (serverConfig.getProtocol == "http") {
+      this.http = require(this.config.getProtocol).createServer(function(request, response) {
+        // Prevent with end here...
+      }).listen(serverConfig.getConnectorPort);
+
+    } else {
+
+      let options = {
+        key: fs.readFileSync(serverConfig.certPathProd.pKeyPath),
+        cert: fs.readFileSync(serverConfig.certPathProd.pCertPath),
+        ca: fs.readFileSync(serverConfig.certPathProd.pCBPath),
+      };
+
+      this.http = require('https').createServer(options, function(request, response) {
+        request.addListener('end', function() {
+          if (request.url.search(/.png|.gif|.js|.css/g) == -1) {
+            file.serveFile('/app.html', 402, {}, request, response);
+          } else file.serve(request, response);
+        }).resume();
+      }).listen(serverConfig.getConnectorPort);
+
+    }
 
     /**
      * Create main webSocket object
@@ -249,29 +271,30 @@ class Connector {
 
   onUserData(user, callerInstance) {
     try {
+      let userId = shared.formatUserKeyLiteral(user.email);
       let codeSended = { action: "GET_USER_DATA", data: { user } };
       codeSended = JSON.stringify(codeSended);
-      callerInstance.userSockCollection[user.socketid].send(codeSended);
-      console.warn("User data : ", user.email);
+      callerInstance.userSockCollection[userId].send(codeSended);
     } catch (err) {
-      console.log("Something wrong with onUserLogin :: userSockCollection[userId]. Err :", err);
+      console.log("Something wrong with onUserData :: userSockCollection[userId]. Err :", err);
     }
   }
 
   serverHandlerSetNewNickname(arg) {
     if (arg !== undefined) {
+      console.log(arg);
       shared.myBase.database.setNewNickname(arg, shared.myBase);
     }
   }
 
-  onUserNewNickname(arg) {
+  onUserNewNickname(userData, callerInstance) {
     try {
-      let codeSended = { action: "NICKNAME_UPDATED", data: { arg } };
+      let userId = shared.formatUserKeyLiteral(userData.email);
+      let codeSended = { action: "NICKNAME_UPDATED", data: { userData } };
       codeSended = JSON.stringify(codeSended);
-      callerInstance.userSockCollection[arg.socketId].send(codeSended);
-      console.warn("User data : ", user.email);
+      callerInstance.userSockCollection[userId].send(codeSended);
     } catch (err) {
-      console.log("Something wrong with onUserLogin :: userSockCollection[userId]. Err :", err);
+      console.log("Something wrong with :: userSockCollection[userId]. Err :", err);
     }
   }
 

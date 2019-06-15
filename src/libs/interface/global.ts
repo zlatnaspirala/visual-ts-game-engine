@@ -1,5 +1,5 @@
 import Starter from "../starter";
-import { literalImageSrc, worldElement } from "../types/global";
+import { literalImageSrc, UniVector } from "../types/global";
 
 export interface ICollisionFilter { category: number; group: number; mask: number; }
 export interface IStaticItem {
@@ -32,6 +32,11 @@ export interface IUserRegData {
   email: string;
   password: string;
 }
+
+export interface IConnectorMsg {
+  action: string;
+  data: UniVector;
+ }
 
 export interface IMessageReceived {
   action: string;

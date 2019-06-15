@@ -10,3 +10,4 @@ src/examples/platformer/scripts/.DS_Store
 src/.DS_Store
 src/icon/.DS_Store
 server/broadcaster-config.maximum.json
+server/email/mail-service.js

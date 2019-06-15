@@ -3,40 +3,49 @@
  * @description Networking
  */
 
+const fs = require("fs");
 const ServerConfig = require("../server-config.js");
 const Connector = require("./connector.js");
-
-// let fs = require("fs");
 const serverConfig = new ServerConfig();
 const sessionController = new Connector(serverConfig);
-
-const httpRtc = require(serverConfig.getProtocol).createServer(function(request, response) {
-  /*
-  request.addListener("end", function () {
-    if (request.url.search(/.png|.gif|.js|.css/g) === -1) {
-      file.serveFile(resolveURL("/app.html"), 402, {}, request, response);
-    } else { file.serve(request, response); }
-  }).resume();
- */
-}).listen(serverConfig.rtcServerPort);
-
-/* HTTPs
-let options = {
-    key: fs.readFileSync('privatekey.pem'),
-    cert: fs.readFileSync('certificate.pem')
-};
-
-let https = require('https').createServer(options, function (request, response) {
-    request.addListener('end', function () {
-        if (request.url.search(/.png|.gif|.js|.css/g) == -1) {
-            file.serveFile('/index.html', 402, {}, request, response);
-        } else file.serve(request, response);
-    }).resume();
-}).listen(serverConfig.remoteServer.port);
-*/
-
 const CHANNELS = {};
 const WebSocketServer = require("websocket").server;
+
+let httpRtc = null;
+
+if (serverConfig.getProtocol == "http") {
+
+  httpRtc = require(serverConfig.getProtocol).createServer(function(request, response) {
+  /**
+   * SSL off
+   */
+    request.addListener("end", function () {
+      if (request.url.search(/.png|.gif|.js|.css/g) === -1) {
+        file.serveFile(resolveURL("/app.html"), 402, {}, request, response);
+      } else { file.serve(request, response); }
+    }).resume();
+
+  }).listen(serverConfig.getRtcServerPort);
+
+} else {
+
+  /**
+   * SSL on
+   */
+  let options = {
+    key: fs.readFileSync(serverConfig.certPathProd.pKeyPath),
+    cert: fs.readFileSync(serverConfig.certPathProd.pCertPath),
+    ca: fs.readFileSync(serverConfig.certPathProd.pCBPath),
+  };
+
+  httpRtc = require('https').createServer(options, function(request, response) {
+    request.addListener('end', function() {
+      if (request.url.search(/.png|.gif|.js|.css/g) == -1) {
+        file.serveFile('/app.html', 402, {}, request, response);
+      } else file.serve(request, response);
+    }).resume();
+  }).listen(serverConfig.getRtcServerPort);
+}
 
 new WebSocketServer({
   httpServer: httpRtc,

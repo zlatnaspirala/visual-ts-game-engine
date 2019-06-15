@@ -21,6 +21,8 @@ class Broadcaster {
   private publicRoomIdentifier: string;
   private connector;
 
+  private showBroadcastOnInit: boolean = false;
+
   constructor(config: any) {
 
     (window as any).io = io;
@@ -28,7 +30,9 @@ class Broadcaster {
     const root = this;
     this.engineConfig = config;
     // this.webCamView = byId("webCamView") as HTMLDivElement;
-    this.showBroadcaster();
+    if (this.showBroadcastOnInit) {
+      this.showBroadcaster();
+    }
 
   }
 
@@ -345,20 +349,20 @@ class Broadcaster {
   private openInNewWindow = () => {
 
     const root = this;
-    let href_: any;
+    let hrefLocal: any;
 
     $("#startRoomModel").modal("hide");
     // let href
-    let params = /*location.href*/ "?open=" +
+    const params = /*location.href*/ "?open=" +
       root.rtcMultiConnection.isInitiator + "&sessionid=" + root.rtcMultiConnection.sessionid +
       "&publicRoomIdentifier=" + root.rtcMultiConnection.publicRoomIdentifier +
       "&userFullName=" + root.rtcMultiConnection.extra.userFullName;
 
     if (!!root.rtcMultiConnection.password) {
-      href_ += "&password=" + root.rtcMultiConnection.password;
+      hrefLocal += "&password=" + root.rtcMultiConnection.password;
     }
 
-    let broadcasterMedia = new BroadcasterMedia(root, params);
+    const broadcasterMedia = new BroadcasterMedia(root, params);
 
     /*
     const newWin = window.open(href_);
