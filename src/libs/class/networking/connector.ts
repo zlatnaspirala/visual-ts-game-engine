@@ -387,6 +387,7 @@ class ConnectorClient {
         data: {
           newNickname: (byId("nick-name") as HTMLInputElement).value,
           accessToken: this.memo.load("accessToken"),
+          email: this.memo.load("localUserData"),
         },
       };
       this.sendObject(localMsg);
