@@ -16,7 +16,7 @@ class ServerConfig {
     this.isSecure = true;
 
     // localhost
-    this.certPathSelfCert = {
+    this.certPathSelf = {
       pKeyPath: "self-cert\privatekey.pem",
       pCertPath: "self-cert\certificate.pem",
       pCA: "",

@@ -47,15 +47,24 @@ You want to use communication for multiplayer but you don't want to use server d
 account sessions. The setup this on false in main client config class.
 <code>  appUseAccountsSystem: boolean = false; </code>
 
- - Networking is disabled by default.
+ - Networking is disabled or enabled depens on current dev status.
 
-Find configuration at ./src/lib/client-config.ts
+Find configuration for client part at ./src/lib/client-config.ts
 
 ```javascript
-  /**
+    /**
    * Addson
+   * All addson are ansync loaded scripts.
+   *  - Cache is based on webWorkers.
+   *  - hackerTimer is for better performace also based on webWorkers.
+   *  - dragging is script for dragging dom elements.
    */
   private addson: Addson = [
+    {
+      name: "cache",
+      enabled: true,
+      scriptPath: "externals/cacheInit.ts",
+    },
     {
       name: "hackerTimer",
       enabled: true,
@@ -71,6 +80,8 @@ Find configuration at ./src/lib/client-config.ts
   /**
    * @description This is main coordinary types of positions
    * Can be "diametric-fullscreen" or "frame".
+   *  - diametric-fullscreen is simple fullscreen canvas element.
+   *  - frame keeps aspect ratio in any aspect.
    * @property drawReference
    * @type  string
    */
@@ -78,6 +89,7 @@ Find configuration at ./src/lib/client-config.ts
 
   /**
    * aspectRatio default value, can be changed in run time.
+   * This is 800x600
    */
   private aspectRatio: number = 1.333;
 
@@ -124,19 +136,19 @@ Find configuration at ./src/lib/client-config.ts
    * network. Use 'false' if you wanna make single player game.
    * In other way keep it 'true'.
    */
-  private appUseNetwork = false;
+  private appUseNetwork = true;
 
   /**
    * appUseAccountsSystem If you don't want to use session
    * in your application just setup this variable to the false.
    */
-  private appUseAccountsSystem: boolean = false;
+  private appUseAccountsSystem: boolean = true;
 
   /**
    * appUseBroadcaster Disable or enable broadcaster for
    * video chats.
    */
-  private appUseBroadcaster: boolean = false;
+  private appUseBroadcaster: boolean = true;
 
   /**
    * Possible variant by default :
@@ -152,6 +164,7 @@ Find configuration at ./src/lib/client-config.ts
   private defaultGamePlayLevelName: string = "level1";
   private autoStartGamePlay: boolean = true;
 
+
 ```
 
 ### Start dependency system from app.ts ###
@@ -162,7 +175,8 @@ Find configuration at ./src/lib/client-config.ts
      It is injected to the Platformer to make full operated work.
  - gamesList args for ioc constructor is for now just simbolic for now. (WIP)
  - In ioc you can make strong class dependency relations.
-   Use it for your own structural changes.
+   Use it for your own structural changes. If you want to make light version for build
+   than use ioc to remove everything you don't need in build.
 
 #### Main dependency file ####
 
