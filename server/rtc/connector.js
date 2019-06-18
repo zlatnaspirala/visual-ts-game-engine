@@ -14,8 +14,15 @@ class Connector {
     this.config = serverConfig;
     this.http = null;
 
-    if (serverConfig.getProtocol == "http") {
-      this.http = require(this.config.getProtocol).createServer(function(request, response) {
+    if (!serverConfig.isSecure) {
+
+      let options = {
+        key: fs.readFileSync(serverConfig.certPathSelf.pKeyPath),
+        cert: fs.readFileSync(serverConfig.certPathSelf.pCertPath),
+        ca: fs.readFileSync(serverConfig.certPathSelf.pCBPath),
+      };
+
+      this.http = require(this.config.getProtocol).createServer(options, function(request, response) {
         // Prevent with end here...
       }).listen(serverConfig.getConnectorPort);
 

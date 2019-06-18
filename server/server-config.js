@@ -13,13 +13,13 @@ class ServerConfig {
     this.domain = "maximumroulette.com";
     this.masterServerKey = "multi-platformer-sever1.maximum";
     this.protocol = "https";
-    this.isSecure = true;
+    this.isSecure = false;
 
     // localhost
-    this.certPathSelfCert = {
-      pKeyPath: "self-cert\privatekey.pem",
-      pCertPath: "self-cert\certificate.pem",
-      pCA: "",
+    this.certPathSelf = {
+      pKeyPath: "./server/rtc/self-cert/privatekey.pem",
+      pCertPath: "./server/rtc/self-cert/certificate.pem",
+      pCBPath: "./server/rtc/self-cert/certificate.pem",
     };
 
     // production
