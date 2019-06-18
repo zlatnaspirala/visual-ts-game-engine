@@ -71,6 +71,7 @@ class Connector {
     shared.serverHandlerLoginValidation = this.serverHandlerLoginValidation;
     shared.serverHandlerGetUserData = this.serverHandlerGetUserData;
     shared.serverHandlerSetNewNickname = this.serverHandlerSetNewNickname;
+    shared.serverHandlerFastLogin = this.serverHandlerFastLogin;
 
   }
 
@@ -146,6 +147,10 @@ class Connector {
                 shared.serverHandlerGetUserData(msgFromCLient);
               } else if (msgFromCLient.action === "NEW_NICKNAME") {
                 shared.serverHandlerSetNewNickname(msgFromCLient);
+              } else if (msgFromCLient.action === "FLOGIN") {
+                const userId = shared.formatUserKeyLiteral(msgFromCLient.data.userLoginData.email);
+                shared.myBase.userSockCollection[userId] = this;
+                shared.serverHandlerFastLogin(msgFromCLient);
               }
 
             } else {
@@ -291,6 +296,13 @@ class Connector {
     if (arg !== undefined) {
       console.log(arg);
       shared.myBase.database.setNewNickname(arg, shared.myBase);
+    }
+  }
+
+  serverHandlerFastLogin(arg) {
+    if (arg !== undefined) {
+      console.log(arg);
+      shared.myBase.database.fastLogin(arg, shared.myBase);
     }
   }
 

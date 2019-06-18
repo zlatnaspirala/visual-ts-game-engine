@@ -138,6 +138,19 @@ class ConnectorClient {
 
   }
 
+  private fastLogin = () => {
+
+    const userData: any = {
+      email: this.memo.load("localUserData"),
+      token: this.memo.load("token"),
+    };
+
+    let localMsg = { action: "FLOGIN", data: { userLoginData: userData } };
+    this.sendObject(localMsg);
+    localMsg = null;
+
+  }
+
   private ForgotPassword() {
     console.log("Forgot password !");
   }
@@ -145,6 +158,9 @@ class ConnectorClient {
   private onOpen = () => {
     console.info("Session controller connected.");
     this.webSocketController.send(JSON.stringify({ data: "i am here" }));
+
+    this.fastLogin();
+
   }
 
   private sendObject = (message: NetMsg) => {
@@ -176,6 +192,7 @@ class ConnectorClient {
 
     try {
       const dataReceive: IMessageReceived = JSON.parse(evt.data);
+      console.log("Connector : dataReceive raw : ", evt.data);
       switch (dataReceive.action) {
         case "CHECK_EMAIL": {
             this.onMsgCheckEmail(dataReceive);
@@ -274,6 +291,7 @@ class ConnectorClient {
         myInstance.memo.save("localUserData", dataReceive.data.user.email);
         const localToken = encodeString(dataReceive.data.user.email);
         myInstance.memo.save("localUserDataE", localToken);
+        myInstance.memo.save("token", dataReceive.data.user.token);
 
       });
 

@@ -10,7 +10,6 @@ class MyDatabase {
 
   constructor(serverConfig) {
 
-    const self = this;
     this.config = serverConfig;
 
   }
@@ -156,6 +155,7 @@ class MyDatabase {
               nickname: result.nickname,
               points: result.points,
               rank: result.rank,
+              token: result.token,
             };
 
             dbo.collection("users").updateOne(
@@ -261,6 +261,56 @@ class MyDatabase {
     });
 
 
+
+  }
+
+  fastLogin(user, callerInstance) {
+
+    const databaseName = this.config.databaseName;
+    MongoClient.connect(this.config.getDatabaseRoot, { useNewUrlParser: true }, function(error, db) {
+      if (error) {
+        console.warn("MyDatabase.login error:" + error);
+        return;
+      }
+
+      const dbo = db.db(databaseName);
+
+      dbo.collection("users").findOne({ email: user.data.userLoginData.email, token: user.data.userLoginData.token, confirmed: true },
+        function(err, result) {
+
+          if (err) { console.log("MyDatabase.login :" + err); return null; }
+
+          if (result !== null) {
+
+            // Security staff
+            const userData = {
+              email: result.email,
+              nickname: result.nickname,
+              points: result.points,
+              rank: result.rank,
+              token: result.token,
+            };
+
+            dbo.collection("users").updateOne(
+              { email: user.data.userLoginData.email, },
+              { $set: { online: true } },
+              function(err, result) {
+                if (err) {
+                  console.log("BAD_EMAIL_OR_PASSWORD");
+                  return;
+                }
+                console.warn("ONLINE: ", userData.nickname);
+                callerInstance.onUserLogin(userData, callerInstance);
+
+              }
+            );
+
+          }
+
+        });
+
+
+    });
 
   }
 }

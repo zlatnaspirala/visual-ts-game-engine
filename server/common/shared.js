@@ -12,6 +12,7 @@ module.exports = {
   serverHandlerLoginValidation: function(data) { },
   serverHandlerGetUserData: function(data) { },
   serverHandlerSetNewNickname: function(data) { },
+  serverHandlerFastLogin: function(data) { },
 
   validateEmail: function(email) {
     // tslint:disable-next-line:max-line-length
