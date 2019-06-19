@@ -17,6 +17,8 @@ class MyDatabase {
   /**
    * Method register is called on singup user action.
    * @param {object} user
+   *  email: user.userRegData.email
+   *  user.userRegData.password
    * @param {classInstance} callerInstance
    */
   register(user, callerInstance) {
@@ -32,6 +34,10 @@ class MyDatabase {
     }
 
     const databaseName = this.config.databaseName;
+
+    /**
+    * Open connection with database.
+    */
     MongoClient.connect(this.config.getDatabaseRoot, { useNewUrlParser: true }, function(error, db) {
       if (error) {
         console.warn("MyDatabase : err1:" + error);

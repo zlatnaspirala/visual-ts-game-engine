@@ -37,7 +37,7 @@ class Connector {
       this.http = require('https').createServer(options, function(request, response) {
         request.addListener('end', function() {
           if (request.url.search(/.png|.gif|.js|.css/g) == -1) {
-            file.serveFile('/app.html', 402, {}, request, response);
+            file.serveFile(this.config.specialRoute.default , 402, {}, request, response);
           } else file.serve(request, response);
         }).resume();
       }).listen(serverConfig.getConnectorPort);
