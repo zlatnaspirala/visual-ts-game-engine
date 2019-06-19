@@ -49,7 +49,7 @@ class MyDatabase {
         dbo.createCollection("users").createIndex({ "email": 1 }, { unique: true });
         dbo.createCollection("users").createIndex({ "password": 1 }, { unique: true });
         dbo.createCollection("users").createIndex({ "socketid": 1 }, { unique: true });
-        dbo.createCollection("users").createIndex({ "confirmed": 1 }, { unique: false });
+        dbo.createCollection("users").createIndex({ "confirmed": 1 }, { unique: true });
         dbo.createCollection("users").createIndex({ "token": 1 }, { unique: true });
         dbo.createCollection("users").createIndex({ "online": 1 }, { unique: false });
         dbo.createCollection("users").createIndex({ "nickname": 1 }, { unique: false });

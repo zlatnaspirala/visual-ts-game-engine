@@ -301,8 +301,8 @@ class ConnectorClient {
   private minimizeUIPanel = (e) => {
 
     e.preventDefault();
-    this.popupForm.style.width = "70px";
-    this.popupForm.style.height = "25px";
+    this.popupForm.style.width = "85px";
+    this.popupForm.style.height = "fit-content";
 
     byId("user-profile-maximaze").style.display = "block";
     byId("user-profile-maximaze").addEventListener("click", this.maximazeUIPanel, false);

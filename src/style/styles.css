@@ -85,11 +85,11 @@ canvas {
 }
 
 .log-network {
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 480px;
-  height: 100%;
+    position: absolute;
+    z-index: 10000;
+    right: 88px;
+    width: 418px;
+    height: 100%;
 }
 
 .logger {
@@ -273,16 +273,16 @@ canvas {
   z-index: 200;
 }
 
- .container{
+ .container {
   display: block;
   position: relative;
   z-index: 0;
   margin: 1rem auto 0;
-  padding: 2rem 1rem 1rem 1rem;
+  padding: 1rem 1rem 1rem 1rem;
   width: 100%;
   max-width: 700px;
   height: auto;
-  box-shadow: 0px 20px 70px -20px rgba(0, 0, 0, 0.8);
+  box-shadow: 0px 20px 20px -20px rgba(0, 0, 0, 0.8);
   border-radius: 20px;
 }
 
@@ -327,17 +327,18 @@ button:focus {outline:0;}
   border-radius: 20px;
 }
 
-.form-app{
+.form-app {
   position: relative;
   z-index: 1;
-  padding-bottom: 4.5rem;
+  padding: 5% 1% 4% 1%;
   border-bottom: 1px solid rgba(255,255,255, 0.25);
+  font-size: x-large;
 }
 
 .nav {
-  position: relative;
-  padding: 0;
-  margin: 0 0 6em 1rem;
+    position: relative;
+    padding: 0;
+    margin: 0 0 2em 1rem;
 }
 
 .nav-item {
@@ -443,7 +444,6 @@ button:focus {outline:0;}
 	letter-spacing: 1px;
 	margin-top: 1rem;
 	padding: .75rem;
-	border-radius: 2rem;
 	display: block;
 	width: 100%;
 	background-color: rgba(237, 17, 17, 0.75);
