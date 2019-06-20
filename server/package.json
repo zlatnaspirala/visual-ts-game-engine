@@ -1,6 +1,6 @@
 {
-  "name": "visualjs2",
-  "version": "0.0.3",
+  "name": "visua-ts-server",
+  "version": "0.0.4",
   "description": "This version 0.1 of visual-ts game engine server. Main file is server.ts , used MongoDB database , webSocket for networking.",
   "main": ".rtc/server.js",
   "dependencies": {
@@ -15,7 +15,12 @@
     "websocket": "^1.0.28"
   },
   "devDependencies": {},
-  "scripts": {},
+  "scripts": {
+    "rtc": "node ./rtc/server.js",
+    "broadcaster": "node ./rtc/broadcaster.js",
+    "datadebug": "node --inspect=27017 ./database/base.js",
+    "dataserver": "mongod --dbpath ./database/data"
+  },
   "author": {
     "name": "Nikola Lukic",
     "email": "zlatnaspirala@gmail.com",

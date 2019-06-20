@@ -181,11 +181,9 @@ class ConnectorClient {
   }
 
   private onClose(evt) {
-    console.warn("Server session is disconnected.Please refresh this page. Automate refresh after 10 secounds.");
-    console.warn("Session controller disconnected", evt);
-    setTimeout(function () {
-      location.reload();
-    }, 10000);
+
+    console.warn("Session controller disconnected!", evt);
+
   }
 
   private onMessage = (evt) => {
