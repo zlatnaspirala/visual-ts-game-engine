@@ -19,7 +19,8 @@
     "rtc": "node ./rtc/server.js",
     "broadcaster": "node ./rtc/broadcaster.js",
     "datadebug": "node --inspect=27017 ./database/base.js",
-    "dataserver": "mongod --dbpath ./database/data"
+    "dataserver": "mongod --dbpath ./database/data",
+    "all": "(start npm run dataserver && start npm run rtc) || (npm run dataserver & npm run rtc)"
   },
   "author": {
     "name": "Nikola Lukic",

@@ -43,7 +43,9 @@
     "dataserver": "mongod --dbpath ./server/database/data",
     "fix": "tslint -c tslint.json 'src/**/*.ts' --fix",
     "tslint": "tslint -c tslint.json 'src/**/*.ts'",
-    "doc": "E://web_server/xampp/htdocs/PRIVATE_SERVER/visual-ts/doc-style"
+    "doc": "E://web_server/xampp/htdocs/PRIVATE_SERVER/visual-ts/doc-style",
+    "all-server": "(start npm run dataserver && start npm run rtc) || (npm run dataserver & npm run rtc)",
+    "all": "(start npm run dev && npm run dataserver && start npm run rtc) || (npm run dataserver & npm run dev & npm run rtc)"
   },
   "author": {
     "name": "Nikola Lukic",

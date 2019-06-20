@@ -313,7 +313,7 @@ button:focus {outline:0;}
   font-size: 80%;
 }
 
-.container:after{
+.container:after {
   content: '';
   display: inline-block;
   position: absolute;
@@ -324,7 +324,6 @@ button:focus {outline:0;}
   left: 0;
   background-image: radial-gradient(ellipse at left bottom, rgba(134, 9, 9, 1) 0%, rgba(150, 15, 15, 0.9) 60%, rgba(159, 14, 14, 0.9) 100%);
   box-shadow: 0 -20px 150px -20px rgba(0, 0, 0, 0.5);
-  border-radius: 20px;
 }
 
 .form-app {
