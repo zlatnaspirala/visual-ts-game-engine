@@ -200,6 +200,23 @@ console.log("Platformer: ", master.get.Platformer);
 master.get.Platformer.attachAppEvents();
 
 ```
+#### About runup gameplay ####
+
+In client-config :
+
+javascript
+```
+  private autoStartGamePlay: boolean = false;
+```
+
+ If you setup 'autoStartGamePlay' to false you need to run gamePlay
+ with :
+
+javascript
+```
+  master.get.GamePlay.load()
+```
+ Note : Only singleton object instance from master start with upcase letters.
 
 ### Project structure ###
 

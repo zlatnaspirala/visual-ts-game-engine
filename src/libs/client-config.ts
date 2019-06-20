@@ -118,8 +118,8 @@ class ClientConfig {
   /**
    * Implement default gamePlay variable's
    */
-  private defaultGamePlayLevelName: string = "level1";
-  private autoStartGamePlay: boolean = true;
+  private defaultGamePlayLevelName: string = "public";
+  private autoStartGamePlay: boolean = false;
 
   /**
    * constructor will save interest data for game platform
