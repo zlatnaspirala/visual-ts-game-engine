@@ -25,7 +25,7 @@ footer, header, hgroup, menu, nav, section {
 }
 
 body {
-  font: 14px/20px 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font: 14px/20px Impact, Helvetica, Arial, sans-serif;
   color: lime;
   margin: 0;
   padding: 0;
@@ -35,11 +35,12 @@ body {
 
 * {
   box-sizing: border-box;
+  font-family: Impact, Arial;
 }
 
 canvas {
     margin:0 auto;
-    font-family: Helvetica, Arial, sans-serif;
+    font-family: Impact, Helvetica, Arial, sans-serif;
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
@@ -187,7 +188,7 @@ canvas {
 	display:inline-block;
 	cursor:pointer;
 	color:#ffffff;
-	font-family:Arial;
+	font-family: Impact, Arial;
 	font-size:17px;
 	padding:5px 33px;
 	text-decoration:none;
@@ -209,7 +210,7 @@ canvas {
 	border:1px solid red;
 	cursor:pointer;
 	color:lightcoral;
-	font-family:Arial;
+	font-family: Impact, Arial;
 	font-size:17px;
 	padding:5px 33px;
 	text-decoration:none;
@@ -438,7 +439,7 @@ button:focus {outline:0;}
 .login-button {
 	color: #ffffff;
 	font-size: 18px;
-	font-family: 'Montserrat', sans-serif;
+	font-family: Impact, sans-serif;
 	text-transform: uppercase;
 	letter-spacing: 1px;
 	margin-top: 1rem;
