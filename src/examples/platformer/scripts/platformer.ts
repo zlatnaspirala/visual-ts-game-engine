@@ -1,5 +1,5 @@
 import Matter = require("matter-js");
-import { byId, bytesToSize, getElement, getRandomColor, htmlHeader } from "../../../libs/class/system";
+import { byId, bytesToSize, getElement, getRandomColor, htmlHeader, createAppEvent } from "../../../libs/class/system";
 import SpriteTextureComponent from "../../../libs/class/visual-methods/sprite-animation";
 import TextComponent from "../../../libs/class/visual-methods/text";
 import { IGamePlayModel, IPoint } from "../../../libs/interface/global";
@@ -39,6 +39,7 @@ class Platformer implements IGamePlayModel {
   private playerDeadPauseInterval: number = 550;
 
   private UIPlayerBoard: HTMLDivElement;
+  private UIPlayAgainBtn: HTMLDivElement;
 
   constructor(starter: Starter) {
 
@@ -52,13 +53,6 @@ class Platformer implements IGamePlayModel {
     document.getElementsByTagName("body")[0].appendChild(this.UIPlayerBoard);
     this.showPlayerBoardUI();
 
-  }
-
-  public attachAppEvents = () => {
-    const myInstance = this;
-    window.addEventListener("game-init", function (e) {
-      console.log("Event triggered: ", e);
-    });
   }
 
   public createHud () {
@@ -182,6 +176,21 @@ class Platformer implements IGamePlayModel {
         myInstance.UIPlayerBoard = byId("UIPlayerBoard") as HTMLDivElement;
         myInstance.UIPlayerBoard.innerHTML = html;
         myInstance.UIPlayerBoard.style.display = "block";
+
+        myInstance.UIPlayAgainBtn = byId("playAgainBtn") as HTMLDivElement;
+
+        myInstance.UIPlayAgainBtn.addEventListener("click", function(){
+
+          const appStartGamePlay = createAppEvent("game-init",
+            {
+              detail: {
+                game: "tes game atr",
+              },
+            });
+
+          (window as any).dispatchEvent(appStartGamePlay);
+
+        }, false);
       });
 
   }

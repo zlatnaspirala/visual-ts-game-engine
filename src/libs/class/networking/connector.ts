@@ -8,6 +8,7 @@ import Memo from "./../local-storage";
 class ConnectorClient {
 
   protected popupForm: HTMLDivElement;
+  protected hideUserProfileBtn: HTMLDivElement;
   private webSocketController;
   private memo: Memo;
   private gamesList: any[];
@@ -276,7 +277,18 @@ class ConnectorClient {
       }).then(function (html) {
 
         myInstance.popupForm.innerHTML = html;
-        byId("user-profile-btn-ok").addEventListener("click", myInstance.minimizeUIPanel, false);
+
+        if (!byId("user-profile-btn-ok")){
+          myInstance.hideUserProfileBtn = document.createElement("div");
+          myInstance.hideUserProfileBtn.id = "user-profile-btn-ok";
+          myInstance.hideUserProfileBtn.className = "link login-button hide-user-profile";
+
+          document.getElementsByTagName("body")[0].appendChild(myInstance.hideUserProfileBtn);
+          byId("user-profile-btn-ok").addEventListener("click", myInstance.minimizeUIPanel, false);
+        }
+
+        // <button id="user-profile-btn-ok" class="link login-button"> OK </button>
+
         (byId("user-points") as HTMLInputElement).value = dataReceive.data.user.points;
         (byId("user-rank") as HTMLInputElement).value = dataReceive.data.user.rank;
         (byId("user-email") as HTMLInputElement).value = dataReceive.data.user.email;
@@ -299,13 +311,18 @@ class ConnectorClient {
   private minimizeUIPanel = (e) => {
 
     e.preventDefault();
+
+    this.popupForm.style.display = "none";
     this.popupForm.style.width = "85px";
     this.popupForm.style.height = "fit-content";
 
     byId("user-profile-maximaze").style.display = "block";
     byId("user-profile-maximaze").addEventListener("click", this.maximazeUIPanel, false);
     byId("user-profile-form").style.display = "none";
-    byId("user-profile-btn-ok").style.display = "none";
+    byId("user-profile-btn-ok").style.display = "block";
+
+    byId("user-profile-btn-ok").removeEventListener("click", this.minimizeUIPanel, false);
+    byId("user-profile-btn-ok").addEventListener("click", this.maximazeUIPanel, false);
   }
 
   private maximazeUIPanel = (e) => {
@@ -316,7 +333,9 @@ class ConnectorClient {
     byId("user-profile-maximaze").style.top = "-14px";
     byId("user-profile-maximaze").style.left = "0";
     byId("user-profile-form").style.display = "block";
-    byId("user-profile-btn-ok").style.display = "block";
+    byId("user-profile-btn-ok").style.display = "none";
+
+    this.popupForm.style.display = "block";
 
   }
 
@@ -380,6 +399,7 @@ class ConnectorClient {
 
   }
 
+  // playAgainBtn
   private openGamePlayFor = (e) => {
     e.preventDefault();
 

@@ -24,6 +24,16 @@ class GamePlay extends Platformer {
 
   }
 
+  public attachAppEvents = () => {
+    const myInstance = this;
+    window.addEventListener("game-init", function (e) {
+
+      myInstance.load();
+      console.log("Event triggered test: ", e);
+
+    });
+  }
+
   private attachMatterEvents() {
 
     const root = this;

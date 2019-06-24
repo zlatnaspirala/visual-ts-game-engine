@@ -63,8 +63,8 @@ class Connector {
       this.database = new MyDatabase(this.config);
       MyDatabase = null;
 
-      let ActiveGame = require("../data-serve/platformer/class/activegame");
-      
+      let ActiveGame = require("../data-serve/platformer/class/activeplayers");
+
 
     }
 

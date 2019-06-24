@@ -13,7 +13,7 @@ class ServerConfig {
     this.domain = "maximumroulette.com";
     this.masterServerKey = "multi-platformer-sever1.maximum";
     this.protocol = "https";
-    this.isSecure = true;
+    this.isSecure = false;
 
     // localhost
     this.certPathSelf = {

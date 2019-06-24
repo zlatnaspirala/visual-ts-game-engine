@@ -176,6 +176,13 @@ canvas {
   height: 35px;
 }
 
+.hide-user-profile {
+  position: absolute;
+  width: 20%;
+  bottom: 0;
+  left: 40%;
+}
+
 .myButton {
 	-moz-box-shadow: 0px 0px 11px 3px #3dc21b;
 	-webkit-box-shadow: 0px 0px 11px 3px #3dc21b;

@@ -138,6 +138,7 @@ class Network {
 
     this.rtcMultiConnection.openSignalingChannel = function (config) {
 
+      console.log(">>>>", config);
       config.channel = config.channel || this.channel;
       this.webSocket = new WebSocket(root.engineConfig.getRemoteServerAddress());
       this.webSocket.channel = config.channel;
@@ -233,6 +234,7 @@ class Network {
 
       session.join();
 
+      console.log("test 1");
       root.addNewMessage({
         header: session.extra.username,
         message: "Making handshake with room owner!",
@@ -451,7 +453,7 @@ class Network {
       root.addNewMessage({
         header: username,
         message: "Searching for existing rooms...",
-        userinfo: '<img class=".chatIcon" src="imgs/warning.png">',
+        userinfo: '<img class=".chatIcon" src="./imgs/warning.png">',
       });
 
       const roomid = root.roomUI.value;
@@ -465,7 +467,7 @@ class Network {
           root.addNewMessage({
             header: username,
             message: "No room.Creating new room" + root.roomUI.value,
-            userinfo: "<img class='.chatIcon' src='imgs/warning.png'>",
+            userinfo: "<img class='.chatIcon' src='./imgs/warning.png'>",
           });
 
           root.rtcMultiConnection.open();
