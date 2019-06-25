@@ -281,13 +281,12 @@ class ConnectorClient {
         if (!byId("user-profile-btn-ok")){
           myInstance.hideUserProfileBtn = document.createElement("div");
           myInstance.hideUserProfileBtn.id = "user-profile-btn-ok";
-          myInstance.hideUserProfileBtn.className = "link login-button hide-user-profile";
+          myInstance.hideUserProfileBtn.classList.add("login-button");
+          myInstance.hideUserProfileBtn.innerText = "User profile";
 
           document.getElementsByTagName("body")[0].appendChild(myInstance.hideUserProfileBtn);
           byId("user-profile-btn-ok").addEventListener("click", myInstance.minimizeUIPanel, false);
         }
-
-        // <button id="user-profile-btn-ok" class="link login-button"> OK </button>
 
         (byId("user-points") as HTMLInputElement).value = dataReceive.data.user.points;
         (byId("user-rank") as HTMLInputElement).value = dataReceive.data.user.rank;
@@ -313,12 +312,9 @@ class ConnectorClient {
     e.preventDefault();
 
     this.popupForm.style.display = "none";
-    this.popupForm.style.width = "85px";
-    this.popupForm.style.height = "fit-content";
-
-    byId("user-profile-maximaze").style.display = "block";
-    byId("user-profile-maximaze").addEventListener("click", this.maximazeUIPanel, false);
-    byId("user-profile-form").style.display = "none";
+    if (byId("user-profile-form")) {
+      byId("user-profile-form").style.display = "none";
+    }
     byId("user-profile-btn-ok").style.display = "block";
 
     byId("user-profile-btn-ok").removeEventListener("click", this.minimizeUIPanel, false);
@@ -329,13 +325,17 @@ class ConnectorClient {
 
     e.preventDefault();
     (this.popupForm as any).style = "";
-    byId("user-profile-maximaze").style.display = "none";
-    byId("user-profile-maximaze").style.top = "-14px";
-    byId("user-profile-maximaze").style.left = "0";
-    byId("user-profile-form").style.display = "block";
-    byId("user-profile-btn-ok").style.display = "none";
+
+    if (byId("user-profile-form")) {
+      byId("user-profile-form").style.display = "block";
+    }
+
+    // byId("user-profile-btn-ok").style.display = "none";
 
     this.popupForm.style.display = "block";
+
+    byId("user-profile-btn-ok").removeEventListener("click", this.maximazeUIPanel, false);
+    byId("user-profile-btn-ok").addEventListener("click", this.minimizeUIPanel, false);
 
   }
 
@@ -433,6 +433,22 @@ class ConnectorClient {
 
   private showNewNickname = (dataReceive) => {
     alert("Nickname field updated successfully.");
+  }
+
+  private startNewGame = () => {
+
+    if (this.memo.load("online") === true) {
+      const localMsg = {
+        action: "GAMEPLAY_START",
+        data: {
+          rank: (byId("user-rank") as HTMLInputElement).value,
+          accessToken: this.memo.load("accessToken"),
+          email: this.memo.load("localUserData"),
+        },
+      };
+      this.sendObject(localMsg);
+    }
+
   }
 
 }

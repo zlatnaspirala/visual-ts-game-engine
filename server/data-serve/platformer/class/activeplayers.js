@@ -8,10 +8,10 @@ class PlatformerActiveUsers  {
 
   constructTable(config) {
     const dbo = db.db(config.databaseName);
-    if (!dbo.collection("platformer-au")) {
-      dbo.createCollection("platformer-au").createIndex({ "token": 1 }, { unique: true });
-      dbo.createCollection("platformer-au").createIndex({ "rank": 1 }, { unique: true });
-      dbo.createCollection("platformer-au").createIndex({ "nickname": 1 }, { unique: true });
+    if (!dbo.collection("active-games")) {
+      dbo.createCollection("active-games").createIndex({ "token": 1 }, { unique: true });
+      dbo.createCollection("active-games").createIndex({ "rank": 1 }, { unique: true });
+      dbo.createCollection("active-games").createIndex({ "nickname": 1 }, { unique: true });
     }
   }
 

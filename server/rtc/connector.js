@@ -75,6 +75,7 @@ class Connector {
     shared.serverHandlerGetUserData = this.serverHandlerGetUserData;
     shared.serverHandlerSetNewNickname = this.serverHandlerSetNewNickname;
     shared.serverHandlerFastLogin = this.serverHandlerFastLogin;
+    shared.serverHandlerGamePlayStart = this.serverHandlerGamePlayStart;
 
   }
 
@@ -154,6 +155,8 @@ class Connector {
                 const userId = shared.formatUserKeyLiteral(msgFromCLient.data.userLoginData.email);
                 shared.myBase.userSockCollection[userId] = this;
                 shared.serverHandlerFastLogin(msgFromCLient);
+              } else if (msgFromCLient.action === "GAMEPLAY_START") {
+                shared.serverHandlerGamePlayStart(msgFromCLient);
               }
 
             } else {
@@ -317,6 +320,13 @@ class Connector {
       callerInstance.userSockCollection[userId].send(codeSended);
     } catch (err) {
       console.log("Something wrong with :: userSockCollection[userId]. Err :", err);
+    }
+  }
+
+  serverHandlerGamePlayStart(arg){
+    if (arg !== undefined) {
+      console.log(arg);
+      shared.myBase.database.startNewGame(arg, shared.myBase);
     }
   }
 

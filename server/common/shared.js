@@ -7,12 +7,14 @@ module.exports = {
     return url.replace(/\//g, "\\");
   },
 
-  serverHandlerRegister: function(data) { },
-  serverHandlerRegValidation: function(data) { },
-  serverHandlerLoginValidation: function(data) { },
-  serverHandlerGetUserData: function(data) { },
-  serverHandlerSetNewNickname: function(data) { },
-  serverHandlerFastLogin: function(data) { },
+  // Register list for user network response's.
+  serverHandlerRegister: function() {},
+  serverHandlerRegValidation: function() {},
+  serverHandlerLoginValidation: function() {},
+  serverHandlerGetUserData: function() {},
+  serverHandlerSetNewNickname: function() {},
+  serverHandlerFastLogin: function() {},
+  serverHandlerGamePlayStart: function() {},
 
   validateEmail: function(email) {
     // tslint:disable-next-line:max-line-length

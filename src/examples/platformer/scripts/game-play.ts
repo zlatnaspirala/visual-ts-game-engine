@@ -6,6 +6,7 @@ import Starter from "../../../libs/starter";
 import { worldElement } from "../../../libs/types/global";
 import GameMap from "./map";
 import Platformer from "./Platformer";
+import Ioc from "../../../libs/ioc";
 
 /**
  * @description Finally game start at here
@@ -25,11 +26,15 @@ class GamePlay extends Platformer {
   }
 
   public attachAppEvents = () => {
+
     const myInstance = this;
+
     window.addEventListener("game-init", function (e) {
 
+      // How to access netwoking
+      myInstance.starter.ioc.get.Network.connector.startNewGame();
       myInstance.load();
-      console.log("Event triggered test: ", e);
+      console.log("game-init event triggered test: ", e);
 
     });
   }

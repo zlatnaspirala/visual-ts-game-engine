@@ -319,5 +319,9 @@ class MyDatabase {
     });
 
   }
+
+  startNewGame(user) {
+    
+  }
 }
 module.exports = MyDatabase;
