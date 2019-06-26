@@ -8,9 +8,24 @@ const shared = require("./../common/shared");
  */
 class MyDatabase {
 
-  constructor(serverConfig) {
+  constructor(serverConfig, dataServeModules) {
 
+    var root = this;
     this.config = serverConfig;
+
+    var PlatformerActiveUsers = require("../data-serve/platformer/class/activeplayers");
+    this.platformerActiveUsers = new PlatformerActiveUsers(this.config);
+
+    /*
+    this.dataServeModules = [];
+
+    dataServeModules.forEach(function(myClass) {
+      var instance = new myClass(serverConfig);
+      root.dataServeModules.push(instance);
+      console.log("<<<<INSTANCE<<<<<<<<<<<<<<<<<<<")
+    });
+
+    */
 
   }
 
@@ -320,8 +335,5 @@ class MyDatabase {
 
   }
 
-  startNewGame(user) {
-    
-  }
 }
 module.exports = MyDatabase;

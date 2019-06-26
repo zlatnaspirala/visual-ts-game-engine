@@ -32,11 +32,14 @@ class ServerConfig {
     this.appUseAccountsSystem = true;
     this.appUseVideoChat = true;
     this.databaseName = "masterdatabase";
-    this.databaseRoot = "mongodb://maximumroulette.com:27017";
+    // this.databaseRoot = "mongodb://maximumroulette.com:27017";
+    this.databaseRoot = "mongodb://localhost:27017";
 
     this.specialRoute = {
       "default": "/var/www/html/applications/visual-typescript-game-engine/build/app.html"
     };
+
+    // this.dataServeRoutes = ["../data-serve/platformer/class/activeplayers"];
 
     console.log("Server running under configuration: ");
     console.log("-rtc domain", this.domain);

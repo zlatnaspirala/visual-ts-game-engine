@@ -10,6 +10,8 @@ class Connector {
 
   constructor(serverConfig) {
 
+    var root = this;
+
     this.userSockCollection = {};
     this.config = serverConfig;
     this.http = null;
@@ -60,11 +62,17 @@ class Connector {
     if (this.config.IsDatabaseActive) {
 
       let MyDatabase = require("../database/database");
+
+      /*
+      let dataServeModules = [];
+      this.config.dataServeRoutes.forEach(function(path) {
+        let myDataAccess = require(path);
+        dataServeModules.push(myDataAccess);
+      });
+      */
+
       this.database = new MyDatabase(this.config);
       MyDatabase = null;
-
-      let ActiveGame = require("../data-serve/platformer/class/activeplayers");
-
 
     }
 
@@ -156,7 +164,9 @@ class Connector {
                 shared.myBase.userSockCollection[userId] = this;
                 shared.serverHandlerFastLogin(msgFromCLient);
               } else if (msgFromCLient.action === "GAMEPLAY_START") {
+
                 shared.serverHandlerGamePlayStart(msgFromCLient);
+
               }
 
             } else {
@@ -326,7 +336,7 @@ class Connector {
   serverHandlerGamePlayStart(arg){
     if (arg !== undefined) {
       console.log(arg);
-      shared.myBase.database.startNewGame(arg, shared.myBase);
+      shared.myBase.database.platformerActiveUsers.addActiveGamePlayer(arg, shared.myBase);
     }
   }
 

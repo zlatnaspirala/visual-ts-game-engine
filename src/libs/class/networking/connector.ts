@@ -297,6 +297,7 @@ class ConnectorClient {
 
         byId("set-nickname-profile").addEventListener("click", myInstance.setNewNickName, false);
 
+        myInstance.memo.save("localUserRank", dataReceive.data.user.rank);
         myInstance.memo.save("localUserData", dataReceive.data.user.email);
         const localToken = encodeString(dataReceive.data.user.email);
         myInstance.memo.save("localUserDataE", localToken);
@@ -406,11 +407,16 @@ class ConnectorClient {
     const appStartGamePlay = createAppEvent("game-init",
       {
         detail: {
-          game: e.target.getAttribute("game"),
+          game: e.target, // .getAttribute("game"),
         },
       });
 
     (window as any).dispatchEvent(appStartGamePlay);
+
+    if (e.currentTarget.getAttribute("id") === "games-list-form") {
+      e.currentTarget.disabled = true;
+      byId("user-profile-btn-ok").click();
+    }
 
   }
 
@@ -441,7 +447,7 @@ class ConnectorClient {
       const localMsg = {
         action: "GAMEPLAY_START",
         data: {
-          rank: (byId("user-rank") as HTMLInputElement).value,
+          rank: this.memo.load("localUserRank"),
           accessToken: this.memo.load("accessToken"),
           email: this.memo.load("localUserData"),
         },
