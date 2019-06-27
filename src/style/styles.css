@@ -104,7 +104,7 @@ canvas {
 .log-chat {
   position: absolute;
   top: 6%;
-  height: 182px !important;
+  height: 84% !important;
   width: 100%;
   overflow: auto;
 }
