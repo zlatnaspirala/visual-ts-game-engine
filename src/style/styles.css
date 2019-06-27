@@ -185,25 +185,38 @@ canvas {
 }
 
 .myButton {
-	-moz-box-shadow: 0px 0px 11px 3px #3dc21b;
-	-webkit-box-shadow: 0px 0px 11px 3px #3dc21b;
-	box-shadow: 0px 0px 11px 3px #3dc21b;
-	background-color:#44c767;
-	-moz-border-radius:28px;
-	-webkit-border-radius:28px;
-	border-radius:28px;
-	border:1px solid #18ab29;
+	background-color:#d41111;
+	border:1px solid #9412219b;
 	display:inline-block;
 	cursor:pointer;
 	color:#ffffff;
 	font-family: Impact, Arial;
 	font-size:17px;
 	padding:5px 33px;
-	text-decoration:none;
-	text-shadow:0px 1px 8px #2f6627;
+  text-decoration:none;
+  outline: none;
 }
 .myButton:hover {
-	background-color:#5cbf2a;
+  background-color:#ffffff;
+  color:#d41111;
+}
+
+.myButtonChat {
+	background-color:transparent;
+	border:1px solid #9412219b;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff;
+	font-family: Impact, Arial;
+	font-size:17px;
+	padding:5px 33px;
+  text-decoration:none;
+  outline: none;
+}
+
+.myButtonChat:hover {
+  background-color:rgba(123,12,33,0.3);
+  color:#d41111;
 }
 
 .myError {

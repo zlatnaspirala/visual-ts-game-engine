@@ -56,7 +56,7 @@ class GamePlay extends Platformer {
 
     Matter.Events.on(this.starter.getEngine(), "beforeUpdate", function (event) {
 
-      if (root.player.position.y > deadZoneByY) {
+      if (root.player && root.player.position.y > deadZoneByY) {
         root.playerDie(root.player);
       }
 

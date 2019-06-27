@@ -68,6 +68,7 @@ class MyDatabase {
         dbo.createCollection("users").createIndex({ "token": 1 }, { unique: true });
         dbo.createCollection("users").createIndex({ "online": 1 }, { unique: false });
         dbo.createCollection("users").createIndex({ "nickname": 1 }, { unique: false });
+        dbo.createCollection("users").createIndex({ "points": 1 }, { unique: false });
       }
 
       dbo.collection("users").findOne({ "email": user.userRegData.email }, function(err, result) {
@@ -86,7 +87,7 @@ class MyDatabase {
             token: uniqLocal,
             socketid: user.socketId,
             online: false,
-            points: 0,
+            points: 1000,
             rank: "junior"
           }, function(err, res) {
             if (err) {

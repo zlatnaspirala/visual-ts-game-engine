@@ -306,20 +306,20 @@ class ConnectorClient {
       });
 
     this.memo.save("online", true);
+
   }
 
   private minimizeUIPanel = (e) => {
 
     e.preventDefault();
-
     this.popupForm.style.display = "none";
     if (byId("user-profile-form")) {
       byId("user-profile-form").style.display = "none";
     }
     byId("user-profile-btn-ok").style.display = "block";
-
     byId("user-profile-btn-ok").removeEventListener("click", this.minimizeUIPanel, false);
     byId("user-profile-btn-ok").addEventListener("click", this.maximazeUIPanel, false);
+
   }
 
   private maximazeUIPanel = (e) => {
@@ -330,11 +330,8 @@ class ConnectorClient {
     if (byId("user-profile-form")) {
       byId("user-profile-form").style.display = "block";
     }
-
     // byId("user-profile-btn-ok").style.display = "none";
-
     this.popupForm.style.display = "block";
-
     byId("user-profile-btn-ok").removeEventListener("click", this.maximazeUIPanel, false);
     byId("user-profile-btn-ok").addEventListener("click", this.minimizeUIPanel, false);
 
@@ -400,7 +397,6 @@ class ConnectorClient {
 
   }
 
-  // playAgainBtn
   private openGamePlayFor = (e) => {
     e.preventDefault();
 
@@ -415,6 +411,9 @@ class ConnectorClient {
 
     if (e.currentTarget.getAttribute("id") === "games-list-form") {
       e.currentTarget.disabled = true;
+      if (byId("playAgainBtn")) {
+        (byId("playAgainBtn") as HTMLButtonElement).disabled = true;
+      }
       byId("user-profile-btn-ok").click();
     }
 
@@ -448,8 +447,7 @@ class ConnectorClient {
         action: "GAMEPLAY_START",
         data: {
           rank: this.memo.load("localUserRank"),
-          accessToken: this.memo.load("accessToken"),
-          email: this.memo.load("localUserData"),
+          token: this.memo.load("token"),
         },
       };
       this.sendObject(localMsg);

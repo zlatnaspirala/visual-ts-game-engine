@@ -110,10 +110,10 @@ class Network {
       }
       let div = progressHelper[file.uuid].div;
       if (file.type.indexOf("image") !== -1) {
-        div.innerHTML = '<a href="' + file.url + '" download="' + file.name + '">Download<strong class="myButton" >' +
+        div.innerHTML = '<a href="' + file.url + '" download="' + file.name + '">Download<strong class="myButtonChat" >' +
           file.name + '</strong> </a><br /><img src="' + file.url + '" title="' + file.name + '" style="max-width: 80%;">';
       } else {
-        div.innerHTML = '<a href="' + file.url + '" download="' + file.name + '">Download <strong class="myButton" >' +
+        div.innerHTML = '<a href="' + file.url + '" download="' + file.name + '">Download <strong class="myButtonChat" >' +
           file.name + '</strong> </a><br /><iframe src="' + file.url + '" title="' + file.name +
           '" style="width: 80%;border: 0;height: inherit;margin-top:1em;"></iframe>';
       }
@@ -256,12 +256,12 @@ class Network {
     root.rtcMultiConnection.onCustomMessage = function (message) {
 
       if (message.hasCamera || message.hasScreen) {
-        let msg = 'enabled webcam. <button id="preview" class="myButton" >Preview</button>' +
+        let msg = 'enabled webcam. <button id="preview" class="myButtonChat" >Preview</button>' +
           '<button class="myButton" id="share-your-cam">Share webcam</button>';
 
         if (message.hasScreen) {
-          msg = 'Share screen <button id="preview"  class="myButton">Remote screen</button>' +
-            '<button id="share-your-cam" class="myButton">Share screen</button>';
+          msg = 'Share screen <button id="preview"  class="myButtonChat">Remote screen</button>' +
+            '<button id="share-your-cam" class="myButtonChat">Share screen</button>';
         }
 
         root.addNewMessage({
@@ -320,8 +320,8 @@ class Network {
 
         root.addNewMessage({
           header: message.extra.username,
-          message: '<button id="listen"  class="myButton" >Listen</button>' +
-            '<button id="share-your-mic"  class="myButton" >Share Your Mic</button>',
+          message: '<button id="listen"  class="myButtonChat" >Listen</button>' +
+            '<button id="share-your-mic"  class="myButtonChat" >Share Your Mic</button>',
           userinfo: '<img src="imgs/share-files.png">',
           color: message.extra.color,
           callback(div) {
@@ -625,7 +625,7 @@ class Network {
     newMessageDIV.appendChild(userinfoDIV);
 
     const userActivityDIV = document.createElement("div");
-    userActivityDIV.className = "myButton";
+    userActivityDIV.className = "myButtonChat";
     userActivityDIV.innerHTML = "<h5>" + args.header + "</h5>";
 
     const p = document.createElement("p");

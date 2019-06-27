@@ -40,39 +40,45 @@ class PlatformerActiveUsers  {
     const databaseName = callerInstance.config.databaseName;
     MongoClient.connect(callerInstance.config.getDatabaseRoot, { useNewUrlParser: true }, function(error, db) {
       if (error) {
-        console.warn("ActiveGame err:" + error);
+        console.warn("addActiveGamePlayer err:" + error);
         return;
       }
-      console.log("test2");
       const dbo = db.db(databaseName);
-      dbo.collection("platformer").findOne({ token: user.token },
+      dbo.collection("platformer").findOne({ token: user.data.token },
         function(err, result) {
           if (err) {
-            console.log("activeplayers err : " + err);
+            console.log("addActiveGamePlayer err : " + err);
             return null;
           }
           console.log(result)
           if (result == null) {
-            dbo.collection("platformer").insertOne({
-              nickname: user.nickname,
-              token: user.token,
-              rank: user.rank
 
-            }, function(err, result) {
-              if (err) {
-                console.log("platformer err2:" + err);
-                db.close();
-                return;
-              }
-              console.log("ADDED NEW GAME", result);
-              if (result) {
-                console.log("ADDED NEW GAME", result);
-              }
-              // callerInstance.onRegisterResponse("USER_REGISTERED", callerInstance);
-              db.close();
-            });
+            dbo.collection("users").findOne({ token: user.data.token },
+              function(err, result) {
+                if (err) {console.log(err); return null; }
+                if (result) {
+                  dbo.collection("platformer").insertOne({
+                      nickname: result.nickname,
+                      token: result.token,
+                      rank: result.rank,
+                      points: result.points
+                    }, function(err, result) {
+                      if (err) { console.log(err); db.close(); return; }
+                      console.log("New player in game stage.");
+                      if (result) {
+                        // callerInstance.onRegisterResponse("USER_REGISTERED", callerInstance);
+                        console.log("result >> ", result);
+                      }
+                      db.close();
+                    });
+
+                }
+
+              });
 
 
+
+/////////////////sssssssssssssss
 
           } else {
 
