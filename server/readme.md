@@ -47,14 +47,15 @@ javascript
   this.databaseRoot = "mongodb://localhost:27017";
 ```
 
- Run:
+ Must be in samo folder or input full path to the data folder.
+ Run :
 
 javascript
 ```
   mongod --dbpath data
 ```
 
-  - Deploy public mongo looks like:
+  - Deploy mongo on public server looks like:
 
 javascript
 ```
@@ -77,3 +78,21 @@ javascript
   mongod --dbpath data --bind_ip <DOMAIN>
 ```
 
+ After running database mongo service you can use :
+
+```
+  mongo --host maximumroulette.com:27017
+```
+
+ to connect with mongo terminal.
+
+  Basic commands :
+
+```
+   show dbs
+
+   use <database_name>
+
+   db.dropDatabase()
+
+```
