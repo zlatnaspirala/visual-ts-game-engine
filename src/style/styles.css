@@ -31,6 +31,7 @@ body {
   padding: 0;
   border:none;
   background-color:black;
+  overflow: hidden;
 }
 
 * {
@@ -76,21 +77,25 @@ canvas {
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-    background: silver;
-    border-radius: 10px;
+  background: silver;
+  border-radius: 10px;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-    background: green;
+  background: green;
 }
 
 .log-network {
-    position: absolute;
-    z-index: 10000;
-    right: 88px;
-    width: 418px;
-    height: 100%;
+  position: absolute;
+  z-index: 10000;
+  right: 88px;
+  width: 418px;
+  height: 100%;
+  -webkit-animation-name: autohide; /* Safari 4.0 - 8.0 */
+  -webkit-animation-duration: 2s; /* Safari 4.0 - 8.0 */
+  animation-name: autohide;
+  animation-duration: 2s;
 }
 
 .logger {

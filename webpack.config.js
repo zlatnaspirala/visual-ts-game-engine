@@ -116,9 +116,7 @@ let webPackModule = {
             { from: './src/libs/addons/cache/cacheInit.ts', to: 'externals/cacheInit.ts' },
             { from: './src/libs/addons/cache/worker.js', to: 'worker.js' },
             { from: './src/libs/addons/cache/offline.html', to: 'offline.html' },
-            // User/Top level
             { from: "./src/examples/platformer/ui/player-board.html", to: "templates/ui/player-board.html"}
-
         ], { debug: 'info' }),
 
     ],

@@ -1,6 +1,7 @@
 /**
  * Import global css
  */
+require("./style/animations.css");
 require("./style/styles.css");
 
 import AppIcon from "./app-icon";

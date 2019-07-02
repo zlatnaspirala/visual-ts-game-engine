@@ -12,13 +12,14 @@ class TextComponent implements IVisualComponent {
   // Next step , image sprite alphabet
   public assets: Resources; //  new Resources();
 
+  private options: any;
   private bufferText: string[] = [];
   private text: string = "Player";
 
-  constructor(textArg: string | string[]) {
+  constructor(textArg: string | string[], options?: any) {
 
     if (textArg === undefined) {
-      throw console.error("You miss arg : name in TextComponent instancing...");
+      throw console.error("You miss text arg in TextComponent constructor...");
     }
     if (typeof textArg !== "string") {
       if (textArg.length > 1) {
@@ -29,6 +30,11 @@ class TextComponent implements IVisualComponent {
     } else {
       this.text = textArg;
     }
+
+    if (options) {
+      this.options = options;
+    }
+
   }
 
   public drawComponent(c: CanvasRenderingContext2D, part: any): void {

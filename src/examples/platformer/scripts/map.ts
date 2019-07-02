@@ -169,5 +169,14 @@ class GameMap implements IGamePlayPlatformerMap {
     ] as ICollectionEnemys[];
   }
 
+  public getStaticBanners(): any[] {
+
+    return [
+      {
+        x: 0, y: 0, w: 200, h: 100,
+        text: "Welcome here",
+      }];
+  }
+
 }
 export default GameMap;

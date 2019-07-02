@@ -1,12 +1,13 @@
 import * as Matter from "matter-js";
 import BotBehavior from "../../../libs/class/bot-behavior";
 import SpriteTextureComponent from "../../../libs/class/visual-methods/sprite-animation";
+import TextComponent from "../../../libs/class/visual-methods/text";
 import TextureComponent from "../../../libs/class/visual-methods/texture";
+import Ioc from "../../../libs/ioc";
 import Starter from "../../../libs/starter";
 import { worldElement } from "../../../libs/types/global";
 import GameMap from "./map";
 import Platformer from "./Platformer";
-import Ioc from "../../../libs/ioc";
 
 /**
  * @description Finally game start at here
@@ -291,10 +292,29 @@ class GamePlay extends Platformer {
 
     });
 
+    gameMap.getStaticBanners().forEach((item) => {
+
+      const newStaticElement: worldElement = Matter.Bodies.rectangle(item.x, item.y, item.w, item.h,
+        {
+          isStatic: true,
+          label: "Label Text",
+          render: {
+            visualComponent: new TextComponent(item.text),
+            sprite: {
+              olala: true,
+            },
+          } as any | Matter.IBodyRenderOptions,
+        });
+      newStaticElement.collisionFilter.group = -1;
+      this.labels.push(newStaticElement);
+
+    });
+
     this.starter.AddNewBodies(this.grounds as worldElement);
     this.starter.AddNewBodies(this.enemys as worldElement);
     this.starter.AddNewBodies(this.deadLines as worldElement);
     this.starter.AddNewBodies(this.player as worldElement);
+    this.starter.AddNewBodies(this.labels as worldElement);
     this.createHud();
     this.attachMatterEvents();
 

@@ -1,0 +1,18 @@
+
+/* Safari 4.0 - 8.0 */
+@-webkit-keyframes autohide {
+  0%   {background-color:rgba(255, 0, 0, 0.164); right:0px; top:0px; transform: scale(0.5, 0.5);}
+  25%  {background-color:rgba(255, 255, 0, 0.164); right:-100px; top:0px; transform: scale(1, 1);}
+  50%  {background-color:rgba(30, 30, 175, 0.26); right:0px; top:0px; transform: scale(0.5, 0.5);}
+  75%  {background-color:rgba(0, 128, 0, 0.164); right:60px; top:0px; transform: scale(0.8, 0.8);}
+  100% {background-color:rgba(255, 0, 0, 0.15); right:88px; top:0px; transform: scale(1, 1);}
+}
+
+/* Standard syntax */
+@keyframes autohide {
+  0%   {background-color:rgba(255, 0, 0, 0.164); right:0px; top:0px; transform: scale(0.5, 0.5);}
+  25%  {background-color:rgba(255, 255, 0, 0.164); right:-100px; top:0px; transform: scale(1, 1);}
+  50%  {background-color:rgba(30, 30, 175, 0.26); right:0px; top:0px; transform: scale(0.5, 0.5);}
+  75%  {background-color:rgba(0, 128, 0, 0.164); right:60px; top:0px; transform: scale(0.8, 0.8);}
+  100% {background-color:rgba(255, 0, 0, 0.15); right:88px; top:0px; transform: scale(1, 1);}
+}
