@@ -206,7 +206,7 @@ class Connector {
 
     let connection;
     let userId = shared.formatUserKeyLiteral(userEmail);
-    // console.log("onRegisterResponse : " + result + ". For user: " + userEmail);
+    console.log("onRegisterResponse : " + result + ". For user: " + userEmail);
     if (result == "USER_REGISTERED") {
 
       let emailRegBody = require("../email/templates/confirmation.html").getConfirmationEmail;
@@ -214,7 +214,7 @@ class Connector {
 
       try {
         connection = require("../email/mail-service")
-          ("zlatnaspirala@gmail.com", "USER_REGISTERED", contentRegBody).SEND();
+          (userEmail, "USER_REGISTERED", contentRegBody).SEND(userEmail);
       } catch (error) {
         console.warn("Connector error in sending reg email!", error);
         let codeSended = { action: "ERROR_EMAIL", data: { errMsg: "Please check your email again!, Something wrong with current email!" } };

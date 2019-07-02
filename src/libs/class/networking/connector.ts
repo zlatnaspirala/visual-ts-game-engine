@@ -146,6 +146,10 @@ class ConnectorClient {
       token: this.memo.load("token"),
     };
 
+    if (userData.email === false || userData.token === false) {
+      return false;
+    }
+
     let localMsg = { action: "FLOGIN", data: { userLoginData: userData } };
     this.sendObject(localMsg);
     localMsg = null;
