@@ -88,7 +88,7 @@ canvas {
 
 .log-network {
   position: absolute;
-  z-index: 10000;
+  z-index: 150;
   right: 88px;
   width: 418px;
   height: 100%;
