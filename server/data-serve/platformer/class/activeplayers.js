@@ -50,13 +50,20 @@ class PlatformerActiveUsers  {
             console.log("addActiveGamePlayer err : " + err);
             return null;
           }
-          console.log(result)
+          // console.log(result)
           if (result == null) {
 
             dbo.collection("users").findOne({ token: user.data.token },
               function(err, result) {
                 if (err) {console.log(err); return null; }
                 if (result) {
+
+                  const localUserData = {
+                    email: result.email,
+                    nickname: result.nickname,
+                    activeGame: "platformer"
+                  };
+
                   dbo.collection("platformer").insertOne({
                       nickname: result.nickname,
                       token: result.token,
@@ -66,8 +73,9 @@ class PlatformerActiveUsers  {
                       if (err) { console.log(err); db.close(); return; }
                       console.log("New player in game stage.");
                       if (result) {
-                        // callerInstance.onRegisterResponse("USER_REGISTERED", callerInstance);
-                        console.log("result >> ", result);
+                        console.log("Database data serve: Game started localUserData ?? ", localUserData);
+                        callerInstance.onGameStartResponse(localUserData, callerInstance);
+                        console.log("Database data serve: Game started");
                       }
                       db.close();
                     });
@@ -75,10 +83,6 @@ class PlatformerActiveUsers  {
                 }
 
               });
-
-
-
-/////////////////sssssssssssssss
 
           } else {
 

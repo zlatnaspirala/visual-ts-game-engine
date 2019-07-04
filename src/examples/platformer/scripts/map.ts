@@ -172,10 +172,12 @@ class GameMap implements IGamePlayPlatformerMap {
   public getStaticBanners(): any[] {
 
     return [
-      {
-        x: 0, y: 0, w: 200, h: 100,
-        text: "Welcome here",
-      }];
+      { x: 0, y: 0, w: 200, h: 100, text: "Welcome here"},
+      { x: 200, y: 200, w: 200, h: 100, text: "Chat with other players" },
+      { x: 400, y: 600, w: 200, h: 100, text: "Supported by visual typescript game engine" },
+      { x: 1000, y: 900, w: 200, h: 100, text: "run" },
+      { x: 1400, y: 200, w: 200, h: 100, text: "Welcome here" },
+    ];
   }
 
 }

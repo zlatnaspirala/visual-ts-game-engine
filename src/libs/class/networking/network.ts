@@ -138,10 +138,11 @@ class Network {
 
     this.rtcMultiConnection.openSignalingChannel = function (config) {
 
-      console.log(">>>>", config);
+      console.info("webRTC config : ", config);
       config.channel = config.channel || this.channel;
       this.webSocket = new WebSocket(root.engineConfig.getRemoteServerAddress());
       this.webSocket.channel = config.channel;
+
       this.webSocket.onopen = function () {
 
         this.push(JSON.stringify({
@@ -151,17 +152,22 @@ class Network {
         if (config.callback) {
           config.callback(this);
         }
+
       };
+
       this.webSocket.onmessage = function (event) {
 
         config.onmessage(JSON.parse(event.data));
       };
+
       this.webSocket.push = this.webSocket.send;
+
       this.webSocket.send = function (data) {
+
         if (this.readyState !== 1) {
           return setTimeout(function () {
             this.send(data);
-          }, 1000);
+          }, 100);
         }
 
         this.push(JSON.stringify({
@@ -171,6 +177,7 @@ class Network {
 
       };
     };
+
     root.rtcMultiConnection.customStreams = {};
 
     /*
@@ -184,6 +191,7 @@ class Network {
     root.rtcMultiConnection.autoTranslateText = false;
 
     root.rtcMultiConnection.onopen = function (e) {
+
       getElement("#allow-webcam").disabled = false;
       getElement("#allow-mic").disabled = false;
       getElement("#share-files").disabled = false;
@@ -234,7 +242,7 @@ class Network {
 
       session.join();
 
-      console.log("test 1");
+      console.log("New session");
       root.addNewMessage({
         header: session.extra.username,
         message: "Making handshake with room owner!",
@@ -361,6 +369,7 @@ class Network {
           root.rtcMultiConnection.peers[message.userid].renegotiate(customStream, message.session);
         }
       }
+
     };
 
     root.rtcMultiConnection.blobURLs = {};
@@ -452,7 +461,7 @@ class Network {
 
       root.addNewMessage({
         header: username,
-        message: "Searching for existing rooms...",
+        message: "Searching for existing game...",
         userinfo: '<img class=".chatIcon" src="./imgs/warning.png">',
       });
 
@@ -466,7 +475,7 @@ class Network {
         if (data.isChannelPresent === false) {
           root.addNewMessage({
             header: username,
-            message: "No room.Creating new room" + root.roomUI.value,
+            message: "No room. Creating new host game play " + root.roomUI.value,
             userinfo: "<img class='.chatIcon' src='./imgs/warning.png'>",
           });
 
@@ -474,7 +483,7 @@ class Network {
         } else {
           root.addNewMessage({
             header: username,
-            message: "Room found. Joining the room...",
+            message: "Game found. Joining the game...",
             userinfo: "",
           });
           root.rtcMultiConnection.join(root.roomUI.value);

@@ -223,6 +223,11 @@ class ConnectorClient {
             (byId("notify") as HTMLInputElement).innerHTML = dataReceive.data.errMsg;
             break;
           }
+        case "GAMEPLAY_STARTED": {
+          (byId("your-name") as HTMLInputElement).value = (byId("nick-name") as HTMLInputElement).value;
+          (byId("continue") as HTMLButtonElement).click();
+          break;
+        }
         default:
           console.log("Connector : dataReceive action : ", dataReceive.action);
       }

@@ -16,10 +16,12 @@ import Platformer from "./Platformer";
  */
 class GamePlay extends Platformer {
 
+  private network;
+
   constructor(starter: Starter) {
 
     super(starter);
-
+    // myInstance.starter.ioc.get.Network
     if (this.starter.ioc.getConfig().getAutoStartGamePlay()) {
       this.load();
     }

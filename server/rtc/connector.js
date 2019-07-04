@@ -26,6 +26,14 @@ class Connector {
 
       this.http = require(this.config.getProtocol).createServer(options, function(request, response) {
         // Prevent with end here...
+        request.addListener('end', function() {
+          if (request.url.search(/.png|.gif|.js|.css/g) == -1) {
+            response.statusCode = 200;
+            response.write('no no');
+            return response.end();
+            // file.serveFile(root.config.specialRoute.default, 402, {}, request, response);
+          } else file.serve(request, response);
+        }).resume();
       }).listen(serverConfig.getConnectorPort);
 
     } else {
@@ -39,7 +47,7 @@ class Connector {
       this.http = require('https').createServer(options, function(request, response) {
         request.addListener('end', function() {
           if (request.url.search(/.png|.gif|.js|.css/g) == -1) {
-            file.serveFile(this.config.specialRoute.default , 402, {}, request, response);
+            file.serveFile(root.config.specialRoute.default , 402, {}, request, response);
           } else file.serve(request, response);
         }).resume();
       }).listen(serverConfig.getConnectorPort);
@@ -337,6 +345,17 @@ class Connector {
     if (arg !== undefined) {
       console.log(arg);
       shared.myBase.database.platformerActiveUsers.addActiveGamePlayer(arg, shared.myBase);
+    }
+  }
+
+  onGameStartResponse(userData, callerInstance) {
+    try {
+      let userId = shared.formatUserKeyLiteral(userData.email);
+      let codeSended = { action: "GAMEPLAY_STARTED", data: { userData } };
+      codeSended = JSON.stringify(codeSended);
+      callerInstance.userSockCollection[userId].send(codeSended);
+    } catch (err) {
+      console.log("Something wrong with :: userSockCollection[userId]. Err :", err);
     }
   }
 
