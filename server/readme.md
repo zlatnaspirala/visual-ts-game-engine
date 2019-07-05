@@ -96,3 +96,43 @@ javascript
    db.dropDatabase()
 
 ```
+
+ Adding password :
+
+ Start mongod normally.
+
+ Attach mongo console :
+
+```
+  mongo --host maximumroulette.com --port 27017
+```
+ Then exec this :
+
+```
+use admin
+db.createUser(
+  {
+    user: "userAdmin",
+    pwd: "***********",
+    roles: [ { role: "userAdminAnyDatabase", db: "masterdatabase" }, "readWriteAnyDatabase" ]
+  }
+)
+```
+
+Restart mongod with :
+
+```
+mongod --auth --dbpath data --bind_ip maximumroulette.com
+```
+
+Next attach will be :
+
+```
+ mongo --host maximumroulette.com --port 27017 -u "userAdmin" --authenticationDatabase "admin" -p
+```
+
+
+Source :
+
+https://docs.mongodb.com/manual/tutorial/enable-authentication/
+

@@ -13,7 +13,7 @@ class ServerConfig {
     this.domain = "maximumroulette.com";
     this.masterServerKey = "multi-platformer-sever1.maximum";
     this.protocol = "https";
-    this.isSecure = false;
+    this.isSecure = true;
 
     // localhost
     this.certPathSelf = {
@@ -32,8 +32,8 @@ class ServerConfig {
     this.appUseAccountsSystem = true;
     this.appUseVideoChat = true;
     this.databaseName = "masterdatabase";
-    // this.databaseRoot = "mongodb://maximumroulette.com:27017";
-    this.databaseRoot = "mongodb://localhost:27017";
+    this.databaseRoot = "mongodb://userAdmin:********@maximumroulette.com:27017/admin";
+    // this.databaseRoot = "mongodb://localhost:27017";
 
     this.specialRoute = {
       "default": "/var/www/html/applications/visual-typescript-game-engine/build/app.html"
