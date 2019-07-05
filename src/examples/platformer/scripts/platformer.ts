@@ -185,7 +185,7 @@ class Platformer implements IGamePlayModel {
           const appStartGamePlay = createAppEvent("game-init",
             {
               detail: {
-                game: "tes game atr",
+                game: "alreadystated",
               },
             });
 
@@ -211,7 +211,9 @@ class Platformer implements IGamePlayModel {
       if (this.lives === 0) {
           this.starter.destroyBody(collectitem);
           this.player = null;
-
+          if ((byId("playAgainBtn") as HTMLButtonElement)) {
+            (byId("playAgainBtn") as HTMLButtonElement).disabled = false;
+          }
           /* Re born from hard dead
              hard dead - body removed from scene
           setTimeout(function () {

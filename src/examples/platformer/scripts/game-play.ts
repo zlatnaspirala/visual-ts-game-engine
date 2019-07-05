@@ -34,6 +34,9 @@ class GamePlay extends Platformer {
 
     window.addEventListener("game-init", function (e) {
 
+      if (e) {
+        console.log("Test !?!?", e);
+      }
       // How to access netwoking
       myInstance.starter.ioc.get.Network.connector.startNewGame();
       myInstance.load();
@@ -63,7 +66,7 @@ class GamePlay extends Platformer {
         root.playerDie(root.player);
       }
 
-      Matter.Body.setAngle(root.player, -Math.PI * 0);
+      if (root.player) { Matter.Body.setAngle(root.player, -Math.PI * 0); }
       // Matter.Body.setAngle(root.enemys[0] as Matter.Body, -Math.PI * 0);
 
       Matter.Bounds.shift(root.starter.getRender().bounds,
