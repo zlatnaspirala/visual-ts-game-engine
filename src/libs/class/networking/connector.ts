@@ -208,6 +208,12 @@ class ConnectorClient {
         case "ONLINE": {
             this.memo.save("online", true);
             this.memo.save("accessToken", dataReceive.data.accessToken);
+            if (dataReceive.data.userData) {
+              this.memo.save("nickname", dataReceive.data.userData.nickname);
+            } else {
+              this.memo.save("nickname", dataReceive.data.user.nickname);
+            }
+
             this.showUserAccountProfilePage(dataReceive);
             break;
           }
@@ -224,7 +230,7 @@ class ConnectorClient {
             break;
           }
         case "GAMEPLAY_STARTED": {
-          (byId("your-name") as HTMLInputElement).value = (byId("nick-name") as HTMLInputElement).value;
+          (byId("your-name") as HTMLInputElement).value = this.memo.load("nickname");
           (byId("continue") as HTMLButtonElement).click();
           break;
         }

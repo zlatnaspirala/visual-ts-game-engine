@@ -475,7 +475,7 @@ class Network {
         if (data.isChannelPresent === false) {
           root.addNewMessage({
             header: username,
-            message: "No room. Creating new host game play " + root.roomUI.value,
+            message: "Creating new host gamePlay id:" + root.roomUI.value,
             userinfo: "<img class='.chatIcon' src='./imgs/warning.png'>",
           });
 

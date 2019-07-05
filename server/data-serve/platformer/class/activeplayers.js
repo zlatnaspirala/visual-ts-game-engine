@@ -23,7 +23,7 @@ class PlatformerActiveUsers  {
       dbo.createCollection("platformer", function(err, collection) {
 
         if (err) throw err;
-          collection.createIndex({ "token": 1 }, { unique: false });
+          collection.createIndex({ "token": 1 }, { unique: true });
           collection.createIndex({ "rank": 1 }, { unique: false });
           collection.createIndex({ "nickname": 1 }, { unique: false });
           collection.createIndex({ "lives": 3 }, { unique: false });
@@ -44,6 +44,8 @@ class PlatformerActiveUsers  {
         return;
       }
       const dbo = db.db(databaseName);
+
+      console.log("New player user.data.token ", user.data.token);
       dbo.collection("platformer").findOne({ token: user.data.token },
         function(err, result) {
           if (err) {
@@ -64,6 +66,7 @@ class PlatformerActiveUsers  {
                     activeGame: "platformer"
                   };
 
+                  console.log(">>>>result.nickname>>", result.nickname);
                   dbo.collection("platformer").insertOne({
                       nickname: result.nickname,
                       token: result.token,
