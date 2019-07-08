@@ -34,13 +34,26 @@ class GamePlay extends Platformer {
 
     window.addEventListener("game-init", function (e) {
 
-      if (e) {
-        console.log("Test !?!?", e);
-      }
-      // How to access netwoking
-      myInstance.starter.ioc.get.Network.connector.startNewGame();
-      myInstance.load();
-      console.log("game-init event triggered test: ", e);
+      try {
+        if ((e as any).detail &&
+            ((e as any).detail.data.detail.game !== null &&
+            (e as any).detail.data.detail.game.label === "player")) {
+
+          console.error("Very bad #00002");
+          return;
+
+        } else if ((e as any).detail &&
+                  (e as any).detail.data.detail.game === null ) {
+          console.info("Player spawn.");
+          myInstance.playerSpawn(true);
+          return;
+
+        }
+        // How to access netwoking
+        myInstance.starter.ioc.get.Network.connector.startNewGame();
+        myInstance.load();
+        console.log("game-init initial. ", e);
+      } catch (err) { console.error("Very bad #00001"); }
 
     });
   }
@@ -62,19 +75,23 @@ class GamePlay extends Platformer {
 
     Matter.Events.on(this.starter.getEngine(), "beforeUpdate", function (event) {
 
+      if (!root.player) { return; }
+
       if (root.player && root.player.position.y > deadZoneByY) {
         root.playerDie(root.player);
       }
 
-      if (root.player) { Matter.Body.setAngle(root.player, -Math.PI * 0); }
+      if (root.player) {
+        Matter.Body.setAngle(root.player, -Math.PI * 0);
       // Matter.Body.setAngle(root.enemys[0] as Matter.Body, -Math.PI * 0);
 
-      Matter.Bounds.shift(root.starter.getRender().bounds,
+        Matter.Bounds.shift(root.starter.getRender().bounds,
         {
           x: root.player.position.x - 400,
           y: root.player.position.y - 300,
         });
 
+      }
     });
 
     const limit = 0.3;
@@ -96,6 +113,7 @@ class GamePlay extends Platformer {
 
     Matter.Events.on(this.starter.getEngine(), "afterTick", function (event) {
 
+      if (!root.player) { return; }
       // jump
       if (globalEvent.activeKey[38] && root.player.ground) {
 
@@ -141,7 +159,7 @@ class GamePlay extends Platformer {
     // Override data from starter.
     this.starter.setWorldBounds(-300, -300, 10000, 2700);
 
-    this.playerSpawn();
+    this.playerSpawn(false);
 
     gameMap.getStaticBackgrounds().forEach((item) => {
 

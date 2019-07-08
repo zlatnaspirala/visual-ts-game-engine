@@ -147,7 +147,7 @@ class ConnectorClient {
     };
 
     if (userData.email === false || userData.token === false) {
-      return false;
+      return;
     }
 
     let localMsg = { action: "FLOGIN", data: { userLoginData: userData } };
@@ -293,12 +293,11 @@ class ConnectorClient {
 
         myInstance.popupForm.innerHTML = html;
 
-        if (!byId("user-profile-btn-ok")){
+        if (!byId("user-profile-btn-ok")) {
           myInstance.hideUserProfileBtn = document.createElement("div");
           myInstance.hideUserProfileBtn.id = "user-profile-btn-ok";
           myInstance.hideUserProfileBtn.classList.add("login-button");
           myInstance.hideUserProfileBtn.innerText = "User profile";
-
           document.getElementsByTagName("body")[0].appendChild(myInstance.hideUserProfileBtn);
           byId("user-profile-btn-ok").addEventListener("click", myInstance.minimizeUIPanel, false);
         }
@@ -309,7 +308,6 @@ class ConnectorClient {
         (byId("nick-name") as HTMLInputElement).value = dataReceive.data.user.nickname;
         byId("games-list").addEventListener("click", myInstance.showGamesList, false);
         byId("store-form").addEventListener("click", myInstance.showStore, false);
-
         byId("set-nickname-profile").addEventListener("click", myInstance.setNewNickName, false);
 
         myInstance.memo.save("localUserRank", dataReceive.data.user.rank);
@@ -393,7 +391,7 @@ class ConnectorClient {
           const t = document.createTextNode(item.title);
           btn.appendChild(t);
           btn.setAttribute("game", item.name);
-          btn.setAttribute("id", "games-list-form");
+          btn.setAttribute("id", "playAgainBtn2");
           btn.setAttribute("class", "link login-button");
           btn.addEventListener("click", myInstance.openGamePlayFor, false);
           byId("games-list-form").appendChild(btn);
@@ -413,6 +411,7 @@ class ConnectorClient {
   }
 
   private openGamePlayFor = (e) => {
+
     e.preventDefault();
 
     const appStartGamePlay = createAppEvent("game-init",
@@ -424,10 +423,13 @@ class ConnectorClient {
 
     (window as any).dispatchEvent(appStartGamePlay);
 
-    if (e.currentTarget.getAttribute("id") === "games-list-form") {
+    if (e.currentTarget.getAttribute("id") === "playAgainBtn2") {
       e.currentTarget.disabled = true;
       if (byId("playAgainBtn")) {
         (byId("playAgainBtn") as HTMLButtonElement).disabled = true;
+      }
+      if (byId("playAgainBtn2")) {
+        (byId("playAgainBtn2") as HTMLButtonElement).disabled = true;
       }
       byId("user-profile-btn-ok").click();
     }

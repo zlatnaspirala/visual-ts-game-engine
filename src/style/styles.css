@@ -86,6 +86,17 @@ canvas {
   background: green;
 }
 
+#msgbox {
+  position: absolute;
+  top:15%;
+  left:30%;
+  width: 40%;
+  height: 50%;
+  text-align: center;
+  margin: 0 0 0 0 auto;
+  vertical-align: middle;
+}
+
 .log-network {
   position: absolute;
   z-index: 150;

@@ -445,6 +445,13 @@ or use :
   tslint -c tslint.json 'src/**/*.ts'
 ```
 
+## Licence ##
+
+  Visual Typescript Game engine is under:
+  #### MIT License generaly ####
+  except ./src/lib. Folder lib is under:
+  #### GNU LESSER GENERAL PUBLIC LICENSE Version 3 ####
+
 ## External licence in this project : ##
 
  <b>- Networking based on :</b> <br/>

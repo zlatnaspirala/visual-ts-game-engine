@@ -20,6 +20,8 @@ class PlatformerActiveUsers  {
         })
       });
 
+      if (!dbo.collection("platformer")) {
+
       dbo.createCollection("platformer", function(err, collection) {
 
         if (err) throw err;
@@ -31,11 +33,15 @@ class PlatformerActiveUsers  {
 
       });
 
+    }
+
     });
 
   }
 
   addActiveGamePlayer(user, callerInstance) {
+
+    var root = this;
 
     const databaseName = callerInstance.config.databaseName;
     MongoClient.connect(callerInstance.config.getDatabaseRoot, { useNewUrlParser: true }, function(error, db) {
@@ -66,7 +72,8 @@ class PlatformerActiveUsers  {
                     activeGame: "platformer"
                   };
 
-                  console.log(">>>>result.nickname>>", result.nickname);
+                  root.countPoints(user, callerInstance, 10);
+
                   dbo.collection("platformer").insertOne({
                       nickname: result.nickname,
                       token: result.token,
@@ -76,7 +83,6 @@ class PlatformerActiveUsers  {
                       if (err) { console.log(err); db.close(); return; }
                       console.log("New player in game stage.");
                       if (result) {
-                        console.log("Database data serve: Game started localUserData ?? ", localUserData);
                         callerInstance.onGameStartResponse(localUserData, callerInstance);
                         console.log("Database data serve: Game started");
                       }
@@ -89,8 +95,9 @@ class PlatformerActiveUsers  {
 
           } else {
 
+            root.countPoints(user, callerInstance, 30);
             console.log("=====================================================================================")
-            console.log("ActiveGame.addActiveGame (User have open game already, disallow to play any game more):" + err);
+            console.log("ActiveGame.addActiveGame (User is already in game play , new enter -30 points):" + err);
             console.log("=====================================================================================")
             return null;
 
@@ -147,5 +154,26 @@ class PlatformerActiveUsers  {
     });
 
   }
+
+  countPoints(user, callerInstance, pay) {
+
+    const databaseName = callerInstance.config.databaseName;
+    MongoClient.connect(callerInstance.config.getDatabaseRoot, { useNewUrlParser: true }, function(error, db) {
+      if (error) {
+        console.warn("addActiveGamePlayer err:" + error);
+        return;
+      }
+      const dbo = db.db(databaseName);
+
+      dbo.collection("users").findOneAndUpdate(
+        { token: user.data.token },
+        { $inc: { points: -pay } },
+      )
+
+      // console.log("??????????user.data.token", user.data.token)
+    });
+
+  }
+
 }
 module.exports = PlatformerActiveUsers;

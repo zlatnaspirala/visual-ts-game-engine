@@ -29,7 +29,7 @@ class Platformer implements IGamePlayModel {
   public labels: worldElement[] = [];
   public v: any;
 
-  public player: Matter.Body | any = null;
+  public player: Matter.Body | any = undefined;
 
   // move to maps 'labes text'
   public hudLives: Matter.Body | any = null;
@@ -77,7 +77,9 @@ class Platformer implements IGamePlayModel {
 
   }
 
-  public createPlayer() {
+  public createPlayer(addToScene: boolean) {
+
+    this.preventDoubleExecution = false;
 
     const imgResMyPlayerSprite = [
       require("../imgs/walk-boy2.png"),
@@ -116,16 +118,17 @@ class Platformer implements IGamePlayModel {
     this.player.render.visualComponent.keepAspectRatio = true;
     this.player.render.visualComponent.setHorizontalFlip(true);
 
-    if (this.lives < 1) {
-       this.starter.AddNewBodies(this.player as worldElement);
-       console.info("Player body added to the stage from hard 'dead'.");
+    if (addToScene) {
+      this.player.id = 2;
+      this.starter.AddNewBodies(this.player as worldElement);
+      console.info("Player body created from 'dead'.");
     }
   }
 
-  public playerSpawn() {
+  public playerSpawn(recreatePlayer: boolean) {
 
-    if (this.player === null) {
-      this.createPlayer();
+    if (this.player === null || this.player === undefined) {
+      this.createPlayer(recreatePlayer);
     } else if (this.player.type === "body") {
       // empty for now
     }
@@ -138,6 +141,12 @@ class Platformer implements IGamePlayModel {
     for (let i = 0, j = pairs.length; i !== j; ++i) {
       const pair = pairs[i];
       if (pair.activeContacts) {
+
+
+        if (pair.bodyA.label === "player" && pair.bodyB.label === "player") {
+          console.info("IS THERE COLLISION");
+        }
+
 
         if (pair.bodyA.label === "player" && pair.bodyB.label === "bitcoin") {
           const collectitem = pair.bodyB;
@@ -157,6 +166,7 @@ class Platformer implements IGamePlayModel {
             element.vertex.index > 5 && element.vertex.index < 8) {
             (this.player as any).ground = ground;
           } else if (element.vertex.body.label === "player") {
+            if (this.player === null) { return; }
             (this.player as any).ground = false;
           }
         });
@@ -177,7 +187,6 @@ class Platformer implements IGamePlayModel {
         myInstance.UIPlayerBoard = byId("UIPlayerBoard") as HTMLDivElement;
         myInstance.UIPlayerBoard.innerHTML = html;
         myInstance.UIPlayerBoard.style.display = "block";
-
         myInstance.UIPlayAgainBtn = byId("playAgainBtn") as HTMLDivElement;
 
         myInstance.UIPlayAgainBtn.addEventListener("click", function(){
@@ -185,7 +194,7 @@ class Platformer implements IGamePlayModel {
           const appStartGamePlay = createAppEvent("game-init",
             {
               detail: {
-                game: "alreadystated",
+                game: myInstance.player,
               },
             });
 
@@ -228,7 +237,7 @@ class Platformer implements IGamePlayModel {
         root.player.render.visualComponent.shema = { byX: 5, byY: 2 };
         // Soft dead for now
         Matter.Body.setPosition(root.player, root.playerStartPositions[0]);
-        root.playerSpawn();
+        root.playerSpawn(false);
         root.preventDoubleExecution = false;
       }, this.playerDeadPauseInterval);
     }
@@ -237,6 +246,15 @@ class Platformer implements IGamePlayModel {
 
   private destroyGamePlay() {
     this.starter.destroyGamePlay();
+  }
+
+  private resetLives () {
+
+    if (this.UIPlayerBoard.getElementsByClassName("UIPlayerLives").length > 0) {
+      this.lives = 3;
+      (this.UIPlayerBoard.getElementsByClassName("UIPlayerLives")[0] as HTMLSpanElement).innerText = this.lives.toString();
+    }
+
   }
 
 }
