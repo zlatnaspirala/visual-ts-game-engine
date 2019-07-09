@@ -1,4 +1,5 @@
 
+import { DEFAULT_PLAYER_DATA } from "../../defaults";
 import { IMessageReceived, IUserRegData } from "../../interface/global";
 import { NetMsg, UniClick } from "../../types/global";
 import { byId, createAppEvent, encodeString, htmlHeader, validateEmail, validatePassword } from "../system";
@@ -206,7 +207,7 @@ class ConnectorClient {
             break;
           }
         case "ONLINE": {
-            this.memo.save("online", true);
+            this.memo.save("online", "true");
             this.memo.save("accessToken", dataReceive.data.accessToken);
             if (dataReceive.data.userData) {
               this.memo.save("nickname", dataReceive.data.userData.nickname);
@@ -230,8 +231,17 @@ class ConnectorClient {
             break;
           }
         case "GAMEPLAY_STARTED": {
+          (byId("UIPlayerLives") as HTMLSpanElement).innerText = DEFAULT_PLAYER_DATA.INITIAL_LIVES.toString();
           (byId("your-name") as HTMLInputElement).value = this.memo.load("nickname");
           (byId("continue") as HTMLButtonElement).click();
+          break;
+        }
+        case "LOG_OUT": {
+          // destroy game play if exist
+          break;
+        }
+        case "OUT_OF_GAME": {
+          // destroy gamePlay
           break;
         }
         default:
@@ -302,6 +312,8 @@ class ConnectorClient {
           byId("user-profile-btn-ok").addEventListener("click", myInstance.minimizeUIPanel, false);
         }
 
+        byId("log-out").addEventListener("click", myInstance.logOutFromSession, false);
+        byId("out-of-game").addEventListener("click", myInstance.exitCurrentGame, false);
         (byId("user-points") as HTMLInputElement).value = dataReceive.data.user.points;
         (byId("user-rank") as HTMLInputElement).value = dataReceive.data.user.rank;
         (byId("user-email") as HTMLInputElement).value = dataReceive.data.user.email;
@@ -391,7 +403,7 @@ class ConnectorClient {
           const t = document.createTextNode(item.title);
           btn.appendChild(t);
           btn.setAttribute("game", item.name);
-          btn.setAttribute("id", "playAgainBtn2");
+          btn.setAttribute("id", "openGamePlay");
           btn.setAttribute("class", "link login-button");
           btn.addEventListener("click", myInstance.openGamePlayFor, false);
           byId("games-list-form").appendChild(btn);
@@ -415,21 +427,19 @@ class ConnectorClient {
     e.preventDefault();
 
     const appStartGamePlay = createAppEvent("game-init",
-      {
-        detail: {
-          game: e.target, // .getAttribute("game"),
-        },
-      });
+    {
+      game: e.target, // .getAttribute("game"),
+    });
 
     (window as any).dispatchEvent(appStartGamePlay);
 
-    if (e.currentTarget.getAttribute("id") === "playAgainBtn2") {
+    if (e.currentTarget.getAttribute("id") === "openGamePlay") {
       e.currentTarget.disabled = true;
       if (byId("playAgainBtn")) {
         (byId("playAgainBtn") as HTMLButtonElement).disabled = true;
       }
-      if (byId("playAgainBtn2")) {
-        (byId("playAgainBtn2") as HTMLButtonElement).disabled = true;
+      if (byId("openGamePlay")) {
+        (byId("openGamePlay") as HTMLButtonElement).disabled = true;
       }
       byId("user-profile-btn-ok").click();
     }
@@ -459,6 +469,7 @@ class ConnectorClient {
 
   private startNewGame = () => {
 
+    console.log("this.memo.load(token) ", this.memo.load("token"));
     if (this.memo.load("online") === true) {
       const localMsg = {
         action: "GAMEPLAY_START",
@@ -469,6 +480,45 @@ class ConnectorClient {
       };
       this.sendObject(localMsg);
     }
+
+  }
+
+  private exitCurrentGame = () => {
+
+    // pass arg game name in future
+    if (this.memo.load("online") === true) {
+      const localMsg = {
+        action: "OUT_OF_GAME",
+        data: {
+          token: this.memo.load("token"),
+        },
+      };
+      this.sendObject(localMsg);
+    }
+
+  }
+
+  private logOutFromSession = () => {
+
+    if (this.memo.load("online") === true) {
+      const localMsg = {
+        action: "LOG_OUT",
+        data: {
+          token: this.memo.load("token"),
+        },
+      };
+      this.sendObject(localMsg);
+    }
+
+  }
+
+  private clearMemo = () => {
+
+    // make clear
+    this.memo.localStorage.removeItem("online");
+    this.memo.localStorage.removeItem("accessToken");
+    this.memo.localStorage.removeItem("localUserRank");
+    this.memo.localStorage.removeItem("nickname");
 
   }
 

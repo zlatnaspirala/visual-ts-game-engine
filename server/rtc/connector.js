@@ -92,6 +92,8 @@ class Connector {
     shared.serverHandlerSetNewNickname = this.serverHandlerSetNewNickname;
     shared.serverHandlerFastLogin = this.serverHandlerFastLogin;
     shared.serverHandlerGamePlayStart = this.serverHandlerGamePlayStart;
+    shared.serverHandlerSessionLogOut = this.serverHandlerSessionLogOut;
+    shared.serverHandlerOutOfGame = this.serverHandlerOutOfGame;
 
   }
 
@@ -172,9 +174,12 @@ class Connector {
                 shared.myBase.userSockCollection[userId] = this;
                 shared.serverHandlerFastLogin(msgFromCLient);
               } else if (msgFromCLient.action === "GAMEPLAY_START") {
-
                 shared.serverHandlerGamePlayStart(msgFromCLient);
-
+              } else if (msgFromCLient.action === "LOG_OUT") {
+                shared.serverHandlerSessionLogOut(msgFromCLient);
+              } else if (msgFromCLient.action === "OUT_OF_GAME") {
+                console.log(">>>>>>> OUT OF GAME");
+                shared.serverHandlerOutOfGame(msgFromCLient);
               }
 
             } else {
@@ -341,10 +346,47 @@ class Connector {
     }
   }
 
-  serverHandlerGamePlayStart(arg){
+  serverHandlerGamePlayStart(arg) {
     if (arg !== undefined) {
       console.log(arg);
       shared.myBase.database.platformerActiveUsers.addActiveGamePlayer(arg, shared.myBase);
+    }
+  }
+
+  serverHandlerSessionLogOut(arg) {
+    if (arg !== undefined) {
+      console.log(arg);
+      shared.myBase.database.platformerActiveUsers.removeActiveGamePlayer(arg, shared.myBase);
+    }
+  }
+
+  serverHandlerOutOfGame(arg) {
+    console.log(" WHAT");
+    if (arg !== undefined) {
+      console.log(arg);
+      shared.myBase.database.platformerActiveUsers.removeActiveGamePlayer(arg, shared.myBase);
+    }
+  }
+
+  onLogOutResponse(userData, callerInstance) {
+    try {
+      let userId = shared.formatUserKeyLiteral(userData.email);
+      let codeSended = { action: "LOG_OUT", data: { userData } };
+      codeSended = JSON.stringify(codeSended);
+      callerInstance.userSockCollection[userId].send(codeSended);
+    } catch (err) {
+      console.log("Something wrong with :: userSockCollection[userId]. Err :", err);
+    }
+  }
+
+  onOutOfGameResponse(userData, callerInstance) {
+    try {
+      let userId = shared.formatUserKeyLiteral(userData.email);
+      let codeSended = { action: "OUT_OF_GAME", data: { userData } };
+      codeSended = JSON.stringify(codeSended);
+      callerInstance.userSockCollection[userId].send(codeSended);
+    } catch (err) {
+      console.log("Something wrong with :: userSockCollection[userId]. Err :", err);
     }
   }
 

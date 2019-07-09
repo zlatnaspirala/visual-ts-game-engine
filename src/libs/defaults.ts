@@ -1,0 +1,5 @@
+
+export enum DEFAULT_PLAYER_DATA {
+  INITIAL_LIVES = 3,
+  NEW_GAME_COST = 30,
+}

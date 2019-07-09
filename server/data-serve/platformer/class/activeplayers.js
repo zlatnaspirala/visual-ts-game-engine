@@ -96,8 +96,21 @@ class PlatformerActiveUsers  {
           } else {
 
             root.countPoints(user, callerInstance, 30);
+
+            dbo.collection("users").findOne({ token: user.data.token },
+              (err, result) => {
+                if (err) {return;}
+                const localUserData = {
+                  email: result.email,
+                  nickname: result.nickname,
+                  activeGame: "platformer"
+                };
+                callerInstance.onGameStartResponse(localUserData, callerInstance);
+                console.log("onGameStartResponse", result);
+            });
+
             console.log("=====================================================================================")
-            console.log("ActiveGame.addActiveGame (User is already in game play , new enter -30 points):" + err);
+            console.log("ActiveGame.addActiveGame (User is already in game play , new enter -30 points) ");
             console.log("=====================================================================================")
             return null;
 
@@ -114,39 +127,48 @@ class PlatformerActiveUsers  {
     const databaseName = this.config.databaseName;
     MongoClient.connect(this.config.getDatabaseRoot, { useNewUrlParser: true }, function(error, db) {
       if (error) {
-        console.warn("ActiveGame err:" + error);
+        console.warn("ActiveGame.removeActiveGamePlayer err:" + error);
         return;
       }
 
+      console.warn("I found and i will remove user now: user.token1", user.data.token);
+
       const dbo = db.db(databaseName);
-      dbo.collection("platformer-au").findOne({ token: user.token },
+      dbo.collection("platformer").findOne({ token: user.data.token },
         function(err, result) {
           if (err) {
             console.log("ActiveGame.removeActiveGamePlayer (err1):" + err);
+            return;
+          }
 
-            dbo.collection("platformer-au").insertOne({
-              nickname: user.nickname,
-              token: user.token,
-              rank: rank
-            }, function(err, result) {
-              if (err) {
-                console.log("ActiveGame err2:" + err);
-                db.close();
-                return;
-              }
-              console.log("ADDED NEW GAME", result);
-              if (result) {
-                console.log("ADDED NEW GAME", result);
-              }
-              // callerInstance.onRegisterResponse("USER_REGISTERED", callerInstance);
-              db.close();
+          if (result !== null) {
+
+            var myquery = { token: result.token };
+            dbo.collection("platformer").deleteOne(myquery, function(err, obj) {
+              if (err) throw err;
+
+              console.log(obj.result.n + " document(s) deleted.user.data.token", user.data.token);
+
+              dbo.collection("users").findOne({ token: user.data.token },
+                function(err, result) {
+                  if (err) {
+                    console.log("ActiveGame.removeActiveGamePlayer (err1):" + err);
+                    return;
+                  }
+
+                  console.warn("I found and i will remove user now");
+                  if (result !== null) {
+
+                    callerInstance.onOutOfGameResponse(result.email, callerInstance);
+                    dbo.close();
+
+                  }
+
+              });
+
+
             });
 
-            return null;
-          }
-          if (result !== null) {
-            console.log("ActiveGame.platformer-au User have open game already:" + err);
-            return null;
           }
 
         });
@@ -168,7 +190,11 @@ class PlatformerActiveUsers  {
       dbo.collection("users").findOneAndUpdate(
         { token: user.data.token },
         { $inc: { points: -pay } },
-      )
+        (err, doc, raw) => {
+          /*Do something here*/
+          console.log(" findOneAndUpdate err: ", err);
+        }
+      );
 
       // console.log("??????????user.data.token", user.data.token)
     });

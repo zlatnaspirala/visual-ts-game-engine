@@ -5,8 +5,11 @@ import { UniVector } from "../types/global";
  */
 class LocalStorageMemory {
 
+  public localStorage;
+
   constructor() {
     // empty
+    this.localStorage = window.localStorage;
   }
 
   /**

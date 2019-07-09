@@ -5,6 +5,7 @@ import TextComponent from "../../../libs/class/visual-methods/text";
 import { IGamePlayModel, IPoint } from "../../../libs/interface/global";
 import Starter from "../../../libs/starter";
 import { worldElement } from "../../../libs/types/global";
+import { DEFAULT_PLAYER_DATA } from "../../../libs/defaults";
 
 /**
  * @author Nikola Lukic
@@ -192,11 +193,9 @@ class Platformer implements IGamePlayModel {
         myInstance.UIPlayAgainBtn.addEventListener("click", function(){
 
           const appStartGamePlay = createAppEvent("game-init",
-            {
-              detail: {
-                game: myInstance.player,
-              },
-            });
+          {
+            game: myInstance.player,
+          });
 
           (window as any).dispatchEvent(appStartGamePlay);
 
@@ -217,7 +216,7 @@ class Platformer implements IGamePlayModel {
       this.lives = this.lives - 1;
       (this.UIPlayerBoard.getElementsByClassName("UIPlayerLives")[0] as HTMLSpanElement).innerText = this.lives.toString();
 
-      if (this.lives === 0) {
+      if (this.lives === 0 || this.lives < 0) {
           this.starter.destroyBody(collectitem);
           this.player = null;
           if ((byId("playAgainBtn") as HTMLButtonElement)) {
@@ -246,15 +245,6 @@ class Platformer implements IGamePlayModel {
 
   private destroyGamePlay() {
     this.starter.destroyGamePlay();
-  }
-
-  private resetLives () {
-
-    if (this.UIPlayerBoard.getElementsByClassName("UIPlayerLives").length > 0) {
-      this.lives = 3;
-      (this.UIPlayerBoard.getElementsByClassName("UIPlayerLives")[0] as HTMLSpanElement).innerText = this.lives.toString();
-    }
-
   }
 
 }

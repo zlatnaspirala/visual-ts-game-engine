@@ -36,15 +36,17 @@ class GamePlay extends Platformer {
 
       try {
         if ((e as any).detail &&
-            ((e as any).detail.data.detail.game !== null &&
-            (e as any).detail.data.detail.game.label === "player")) {
+          ((e as any).detail.data.game !== "undefined" &&
+          (e as any).detail.data.game !== null &&
+            (e as any).detail.data.game.label === "player")) {
 
           console.error("Very bad #00002");
           return;
 
         } else if ((e as any).detail &&
-                  (e as any).detail.data.detail.game === null ) {
+                  (e as any).detail.data.game === null ) {
           console.info("Player spawn.");
+          myInstance.starter.ioc.get.Network.connector.startNewGame();
           myInstance.playerSpawn(true);
           return;
 
