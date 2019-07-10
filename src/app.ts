@@ -15,8 +15,8 @@ import Ioc from "./libs/ioc";
  * Put any parameters here.
  */
 const plarformerGameInfo = {
-  name: "Crypto-Runner",
-  title: "PLAY PLATFORMER CRYPTO RUNNER!",
+  name: "Platformer",
+  title: "Start Platformer game play",
 };
 
 const gamesList: any[] = [

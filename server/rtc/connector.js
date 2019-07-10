@@ -178,7 +178,6 @@ class Connector {
               } else if (msgFromCLient.action === "LOG_OUT") {
                 shared.serverHandlerSessionLogOut(msgFromCLient);
               } else if (msgFromCLient.action === "OUT_OF_GAME") {
-                console.log(">>>>>>> OUT OF GAME");
                 shared.serverHandlerOutOfGame(msgFromCLient);
               }
 
@@ -348,7 +347,7 @@ class Connector {
 
   serverHandlerGamePlayStart(arg) {
     if (arg !== undefined) {
-      console.log(arg);
+      console.log(arg.activeGame);
       shared.myBase.database.platformerActiveUsers.addActiveGamePlayer(arg, shared.myBase);
     }
   }
@@ -361,9 +360,7 @@ class Connector {
   }
 
   serverHandlerOutOfGame(arg) {
-    console.log(" WHAT");
     if (arg !== undefined) {
-      console.log(arg);
       shared.myBase.database.platformerActiveUsers.removeActiveGamePlayer(arg, shared.myBase);
     }
   }

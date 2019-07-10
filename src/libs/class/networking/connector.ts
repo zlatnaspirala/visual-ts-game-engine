@@ -231,6 +231,9 @@ class ConnectorClient {
             break;
           }
         case "GAMEPLAY_STARTED": {
+          // local data
+          this.memo.save("activeGame", dataReceive.data.userData.activeGame);
+          document.title = dataReceive.data.userData.activeGame;
           (byId("UIPlayerLives") as HTMLSpanElement).innerText = DEFAULT_PLAYER_DATA.INITIAL_LIVES.toString();
           (byId("your-name") as HTMLInputElement).value = this.memo.load("nickname");
           (byId("continue") as HTMLButtonElement).click();
@@ -242,6 +245,8 @@ class ConnectorClient {
         }
         case "OUT_OF_GAME": {
           // destroy gamePlay
+          console.log("OUT_OF_GAME");
+          this.outOfGame(this.memo.load("activeGame"));
           break;
         }
         default:
@@ -446,6 +451,16 @@ class ConnectorClient {
 
   }
 
+  private outOfGame = (name: string) => {
+
+    const appEndGamePlay = createAppEvent("game-end",
+      {
+        game: name,
+      });
+
+    (window as any).dispatchEvent(appEndGamePlay);
+  }
+
   private setNewNickName = (e) => {
 
     e.preventDefault();
@@ -467,13 +482,14 @@ class ConnectorClient {
     alert("Nickname field updated successfully.");
   }
 
-  private startNewGame = () => {
+  private startNewGame = (gameName: string) => {
 
-    console.log("this.memo.load(token) ", this.memo.load("token"));
+    console.log("startNewGame: ", gameName);
     if (this.memo.load("online") === true) {
       const localMsg = {
         action: "GAMEPLAY_START",
         data: {
+          gameName,
           rank: this.memo.load("localUserRank"),
           token: this.memo.load("token"),
         },
@@ -509,7 +525,8 @@ class ConnectorClient {
       };
       this.sendObject(localMsg);
     }
-
+    console.info("Logout.");
+    this.clearMemo();
   }
 
   private clearMemo = () => {

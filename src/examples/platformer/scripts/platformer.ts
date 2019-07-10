@@ -48,14 +48,18 @@ class Platformer implements IGamePlayModel {
     this.starter = starter;
     this.v = starter.getView();
 
+    this.addUIPlayerBoard();
+    this.showPlayerBoardUI();
+
+  }
+
+  private addUIPlayerBoard = () => {
     this.UIPlayerBoard = document.createElement("div");
     this.UIPlayerBoard.id = "UIPlayerBoard";
     this.UIPlayerBoard.className = "leftPanelUni";
 
     document.getElementsByTagName("body")[0].appendChild(this.UIPlayerBoard);
-    this.showPlayerBoardUI();
-
-  }
+  };
 
   public createHud () {
 
@@ -142,12 +146,6 @@ class Platformer implements IGamePlayModel {
     for (let i = 0, j = pairs.length; i !== j; ++i) {
       const pair = pairs[i];
       if (pair.activeContacts) {
-
-
-        if (pair.bodyA.label === "player" && pair.bodyB.label === "player") {
-          console.info("IS THERE COLLISION");
-        }
-
 
         if (pair.bodyA.label === "player" && pair.bodyB.label === "bitcoin") {
           const collectitem = pair.bodyB;

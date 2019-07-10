@@ -208,10 +208,8 @@ class Starter {
   }
 
   public destroyGamePlay() {
-    this.render.canvas.remove();
-    this.render.canvas = null;
-    this.render.context = null;
-    this.render.textures = {};
+    console.log("destroy world also must be done for events !!!");
+    Matter.World.clear(this.world, false);
   }
 
 }

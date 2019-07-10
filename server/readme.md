@@ -110,13 +110,10 @@ javascript
 
 ```
 use admin
-db.createUser(
-  {
-    user: "userAdmin",
-    pwd: "***********",
-    roles: [ { role: "userAdminAnyDatabase", db: "masterdatabase" }, "readWriteAnyDatabase" ]
-  }
-)
+ db.createUser({
+   user: "userAdmin",
+   pwd: "*****",
+   roles: [ { role: "userAdminAnyDatabase", db: "admin"}, "readWriteAnyDatabase"]})
 ```
 
 Restart mongod with :
