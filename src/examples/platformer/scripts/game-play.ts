@@ -36,10 +36,9 @@ class GamePlay extends Platformer {
 
       try {
         if ((e as any).detail &&
-          ((e as any).detail.data.game !== "undefined" &&
-          (e as any).detail.data.game !== null &&
-            (e as any).detail.data.game.label === "player")) {
-
+           ((e as any).detail.data.game !== "undefined" &&
+           ( e as any).detail.data.game !== null &&
+           ( e as any).detail.data.game.label === "player")) {
           console.error("Very bad #00002");
           return;
 
@@ -51,17 +50,17 @@ class GamePlay extends Platformer {
           return;
 
         }
+
         // How to access netwoking
         myInstance.starter.ioc.get.Network.connector.startNewGame(myInstance.gameName);
         myInstance.load();
-        console.log("game-init initial.e as any).detail.data.game is startUP btn target dom ",
-          (e as any).detail.data.game.getAttribute("game"));
+
       } catch (err) { console.error("Very bad #00001"); }
 
     });
 
     window.addEventListener("game-end", function (e) {
-      // console.info("game-end global event. Destroying game play.", (e as any).detail.data.game);
+
       try {
         if ((e as any).detail &&
            (e as any).detail.data.game !== "undefined" &&

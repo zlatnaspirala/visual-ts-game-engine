@@ -51,7 +51,7 @@ class ServerConfig {
     console.log("-rtc isSecure", this.isSecure);
     console.log("-rtc appUseAccountsSystem", this.appUseAccountsSystem);
     console.log("-rtc databaseName", this.databaseName);
-    console.log("-rtc databaseRoot", this.databaseRoot);
+    // console.log("-rtc databaseRoot", this.databaseRoot);
 
   }
 

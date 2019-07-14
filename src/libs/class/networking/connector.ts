@@ -231,9 +231,18 @@ class ConnectorClient {
             break;
           }
         case "GAMEPLAY_STARTED": {
-          // local data
+
           this.memo.save("activeGame", dataReceive.data.userData.activeGame);
           document.title = dataReceive.data.userData.activeGame;
+
+          // local data
+          const appUpdateLivesGamePlay = createAppEvent("update-lives",
+            {
+              lives: DEFAULT_PLAYER_DATA.INITIAL_LIVES.toString(),
+            });
+
+          (window as any).dispatchEvent(appUpdateLivesGamePlay);
+
           (byId("UIPlayerLives") as HTMLSpanElement).innerText = DEFAULT_PLAYER_DATA.INITIAL_LIVES.toString();
           (byId("your-name") as HTMLInputElement).value = this.memo.load("nickname");
           (byId("continue") as HTMLButtonElement).click();
@@ -331,6 +340,7 @@ class ConnectorClient {
         myInstance.memo.save("localUserData", dataReceive.data.user.email);
         const localToken = encodeString(dataReceive.data.user.email);
         myInstance.memo.save("localUserDataE", localToken);
+        // console.log(dataReceive.data.user.token + " dataReceive.data.user.token")
         myInstance.memo.save("token", dataReceive.data.user.token);
 
       });

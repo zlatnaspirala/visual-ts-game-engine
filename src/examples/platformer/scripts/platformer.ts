@@ -51,6 +51,8 @@ class Platformer implements IGamePlayModel {
     this.addUIPlayerBoard();
     this.showPlayerBoardUI();
 
+    this.attachUpdateLives();
+
   }
 
   private addUIPlayerBoard = () => {
@@ -244,6 +246,15 @@ class Platformer implements IGamePlayModel {
   private destroyGamePlay() {
     this.starter.destroyGamePlay();
   }
+
+  private attachUpdateLives = () => {
+
+    let root = this;
+    window.addEventListener("update-lives", function (e) {
+      root.lives = (e as any).detail.data.lives;
+    });
+
+  };
 
 }
 export default Platformer;
