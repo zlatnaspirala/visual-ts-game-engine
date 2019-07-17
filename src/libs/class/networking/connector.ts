@@ -327,21 +327,20 @@ class ConnectorClient {
           byId("user-profile-btn-ok").addEventListener("click", myInstance.minimizeUIPanel, false);
         }
 
-        byId("log-out").addEventListener("click", myInstance.logOutFromSession, false);
-        byId("out-of-game").addEventListener("click", myInstance.exitCurrentGame, false);
         (byId("user-points") as HTMLInputElement).value = dataReceive.data.user.points;
         (byId("user-rank") as HTMLInputElement).value = dataReceive.data.user.rank;
         (byId("user-email") as HTMLInputElement).value = dataReceive.data.user.email;
         (byId("nick-name") as HTMLInputElement).value = dataReceive.data.user.nickname;
+        byId("log-out").addEventListener("click", myInstance.logOutFromSession, false);
+        byId("out-of-game").addEventListener("click", myInstance.exitCurrentGame, false);
         byId("games-list").addEventListener("click", myInstance.showGamesList, false);
         byId("store-form").addEventListener("click", myInstance.showStore, false);
         byId("set-nickname-profile").addEventListener("click", myInstance.setNewNickName, false);
 
-        myInstance.memo.save("localUserRank", dataReceive.data.user.rank);
-        myInstance.memo.save("localUserData", dataReceive.data.user.email);
         const localToken = encodeString(dataReceive.data.user.email);
         myInstance.memo.save("localUserDataE", localToken);
-        // console.log(dataReceive.data.user.token + " dataReceive.data.user.token")
+        myInstance.memo.save("localUserRank", dataReceive.data.user.rank);
+        myInstance.memo.save("localUserData", dataReceive.data.user.email);
         myInstance.memo.save("token", dataReceive.data.user.token);
 
       });
@@ -547,7 +546,7 @@ class ConnectorClient {
 
     if (clearAll) {
       this.memo.localStorage.clear();
-      return;
+      return "localStorage clared.";
     }
 
     this.memo.localStorage.removeItem("online");
