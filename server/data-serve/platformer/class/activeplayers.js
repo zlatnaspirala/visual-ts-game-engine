@@ -163,9 +163,11 @@ class PlatformerActiveUsers  {
                     var userData = {
                       email: result.email,
                     };
-                    console.log("ActiveGame.removeActiveGamePlayer player removed:" + result.nickname);
+                    console.log("ActiveGame.removeActiveGamePlayer player removed: " + result.nickname);
+
                     callerInstance.onOutOfGameResponse(userData, callerInstance);
                     db.close();
+
                     return;
                   }
                   db.close();

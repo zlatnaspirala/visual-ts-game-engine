@@ -250,6 +250,7 @@ class ConnectorClient {
         }
         case "LOG_OUT": {
           // destroy game play if exist
+          location.reload(true);
           break;
         }
         case "OUT_OF_GAME": {
@@ -392,6 +393,7 @@ class ConnectorClient {
         // byId("user-profile-btn-ok").addEventListener("click", myInstance.minimizeUIPanel, false);
         byId("myProfile").addEventListener("click", myInstance.getUserData, false);
         byId("games-list").addEventListener("click", myInstance.showGamesList, false);
+        byId("log-out").addEventListener("click", myInstance.logOutFromSession, false);
 
       });
 
@@ -411,6 +413,7 @@ class ConnectorClient {
         myInstance.popupForm.innerHTML = html;
         byId("store-form").addEventListener("click", myInstance.showStore, false);
         byId("myProfile").addEventListener("click", myInstance.getUserData, false);
+        byId("log-out").addEventListener("click", myInstance.logOutFromSession, false);
 
         myInstance.gamesList.forEach((item) => {
 
@@ -535,13 +538,18 @@ class ConnectorClient {
       };
       this.sendObject(localMsg);
     }
-    console.info("Logout.");
-    this.clearMemo();
+
+    this.clearMemo(true);
+
   }
 
-  private clearMemo = () => {
+  private clearMemo = (clearAll?: boolean) => {
 
-    // make clear
+    if (clearAll) {
+      this.memo.localStorage.clear();
+      return;
+    }
+
     this.memo.localStorage.removeItem("online");
     this.memo.localStorage.removeItem("accessToken");
     this.memo.localStorage.removeItem("localUserRank");

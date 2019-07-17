@@ -8,6 +8,7 @@ import Starter from "../../../libs/starter";
 import { worldElement } from "../../../libs/types/global";
 import GameMap from "./map";
 import Platformer from "./Platformer";
+import { byId } from "../../../libs/class/system";
 
 /**
  * @description Finally game start at here
@@ -68,6 +69,11 @@ class GamePlay extends Platformer {
            (e as any).detail.data.game === myInstance.gameName) {
 
             myInstance.starter.destroyGamePlay();
+            (byId("playAgainBtn") as HTMLButtonElement).disabled = true;
+            (byId("openGamePlay") as HTMLButtonElement).disabled = false;
+
+            myInstance.starter.ioc.get.Network.connector.memo.save("activeGame", "none");
+            myInstance.deattachMatterEvents();
             console.info("game-end global event. Destroying game play.");
 
         }
@@ -75,6 +81,10 @@ class GamePlay extends Platformer {
 
     });
 
+  }
+
+  private deattachMatterEvents() {
+    Matter.Events.off(this.starter.getEngine(), undefined, undefined);
   }
 
   private attachMatterEvents() {

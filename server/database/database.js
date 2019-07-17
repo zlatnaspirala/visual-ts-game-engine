@@ -228,6 +228,7 @@ class MyDatabase {
               rank: result.rank,
               nickname: result.nickname,
               socketid: result.accessToken,
+              token: result.token
             };
 
             callerInstance.onUserData(userData, callerInstance);
@@ -334,6 +335,55 @@ class MyDatabase {
 
     });
 
+  }
+
+  logOut(user, callerInstance) {
+
+    const databaseName = this.config.databaseName;
+    MongoClient.connect(this.config.getDatabaseRoot, { useNewUrlParser: true }, function(error, db) {
+      if (error) {
+        console.warn("MyDatabase.login error:" + error);
+        return;
+      }
+
+      const dbo = db.db(databaseName);
+
+      dbo.collection("users").findOne({ token: user.data.token, confirmed: true },
+        function(err, result) {
+
+          if (err) { console.log("MyDatabase.logout :" + err); return null; }
+
+          if (result !== null) {
+
+            // Security staff
+            const userData = {
+              email: result.email,
+              nickname: result.nickname,
+              points: result.points,
+              rank: result.rank,
+              token: result.token,
+            };
+
+            dbo.collection("users").updateOne(
+              { email: userData.email, },
+              { $set: { online: false } },
+              function(err, result) {
+                if (err) {
+                  console.log("logout BAD ACCESS!");
+                  return;
+                }
+                console.warn("logout : ", userData.nickname);
+                callerInstance.onLogOutResponse(userData, callerInstance);
+
+              }
+            );
+
+          }
+
+        });
+
+
+    });
   }
 
 }
