@@ -5,6 +5,8 @@
  */
 const fs = require("fs");
 const shared = require("./../common/shared");
+const static = require('node-static');
+var file = new (static.Server)('/var/www/html/applications/visual-typescript-game-engine/build/');
 
 class Connector {
 
@@ -45,11 +47,22 @@ class Connector {
       };
 
       this.http = require('https').createServer(options, function(request, response) {
+
         request.addListener('end', function() {
           if (request.url.search(/.png|.gif|.js|.css/g) == -1) {
-            file.serveFile("/var/www/html/applications/visual-typescript-game-engine/build/app.html" , 402, {}, request, response);
+            response.statusCode = 200;
+            response.write('No access on this way man.');
+            return response.end();
           } else file.serve(request, response);
         }).resume();
+
+        /* request.addListener('end', function() {
+          if (request.url.search(/.png|.gif|.js|.css/g) == -1) {
+            file.serveFile("app.html" , 404, {}, request, response);
+          } else file.serve(request, response);
+        }).resume();
+        */
+
       }).listen(serverConfig.getConnectorPort);
 
     }

@@ -2,7 +2,7 @@
  * visual-ts game engine server part
  * @description Networking
  */
-
+const static = require('node-static');
 const fs = require("fs");
 const ServerConfig = require("../server-config.js");
 const Connector = require("./connector.js");
@@ -10,6 +10,7 @@ const serverConfig = new ServerConfig();
 const sessionController = new Connector(serverConfig);
 const CHANNELS = {};
 const WebSocketServer = require("websocket").server;
+var file = new (static.Server)('/var/www/html/applications/visual-typescript-game-engine/build/');
 
 let httpRtc = null;
 
@@ -19,10 +20,12 @@ if (serverConfig.getProtocol == "http") {
   /**
    * SSL off
    */
-    request.addListener("end", function () {
-      if (request.url.search(/.png|.gif|.js|.css/g) === -1) {
-        file.serveFile(resolveURL(this.config.specialRoute.default), 402, {}, request, response);
-      } else { file.serve(request, response); }
+    request.addListener('end', function() {
+      if (request.url.search(/.png|.gif|.js|.css/g) == -1) {
+        response.statusCode = 200;
+        response.write('No access on this way man.');
+        return response.end();
+      } else file.serve(request, response);
     }).resume();
 
   }).listen(serverConfig.getRtcServerPort);
@@ -41,7 +44,7 @@ if (serverConfig.getProtocol == "http") {
   httpRtc = require('https').createServer(options, function(request, response) {
     request.addListener('end', function() {
       if (request.url.search(/.png|.gif|.js|.css/g) == -1) {
-        file.serveFile(this.config.specialRoute.default, 402, {}, request, response);
+        file.serveFile(serverConfig.specialRoute.default, 402, {}, request, response);
       } else file.serve(request, response);
     }).resume();
   }).listen(serverConfig.getRtcServerPort);
