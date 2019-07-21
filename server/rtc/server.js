@@ -99,7 +99,7 @@ function sendMessage(message, websocket) {
   message.data = JSON.stringify(message.data);
   const channel = CHANNELS[message.channel];
   if (!channel) {
-    console.error("no such channel exists");
+    console.log("no such channel exists");
     return;
   }
 

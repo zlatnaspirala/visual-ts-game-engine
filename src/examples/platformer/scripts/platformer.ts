@@ -1,11 +1,12 @@
 import Matter = require("matter-js");
-import { byId, bytesToSize, getElement, getRandomColor, htmlHeader, createAppEvent } from "../../../libs/class/system";
+import { byId, createAppEvent, htmlHeader } from "../../../libs/class/system";
 import SpriteTextureComponent from "../../../libs/class/visual-methods/sprite-animation";
 import TextComponent from "../../../libs/class/visual-methods/text";
-import { IGamePlayModel, IPoint } from "../../../libs/interface/global";
+import { IGamePlayModel, IMultiplayer, IPoint } from "../../../libs/interface/global";
 import Starter from "../../../libs/starter";
 import { worldElement } from "../../../libs/types/global";
-import { DEFAULT_PLAYER_DATA } from "../../../libs/defaults";
+import Network from "../../../libs/class/networking/network";
+// import { DEFAULT_PLAYER_DATA } from "../../../libs/defaults";
 
 /**
  * @author Nikola Lukic
@@ -16,7 +17,7 @@ import { DEFAULT_PLAYER_DATA } from "../../../libs/defaults";
  * About resource we use requir
  */
 
-class Platformer implements IGamePlayModel {
+class Platformer implements IGamePlayModel, IMultiplayer {
 
   public gameName: string = "platformer";
   public version: number = 0.2;
@@ -32,8 +33,25 @@ class Platformer implements IGamePlayModel {
 
   public player: Matter.Body | any = undefined;
 
+
+  public multiPlayerRef: any = {
+    root: this,
+    netPos: {x: 0, y: 0},
+    init: function(myRtc) {
+
+      console.warn("GOOD !!! what this", this);
+      console.warn("GOOD !!! what arg", myRtc);
+      console.warn("GOOD !!! what this.network", this.network);
+      this.root.addNetPlayer(this.root);
+
+    },
+  };
+
   // move to maps 'labes text'
   public hudLives: Matter.Body | any = null;
+
+  public netBodies: worldElement[] = [];
+  protected network: Network;
 
   private lives: number = 3;
   private preventDoubleExecution: boolean = false;
@@ -46,7 +64,9 @@ class Platformer implements IGamePlayModel {
   constructor(starter: Starter) {
 
     this.starter = starter;
-    this.v = starter.getView();
+    this.network = starter.ioc.get.Network;
+
+    this.network.injector = this.multiPlayerRef;
 
     this.addUIPlayerBoard();
     this.showPlayerBoardUI();
@@ -55,17 +75,64 @@ class Platformer implements IGamePlayModel {
 
   }
 
-  private addUIPlayerBoard = () => {
-    this.UIPlayerBoard = document.createElement("div");
-    this.UIPlayerBoard.id = "UIPlayerBoard";
-    this.UIPlayerBoard.className = "leftPanelUni";
+  public addNetPlayer = (myInstance, netID) => {
 
-    document.getElementsByTagName("body")[0].appendChild(this.UIPlayerBoard);
-  };
+    let root = this;
 
-  public createHud () {
+    this.preventDoubleExecution = false;
+
+    const imgResMyPlayerSprite = [
+        require("../imgs/walk-boy2.png"),
+        require("../imgs/explosion/explosion.png"),
+    ];
 
     const playerRadius = 50;
+    let netPlayer: worldElement = Matter.Bodies.circle(
+      this.playerStartPositions[0].x,
+      this.playerStartPositions[0].y,
+      playerRadius, {
+        netId: 1000,
+        label: "netPlayer",
+        density: 0.0005,
+        friction: 0.01,
+        frictionAir: 0.06,
+        restitution: 0.3,
+        ground: true,
+        jumpCD: 0,
+        portal: -1,
+        collisionFilter: {
+          category: this.playerCategory,
+        } as any,
+        render: {
+          visualComponent: new SpriteTextureComponent("playerImage",
+            imgResMyPlayerSprite,
+            { byX: 5, byY: 2 }),
+          fillStyle: "blue",
+          sprite: {
+            xScale: 1,
+            yScale: 1,
+          },
+        } as any,
+      } as Matter.IBodyDefinition);
+
+    netPlayer.collisionFilter.group = -1;
+    (netPlayer.render as any).visualComponent.assets.SeqFrame.setNewSeqFrameRegimeType("CONST");
+    (netPlayer.render as any).visualComponent.keepAspectRatio = true;
+    (netPlayer.render as any).visualComponent.setHorizontalFlip(true);
+
+    const addToScene = true;
+      if (addToScene) {
+        // this.netPlayer.id = 2;
+        this.starter.AddNewBodies(netPlayer as worldElement);
+        console.info("Net Player body created.");
+        // root<Platformer>.netBodies.push(netPlayer);
+        myInstance.netBodies.push(netPlayer);
+      }
+
+  };
+
+/*   public createHud () {
+
     this.hudLives = Matter.Bodies.rectangle(50, 220, 300, 200, {
       label: "HUD",
       isStatic: true,
@@ -82,7 +149,7 @@ class Platformer implements IGamePlayModel {
 
     this.starter.AddNewBodies(this.hudLives as worldElement);
 
-  }
+  } */
 
   public createPlayer(addToScene: boolean) {
 
@@ -190,7 +257,7 @@ class Platformer implements IGamePlayModel {
         myInstance.UIPlayerBoard.style.display = "block";
         myInstance.UIPlayAgainBtn = byId("playAgainBtn") as HTMLDivElement;
 
-        myInstance.UIPlayAgainBtn.addEventListener("click", function(){
+        myInstance.UIPlayAgainBtn.addEventListener("click", function (){
 
           const appStartGamePlay = createAppEvent("game-init",
           {
@@ -254,7 +321,15 @@ class Platformer implements IGamePlayModel {
       root.lives = (e as any).detail.data.lives;
     });
 
-  };
+  }
+
+  private addUIPlayerBoard = () => {
+    this.UIPlayerBoard = document.createElement("div");
+    this.UIPlayerBoard.id = "UIPlayerBoard";
+    this.UIPlayerBoard.className = "leftPanelUni";
+
+    document.getElementsByTagName("body")[0].appendChild(this.UIPlayerBoard);
+  }
 
 }
 export default Platformer;

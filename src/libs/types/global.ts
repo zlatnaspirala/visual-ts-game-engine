@@ -22,4 +22,5 @@ export type UniVector = { [key: string]: any };
 
 export type Addson = Array<{ name: string, enabled: boolean, scriptPath: string }>;
 
-export type NetMsg = IConnectorMsg | string;
+// tslint:disable-next-line:interface-over-type-literal
+export type NetMsg = { netPosition: {x: number, y: number}};

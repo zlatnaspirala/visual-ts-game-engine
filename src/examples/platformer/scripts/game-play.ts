@@ -1,14 +1,13 @@
 import * as Matter from "matter-js";
 import BotBehavior from "../../../libs/class/bot-behavior";
+import { byId } from "../../../libs/class/system";
 import SpriteTextureComponent from "../../../libs/class/visual-methods/sprite-animation";
 import TextComponent from "../../../libs/class/visual-methods/text";
 import TextureComponent from "../../../libs/class/visual-methods/texture";
-import Ioc from "../../../libs/ioc";
 import Starter from "../../../libs/starter";
 import { worldElement } from "../../../libs/types/global";
 import GameMap from "./map";
 import Platformer from "./Platformer";
-import { byId } from "../../../libs/class/system";
 
 /**
  * @description Finally game start at here
@@ -17,12 +16,9 @@ import { byId } from "../../../libs/class/system";
  */
 class GamePlay extends Platformer {
 
-  private network;
-
   constructor(starter: Starter) {
 
     super(starter);
-    // myInstance.starter.ioc.get.Network
     if (this.starter.ioc.getConfig().getAutoStartGamePlay()) {
       this.load();
     }
@@ -100,7 +96,11 @@ class GamePlay extends Platformer {
     });
 
     // Disabled for now.
-    // Matter.Events.on(this.starter.getEngine(), "beforeTick", function (event) {});
+    Matter.Events.on(this.starter.getEngine(), "beforeTick", function (event) {
+
+      // root.network.
+
+    });
 
     Matter.Events.on(this.starter.getEngine(), "beforeUpdate", function (event) {
 
@@ -367,7 +367,7 @@ class GamePlay extends Platformer {
     this.starter.AddNewBodies(this.deadLines as worldElement);
     this.starter.AddNewBodies(this.player as worldElement);
     this.starter.AddNewBodies(this.labels as worldElement);
-    this.createHud();
+    // this.createHud();
     this.attachMatterEvents();
 
   }

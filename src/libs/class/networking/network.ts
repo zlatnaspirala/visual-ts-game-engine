@@ -6,6 +6,8 @@ import "./rtc-multi-connection/RTCMultiConnection2";
 
 class Network {
 
+  public injector: any;
+
   private rtcMultiConnection: any;
   private engineConfig: any;
   private popupUI: HTMLDivElement;
@@ -197,6 +199,16 @@ class Network {
       getElement("#share-files").disabled = false;
       getElement("#allow-screen").disabled = false;
 
+      console.log("chennel opened:", e);
+
+      // run injected handler
+      if (root.injector) {
+
+        console.log("inject exist", root.injector);
+        root.injector.init(root.rtcMultiConnection);
+
+      }
+
       root.addNewMessage({
         header: e.extra.username,
         message: "line opened between you and " + e.extra.username + ".",
@@ -210,6 +222,12 @@ class Network {
 
     const whoIsTyping = document.querySelector("#who-is-typing");
     root.rtcMultiConnection.onmessage = function (e) {
+
+      if (e.data.newPosition) {
+
+        console.info("here is net data : ", e.data);
+        console.info("here is net data.netPosition : ", e.data.newPosition);
+      }
 
       if (e.data.typing) {
         whoIsTyping.innerHTML = e.extra.username + " is typing ...";
@@ -653,5 +671,12 @@ class Network {
     // document.querySelector("#message-sound").play();
   }
 
+  private emitPlayerData(args) {
+
+    console.log(" test emit player data ", args);
+    this.rtcMultiConnection.send({
+      newPosition: "net",
+    });
+  }
 }
 export default Network;

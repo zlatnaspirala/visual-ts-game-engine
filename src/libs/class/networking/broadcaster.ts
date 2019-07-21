@@ -203,9 +203,9 @@ class Broadcaster {
         root.rtcMultiConnection.password = roomPassword;
 
         root.rtcMultiConnection.socket.emit("is-valid-password",
-          root.rtcMultiConnection.password, roomid, function (isValidPassword, roomid, error) {
+          root.rtcMultiConnection.password, roomid, function (isValidPassword, roomid_, error) {
             if (isValidPassword === true) {
-              root.joinAHiddenRoom(roomid);
+              root.joinAHiddenRoom(roomid_);
             } else {
               root.alertBox(error, "Password Issue");
             }

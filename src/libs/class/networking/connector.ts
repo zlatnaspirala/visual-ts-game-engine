@@ -169,7 +169,7 @@ class ConnectorClient {
 
   }
 
-  private sendObject = (message: NetMsg) => {
+  private sendObject = (message: IMessageReceived | string) => {
 
     try {
       message = JSON.stringify(message);

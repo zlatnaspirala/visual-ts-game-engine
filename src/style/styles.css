@@ -123,6 +123,8 @@ canvas {
   height: 84% !important;
   width: 100%;
   overflow: auto;
+  opacity: 0.7;
+  background: rgba(2,2,222,0.2);
 }
 
 .log-sender {
