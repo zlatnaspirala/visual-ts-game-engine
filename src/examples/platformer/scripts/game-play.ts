@@ -34,6 +34,8 @@ class GamePlay extends Platformer implements IMultiplayer {
 
       // console.log("update multiplayer data , pos", multiplayer);
       if (multiplayer.data.netPos) {
+        this.root.netBodies["netObject_" + multiplayer.userid].ground = false;
+        this.root.netBodies["netObject_" + multiplayer.userid].force = multiplayer.data.netPos;
         Matter.Body.setVelocity(
           this.root.netBodies["netObject_" + multiplayer.userid] as Matter.Body,
           multiplayer.data.netPos,
