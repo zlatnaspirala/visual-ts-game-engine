@@ -8,7 +8,7 @@ class Network {
 
   public injector: any;
 
-  private rtcMultiConnection: any;
+  public rtcMultiConnection: any;
   private engineConfig: any;
   private popupUI: HTMLDivElement;
   private loggerUI: HTMLDivElement;
@@ -167,9 +167,15 @@ class Network {
       this.webSocket.send = function (data) {
 
         if (this.readyState !== 1) {
-          return setTimeout(function () {
-            this.send(data);
-          }, 100);
+        //  return //setTimeout(function () {
+            try{
+              this.send(data);
+              return;
+            } catch (e) {
+              return;
+            }
+
+         // }, 100);
         }
 
         this.push(JSON.stringify({
@@ -205,7 +211,7 @@ class Network {
       if (root.injector) {
 
         console.log("inject exist", root.injector);
-        root.injector.init(root.rtcMultiConnection);
+        root.injector.init(e);
 
       }
 
@@ -223,10 +229,11 @@ class Network {
     const whoIsTyping = document.querySelector("#who-is-typing");
     root.rtcMultiConnection.onmessage = function (e) {
 
-      if (e.data.newPosition) {
-
-        console.info("here is net data : ", e.data);
-        console.info("here is net data.netPosition : ", e.data.newPosition);
+      if (root.injector) {
+        if (e.data.netPos) {
+          root.injector.update(e);
+          return;
+        }
       }
 
       if (e.data.typing) {
@@ -671,12 +678,5 @@ class Network {
     // document.querySelector("#message-sound").play();
   }
 
-  private emitPlayerData(args) {
-
-    console.log(" test emit player data ", args);
-    this.rtcMultiConnection.send({
-      newPosition: "net",
-    });
-  }
 }
 export default Network;

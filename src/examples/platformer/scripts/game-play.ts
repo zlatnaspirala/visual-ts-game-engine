@@ -8,13 +8,42 @@ import Starter from "../../../libs/starter";
 import { worldElement } from "../../../libs/types/global";
 import GameMap from "./map";
 import Platformer from "./Platformer";
+import Network from "../../../libs/class/networking/network";
+import { IMultiplayer } from "../../../libs/interface/global";
 
 /**
  * @description Finally game start at here
  * @function level1
  * @return void
  */
-class GamePlay extends Platformer {
+class GamePlay extends Platformer implements IMultiplayer {
+
+  public network: Network;
+
+  public multiPlayerRef: any = {
+    root: this,
+    init: function (rtcEvent) {
+
+      console.log("rtcEvent: ", rtcEvent);
+      this.root.addNetPlayer(this.root, rtcEvent);
+      this.root.attachNetMatterEvent();
+
+    },
+
+    update: function (multiplayer) {
+
+      // console.log("update multiplayer data , pos", multiplayer);
+      if (multiplayer.data.netPos) {
+        Matter.Body.setVelocity(
+          this.root.netBodies["netObject_" + multiplayer.userid] as Matter.Body,
+          multiplayer.data.netPos,
+        );
+        console.log(multiplayer.data.netPos, " remote velocity ");
+      }
+
+    }
+
+  };
 
   constructor(starter: Starter) {
 
@@ -22,6 +51,11 @@ class GamePlay extends Platformer {
     if (this.starter.ioc.getConfig().getAutoStartGamePlay()) {
       this.load();
     }
+
+    // check this with config flag
+    this.network = starter.ioc.get.Network;
+    this.network.injector = this.multiPlayerRef;
+
 
   }
 
@@ -83,6 +117,15 @@ class GamePlay extends Platformer {
     Matter.Events.off(this.starter.getEngine(), undefined, undefined);
   }
 
+  private attachNetMatterEvent  = () => {
+
+    const root = this;
+    Matter.Events.on(this.starter.getEngine(), "beforeTick", function (event) {
+
+    });
+
+  }
+
   private attachMatterEvents() {
 
     const root = this;
@@ -93,13 +136,6 @@ class GamePlay extends Platformer {
     this.enemys.forEach(function (item) {
       const test = new BotBehavior(item);
       test.patrol();
-    });
-
-    // Disabled for now.
-    Matter.Events.on(this.starter.getEngine(), "beforeTick", function (event) {
-
-      // root.network.
-
     });
 
     Matter.Events.on(this.starter.getEngine(), "beforeUpdate", function (event) {
@@ -153,6 +189,10 @@ class GamePlay extends Platformer {
           y: -(s),
         };
         Matter.Body.setVelocity(root.player, { x: 0, y: -s });
+
+        root.network.rtcMultiConnection.send({
+          netPos: { x: 0, y: -s },
+        });
 
       } else if (globalEvent.activeKey[37] && root.player.angularVelocity > -limit) {
 

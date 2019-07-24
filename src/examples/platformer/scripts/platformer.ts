@@ -4,7 +4,7 @@ import SpriteTextureComponent from "../../../libs/class/visual-methods/sprite-an
 import TextComponent from "../../../libs/class/visual-methods/text";
 import { IGamePlayModel, IMultiplayer, IPoint } from "../../../libs/interface/global";
 import Starter from "../../../libs/starter";
-import { worldElement } from "../../../libs/types/global";
+import { worldElement, UniVector } from "../../../libs/types/global";
 import Network from "../../../libs/class/networking/network";
 // import { DEFAULT_PLAYER_DATA } from "../../../libs/defaults";
 
@@ -17,7 +17,7 @@ import Network from "../../../libs/class/networking/network";
  * About resource we use requir
  */
 
-class Platformer implements IGamePlayModel, IMultiplayer {
+class Platformer implements IGamePlayModel {
 
   public gameName: string = "platformer";
   public version: number = 0.2;
@@ -33,25 +33,10 @@ class Platformer implements IGamePlayModel, IMultiplayer {
 
   public player: Matter.Body | any = undefined;
 
-
-  public multiPlayerRef: any = {
-    root: this,
-    netPos: {x: 0, y: 0},
-    init: function(myRtc) {
-
-      console.warn("GOOD !!! what this", this);
-      console.warn("GOOD !!! what arg", myRtc);
-      console.warn("GOOD !!! what this.network", this.network);
-      this.root.addNetPlayer(this.root);
-
-    },
-  };
-
   // move to maps 'labes text'
   public hudLives: Matter.Body | any = null;
 
-  public netBodies: worldElement[] = [];
-  protected network: Network;
+  public netBodies: UniVector = {}; // worldElement = [];
 
   private lives: number = 3;
   private preventDoubleExecution: boolean = false;
@@ -64,18 +49,14 @@ class Platformer implements IGamePlayModel, IMultiplayer {
   constructor(starter: Starter) {
 
     this.starter = starter;
-    this.network = starter.ioc.get.Network;
-
-    this.network.injector = this.multiPlayerRef;
 
     this.addUIPlayerBoard();
     this.showPlayerBoardUI();
-
     this.attachUpdateLives();
 
   }
 
-  public addNetPlayer = (myInstance, netID) => {
+  public addNetPlayer = (myInstance, rtcEvent?) => {
 
     let root = this;
 
@@ -86,13 +67,14 @@ class Platformer implements IGamePlayModel, IMultiplayer {
         require("../imgs/explosion/explosion.png"),
     ];
 
+    console.log("welcome ", rtcEvent.extra.username);
     const playerRadius = 50;
     let netPlayer: worldElement = Matter.Bodies.circle(
       this.playerStartPositions[0].x,
       this.playerStartPositions[0].y,
       playerRadius, {
         netId: 1000,
-        label: "netPlayer",
+        label: rtcEvent.extra.nickname,
         density: 0.0005,
         friction: 0.01,
         frictionAir: 0.06,
@@ -125,8 +107,7 @@ class Platformer implements IGamePlayModel, IMultiplayer {
         // this.netPlayer.id = 2;
         this.starter.AddNewBodies(netPlayer as worldElement);
         console.info("Net Player body created.");
-        // root<Platformer>.netBodies.push(netPlayer);
-        myInstance.netBodies.push(netPlayer);
+        myInstance.netBodies["netObject_" + rtcEvent.userid] = netPlayer;
       }
 
   };
