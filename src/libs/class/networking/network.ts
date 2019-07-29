@@ -230,10 +230,8 @@ class Network {
     root.rtcMultiConnection.onmessage = function (e) {
 
       if (root.injector) {
-        if (e.data.netPos) {
           root.injector.update(e);
           return;
-        }
       }
 
       if (e.data.typing) {

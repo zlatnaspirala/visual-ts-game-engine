@@ -24,7 +24,7 @@ class GamePlay extends Platformer implements IMultiplayer {
     root: this,
     init: function (rtcEvent) {
 
-      console.log("rtcEvent: ", rtcEvent);
+      console.log("rtcEvent addNewPlayer: ", rtcEvent);
       this.root.addNetPlayer(this.root, rtcEvent);
       this.root.attachNetMatterEvent();
 
@@ -32,15 +32,34 @@ class GamePlay extends Platformer implements IMultiplayer {
 
     update: function (multiplayer) {
 
-      // console.log("update multiplayer data , pos", multiplayer);
+      if (multiplayer.data.netJump) {
+
+      }
+
       if (multiplayer.data.netPos) {
-        this.root.netBodies["netObject_" + multiplayer.userid].ground = false;
-        this.root.netBodies["netObject_" + multiplayer.userid].force = multiplayer.data.netPos;
-        Matter.Body.setVelocity(
-          this.root.netBodies["netObject_" + multiplayer.userid] as Matter.Body,
-          multiplayer.data.netPos,
+
+        this.root.netBodies["netObject_" + multiplayer.userid].render.visualComponent.setHorizontalFlip(false);
+        Matter.Body.setPosition(this.root.netBodies["netObject_" + multiplayer.userid], { x: multiplayer.data.netPos.x, y: multiplayer.data.netPos.y })
+
+        Matter.Body.setAngle(
+          this.root.netBodies["netObject_" + multiplayer.userid],
+          -Math.PI * 0
         );
-        console.log(multiplayer.data.netPos, " remote velocity ");
+      }
+
+      if (multiplayer.data.netLeft) {
+
+        /* this.root.netBodies["netObject_" + multiplayer.userid].render.visualComponent.setHorizontalFlip(false);
+          this.root.netBodies["netObject_" + multiplayer.userid].force = multiplayer.data.netLeft;
+          Matter.Body.applyForce(
+            this.root.netBodies["netObject_" + multiplayer.userid],
+            {
+              x: this.root.netBodies["netObject_" + multiplayer.userid].position.x,
+              y: this.root.netBodies["netObject_" + multiplayer.userid].position.y
+            },
+            multiplayer.data.netLeft);
+        */
+
       }
 
     }
@@ -158,6 +177,11 @@ class GamePlay extends Platformer implements IMultiplayer {
           y: root.player.position.y - 300,
         });
 
+        root.network.rtcMultiConnection.send({
+          netPos: root.player.position,
+        });
+
+
       }
     });
 
@@ -192,9 +216,9 @@ class GamePlay extends Platformer implements IMultiplayer {
         };
         Matter.Body.setVelocity(root.player, { x: 0, y: -s });
 
-        root.network.rtcMultiConnection.send({
-          netPos: { x: 0, y: -s },
-        });
+/*         root.network.rtcMultiConnection.send({
+          netJump: { x: 0, y: -s },
+        }); */
 
       } else if (globalEvent.activeKey[37] && root.player.angularVelocity > -limit) {
 
@@ -205,6 +229,10 @@ class GamePlay extends Platformer implements IMultiplayer {
         };
         Matter.Body.applyForce(root.player, { x: root.player.position.x, y: root.player.position.y }, root.player.force);
 
+/*         root.network.rtcMultiConnection.send({
+          netLeft: root.player.force,
+        }); */
+
       } else if (globalEvent.activeKey[39] && root.player.angularVelocity < limit) {
 
         root.player.render.visualComponent.setHorizontalFlip(true);
@@ -214,6 +242,10 @@ class GamePlay extends Platformer implements IMultiplayer {
         };
         Matter.Body.applyForce(root.player, { x: root.player.position.x, y: root.player.position.y }, root.player.force);
 
+/*         root.network.rtcMultiConnection.send({
+          netPos: root.player.force,
+        });
+ */
       }
 
     });
