@@ -32,36 +32,32 @@ class GamePlay extends Platformer implements IMultiplayer {
 
     update: function (multiplayer) {
 
-      if (multiplayer.data.netJump) {
-
-      }
-
       if (multiplayer.data.netPos) {
 
-        this.root.netBodies["netObject_" + multiplayer.userid].render.visualComponent.setHorizontalFlip(false);
         Matter.Body.setPosition(this.root.netBodies["netObject_" + multiplayer.userid], { x: multiplayer.data.netPos.x, y: multiplayer.data.netPos.y })
 
         Matter.Body.setAngle(
           this.root.netBodies["netObject_" + multiplayer.userid],
           -Math.PI * 0
         );
-      }
 
-      if (multiplayer.data.netLeft) {
+        if (multiplayer.data.netDir) {
+          if (multiplayer.data.netDir === "left") {
+            this.root.netBodies["netObject_" + multiplayer.userid].render.visualComponent.setHorizontalFlip(false);
+          } else if (multiplayer.data.netDir === "right") {
+            this.root.netBodies["netObject_" + multiplayer.userid].render.visualComponent.setHorizontalFlip(true);
+          }
+        }
 
-        /* this.root.netBodies["netObject_" + multiplayer.userid].render.visualComponent.setHorizontalFlip(false);
-          this.root.netBodies["netObject_" + multiplayer.userid].force = multiplayer.data.netLeft;
-          Matter.Body.applyForce(
-            this.root.netBodies["netObject_" + multiplayer.userid],
-            {
-              x: this.root.netBodies["netObject_" + multiplayer.userid].position.x,
-              y: this.root.netBodies["netObject_" + multiplayer.userid].position.y
-            },
-            multiplayer.data.netLeft);
-        */
 
       }
 
+
+    },
+
+    leaveGamePlay: function (rtcEvent) {
+      console.info("rtcEvent addNewPlayer: ", rtcEvent.userid);
+      this.root.starter.destroyBody(this.root.netBodies["netObject_" + rtcEvent.userid]);
     }
 
   };
@@ -125,6 +121,9 @@ class GamePlay extends Platformer implements IMultiplayer {
 
             myInstance.starter.ioc.get.Network.connector.memo.save("activeGame", "none");
             myInstance.deattachMatterEvents();
+            // Leave
+            myInstance.starter.ioc.get.Network.rtcMultiConnection.close();
+            // platformer.network.rtcMultiConnection.peers
             console.info("game-end global event. Destroying game play.");
 
         }
@@ -179,8 +178,8 @@ class GamePlay extends Platformer implements IMultiplayer {
 
         root.network.rtcMultiConnection.send({
           netPos: root.player.position,
+          netDir: root.player.currentDir
         });
-
 
       }
     });
@@ -215,10 +214,7 @@ class GamePlay extends Platformer implements IMultiplayer {
           y: -(s),
         };
         Matter.Body.setVelocity(root.player, { x: 0, y: -s });
-
-/*         root.network.rtcMultiConnection.send({
-          netJump: { x: 0, y: -s },
-        }); */
+        // this.player.currentDir = "jump";
 
       } else if (globalEvent.activeKey[37] && root.player.angularVelocity > -limit) {
 
@@ -228,10 +224,7 @@ class GamePlay extends Platformer implements IMultiplayer {
           y: 0,
         };
         Matter.Body.applyForce(root.player, { x: root.player.position.x, y: root.player.position.y }, root.player.force);
-
-/*         root.network.rtcMultiConnection.send({
-          netLeft: root.player.force,
-        }); */
+        root.player.currentDir = "left";
 
       } else if (globalEvent.activeKey[39] && root.player.angularVelocity < limit) {
 
@@ -241,11 +234,10 @@ class GamePlay extends Platformer implements IMultiplayer {
           y: 0,
         };
         Matter.Body.applyForce(root.player, { x: root.player.position.x, y: root.player.position.y }, root.player.force);
+        root.player.currentDir = "right";
 
-/*         root.network.rtcMultiConnection.send({
-          netPos: root.player.force,
-        });
- */
+      } else {
+        root.player.currentDir = "idle";
       }
 
     });

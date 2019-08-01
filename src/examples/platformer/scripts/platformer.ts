@@ -6,6 +6,7 @@ import { IGamePlayModel, IMultiplayer, IPoint } from "../../../libs/interface/gl
 import Starter from "../../../libs/starter";
 import { worldElement, UniVector } from "../../../libs/types/global";
 import Network from "../../../libs/class/networking/network";
+import { threadId } from "worker_threads";
 // import { DEFAULT_PLAYER_DATA } from "../../../libs/defaults";
 
 /**
@@ -20,7 +21,7 @@ import Network from "../../../libs/class/networking/network";
 class Platformer implements IGamePlayModel {
 
   public gameName: string = "platformer";
-  public version: number = 0.2;
+  public version: number = 0.3;
   public playerCategory = 0x0002;
   public staticCategory = 0x0004;
 
@@ -36,7 +37,7 @@ class Platformer implements IGamePlayModel {
   // move to maps 'labes text'
   public hudLives: Matter.Body | any = null;
 
-  public netBodies: UniVector = {}; // worldElement = [];
+  public netBodies: UniVector = {};
 
   private lives: number = 3;
   private preventDoubleExecution: boolean = false;
@@ -67,7 +68,7 @@ class Platformer implements IGamePlayModel {
         require("../imgs/explosion/explosion.png"),
     ];
 
-    console.log("welcome ", rtcEvent.extra.username);
+    console.log("New netPlayer: ", rtcEvent.extra.username);
     const playerRadius = 50;
     let netPlayer: worldElement = Matter.Bodies.circle(
       this.playerStartPositions[0].x,
@@ -112,26 +113,6 @@ class Platformer implements IGamePlayModel {
 
   };
 
-/*   public createHud () {
-
-    this.hudLives = Matter.Bodies.rectangle(50, 220, 300, 200, {
-      label: "HUD",
-      isStatic: true,
-      render: {
-        visualComponent: new TextComponent("Platformer demo"),
-        fillStyle: "blue",
-        sprite: {
-          xScale: 1,
-          yScale: 1,
-        },
-      } as any,
-    } as Matter.IBodyDefinition);
-    this.hudLives.collisionFilter.group = -1;
-
-    this.starter.AddNewBodies(this.hudLives as worldElement);
-
-  } */
-
   public createPlayer(addToScene: boolean) {
 
     this.preventDoubleExecution = false;
@@ -175,6 +156,7 @@ class Platformer implements IGamePlayModel {
 
     if (addToScene) {
       this.player.id = 2;
+      thid
       this.starter.AddNewBodies(this.player as worldElement);
       console.info("Player body created from 'dead'.");
     }

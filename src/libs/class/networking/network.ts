@@ -432,12 +432,17 @@ class Network {
     };
 
     root.rtcMultiConnection.onclose = root.rtcMultiConnection.onleave = function (event) {
+
       root.addNewMessage({
         header: event.extra.username,
-        message: "Left the room.",
-        userinfo: root.getUserinfo(root.rtcMultiConnection.blobURLs[event.userid], "<img src'./imgs/warning.png' >"),
+        message: "Left the game!",
+        userinfo: root.getUserinfo(root.rtcMultiConnection.blobURLs[event.userid], "<img src='./imgs/warning.png' >"),
         color: event.extra.color,
       });
+
+      // DESTROY NETPLAYER - event.userid
+      root.injector.leaveGamePlay(event);
+
     };
 
   }
