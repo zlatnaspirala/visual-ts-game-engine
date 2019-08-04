@@ -59,6 +59,20 @@ class Ioc {
 
   }
 
+  public reLoadNetworking () {
+
+    if (this.config.didAppUseNetwork()) {
+
+      this.singlton(Network, this.config);
+
+      if (this.config.didAppUseBroadcast()) {
+        this.singlton(Broadcaster, this.config);
+      }
+
+    }
+    
+  }
+
   /**
    * singlton is method for instancing.
    * @param Singlton This arg is type pf any becouse we can pass

@@ -122,7 +122,7 @@ class GamePlay extends Platformer implements IMultiplayer {
             myInstance.starter.ioc.get.Network.connector.memo.save("activeGame", "none");
             myInstance.deattachMatterEvents();
             // Leave
-            myInstance.starter.ioc.get.Network.rtcMultiConnection.close();
+            myInstance.starter.ioc.get.Network.rtcMultiConnection.leave();
             // platformer.network.rtcMultiConnection.peers
             console.info("game-end global event. Destroying game play.");
 
