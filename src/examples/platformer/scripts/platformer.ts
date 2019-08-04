@@ -37,6 +37,7 @@ class Platformer implements IGamePlayModel {
   // move to maps 'labes text'
   public hudLives: Matter.Body | any = null;
 
+  public network: Network;
   public netBodies: UniVector = {};
 
   private lives: number = 3;
@@ -111,7 +112,7 @@ class Platformer implements IGamePlayModel {
 
         console.log("myInstance.netBodies[netObject_ + rtcEvent.userid]>>", myInstance.netBodies["netObject_" + rtcEvent.userid]);
         if (myInstance.netBodies["netObject_" + rtcEvent.userid]) {
-          console.log("ALREADY EXIST");
+          // console.log("ALREADY EXIST");
           return;
         }
         this.starter.AddNewBodies(netPlayer as worldElement);
@@ -165,7 +166,6 @@ class Platformer implements IGamePlayModel {
 
     if (addToScene) {
       this.player.id = 2;
-      thid
       this.starter.AddNewBodies(this.player as worldElement);
       console.info("Player body created from 'dead'.");
     }
@@ -256,16 +256,25 @@ class Platformer implements IGamePlayModel {
       (this.UIPlayerBoard.getElementsByClassName("UIPlayerLives")[0] as HTMLSpanElement).innerText = this.lives.toString();
 
       if (this.lives === 0 || this.lives < 0) {
+
           this.starter.destroyBody(collectitem);
           this.player = null;
+
+          this.network.rtcMultiConnection.send({
+            noMoreLives: true,
+          });
+
           if ((byId("playAgainBtn") as HTMLButtonElement)) {
             (byId("playAgainBtn") as HTMLButtonElement).disabled = false;
           }
-          /* Re born from hard dead
+          /*
+             Re born from hard dead
              hard dead - body removed from scene
-          setTimeout(function () {
-            root.playerSpawn();
-          }, this.playerDeadPauseInterval);
+
+              setTimeout(function () {
+                root.playerSpawn();
+              }, this.playerDeadPauseInterval);
+
           */
 
           return;

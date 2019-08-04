@@ -18,8 +18,6 @@ import { IMultiplayer } from "../../../libs/interface/global";
  */
 class GamePlay extends Platformer implements IMultiplayer {
 
-  public network: Network;
-
   public multiPlayerRef: any = {
     root: this,
     init: function (rtcEvent) {
@@ -50,17 +48,34 @@ class GamePlay extends Platformer implements IMultiplayer {
         }
 
 
+      } else if (multiplayer.data.noMoreLives === true) {
+        // What to do with gameplay ?!
+        // Just hide or hard variand
+        // server database politic make clear player is out of game
+        // bis logic - Initator must have credibility
+
+        // Not tested Soft
+        this.root.netBodies["netObject_" + multiplayer.userid].render.visible = false;
+
+        // Hard make exit if netPlayer is initator
+
+        // Hard - exit game - if game logic
+
       }
 
 
     },
 
+    /**
+     * If someone leaves all client actions is here
+     * - remove from scene
+     * - clear object from netObject_x
+     */
     leaveGamePlay: function (rtcEvent) {
 
       console.info("rtcEvent LEAVE GAME: ", rtcEvent.userid);
       this.root.starter.destroyBody(this.root.netBodies["netObject_" + rtcEvent.userid]);
       delete this.root.netBodies["netObject_" + rtcEvent.userid];
-      console.info("TRY TO DELETE {x} LEAVE GAME: ", rtcEvent.userid);
 
     }
 
@@ -77,7 +92,6 @@ class GamePlay extends Platformer implements IMultiplayer {
     this.network = starter.ioc.get.Network;
     this.network.injector = this.multiPlayerRef;
 
-
   }
 
   public attachAppEvents = () => {
@@ -91,12 +105,12 @@ class GamePlay extends Platformer implements IMultiplayer {
            ((e as any).detail.data.game !== "undefined" &&
            ( e as any).detail.data.game !== null &&
            ( e as any).detail.data.game.label === "player")) {
-          console.error("Very bad #00002");
+          console.error("Very bad #00002 game-init");
           return;
 
         } else if ((e as any).detail &&
                   (e as any).detail.data.game === null ) {
-          console.info("Player spawn. startNewGame  .data.game === null");
+          console.info("game-init Player spawn. data.game === null");
           myInstance.starter.ioc.get.Network.connector.startNewGame(myInstance.gameName);
           myInstance.playerSpawn(true);
           return;
@@ -106,7 +120,7 @@ class GamePlay extends Platformer implements IMultiplayer {
         // How to access netwoking
         myInstance.starter.ioc.get.Network.connector.startNewGame(myInstance.gameName);
         myInstance.load();
-        console.info("Player spawn.  .startNewGame");
+        console.info("Player spawn. game-init .startNewGame");
       } catch (err) { console.error("Very bad #00001", err); }
 
     });
@@ -131,7 +145,6 @@ class GamePlay extends Platformer implements IMultiplayer {
             myInstance.starter.ioc.get.Network.rtcMultiConnection.leave();
             myInstance.starter.ioc.get.Network.rtcMultiConnection.disconnect();
             myInstance.netBodies = {};
-            // platformer.network.rtcMultiConnection.peers
             console.info("game-end global event. Destroying game play. DISCONNECT");
 
         }
@@ -143,15 +156,6 @@ class GamePlay extends Platformer implements IMultiplayer {
 
   private deattachMatterEvents() {
     Matter.Events.off(this.starter.getEngine(), undefined, undefined);
-  }
-
-  private attachNetMatterEvent  = () => {
-
-    const root = this;
-    Matter.Events.on(this.starter.getEngine(), "beforeTick", function (event) {
-
-    });
-
   }
 
   private attachMatterEvents() {
