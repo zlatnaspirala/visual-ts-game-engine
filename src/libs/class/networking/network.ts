@@ -73,6 +73,23 @@ class Network {
 
   }
 
+  private ReconnectAndJoinGameChannel() {
+
+    const root = this;
+    (window as any).rtcMultiConnection = new (window as any).RTCMultiConnection();
+    this.rtcMultiConnection = (window as any).rtcMultiConnection;
+    this.rtcMultiConnection.session = { data: true };
+    this.rtcMultiConnection.sdpConstraints.mandatory = {
+      OfferToReceiveAudio: true,
+      OfferToReceiveVideo: true,
+    };
+
+    this.attachWebRtc();
+    setTimeout(function(){
+      root.connectUI.click();
+    }, 2300);
+
+  }
   private attachShareFiles() {
     /*
      * File sharing
@@ -436,7 +453,7 @@ class Network {
       root.addNewMessage({
         header: event.extra.username,
         message: "Left the game!",
-        userinfo: root.getUserinfo(root.rtcMultiConnection.blobURLs[event.userid], "<img src='./imgs/warning.png' >"),
+        userinfo: root.getUserinfo(root.rtcMultiConnection.blobURLs[event.userid], '<img src="./imgs/warning.png" >'),
         color: event.extra.color,
       });
 

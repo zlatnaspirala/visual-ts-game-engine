@@ -56,8 +56,12 @@ class GamePlay extends Platformer implements IMultiplayer {
     },
 
     leaveGamePlay: function (rtcEvent) {
-      console.info("rtcEvent addNewPlayer: ", rtcEvent.userid);
+
+      console.info("rtcEvent LEAVE GAME: ", rtcEvent.userid);
       this.root.starter.destroyBody(this.root.netBodies["netObject_" + rtcEvent.userid]);
+      delete this.root.netBodies["netObject_" + rtcEvent.userid];
+      console.info("TRY TO DELETE {x} LEAVE GAME: ", rtcEvent.userid);
+
     }
 
   };
@@ -92,7 +96,7 @@ class GamePlay extends Platformer implements IMultiplayer {
 
         } else if ((e as any).detail &&
                   (e as any).detail.data.game === null ) {
-          console.info("Player spawn.");
+          console.info("Player spawn. startNewGame  .data.game === null");
           myInstance.starter.ioc.get.Network.connector.startNewGame(myInstance.gameName);
           myInstance.playerSpawn(true);
           return;
@@ -102,8 +106,8 @@ class GamePlay extends Platformer implements IMultiplayer {
         // How to access netwoking
         myInstance.starter.ioc.get.Network.connector.startNewGame(myInstance.gameName);
         myInstance.load();
-
-      } catch (err) { console.error("Very bad #00001"); }
+        console.info("Player spawn.  .startNewGame");
+      } catch (err) { console.error("Very bad #00001", err); }
 
     });
 
@@ -120,14 +124,18 @@ class GamePlay extends Platformer implements IMultiplayer {
             (byId("openGamePlay") as HTMLButtonElement).disabled = false;
 
             myInstance.starter.ioc.get.Network.connector.memo.save("activeGame", "none");
+            myInstance.starter.ioc.get.Network.nameUI.disabled = (this as any).disabled = false;
+            myInstance.starter.ioc.get.Network.connectUI.disabled = (this as any).disabled = false;
             myInstance.deattachMatterEvents();
             // Leave
             myInstance.starter.ioc.get.Network.rtcMultiConnection.leave();
+            myInstance.starter.ioc.get.Network.rtcMultiConnection.disconnect();
+            myInstance.netBodies = {};
             // platformer.network.rtcMultiConnection.peers
-            console.info("game-end global event. Destroying game play.");
+            console.info("game-end global event. Destroying game play. DISCONNECT");
 
         }
-      } catch (err) { console.error("Very bad #00003"); }
+      } catch (err) { console.error("Very bad #00003", err); }
 
     });
 

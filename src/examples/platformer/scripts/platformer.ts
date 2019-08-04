@@ -106,9 +106,18 @@ class Platformer implements IGamePlayModel {
     const addToScene = true;
       if (addToScene) {
         // this.netPlayer.id = 2;
+
+        // SOmetime networking make double join session receive signal
+
+        console.log("myInstance.netBodies[netObject_ + rtcEvent.userid]>>", myInstance.netBodies["netObject_" + rtcEvent.userid]);
+        if (myInstance.netBodies["netObject_" + rtcEvent.userid]) {
+          console.log("ALREADY EXIST");
+          return;
+        }
         this.starter.AddNewBodies(netPlayer as worldElement);
         console.info("Net Player body created.");
         myInstance.netBodies["netObject_" + rtcEvent.userid] = netPlayer;
+
       }
 
   };
