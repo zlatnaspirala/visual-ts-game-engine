@@ -232,6 +232,12 @@ class ConnectorClient {
           }
         case "GAMEPLAY_STARTED": {
 
+          // Means reConnect
+          if (this.memo.load("activeGame") === "none") {
+            console.log("PREVENT ONLY JOIN - test only")
+            // return;
+          }
+
           this.memo.save("activeGame", dataReceive.data.userData.activeGame);
           document.title = dataReceive.data.userData.activeGame;
 
@@ -246,12 +252,10 @@ class ConnectorClient {
           (byId("UIPlayerLives") as HTMLSpanElement).innerText = DEFAULT_PLAYER_DATA.INITIAL_LIVES.toString();
           (byId("your-name") as HTMLInputElement).value = this.memo.load("nickname");
 
-          // Means reConnect
-          if (this.memo.load("activeGame") === "none") {
-            console.log("PREVENT ONLY JOIN")
-            return;
-          }
+          (byId("playAgainBtn") as HTMLButtonElement).disabled = false;
+          (byId("continue") as HTMLButtonElement).disabled = false;
           (byId("continue") as HTMLButtonElement).click();
+          console.log(" (byId continue as HTMLButtonElement).click(); ");
           break;
         }
         case "LOG_OUT": {
@@ -262,6 +266,7 @@ class ConnectorClient {
         case "OUT_OF_GAME": {
           // destroy gamePlay
           console.log("OUT_OF_GAME");
+          (byId("continue") as HTMLButtonElement).disabled = false;
           this.outOfGame(this.memo.load("activeGame"));
           break;
         }

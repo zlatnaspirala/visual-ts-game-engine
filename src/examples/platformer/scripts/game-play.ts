@@ -24,7 +24,7 @@ class GamePlay extends Platformer implements IMultiplayer {
 
       console.log("rtcEvent addNewPlayer: ", rtcEvent);
       this.root.addNetPlayer(this.root, rtcEvent);
-      this.root.attachNetMatterEvent();
+      // this.root.attachNetMatterEvent();
 
     },
 
@@ -56,9 +56,8 @@ class GamePlay extends Platformer implements IMultiplayer {
 
         // Not tested Soft
         this.root.netBodies["netObject_" + multiplayer.userid].render.visible = false;
-
+        console.log(" VISIBLE FALSE FOR ET OBJECT");
         // Hard make exit if netPlayer is initator
-
         // Hard - exit game - if game logic
 
       }
