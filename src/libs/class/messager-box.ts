@@ -1,15 +1,34 @@
 import { htmlHeader, byId } from "./system";
 
-class messageBox {
+class MessageBox {
 
   private popup: HTMLDivElement;
+  private enabled: boolean = true;
 
   constructor() {
-    // empty
+
     this.popup = byId("message-box") as HTMLDivElement;
+
+    if (this.enabled) {
+      this.init();
+    }
+
   }
 
-  private show = () => {
+  private hide (e) {
+
+    const messageBox = e.currentTarget.parentElement.parentElement;
+    messageBox.classList.remove("message-box-show-animation");
+    messageBox.classList.add("message-box-hide-animation");
+
+    // Must be sync with css duration value
+    setTimeout(function() {
+      messageBox.style.display = "none";
+    }, 1000);
+
+  }
+
+  private init = () => {
 
     const myInstance = this;
 
@@ -22,11 +41,12 @@ class messageBox {
 
         myInstance.popup.innerHTML = html;
         myInstance.popup.style.display = "block";
-        // byId("myProfile").addEventListener("click", myInstance.getUserData, false);
+        myInstance.popup.classList.add("message-box-show-animation");
+        byId("message-box-btn").addEventListener("click", myInstance.hide, false);
 
       });
 
   }
 
 }
-export default messageBox;
+export default MessageBox;

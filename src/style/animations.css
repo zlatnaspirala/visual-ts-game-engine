@@ -16,3 +16,27 @@
   75%  {background-color:rgba(0, 128, 0, 0.164); right:60px; top:0px; transform: scale(0.8, 0.8);}
   100% {background-color:rgba(255, 0, 0, 0.15); right:88px; top:0px; transform: scale(1, 1);}
 }
+
+/* Safari 4.0 - 8.0 */
+@-webkit-keyframes scaleToCenter {
+  0%   {background-color:rgba(255, 0, 0, 0.164); right:0px; top:0px; transform: scale(1, 1);}
+  100% {background-color:rgba(255, 0, 0, 0.15); right:88px; top:0px; transform: scale(0.01, 0.1);}
+}
+
+/* Standard syntax */
+@keyframes scaleToCenter {
+  0%   {background-color:rgba(255, 0, 0, 0.164); right:0px; top:0px; transform: scale(1, 1);}
+  100% {background-color:rgba(255, 0, 0, 0.15); right:88px; top:0px; transform: scale(0.01, 0.1);}
+}
+
+/* Safari 4.0 - 8.0 */
+@-webkit-keyframes scaleFromCenter {
+  0%   {background-color:rgba(255, 0, 0, 0.164); right:0px; top:0px; transform: scale(0.1, 0.1);}
+  100% {background-color:rgba(255, 0, 0, 0.15); right:88px; top:0px; transform: scale(1, 1);}
+}
+
+/* Standard syntax */
+@keyframes scaleFromCenter {
+  0%   {background-color:rgba(255, 0, 0, 0.164); right:0px; top:0px; transform: scale(0.1, 0.1);}
+  100% {background-color:rgba(255, 0, 0, 0.15); right:88px; top:0px; transform: scale(1, 1);}
+}

@@ -9,6 +9,7 @@ import ClientConfig from "./client-config";
 import GlobalEvent from "./events/global-event";
 import { IUniVector } from "./interface/global";
 import Starter from "./starter";
+import MessageBox from "./class/messager-box";
 
 /**
  * Ioc is main dependency controller class.
@@ -44,6 +45,7 @@ class Ioc {
     this.singlton(ViewPort, this.config);
     this.singlton(GlobalEvent, this.get.Browser);
     this.singlton(VisualRender, undefined);
+    this.singlton(MessageBox, undefined);
 
     if (this.config.didAppUseNetwork()) {
 
@@ -70,7 +72,7 @@ class Ioc {
       }
 
     }
-    
+
   }
 
   /**
