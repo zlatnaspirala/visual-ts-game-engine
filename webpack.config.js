@@ -99,6 +99,10 @@ let webPackModule = {
             filename: 'templates/broadcaster.html',
             template: 'src/html-components/broadcaster.html'
         }),
+        new HtmlWebpackPlugin({
+            filename: 'templates/message-box.html',
+            template: 'src/html-components/message-box.html'
+        }),
         new ScriptExtHtmlWebpackPlugin({
             defaultAttribute: 'defer'
         }),
