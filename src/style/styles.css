@@ -123,6 +123,7 @@ canvas {
   -webkit-animation-duration: 2s; /* Safari 4.0 - 8.0 */
   animation-name: autohide;
   animation-duration: 2s;
+  font-size: normal;
 }
 
 .message-box-content {
