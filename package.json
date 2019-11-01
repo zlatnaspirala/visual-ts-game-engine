@@ -1,7 +1,7 @@
 {
   "name": "visual-ts",
-  "version": "0.1.1",
-  "description": "This version 2 of visualjs game engine supported with physics matter.js/ts library. Improved render options like set tile, play sprite animation etc.. Whole project is based fully dependency build. Main file is app.ts . Class ioc saves singlton instances also bind. In this project html and css is not priory. Based on canvas 2D. Used lib Matter.js in typescript variant. This project is for middle level programmers.",
+  "version": "0.2.0",
+  "description": "Improved render options like set tile, play sprite animation, multiplayer coordinate etc.. Whole project is based fully dependency build. Main file is app.ts . Class ioc saves singlton instances also bind. In this project html and css is not priory. Based on canvas 2D. Used lib Matter.js in typescript variant. This project is for middle level programmers.",
   "main": ".src/app.ts",
   "dependencies": {
     "@types/matter-js": "^0.10.2",
