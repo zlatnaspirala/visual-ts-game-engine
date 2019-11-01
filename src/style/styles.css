@@ -128,6 +128,7 @@ canvas {
 
 .message-box-content {
   text-align: center;
+  font-size: 140%;
 }
 
 .message-box-hide-animation {
@@ -145,6 +146,7 @@ canvas {
 }
 
 .message-box-btn {
+  text-align: center;
   position: absolute;
   color: #ffffff;
   bottom: 10px;
@@ -157,6 +159,7 @@ canvas {
   background-color: rgba(237, 17, 17, 0.75);
   border: none;
   cursor: pointer;
+  font-size: 130%;
 }
 
 .logger {
