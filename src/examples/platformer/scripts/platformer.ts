@@ -51,10 +51,9 @@ class Platformer implements IGamePlayModel {
   constructor(starter: Starter) {
 
     this.starter = starter;
-
-    this.addUIPlayerBoard();
-    this.showPlayerBoardUI();
-    this.attachUpdateLives();
+    // this.addUIPlayerBoard();
+    // this.showPlayerBoardUI();
+    // this.attachUpdateLives();
 
   }
 
@@ -203,7 +202,8 @@ class Platformer implements IGamePlayModel {
 
         pair.activeContacts.forEach((element) => {
           if (element.vertex.body.label === "player" &&
-            element.vertex.index > 5 && element.vertex.index < 8) {
+            element.vertex.index > 5 && element.vertex.index < 8 &&
+            (this.player as any) !== null) {
             (this.player as any).ground = ground;
           } else if (element.vertex.body.label === "player") {
             if (this.player === null) { return; }
@@ -253,16 +253,14 @@ class Platformer implements IGamePlayModel {
       this.player.render.visualComponent.shema = { byX: 4, byY: 4 };
       this.player.render.visualComponent.assets.SeqFrame.setNewValue(1);
       this.lives = this.lives - 1;
-      (this.UIPlayerBoard.getElementsByClassName("UIPlayerLives")[0] as HTMLSpanElement).innerText = this.lives.toString();
+
+      // quick fix
+      // (this.UIPlayerBoard.getElementsByClassName("UIPlayerLives")[0] as HTMLSpanElement).innerText = this.lives.toString();
 
       if (this.lives === 0 || this.lives < 0) {
 
           this.starter.destroyBody(collectitem);
           this.player = null;
-
-          this.network.rtcMultiConnection.send({
-            noMoreLives: true,
-          });
 
           if ((byId("playAgainBtn") as HTMLButtonElement)) {
             (byId("playAgainBtn") as HTMLButtonElement).disabled = false;

@@ -87,9 +87,11 @@ class GamePlay extends Platformer implements IMultiplayer {
       this.load();
     }
 
-    // check this with config flag
-    this.network = starter.ioc.get.Network;
-    this.network.injector = this.multiPlayerRef;
+    if (this.starter.ioc.getConfig().didAppUseNetwork()) {
+      // check this with config flag
+      this.network = starter.ioc.get.Network;
+      this.network.injector = this.multiPlayerRef;
+    }
 
   }
 
@@ -185,11 +187,6 @@ class GamePlay extends Platformer implements IMultiplayer {
         {
           x: root.player.position.x - 400,
           y: root.player.position.y - 300,
-        });
-
-        root.network.rtcMultiConnection.send({
-          netPos: root.player.position,
-          netDir: root.player.currentDir
         });
 
       }

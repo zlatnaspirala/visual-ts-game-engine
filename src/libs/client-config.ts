@@ -93,19 +93,19 @@ class ClientConfig {
    * network. Use 'false' if you wanna make single player game.
    * In other way keep it 'true'.
    */
-  private appUseNetwork = true;
+  private appUseNetwork = false;
 
   /**
    * appUseAccountsSystem If you don't want to use session
    * in your application just setup this variable to the false.
    */
-  private appUseAccountsSystem: boolean = true;
+  private appUseAccountsSystem: boolean = false;
 
   /**
    * appUseBroadcaster Disable or enable broadcaster for
    * video chats.
    */
-  private appUseBroadcaster: boolean = true;
+  private appUseBroadcaster: boolean = false;
 
   /**
    * Possible variant by default :
@@ -119,7 +119,7 @@ class ClientConfig {
    * Implement default gamePlay variable's
    */
   private defaultGamePlayLevelName: string = "public";
-  private autoStartGamePlay: boolean = false;
+  private autoStartGamePlay: boolean = true;
 
   /**
    * constructor will save interest data for game platform
