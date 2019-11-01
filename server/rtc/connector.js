@@ -216,7 +216,8 @@ class Connector {
     userSocket.on("error", function(e) {
       console.warn("Event: error");
     });
-    console.log("controller constructed.")
+
+    console.log("onRequestConn constructed.")
   }
 
   serverHandlerRegister(regTest) {
