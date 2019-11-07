@@ -33,6 +33,8 @@ class TextComponent implements IVisualComponent {
 
     if (options) {
       this.options = options;
+    } else {
+      this.options = { color: "white"};
     }
 
   }
@@ -49,7 +51,7 @@ class TextComponent implements IVisualComponent {
   originY += originH / 2;
 
   c.font = "50px sans-serif";
-  c.fillStyle = "rgba(255,255,255,1)";
+  c.fillStyle = (this.options.color as string) || "rgba(255,255,255,1)";
   c.fillText(
    this.text,
    originX,

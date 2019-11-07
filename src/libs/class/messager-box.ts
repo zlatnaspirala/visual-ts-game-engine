@@ -4,12 +4,14 @@ class MessageBox {
 
   private popup: HTMLDivElement;
 
-  private showOnInit: boolean = true;
+  private showOnInit: boolean = false;
   private welcomeMessage: string = "This application was created on visual-ts n\ Example: Real time multiplayer `Platformer` zlatnaspirala@gmail.com";
   private messageBoxContent: HTMLElement;
+  private messageBoxContentFlag: string;
+  private asynContentFlag: boolean = false;
 
   constructor() {
-
+    console.warn("MessageBox is constructed.");
     this.popup = byId("message-box") as HTMLDivElement;
     this.init();
 
@@ -18,6 +20,7 @@ class MessageBox {
    public show (content: string) {
 
     try {
+      this.messageBoxContentFlag = content;
       const messageBox = byId("message-box");
       messageBox.classList.remove("message-box-hide-animation");
       messageBox.classList.add("message-box-show-animation");
@@ -26,9 +29,9 @@ class MessageBox {
       // Must be sync with css duration value
       messageBox.style.display = "block";
     } catch (err) {
-      console.error(err);
-      console.warn("Initialisation depens on async call. If you wanna startup message box \
-       setup showOnInit = true .");
+      this.asynContentFlag = true;
+      // console.warn("Initialisation depens on async call. If you wanna startup message box \
+      // setup showOnInit = true.", error);
     }
 
   }
@@ -66,8 +69,14 @@ class MessageBox {
         myInstance.popup.classList.add("message-box-show-animation");
         myInstance.messageBoxContent = byId("message-box-content");
         myInstance.messageBoxContent.innerHTML = myInstance.welcomeMessage;
+        console.info("MessageBox is ready.");
         byId("message-box-btn").addEventListener("click", myInstance.hide, false);
 
+        if (myInstance.asynContentFlag) {
+          myInstance.asynContentFlag = false;
+          myInstance.messageBoxContent.innerHTML = myInstance.messageBoxContentFlag;
+          myInstance.popup.style.display = "block";
+        }
       });
 
   }

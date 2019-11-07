@@ -1,4 +1,4 @@
-import { ICollectionEnemys, ICollectionItem, IGamePlayPlatformerMap, IStaticItem } from "../../../libs/interface/global";
+import { ICollectionEnemys, ICollectionItem, IGamePlayPlatformerMap, IStaticItem, IStaticLabel } from "../../../libs/interface/global";
 
 /**
  * Static body elements, backgrounds, enemys returns
@@ -169,15 +169,15 @@ class GameMap implements IGamePlayPlatformerMap {
     ] as ICollectionEnemys[];
   }
 
-  public getStaticBanners(): any[] {
+  public getStaticBanners(): IStaticLabel[] {
 
     return [
-      { x: 0, y: 0, w: 200, h: 100, text: "Welcome social Platformer chat app"},
-      { x: 200, y: 200, w: 200, h: 100, text: "Chat with other players" },
-      { x: 400, y: 600, w: 200, h: 100, text: "Supported by visual ts game engine" },
-      { x: 1000, y: 900, w: 200, h: 100, text: "Run" },
-      { x: 1400, y: 200, w: 200, h: 100, text: "Public chat" },
-    ];
+      { x: 0, y: 0, w: 400, h: 50, text: "Real time game play social app", options: { color: "black" }},
+      { x: -50, y: 330, w: 400, h: 50, text: "Welcome social Platformer chat app" , options: { color: "black" } },
+      { x: 400, y: 600, w: 400, h: 100, text: "Supported by visual ts game engine", options: { color: "black" } },
+      { x: 1000, y: 900, w: 400, h: 100, text: "Run", options: { color: "purple" } },
+      { x: 1400, y: 200, w: 400, h: 100, text: "Public chat", options: { color: "black" } },
+    ] as  IStaticLabel[];
   }
 
 }

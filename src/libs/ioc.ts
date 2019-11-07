@@ -40,12 +40,11 @@ class Ioc {
     this.config = new ClientConfig(gamesList);
 
     this.loadAddson();
-
+    this.singlton(MessageBox, undefined);
     this.singlton(Browser, undefined);
     this.singlton(ViewPort, this.config);
     this.singlton(GlobalEvent, this.get.Browser);
     this.singlton(VisualRender, undefined);
-    this.singlton(MessageBox, undefined);
 
     if (this.config.didAppUseNetwork()) {
 

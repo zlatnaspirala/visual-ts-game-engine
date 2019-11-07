@@ -18,6 +18,13 @@ import { IMultiplayer } from "../../../libs/interface/global";
  */
 class GamePlay extends Platformer implements IMultiplayer {
 
+  private gamePlayWelcomeNote: string = "This application was created on visual-ts <br/>\
+                                         Example: Real time multiplayer `Platformer` zlatnaspirala@gmail.com <br/>\
+                                         General: MIT License <br/>\
+                                         Copyright (c) 2019 Nikola Lukic zlatnaspirala@gmail.com Serbia Nis <br/>\
+                                         Except: Folder src/libs with licence: <br/>\
+                                         GNU LESSER GENERAL PUBLIC LICENSE Version 3 <br/>\
+                                         Copyright (c) 2019 maximumroulette.com ";
   public multiPlayerRef: any = {
     root: this,
     init: function (rtcEvent) {
@@ -91,6 +98,9 @@ class GamePlay extends Platformer implements IMultiplayer {
     this.network = starter.ioc.get.Network;
     this.network.injector = this.multiPlayerRef;
 
+    // MessageBox
+    this.starter.ioc.get.MessageBox.show(this.gamePlayWelcomeNote);
+
   }
 
   public attachAppEvents = () => {
@@ -104,7 +114,7 @@ class GamePlay extends Platformer implements IMultiplayer {
            ((e as any).detail.data.game !== "undefined" &&
            ( e as any).detail.data.game !== null &&
            ( e as any).detail.data.game.label === "player")) {
-          console.error("Very bad #00002 game-init");
+          console.warn("Bad #00002 game-init attempt.");
           return;
 
         } else if ((e as any).detail &&
@@ -428,7 +438,7 @@ class GamePlay extends Platformer implements IMultiplayer {
           isStatic: true,
           label: "Label Text",
           render: {
-            visualComponent: new TextComponent(item.text),
+            visualComponent: new TextComponent(item.text, item.options!),
             sprite: {
               olala: true,
             },
