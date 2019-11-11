@@ -203,7 +203,8 @@ class Platformer implements IGamePlayModel {
 
         pair.activeContacts.forEach((element) => {
           if (element.vertex.body.label === "player" &&
-            element.vertex.index > 5 && element.vertex.index < 8) {
+            element.vertex.index > 5 && element.vertex.index < 8 &&
+            this.player !== null) {
             (this.player as any).ground = ground;
           } else if (element.vertex.body.label === "player") {
             if (this.player === null) { return; }
