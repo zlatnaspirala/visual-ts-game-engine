@@ -6,6 +6,7 @@ class MessageBox {
 
   private showOnInit: boolean = false;
   private welcomeMessage: string = "This application was created on visual-ts n\ Example: Real time multiplayer `Platformer` zlatnaspirala@gmail.com";
+  private messageBox: HTMLElement = byId("message-box");
   private messageBoxContent: HTMLElement;
   private messageBoxContentFlag: string;
   private asynContentFlag: boolean = false;
@@ -21,13 +22,12 @@ class MessageBox {
 
     try {
       this.messageBoxContentFlag = content;
-      const messageBox = byId("message-box");
-      messageBox.classList.remove("message-box-hide-animation");
-      messageBox.classList.add("message-box-show-animation");
+      this.messageBox.classList.remove("message-box-hide-animation");
+      this.messageBox.classList.add("message-box-show-animation");
       this.messageBoxContent = byId("message-box-content");
       this.messageBoxContent.innerText = content;
       // Must be sync with css duration value
-      messageBox.style.display = "block";
+      this.messageBox.style.display = "block";
     } catch (err) {
       this.asynContentFlag = true;
       // console.warn("Initialisation depens on async call. If you wanna startup message box \
@@ -67,6 +67,7 @@ class MessageBox {
           myInstance.popup.style.display = "none";
         }
         myInstance.popup.classList.add("message-box-show-animation");
+        myInstance.messageBox.classList.remove("message-box-hide-animation");
         myInstance.messageBoxContent = byId("message-box-content");
         myInstance.messageBoxContent.innerHTML = myInstance.welcomeMessage;
         console.info("MessageBox is ready.");

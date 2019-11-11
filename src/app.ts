@@ -6,7 +6,7 @@ require("./style/styles.css");
 
 import AppIcon from "./app-icon";
 import GamePlay from "./examples/platformer/scripts/game-play";
-import Ioc from "./libs/ioc";
+import Ioc from "./ioc";
 
 /**
  * plarformerGameInfo

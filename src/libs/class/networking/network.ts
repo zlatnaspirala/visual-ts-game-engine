@@ -71,6 +71,29 @@ class Network {
 
     this.attachShareFiles();
 
+    this.attachUIEvents();
+
+  }
+
+  private attachUIEvents() {
+    let leftBox = byId('display-network-panel');
+    leftBox.addEventListener("click", this.toggleDisplayNetworkPanel, false);
+  }
+
+  private toggleDisplayNetworkPanel(e: MouseEvent) {
+    // renderRegime="normal"
+    const rRegime =  (e.currentTarget as HTMLElement).parentElement;
+    // if (rRegime.getAttribute("renderRegime") == "normal")
+
+    if (rRegime.getAttribute("renderRegime") == "normal") {
+      (e.currentTarget as HTMLElement).parentElement.classList.remove("network-panel-show-animation");
+      (e.currentTarget as HTMLElement).parentElement.classList.add("network-panel-hide-animation");
+      rRegime.setAttribute("renderRegime", "leftBottom");
+    } else {
+      (e.currentTarget as HTMLElement).parentElement.classList.add("network-panel-show-animation");
+      (e.currentTarget as HTMLElement).parentElement.classList.remove("network-panel-hide-animation");
+      rRegime.setAttribute("renderRegime", "normal");
+    }
   }
 
   private ReconnectAndJoinGameChannel() {

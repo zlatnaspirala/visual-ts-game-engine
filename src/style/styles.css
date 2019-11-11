@@ -100,13 +100,31 @@ canvas {
 .log-network {
   position: absolute;
   z-index: 150;
-  right: 88px;
-  width: 418px;
+  right: 0%;
+  width: 30%;
   height: 100%;
   -webkit-animation-name: autohide; /* Safari 4.0 - 8.0 */
   -webkit-animation-duration: 2s; /* Safari 4.0 - 8.0 */
   animation-name: autohide;
   animation-duration: 2s;
+}
+
+.network-panel-hide-animation {
+  -webkit-animation-fill-mode: forwards;
+  -webkit-animation-name: rightmove;
+  -webkit-animation-duration: 1.2s;
+  animation-fill-mode: forwards;
+  animation-name: rightmove;
+  animation-duration: 1.2s;
+}
+
+.network-panel-show-animation {
+  -webkit-animation-fill-mode: forwards;
+  -webkit-animation-name: leftmove;
+  -webkit-animation-duration: 1.2s;
+  animation-fill-mode: forwards;
+  animation-name: leftmove;
+  animation-duration: 1.2s;
 }
 
 .message-box {
@@ -173,7 +191,7 @@ canvas {
 .log-chat {
   position: absolute;
   top: 6%;
-  height: 84% !important;
+  height: 89% !important;
   width: 100%;
   overflow: auto;
   opacity: 0.7;

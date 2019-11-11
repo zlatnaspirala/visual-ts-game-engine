@@ -172,11 +172,11 @@ class GameMap implements IGamePlayPlatformerMap {
   public getStaticBanners(): IStaticLabel[] {
 
     return [
-      { x: 0, y: 0, w: 400, h: 50, text: "Real time game play social app", options: { color: "black" }},
-      { x: -50, y: 330, w: 400, h: 50, text: "Welcome social Platformer chat app" , options: { color: "black" } },
-      { x: 400, y: 600, w: 400, h: 100, text: "Supported by visual ts game engine", options: { color: "black" } },
-      { x: 1000, y: 900, w: 400, h: 100, text: "Run", options: { color: "purple" } },
-      { x: 1400, y: 200, w: 400, h: 100, text: "Public chat", options: { color: "black" } },
+      { x: 0, y: -120, w: 400, h: 50, text: "Collect virtual bitcoins", options: { color: "black" }},
+      { x: -120, y: 170, w: 400, h: 150, text: "Welcome `Platformer` social chat app" , options: { color: "black" } },
+      { x: -120, y: 210, w: 400, h: 100, text: "Created with visual ts game engine", options: { color: "black" } },
+      { x: 1000, y: 900, w: 400, h: 100, text: "Run & explore", options: { color: "blue" } },
+      { x: 1400, y: 200, w: 400, h: 100, text: "Love is in the air", options: { color: "red" } },
     ] as  IStaticLabel[];
   }
 

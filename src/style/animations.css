@@ -1,11 +1,12 @@
+/* MessageBox animation */
 
 /* Safari 4.0 - 8.0 */
 @-webkit-keyframes autohide {
-  0%   {background-color:rgba(255, 0, 0, 0.164); right:0px; top:0px; transform: scale(0.5, 0.5);}
-  25%  {background-color:rgba(255, 255, 0, 0.164); right:-100px; top:0px; transform: scale(1, 1);}
-  50%  {background-color:rgba(30, 30, 175, 0.26); right:0px; top:0px; transform: scale(0.5, 0.5);}
-  75%  {background-color:rgba(0, 128, 0, 0.164); right:60px; top:0px; transform: scale(0.8, 0.8);}
-  100% {background-color:rgba(255, 0, 0, 0.15); right:88px; top:0px; transform: scale(1, 1);}
+  0%   {background-color:rgba(255, 0, 0, 0.5); right:0px; top:0px; transform: scale(0.5, 0.5);}
+  25%  {background-color:rgba(255, 255, 0, 0.5); right:-100px; top:0px; transform: scale(1, 1);}
+  50%  {background-color:rgba(30, 30, 175, 0.5); right:0px; top:0px; transform: scale(0.5, 0.5);}
+  75%  {background-color:rgba(0, 128, 0, 0.5); right:60px; top:0px; transform: scale(0.8, 0.8);}
+  100% {background-color:rgba(255, 0, 0, 0.1); right:88px; top:0px; transform: scale(1, 1);}
 }
 
 /* Standard syntax */
@@ -39,4 +40,29 @@
 @keyframes scaleFromCenter {
   0%   {background-color:rgba(255, 0, 0, 0.164); right:0px; top:0px; transform: scale(0.1, 0.1);}
   100% {background-color:rgba(255, 0, 0, 0.15); right:88px; top:0px; transform: scale(1, 1);}
+}
+
+/* Network-Panel animation */
+
+/* Safari 4.0 - 8.0 */
+@-webkit-keyframes rightmove {
+  0%   {background-color:rgba(255, 0, 0, 0.5); right:0%; top:0px;}
+  100%  {background-color:rgba(255, 255, 0, 0.5); right:-26%; top:95%;}
+}
+
+/* Standard syntax */
+@keyframes rightmove {
+  0%   {background-color:rgba(255, 0, 0, 0.5); right:0%; top:0px;}
+  100%  {background-color:rgba(255, 255, 0, 0.5); right:-26%; top:95%;}
+}
+
+@-webkit-keyframes leftmove {
+  0%   {background-color:rgba(255, 0, 0, 0.5); right:-26%; top:95%;}
+  100%  {background-color:rgba(255, 255, 0, 0.5); right:0%; top:0px;}
+}
+
+/* Standard syntax */
+@keyframes leftmove {
+  0%   {background-color:rgba(255, 0, 0, 0.5); right:-26%; top:95%;}
+  100%  {background-color:rgba(255, 255, 0, 0.5); right:0%; top:0px;}
 }
