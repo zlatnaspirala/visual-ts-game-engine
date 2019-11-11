@@ -268,9 +268,11 @@ canvas {
 #user-profile-btn-ok {
   position: absolute;
   width: 10%;
+  min-width: 200px;
   bottom: 0;
   left: 40%;
   z-index: 1000;
+  text-align: center;
 }
 
 .myButton {
@@ -576,7 +578,14 @@ button:focus {outline:0;}
 	z-index: 1;
 }
 
+.link:disabled {
+  background: #462d2d;
+}
+
 .link:hover {
 	background-color: rgba(237, 17, 17, 1);
 }
 
+.link:hover:disabled {
+  background: #4b2323;
+}

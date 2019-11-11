@@ -145,6 +145,7 @@ class GamePlay extends Platformer implements IMultiplayer {
             myInstance.starter.destroyGamePlay();
             (byId("playAgainBtn") as HTMLButtonElement).disabled = true;
             (byId("openGamePlay") as HTMLButtonElement).disabled = false;
+            (byId("out-of-game") as HTMLButtonElement).disabled = true;
 
             myInstance.starter.ioc.get.Network.connector.memo.save("activeGame", "none");
             myInstance.starter.ioc.get.Network.nameUI.disabled = (this as any).disabled = false;

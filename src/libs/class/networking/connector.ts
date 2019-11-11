@@ -251,8 +251,7 @@ class ConnectorClient {
 
           (byId("UIPlayerLives") as HTMLSpanElement).innerText = DEFAULT_PLAYER_DATA.INITIAL_LIVES.toString();
           (byId("your-name") as HTMLInputElement).value = this.memo.load("nickname");
-
-          (byId("playAgainBtn") as HTMLButtonElement).disabled = false;
+          (byId("out-of-game") as HTMLButtonElement).disabled = false;
           (byId("continue") as HTMLButtonElement).disabled = false;
           (byId("continue") as HTMLButtonElement).click();
           console.log(" (byId continue as HTMLButtonElement).click(); ");
@@ -267,6 +266,7 @@ class ConnectorClient {
           // destroy gamePlay
           console.log("OUT_OF_GAME");
           (byId("continue") as HTMLButtonElement).disabled = false;
+          (byId("out-of-game") as HTMLButtonElement).disabled = true;
           this.outOfGame(this.memo.load("activeGame"));
           break;
         }
