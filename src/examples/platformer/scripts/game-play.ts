@@ -198,10 +198,14 @@ class GamePlay extends Platformer implements IMultiplayer {
           y: root.player.position.y - 300,
         });
 
-        root.network.rtcMultiConnection.send({
-          netPos: root.player.position,
-          netDir: root.player.currentDir
-        });
+        if (root.player.velocity.x < 0.00001 && root.player.velocity.y == 0 &&
+          root.player.currentDir == "idle" ) {
+        } else {
+          root.network.rtcMultiConnection.send({
+            netPos: root.player.position,
+            netDir: root.player.currentDir
+          });
+        }
 
       }
     });

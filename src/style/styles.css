@@ -238,6 +238,7 @@ canvas {
   position: absolute;
   background: transparent;
   width: 33%;
+  z-index: 20;
   bottom: 0;
 }
 

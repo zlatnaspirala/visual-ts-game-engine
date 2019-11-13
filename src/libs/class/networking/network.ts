@@ -269,7 +269,7 @@ class Network {
     const whoIsTyping = document.querySelector("#who-is-typing");
     root.rtcMultiConnection.onmessage = function (e) {
 
-      if (root.injector) {
+      if (e.data.netPos) {
           root.injector.update(e);
           return;
       }
@@ -612,6 +612,7 @@ class Network {
         color: root.rtcMultiConnection.extra.color,
       });
 
+      console.log('test connection', root.rtcMultiConnection);
       root.rtcMultiConnection.send(root.senderUI.value);
       (byId("sender") as HTMLButtonElement).value = "";
 
@@ -622,7 +623,7 @@ class Network {
       e.target.disabled = true;
 
       const session = { audio: true, video: true };
-
+      console.log("test connection")
       root.rtcMultiConnection.captureUserMedia(function (stream) {
         const streamid = root.rtcMultiConnection.token();
         root.rtcMultiConnection.customStreams[streamid] = stream;
