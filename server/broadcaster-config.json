@@ -7,7 +7,7 @@
   "port": "9001",
   "enableLogs": "false",
   "autoRebootServerOnFailure": "false",
-  "isUseHTTPs": "true",
+  "isUseHTTPs": "false",
   "sslKey": "/etc/httpd/conf/ssl/maximumroulette.com.key",
   "sslCert": "/etc/httpd/conf/ssl/maximumroulette_com.crt",
   "sslCabundle": "/etc/httpd/conf/ssl/maximumroulette.ca-bundle",

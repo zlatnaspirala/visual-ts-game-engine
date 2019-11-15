@@ -3,7 +3,7 @@ import { DEFAULT_PLAYER_DATA } from "../../defaults";
 import { IMessageReceived, IUserRegData } from "../../interface/global";
 import { NetMsg, UniClick } from "../../types/global";
 import { byId, createAppEvent, encodeString, htmlHeader, validateEmail, validatePassword } from "../system";
-import EngineConfig from "./../../client-config";
+import EngineConfig from "../../../client-config";
 import Memo from "./../local-storage";
 
 class ConnectorClient {

@@ -11,7 +11,7 @@ var PORT = 9001;
 var isUseHTTPs = false;
 
 const jsonPath = {
-  config: 'broadcaster-config.json',
+  config: './broadcaster-config.json',
   logs: 'logs.json'
 };
 

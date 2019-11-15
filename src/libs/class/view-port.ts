@@ -1,4 +1,4 @@
-import ClientConfig from "../client-config";
+import ClientConfig from "../../client-config";
 
 /**
  * @description This class contain canvas dom operation.

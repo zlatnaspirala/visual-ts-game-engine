@@ -40,7 +40,8 @@ class Network {
 
     this.loggerUI = byId("network-panel") as HTMLDivElement;
     this.loggerMediaUI = byId("media-rtc2-controls") as HTMLDivElement;
-    this.loggerMediaUI.style.display = "block";
+    // Only for old versions of browsers in aspect of video chat implementation.
+    // this.loggerMediaUI.style.display = "block";
     this.loggerUI.style.display = "block";
     this.webCamView = byId("webCamView") as HTMLDivElement;
     this.webCamView.style.display = "block";
@@ -623,7 +624,6 @@ class Network {
       e.target.disabled = true;
 
       const session = { audio: true, video: true };
-      console.log("test connection")
       root.rtcMultiConnection.captureUserMedia(function (stream) {
         const streamid = root.rtcMultiConnection.token();
         root.rtcMultiConnection.customStreams[streamid] = stream;

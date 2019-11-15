@@ -1,4 +1,4 @@
-import { Addson } from "./types/global";
+import { Addson } from "./libs/types/global";
 
 /**
  * ClientConfig is config file for whole client part of application.

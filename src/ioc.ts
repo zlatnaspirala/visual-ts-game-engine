@@ -5,7 +5,7 @@ import Network from "./libs/class/networking/network";
 import { scriptManager } from "./libs/class/system";
 import ViewPort from "./libs/class/view-port";
 import VisualRender from "./libs/class/visual-render";
-import ClientConfig from "./libs/client-config";
+import ClientConfig from "./client-config";
 import GlobalEvent from "./libs/events/global-event";
 import { IUniVector } from "./libs/interface/global";
 import Starter from "./libs/starter";
