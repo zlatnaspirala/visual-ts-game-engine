@@ -219,14 +219,12 @@ function serverHandler(request, response) {
 var httpApp;
 
 if (isUseHTTPs) {
-  httpServer = require('https');
 
-  // See how to use a valid certificate:
-  // https://github.com/muaz-khan/WebRTC-Experiment/issues/62
+  httpServer = require('https');
   var options = {
-    key: "",
-    cert: "",
-    ca: ""
+    key: config.sslKey,
+    cert: config.sslCert,
+    ca: config.sslCabundle
   };
 
   var pfx = false;
@@ -266,13 +264,14 @@ if (isUseHTTPs) {
 RTCMultiConnectionServer.beforeHttpListen(httpApp, config);
 httpApp = httpApp.listen(process.env.PORT || PORT, process.env.IP || "0.0.0.0", function() {
   RTCMultiConnectionServer.afterHttpListen(httpApp, config);
-  console.log("listening !!")
+  console.log("listening on localhost")
 });
 
 // --------------------------
 // socket.io codes goes below
 
 ioServer(httpApp).on('connection', function(socket) {
+  console.log("<connection>")
   RTCMultiConnectionServer.addSocket(socket, config);
 
   const params = socket.handshake.query;

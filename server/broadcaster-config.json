@@ -1,7 +1,7 @@
 {
-  "socketURL": "/",
-  "dirPath": "",
-  "homePage": "app.html",
+  "socketURL": "http://localhost:9001/",
+  "dirPath": "/",
+  "homePage": "",
   "socketMessageEvent": "RTCMultiConnection-Message",
   "socketCustomEvent": "RTCMultiConnection-Custom-Message",
   "port": "9001",

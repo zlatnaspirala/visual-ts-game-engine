@@ -12,7 +12,7 @@
 // MIT License   - www.WebRTC-Experiment.com/licence
 // --------------------------------------------------
 
-var RTCMultiConnection = function(roomid, forceOptions) {
+var RTCMultiConnection3 = function(roomid, forceOptions) {
 
     var browserFakeUserAgent = 'Fake/5.0 (FakeOS) AppleWebKit/123 (KHTML, like Gecko) Fake/12.3.4567.89 Fake/123.45';
 
@@ -168,6 +168,7 @@ var RTCMultiConnection = function(roomid, forceOptions) {
         if (connection.enableLogs) {
             if (connection.socketURL == '/') {
                 console.info('socket.io url is: ', location.origin + '/');
+                connection.socketURL = "http://localhost:9001/";
             } else {
                 console.info('socket.io url is: ', connection.socketURL);
             }
@@ -5900,11 +5901,11 @@ var RTCMultiConnection = function(roomid, forceOptions) {
 };
 
 if (typeof module !== 'undefined' /* && !!module.exports*/ ) {
-    module.exports = exports = RTCMultiConnection;
+  module.exports = exports = RTCMultiConnection3;
 }
 
 if (typeof define === 'function' && define.amd) {
     define('RTCMultiConnection', [], function() {
-        return RTCMultiConnection;
+        return RTCMultiConnection3;
     });
 }

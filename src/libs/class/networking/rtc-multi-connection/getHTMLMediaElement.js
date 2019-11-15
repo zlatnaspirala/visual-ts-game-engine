@@ -1,6 +1,7 @@
+// __________________
+// getHTMLMediaElement.js
 
-window.getHTMLMediaElement = function(mediaElement, config) {
-
+export function getHTMLMediaElement(mediaElement, config) {
     config = config || {};
 
     if (!mediaElement.nodeName || (mediaElement.nodeName.toLowerCase() != 'audio' && mediaElement.nodeName.toLowerCase() != 'video')) {
@@ -42,8 +43,6 @@ window.getHTMLMediaElement = function(mediaElement, config) {
 
     var mediaElementContainer = document.createElement('div');
     mediaElementContainer.className = 'media-container';
-    mediaElementContainer.id = "mediaHolder" + config.title;
-    mediaElementContainer.setAttribute('style', 'position:absolute;');
 
     var mediaControls = document.createElement('div');
     mediaControls.className = 'media-controls';
@@ -242,9 +241,7 @@ window.getHTMLMediaElement = function(mediaElement, config) {
     }
 
     var mediaBox = document.createElement('div');
-    mediaBox.className = 'dragging';
-    mediaBox.onmousedown = function() { dragging.startMoving(this, mediaElementContainer.id, event) };
-    mediaBox.onmouseup = function() { dragging.stopMoving(mediaElementContainer.id) };
+    mediaBox.className = 'media-box';
     mediaElementContainer.appendChild(mediaBox);
 
     if (config.title) {
@@ -264,8 +261,7 @@ window.getHTMLMediaElement = function(mediaElement, config) {
         mediaBox.style.height = config.height + 'px';
     }
 
-    // mediaBox.querySelector('video').style.maxHeight = innerHeight + 'px';
-    mediaBox.querySelector('video').style.maxHeight = 320 + 'px';
+    mediaBox.querySelector('video').style.maxHeight = innerHeight + 'px';
 
     var times = 0;
 
@@ -281,8 +277,7 @@ window.getHTMLMediaElement = function(mediaElement, config) {
             volumeControl.style.marginLeft = (mediaElementContainer.clientWidth - volumeControl.clientWidth - 2) + 'px';
         }
 
-        // volumeControl.style.marginTop = (mediaElementContainer.clientHeight - volumeControl.clientHeight - 2) + 'px';
-        volumeControl.style.marginTop = "0";
+        volumeControl.style.marginTop = (mediaElementContainer.clientHeight - volumeControl.clientHeight - 2) + 'px';
 
         if (times < 10) {
             times++;
@@ -336,6 +331,9 @@ window.getHTMLMediaElement = function(mediaElement, config) {
 
     return mediaElementContainer;
 }
+
+// __________________
+// getAudioElement.js
 
 function getAudioElement(mediaElement, config) {
     config = config || {};

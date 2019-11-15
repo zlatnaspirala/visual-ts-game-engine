@@ -22,7 +22,7 @@ self.addEventListener("install", function (event) {
     })
   );
 });
-
+/*
 self.addEventListener("fetch", function (event) {
 
   event.respondWith(
@@ -30,9 +30,11 @@ self.addEventListener("fetch", function (event) {
       return response || fetch(event.request)
     })
   );
-});
 
+});
+*/
 self.addEventListener("fetch", function (event) {
+  if (event.request.method === "POST") { return; }
   event.respondWith(
     caches.open("dynamic-content-v1").then(function (cache) {
       // check if the requested URL is inside the dynamic-content-v1
@@ -47,7 +49,7 @@ self.addEventListener("fetch", function (event) {
       });
     })
   );
-
+ /*
   if (event.request.mode === 'navigate' || (event.request.method === 'GET' && event.request.headers.get('accept').includes('text/html'))) {
     event.respondWith(
       fetch(event.request.url).catch(error => {
@@ -63,6 +65,6 @@ self.addEventListener("fetch", function (event) {
         return response || fetch(event.request);
       })
     );
-  }
+  }*/
 
 });

@@ -3,12 +3,11 @@ require("../../../externals/jquery.slim.min");
 const $ = require("jquery");
 import "popper.js";
 import "../../../externals/bootstrap.min";
-
 import { byId, bytesToSize, getElement, getRandomColor, htmlHeader } from "../system";
-import BroadcasterMedia from "./broadcaster-media";
 import "./rtc-multi-connection/linkify";
-import * as RTCMultiConnection3 from "./rtc-multi-connection/RTCMultiConnection3";
+import  * as RTCMultiConnection3 from "./rtc-multi-connection/RTCMultiConnection3";
 import * as io from "./rtc-multi-connection/socket.io";
+import { getHTMLMediaElement } from "./rtc-multi-connection/getHTMLMediaElement"
 
 class Broadcaster {
 
@@ -19,8 +18,9 @@ class Broadcaster {
   private txtRoomId: HTMLElement;
   private publicRoomIdentifier: string;
   private connector;
+  private chatContainer = document.querySelector('.chat-output');
 
-  private showBroadcastOnInit: boolean = false;
+  private showBroadcastOnInit: boolean = true;
 
   constructor(config: any) {
 
@@ -39,243 +39,162 @@ class Broadcaster {
   }
 
   private initWebRtc = () => {
-    const root = this;
+    let root = this;
+    // ......................................................
+    // ..................RTCMultiConnection Code.............
+    // ......................................................
 
-    root.connection = new RTCMultiConnection();
+    console.log("what is rtc", RTCMultiConnection3)
+    this.connection = new RTCMultiConnection3();
 
     // by default, socket.io server is assumed to be deployed on your own URL
-    root.connection.socketURL = "/";
+    this.connection.socketURL = 'http://localhost:9001/';
 
     // comment-out below line if you do not have your own socket.io server
     // connection.socketURL = 'https://rtcmulticonnection.herokuapp.com:443/';
 
-    root.connection.socketMessageEvent = "video-conference-demo";
+    this.connection.socketMessageEvent = 'audio-video-file-chat-demo';
 
-    root.connection.session = {
-      audio: true,
-      video: true
+    this.connection.enableFileSharing = true; // by default, it is "false".
+
+    this.connection.session = {
+        audio: true,
+        video: true,
+        data: true
     };
 
-    root.connection.sdpConstraints.mandatory = {
-      OfferToReceiveAudio: true,
-      OfferToReceiveVideo: true
+    this.connection.sdpConstraints.mandatory = {
+        OfferToReceiveAudio: true,
+        OfferToReceiveVideo: true
     };
-
-    // STAR_FIX_VIDEO_AUTO_PAUSE_ISSUES
-    // via: https://github.com/muaz-khan/RTCMultiConnection/issues/778#issuecomment-524853468
-    let bitrates = 512;
-    let resolutions = "Ultra-HD";
-    let videoConstraints = {};
-
-    if (resolutions == "HD") {
-      videoConstraints = {
-        width: {
-          ideal: 1280
-        },
-        height: {
-          ideal: 720
-        },
-        frameRate: 30
-      };
-    }
-
-    if (resolutions == "Ultra-HD") {
-      videoConstraints = {
-        width: {
-          ideal: 1920
-        },
-        height: {
-          ideal: 1080
-        },
-        frameRate: 30
-      };
-    }
-
-    root.connection.mediaConstraints = {
-      video: videoConstraints,
-      audio: true
-    };
-
-    let CodecsHandler = root.connection.CodecsHandler;
-
-    root.connection.processSdp = function (sdp) {
-      const codecs = "vp8";
-
-      if (codecs.length) {
-        sdp = CodecsHandler.preferCodec(sdp, codecs.toLowerCase());
-      }
-
-      if (resolutions == "HD") {
-        sdp = CodecsHandler.setApplicationSpecificBandwidth(sdp, {
-          audio: 128,
-          video: bitrates,
-          screen: bitrates
-        });
-
-        sdp = CodecsHandler.setVideoBitrates(sdp, {
-          min: bitrates * 8 * 1024,
-          max: bitrates * 8 * 1024,
-        });
-      }
-
-      if (resolutions == "Ultra-HD") {
-        sdp = CodecsHandler.setApplicationSpecificBandwidth(sdp, {
-          audio: 128,
-          video: bitrates,
-          screen: bitrates
-        });
-
-        sdp = CodecsHandler.setVideoBitrates(sdp, {
-          min: bitrates * 8 * 1024,
-          max: bitrates * 8 * 1024,
-        });
-      }
-
-      return sdp;
-    };
-    // END_FIX_VIDEO_AUTO_PAUSE_ISSUES
 
     // https://www.rtcmulticonnection.org/docs/iceServers/
     // use your own TURN-server here!
-    root.connection.iceServers = [{
-      urls: [
-        "stun:stun.l.google.com:19302",
-        "stun:stun1.l.google.com:19302",
-        "stun:stun2.l.google.com:19302",
-        "stun:stun.l.google.com:19302?transport=udp",
-      ],
+    this.connection.iceServers = [{
+        'urls': [
+            'stun:stun.l.google.com:19302',
+            'stun:stun1.l.google.com:19302',
+            'stun:stun2.l.google.com:19302',
+            'stun:stun.l.google.com:19302?transport=udp',
+        ]
     }];
 
-    root.connection.videosContainer = document.getElementById("videos-container");
-    root.connection.onstream = function (event) {
-      const existing = document.getElementById(event.streamid);
-      if (existing && existing.parentNode) {
-        existing.parentNode.removeChild(existing);
-      }
+    this.connection.videosContainer = document.getElementById('videos-container');
+    this.connection.onstream = function(event) {
+        event.mediaElement.removeAttribute('src');
+        event.mediaElement.removeAttribute('srcObject');
 
-      event.mediaElement.removeAttribute("src");
-      event.mediaElement.removeAttribute("srcObject");
-      event.mediaElement.muted = true;
-      event.mediaElement.volume = 0;
-
-      const video = document.createElement("video");
-
-      try {
-        video.setAttributeNode(document.createAttribute("autoplay"));
-        video.setAttributeNode(document.createAttribute("playsinline"));
-      } catch (e) {
-        video.setAttribute("autoplay", true);
-        video.setAttribute("playsinline", true);
-      }
-
-      if (event.type === "local") {
-        video.volume = 0;
-        try {
-          video.setAttributeNode(document.createAttribute("muted"));
-        } catch (e) {
-          video.setAttribute("muted", true);
+        var video = document.createElement('video');
+        video.controls = true;
+        if(event.type === 'local') {
+            video.muted = true;
         }
-      }
-      video.srcObject = event.stream;
+        video.srcObject = event.stream;
 
-      const width = parseInt(root.connection.videosContainer.clientWidth / 3) - 20;
-      const mediaElement = getHTMLMediaElement(video, {
-        title: event.userid,
-        buttons: ["full-screen"],
-        width: width,
-        showOnMouseEnter: false
-      });
-
-      root.connection.videosContainer.appendChild(mediaElement);
-
-      setTimeout(function () {
-        mediaElement.media.play();
-      }, 5000);
-
-      mediaElement.id = event.streamid;
-
-      // to keep room-id in cache
-      localStorage.setItem(root.connection.socketMessageEvent, root.connection.sessionid);
-
-      chkRecordConference.parentNode.style.display = "none";
-
-      if (chkRecordConference.checked === true) {
-        btnStopRecording.style.display = "inline-block";
-        recordingStatus.style.display = "inline-block";
-
-        let recorder = root.connection.recorder;
-        if (!recorder) {
-          recorder = RecordRTC([event.stream], {
-            type: "video"
-          });
-          recorder.startRecording();
-          root.connection.recorder = recorder;
-        }
-        else {
-          recorder.getInternalRecorder().addStreams([event.stream]);
-        }
-
-        if (!root.connection.recorder.streams) {
-          root.connection.recorder.streams = [];
-        }
-
-        root.connection.recorder.streams.push(event.stream);
-        recordingStatus.innerHTML = "Recording " + root.connection.recorder.streams.length + " streams";
-      }
-
-      if (event.type === "local") {
-        root.connection.socket.on("disconnect", function () {
-          if (!root.connection.getAllParticipants().length) {
-            location.reload();
-          }
+        var width: number = parseInt(root.connection.videosContainer.clientWidth / 2) - 20;
+        var mediaElement = getHTMLMediaElement(video, {
+            title: event.userid,
+            buttons: ['full-screen'],
+            width: width,
+            showOnMouseEnter: false
         });
-      }
+
+        root.connection.videosContainer.appendChild(mediaElement);
+
+        setTimeout(function() {
+            (mediaElement as any).media.play();
+        }, 5000);
+
+        mediaElement.id = event.streamid;
     };
 
-    let recordingStatus = document.getElementById("recording-status");
-    let chkRecordConference = document.getElementById("record-entire-conference");
-    let btnStopRecording = document.getElementById("btn-stop-recording");
-
-    btnStopRecording.onclick = function () {
-      let recorder = connection.recorder;
-      if (!recorder) return alert("No recorder found.");
-      recorder.stopRecording(function () {
-        const blob = recorder.getBlob();
-        invokeSaveAsDialog(blob);
-
-        root.connection.recorder = null;
-        btnStopRecording.style.display = "none";
-        recordingStatus.style.display = "none";
-        chkRecordConference.parentNode.style.display = "inline-block";
-      });
-    };
-
-    root.connection.onstreamended = function (event) {
-      const mediaElement = document.getElementById(event.streamid);
-      if (mediaElement) {
-        mediaElement.parentNode.removeChild(mediaElement);
-      }
-    };
-
-    root.connection.onMediaError = function (e) {
-      if (e.message === "Concurrent mic process limit.") {
-        if (DetectRTC.audioInputDevices.length <= 1) {
-          alert("Please select external microphone. Check github issue number 483.");
-          return;
+    this.connection.onstreamended = function(event) {
+        var mediaElement = document.getElementById(event.streamid);
+        if (mediaElement) {
+            mediaElement.parentNode.removeChild(mediaElement);
         }
-
-        const secondaryMic = DetectRTC.audioInputDevices[1].deviceId;
-        root.connection.mediaConstraints.audio = {
-          deviceId: secondaryMic
-        };
-
-        root.connection.join(root.connection.sessionid);
-      }
     };
+
+    this.connection.onmessage = root.appendDIV;
+    this.connection.filesContainer = document.getElementById('file-container');
+
+    this.connection.onopen = function() {
+        (document.getElementById('share-file') as HTMLInputElement).disabled = false;
+        (document.getElementById('input-text-chat') as HTMLInputElement).disabled = false;
+        (document.getElementById('btn-leave-room') as HTMLInputElement).disabled = false;
+
+        document.querySelector('h1').innerHTML = 'You are connected with: ' +
+          root.connection.getAllParticipants().join(', ');
+    };
+
+    this.connection.onclose = function() {
+        if (this.connection.getAllParticipants().length) {
+            document.querySelector('h1').innerHTML = 'You are still connected with: ' +
+              this.connection.getAllParticipants().join(', ');
+        } else {
+            document.querySelector('h1').innerHTML = 'Seems session has been closed or all participants left.';
+        }
+    };
+
+    this.connection.onEntireSessionClosed = function(event) {
+        (document.getElementById('share-file') as HTMLInputElement).disabled = true;
+        (document.getElementById('input-text-chat') as HTMLInputElement).disabled = true;
+        (document.getElementById('btn-leave-room') as HTMLInputElement).disabled = true;
+
+        (document.getElementById('open-or-join-room') as HTMLInputElement).disabled = false;
+        (document.getElementById('open-room') as HTMLInputElement).disabled = false;
+        (document.getElementById('join-room') as HTMLInputElement).disabled = false;
+        (document.getElementById('room-id') as HTMLInputElement).disabled = false;
+
+        this.connection.attachStreams.forEach(function(stream) {
+            stream.stop();
+        });
+
+        // don't display alert for moderator
+        if (this.connection.userid === event.userid) return;
+        document.querySelector('h1').innerHTML = 'Entire session has been closed by the moderator: ' + event.userid;
+    };
+
+    this.connection.onUserIdAlreadyTaken = function(useridAlreadyTaken, yourNewUserId) {
+        // seems room is already opened
+        root.connection.join(useridAlreadyTaken);
+    };
+
+    this.postAttach()
 
   }
 
-  private looper = () => {}
+  private showRoomURL(roomid) {
+      var roomHashURL = '#' + roomid;
+      var roomQueryStringURL = '?roomid=' + roomid;
+
+      var html = '<h2>Unique URL for your room:</h2><br>';
+
+      html += 'Hash URL: <a href="' + roomHashURL + '" target="_blank">' + roomHashURL + '</a>';
+      html += '<br>';
+      html += 'QueryString URL: <a href="' + roomQueryStringURL + '" target="_blank">' + roomQueryStringURL + '</a>';
+
+      var roomURLsDiv = document.getElementById('room-urls');
+      roomURLsDiv.innerHTML = html;
+
+      roomURLsDiv.style.display = 'block';
+  }
+
+  private disableInputButtons = function() {
+        (document.getElementById('open-or-join-room') as HTMLInputElement).disabled = true;
+        (document.getElementById('open-room') as HTMLInputElement).disabled = true;
+        (document.getElementById('join-room') as HTMLInputElement).disabled = true;
+        (document.getElementById('room-id') as HTMLInputElement).disabled = true;
+  }
+
+  private appendDIV(event) {
+        var div = document.createElement('div');
+        div.innerHTML = event.data || event;
+        this.chatContainer.insertBefore(div, this.chatContainer.firstChild);
+        div.tabIndex = 0;
+        div.focus();
+        document.getElementById('input-text-chat').focus();
+  }
 
   private alertBox(message, title, specialMessage?, callback?) {
     callback = callback || function () { /**/ };
@@ -300,112 +219,130 @@ class Broadcaster {
     });
   }
 
+  private postAttach () {
+
+    let root = this;
+    var roomid = '';
+    if (localStorage.getItem(root.connection.socketMessageEvent)) {
+      roomid = localStorage.getItem(root.connection.socketMessageEvent);
+    } else {
+      roomid = root.connection.token();
+    }
+    (document.getElementById('room-id') as HTMLInputElement).value = roomid;
+    (document.getElementById('room-id') as HTMLInputElement).onkeyup = function() {
+      localStorage.setItem(root.connection.socketMessageEvent, (this as HTMLInputElement).value);
+    };
+
+    var hashString = location.hash.replace('#', '');
+    if (hashString.length && hashString.indexOf('comment-') == 0) {
+      hashString = '';
+    }
+
+    var roomid: string = (window as any).params.roomid;
+    if (!roomid && hashString.length) {
+        roomid = hashString;
+    }
+
+    if (roomid && roomid.length) {
+      (document.getElementById('room-id') as HTMLInputElement).value = roomid;
+      localStorage.setItem(root.connection.socketMessageEvent, roomid);
+
+      // auto-join-room
+      (function reCheckRoomPresence() {
+        root.connection.checkPresence(roomid, function(isRoomExists) {
+            if (isRoomExists) {
+                root.connection.join(roomid);
+                return;
+            }
+
+            setTimeout(reCheckRoomPresence, 5000);
+        });
+      })();
+
+      root.disableInputButtons();
+    }
+  }
+
   private attachEvents() {
 
     const root = this;
-
-    document.getElementById("open-room").onclick = function () {
-      root.disableInputButtons();
-      root.connection.open(document.getElementById("room-id").value, function (isRoomOpened, roomid, error) {
-        if (isRoomOpened === true) {
-          root.showRoomURL(root.connection.sessionid);
-        }
-        else {
-          root.disableInputButtons(true);
-          if (error === "Room not available") {
-            alert("Someone already created this room. Please either join or create a separate room.");
-            return;
-          }
-          alert(error);
-        }
-      });
+    (window as any).enableAdapter = true;
+    // .......................UI Code........................
+    document.getElementById('open-room').onclick = function() {
+        root.disableInputButtons();
+        root.connection.open((document.getElementById('room-id') as HTMLInputElement).value, function() {
+            root.showRoomURL(root.connection.sessionid);
+        });
     };
 
-    document.getElementById("join-room").onclick = function () {
-      root.disableInputButtons();
-      root.connection.join((document.getElementById("room-id") as HTMLInputElement).value, function (isJoinedRoom, roomid, error) {
-        if (error) {
-          root.disableInputButtons(true);
-          if (error === "Room not available") {
-            alert("This room does not exist. Please either create it or wait for moderator to enter in the room.");
-            return;
-          }
-          alert(error);
-        }
-      });
+    document.getElementById('join-room').onclick = function() {
+        root.disableInputButtons();
+        root.connection.join((document.getElementById('room-id') as HTMLInputElement).value);
     };
 
-    document.getElementById("open-or-join-room").onclick = function () {
-      root.disableInputButtons();
-      root.connection.openOrJoin((document.getElementById("room-id") as HTMLInputElement).value, function (isRoomExist, roomid, error) {
-        if (error) {
-          root.disableInputButtons(true);
-          alert(error);
-        }
-        else if (root.connection.isInitiator === true) {
-          // if room doesn't exist, it means that current user will create the room
-          root.showRoomURL(roomid);
-        }
-      });
+    document.getElementById('open-or-join-room').onclick = function() {
+        root.disableInputButtons();
+        root.connection.openOrJoin((document.getElementById('room-id') as HTMLInputElement).value,
+          function(isRoomExists, roomid) {
+            if (!isRoomExists) {
+              root.showRoomURL(roomid);
+            }
+          });
     };
 
-  }
+    (document.getElementById('btn-leave-room') as HTMLButtonElement).onclick = function() {
+        (this as HTMLButtonElement).disabled = true;
 
-  private confirmBox(message, callback) {
-    $("#btn-confirm-action").html("Confirm").unbind("click").bind("click", function (e) {
-      e.preventDefault();
-      $("#confirm-box").modal("hide");
-      $("#confirm-box-topper").hide();
-      callback(true);
-    });
+        if (root.connection.isInitiator) {
+            // use this method if you did NOT set "autoCloseEntireSession===true"
+            // for more info: https://github.com/muaz-khan/RTCMultiConnection#closeentiresession
+            root.connection.closeEntireSession(function() {
+                document.querySelector('h1').innerHTML = 'Entire session has been closed.';
+            });
+        } else {
+            root.connection.leave();
+        }
+    };
 
-    $("#btn-confirm-close").html("Cancel");
+    // ......................................................
+    // ................FileSharing/TextChat Code.............
+    // ......................................................
 
-    $(".btn-confirm-close").unbind("click").bind("click", function (e) {
-      e.preventDefault();
-      $("#confirm-box").modal("hide");
-      $("#confirm-box-topper").hide();
-      callback(false);
-    });
+    document.getElementById('share-file').onclick = function() {
+        var fileSelector = new (window as any).FileSelector();
+        fileSelector.selectSingleFile(function(file) {
+            root.connection.send(file);
+        });
+    };
 
-    $("#confirm-message").html(message);
-    $("#confirm-title").html("Please Confirm");
-    $("#confirm-box-topper").show();
+    (document.getElementById('input-text-chat') as HTMLInputElement).onkeyup = function(e) {
+        if (e.keyCode != 13) return;
 
-    $("#confirm-box").modal({
-      backdrop: "static",
-      keyboard: false,
-    });
-  }
+        // removing trailing/leading whitespace
+        (this as HTMLInputElement).value = (this as HTMLInputElement).value.replace(/^\s+|\s+$/g, '');
+        if (!(this as HTMLInputElement).value.length) return;
 
-  private showRoomURL(roomid) {
-    const roomHashURL = "#" + roomid;
-    const roomQueryStringURL = "?roomid=" + roomid;
+        root.connection.send((this as HTMLInputElement).value);
+        root.appendDIV((this as HTMLInputElement).value);
+        (this as HTMLInputElement).value = '';
+    };
 
-    let html = "<h2>Unique URL for your room:</h2><br>";
+    // ......................................................
+    // ......................Handling Room-ID................
+    // ......................................................
+    (function() {
+        var params = {},
+            r = /([^&=]+)=?([^&]*)/g;
 
-    html += 'Hash URL: <a href="' + roomHashURL + '" target="_blank">' + roomHashURL + "</a>";
-    html += "<br>";
-    html += 'QueryString URL: <a href="' + roomQueryStringURL + '" target="_blank">' + roomQueryStringURL + "</a>";
+        function d(s) {
+            return decodeURIComponent(s.replace(/\+/g, ' '));
+        }
+        var match, search = window.location.search;
+        while (match = r.exec(search.substring(1)))
+            params[d(match[1])] = d(match[2]);
+        (window as any).params = params;
+    })();
 
-    const roomURLsDiv = document.getElementById("room-urls");
-    roomURLsDiv.innerHTML = html;
-
-    roomURLsDiv.style.display = "block";
-}
-
-
-  private openInNewWindow = () => {
-    //
-  }
-
-  private disableInputButtons(enable: boolean | undefined) {
-    (document.getElementById("room-id") as HTMLInputElement).onkeyup();
-    if (typeof enable === "undefined") { return; }
-    (document.getElementById("open-or-join-room") as HTMLInputElement).disabled = !enable;
-    (document.getElementById("open-room") as HTMLInputElement).disabled = !enable;
-    (document.getElementById("join-room") as HTMLInputElement).disabled = !enable;
-    (document.getElementById("room-id") as HTMLInputElement).disabled = !enable;
   }
 
   private showBroadcaster = () => {

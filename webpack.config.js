@@ -8,6 +8,7 @@ const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
 
 var internalConfig = {
     createDocumentation: false,
+    stats: "errors-only"
 };
 
 let documentationPlugin = new TypedocWebpackPlugin({
@@ -27,6 +28,7 @@ let documentationPlugin = new TypedocWebpackPlugin({
 let webPackModule = {
     mode: "development",
     watch: true,
+    stats: internalConfig.stats,
     entry: ["./src/app.ts"],
     output: {
         filename: "visualjs2.js",

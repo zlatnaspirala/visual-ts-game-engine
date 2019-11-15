@@ -7,166 +7,32 @@
 
 <div class="broadcaster" id="broadcasterUI">
 
-  <header style="margin-bottom: 20px;">
+  <link rel="stylesheet" href="/demos/stylesheet.css">
 
-    <div style="float: right;margin: 15px auto;">
-      <button class="btn btn-primary" data-toggle="modal" data-target="#startRoomModel">Create A New Room</button>
-      <button id="btn-show-join-hidden-room" class="top-span btn btn-secondary" data-toggle="modal" data-target="#joinRoomModel">Join
-        A Room</button>
-      <span class="top-span">Active rooms: <span id="active-rooms">0</span></span>
-    </div>
-  </header>
+  <h3>
+    Audio+Video+TextChat+FileSharing
+    Multi-user (many-to-many) video streaming + text chat + file sharing using mesh networking model.
+  </h3>
 
-  <div class="modal fade" id="startRoomModel" tabindex="-1" role="dialog" aria-labelledby="startRoomModelLabel"
-    aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="startRoomModelLabel">Create A New Room</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <form>
-            <div class="form-group">
-              <p>
-                <label for="txt-roomid" class="col-form-label">Enter Room ID:</label>
-                <input type="text" class="form-control" id="txt-roomid">
-              </p>
+  <section class="make-center">
+    <input type="text" id="room-id" value="abcdef" autocorrect=off autocapitalize=off size=20>
+    <button id="open-room">Open Room</button>
+    <button id="join-room">Join Room</button>
+    <button id="open-or-join-room">Auto Open Or Join Room</button>
 
-              <p>
-                <label for="txt-user-name" class="col-form-label">Enter Your Name:</label>
-                <input type="text" class="form-control" id="txt-user-name">
-              </p>
+    <br><br>
+    <input type="text" id="input-text-chat" placeholder="Enter Text Chat" disabled>
+    <button id="share-file" disabled>Share File</button>
+    <br><br>
+    <button id="btn-leave-room" disabled>Leave /or close the room</button>
 
-              <p style="display: none;">
-                <label for="txt-room-password" class="col-form-label">Enter Room Password:</label>
-                <input type="text" class="form-control" id="txt-room-password">
-              </p>
-
-              <p>
-                <label class="col-form-label"><input type="checkbox" id="chk-hidden-room"> Hidden Room? (Hide from the
-                  list)</label>
-              </p>
-            </div>
-          </form>
-        </div>
-        <div class="modal-footer">
-          <p style="position: absolute;left: 20px;">
-            <label class="col-form-label"><input type="checkbox" id="chk-room-password"> Set Room Password?</label>
-          </p>
-
-          <button type="button" class="btn" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary" id="btn-create-room">Create</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="modal fade" id="joinRoomModel" tabindex="-1" role="dialog" aria-labelledby="joinRoomModelLabel"
-    aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="joinRoomModelLabel">Join A Room</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <form>
-            <div class="form-group">
-              <p>
-                <label for="txt-roomid-hidden" class="col-form-label">Enter Room ID:</label>
-                <input type="text" class="form-control" id="txt-roomid-hidden">
-              </p>
-
-              <p>
-                <label for="txt-user-name-hidden" class="col-form-label">Enter Your Name:</label>
-                <input type="text" class="form-control" id="txt-user-name-hidden">
-              </p>
-
-              <p style="display: none;">
-                <label for="txt-room-password-hidden" class="col-form-label">Enter Room Password:</label>
-                <input type="text" class="form-control" id="txt-room-password-hidden">
-              </p>
-            </div>
-          </form>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary" id="btn-join-hidden-room">Join</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div id="confirm-box-topper" style="display:none;z-index:99999999;top:0;left:0;bottom:0;right:0;width:100%;height:100%;position:fixed;background:#000000ad;"></div>
-  <div id="alert-box" class="modal fade" style="display:none;z-index:999999999999999;">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="alert-title">Alert</h5>
-          <button type="button" class="close btn-alert-close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <div id="alert-message" class="model-list"></div>
-        </div>
-
-        <div class="modal-footer">
-          <p id="alert-special"></p>
-          <button class="btn btn-primary btn-alert-close">Close</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div id="confirm-box" class="modal fade" style="display:none;z-index:999999999999999;">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="confirm-title">Please Confirm</h5>
-          <button type="button" class="close btn-confirm-close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div id="confirm-message" class="modal-body"></div>
-
-        <div class="modal-footer">
-          <button class="btn btn-confirm-close" id="btn-confirm-close">Cancel</button>
-          <button class="btn btn-primary" id="btn-confirm-action">Confirm</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <section class="room-section">
-    <table class="table">
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>Room ID</th>
-          <th>Owner ID</th>
-          <th>Session</th>
-          <th>Extra</th>
-          <th>Participants</th>
-          <th>Join</th>
-        </tr>
-      </thead>
-      <tbody id="rooms-list">
-        <tr>
-          <td colspan=9>No active room found for this demo.</td>
-        </tr>
-      </tbody>
-    </table>
-  </section>
-
-  <section class="video-container">
-    <div id="videos-container" class="media-elements"></div>
     <div id="room-urls" style="text-align: center;display: none;background: #F1EDED;margin: 15px -10px;border: 1px solid rgb(189, 189, 189);border-left: 0;border-right: 0;"></div>
+
+    <div id="chat-container">
+        <div id="file-container"></div>
+        <div class="chat-output"></div>
+    </div>
+    <div id="videos-container"></div>
   </section>
 
 </div>
