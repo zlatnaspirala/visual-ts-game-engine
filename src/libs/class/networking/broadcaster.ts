@@ -2,7 +2,6 @@
 require("../../../externals/jquery.slim.min");
 const $ = require("jquery");
 import "popper.js";
-// require("../../../externals/popper.min");
 import "../../../externals/bootstrap.min";
 
 import { byId, bytesToSize, getElement, getRandomColor, htmlHeader } from "../system";
@@ -13,7 +12,7 @@ import * as io from "./rtc-multi-connection/socket.io";
 
 class Broadcaster {
 
-  private rtcMultiConnection: any;
+  private connection: any;
   private engineConfig: any;
   private popupUI: HTMLDivElement = null;
   private webCamView: HTMLDivElement;
@@ -29,7 +28,6 @@ class Broadcaster {
 
     const root = this;
     this.engineConfig = config;
-    // this.webCamView = byId("webCamView") as HTMLDivElement;
     if (this.showBroadcastOnInit) {
       this.showBroadcaster();
     }
@@ -37,44 +35,247 @@ class Broadcaster {
   }
 
   public closeAllPeers(): void {
-    this.rtcMultiConnection.close();
+    this.connection.close();
   }
 
   private initWebRtc = () => {
     const root = this;
-    // this object is used to get uniquie rooms based on this demo
-    // i.e. only those rooms that are created on this page
-    this.publicRoomIdentifier = "video-conference-dashboard";
-    this.rtcMultiConnection = new (RTCMultiConnection3 as any)();
-    this.rtcMultiConnection.socketURL =
-      location.protocol + "//" +
-      root.engineConfig.getDomain() + ":" +
-      root.engineConfig.getBroadcasterPort() + "/";
-    /// make this room public
-    this.rtcMultiConnection.publicRoomIdentifier = this.publicRoomIdentifier;
-    this.rtcMultiConnection.socketMessageEvent = this.publicRoomIdentifier;
-    // keep room opened even if owner leaves
-    this.rtcMultiConnection.autoCloseEntireSession = true;
 
-    this.rtcMultiConnection.connectSocket(function (socket) {
+    root.connection = new RTCMultiConnection();
 
-      root.looper();
-      socket.on("disconnect", function () {
-        location.reload();
+    // by default, socket.io server is assumed to be deployed on your own URL
+    root.connection.socketURL = "/";
+
+    // comment-out below line if you do not have your own socket.io server
+    // connection.socketURL = 'https://rtcmulticonnection.herokuapp.com:443/';
+
+    root.connection.socketMessageEvent = "video-conference-demo";
+
+    root.connection.session = {
+      audio: true,
+      video: true
+    };
+
+    root.connection.sdpConstraints.mandatory = {
+      OfferToReceiveAudio: true,
+      OfferToReceiveVideo: true
+    };
+
+    // STAR_FIX_VIDEO_AUTO_PAUSE_ISSUES
+    // via: https://github.com/muaz-khan/RTCMultiConnection/issues/778#issuecomment-524853468
+    let bitrates = 512;
+    let resolutions = "Ultra-HD";
+    let videoConstraints = {};
+
+    if (resolutions == "HD") {
+      videoConstraints = {
+        width: {
+          ideal: 1280
+        },
+        height: {
+          ideal: 720
+        },
+        frameRate: 30
+      };
+    }
+
+    if (resolutions == "Ultra-HD") {
+      videoConstraints = {
+        width: {
+          ideal: 1920
+        },
+        height: {
+          ideal: 1080
+        },
+        frameRate: 30
+      };
+    }
+
+    root.connection.mediaConstraints = {
+      video: videoConstraints,
+      audio: true
+    };
+
+    let CodecsHandler = root.connection.CodecsHandler;
+
+    root.connection.processSdp = function (sdp) {
+      const codecs = "vp8";
+
+      if (codecs.length) {
+        sdp = CodecsHandler.preferCodec(sdp, codecs.toLowerCase());
+      }
+
+      if (resolutions == "HD") {
+        sdp = CodecsHandler.setApplicationSpecificBandwidth(sdp, {
+          audio: 128,
+          video: bitrates,
+          screen: bitrates
+        });
+
+        sdp = CodecsHandler.setVideoBitrates(sdp, {
+          min: bitrates * 8 * 1024,
+          max: bitrates * 8 * 1024,
+        });
+      }
+
+      if (resolutions == "Ultra-HD") {
+        sdp = CodecsHandler.setApplicationSpecificBandwidth(sdp, {
+          audio: 128,
+          video: bitrates,
+          screen: bitrates
+        });
+
+        sdp = CodecsHandler.setVideoBitrates(sdp, {
+          min: bitrates * 8 * 1024,
+          max: bitrates * 8 * 1024,
+        });
+      }
+
+      return sdp;
+    };
+    // END_FIX_VIDEO_AUTO_PAUSE_ISSUES
+
+    // https://www.rtcmulticonnection.org/docs/iceServers/
+    // use your own TURN-server here!
+    root.connection.iceServers = [{
+      urls: [
+        "stun:stun.l.google.com:19302",
+        "stun:stun1.l.google.com:19302",
+        "stun:stun2.l.google.com:19302",
+        "stun:stun.l.google.com:19302?transport=udp",
+      ],
+    }];
+
+    root.connection.videosContainer = document.getElementById("videos-container");
+    root.connection.onstream = function (event) {
+      const existing = document.getElementById(event.streamid);
+      if (existing && existing.parentNode) {
+        existing.parentNode.removeChild(existing);
+      }
+
+      event.mediaElement.removeAttribute("src");
+      event.mediaElement.removeAttribute("srcObject");
+      event.mediaElement.muted = true;
+      event.mediaElement.volume = 0;
+
+      const video = document.createElement("video");
+
+      try {
+        video.setAttributeNode(document.createAttribute("autoplay"));
+        video.setAttributeNode(document.createAttribute("playsinline"));
+      } catch (e) {
+        video.setAttribute("autoplay", true);
+        video.setAttribute("playsinline", true);
+      }
+
+      if (event.type === "local") {
+        video.volume = 0;
+        try {
+          video.setAttributeNode(document.createAttribute("muted"));
+        } catch (e) {
+          video.setAttribute("muted", true);
+        }
+      }
+      video.srcObject = event.stream;
+
+      const width = parseInt(root.connection.videosContainer.clientWidth / 3) - 20;
+      const mediaElement = getHTMLMediaElement(video, {
+        title: event.userid,
+        buttons: ["full-screen"],
+        width: width,
+        showOnMouseEnter: false
       });
 
-    });
+      root.connection.videosContainer.appendChild(mediaElement);
+
+      setTimeout(function () {
+        mediaElement.media.play();
+      }, 5000);
+
+      mediaElement.id = event.streamid;
+
+      // to keep room-id in cache
+      localStorage.setItem(root.connection.socketMessageEvent, root.connection.sessionid);
+
+      chkRecordConference.parentNode.style.display = "none";
+
+      if (chkRecordConference.checked === true) {
+        btnStopRecording.style.display = "inline-block";
+        recordingStatus.style.display = "inline-block";
+
+        let recorder = root.connection.recorder;
+        if (!recorder) {
+          recorder = RecordRTC([event.stream], {
+            type: "video"
+          });
+          recorder.startRecording();
+          root.connection.recorder = recorder;
+        }
+        else {
+          recorder.getInternalRecorder().addStreams([event.stream]);
+        }
+
+        if (!root.connection.recorder.streams) {
+          root.connection.recorder.streams = [];
+        }
+
+        root.connection.recorder.streams.push(event.stream);
+        recordingStatus.innerHTML = "Recording " + root.connection.recorder.streams.length + " streams";
+      }
+
+      if (event.type === "local") {
+        root.connection.socket.on("disconnect", function () {
+          if (!root.connection.getAllParticipants().length) {
+            location.reload();
+          }
+        });
+      }
+    };
+
+    let recordingStatus = document.getElementById("recording-status");
+    let chkRecordConference = document.getElementById("record-entire-conference");
+    let btnStopRecording = document.getElementById("btn-stop-recording");
+
+    btnStopRecording.onclick = function () {
+      let recorder = connection.recorder;
+      if (!recorder) return alert("No recorder found.");
+      recorder.stopRecording(function () {
+        const blob = recorder.getBlob();
+        invokeSaveAsDialog(blob);
+
+        root.connection.recorder = null;
+        btnStopRecording.style.display = "none";
+        recordingStatus.style.display = "none";
+        chkRecordConference.parentNode.style.display = "inline-block";
+      });
+    };
+
+    root.connection.onstreamended = function (event) {
+      const mediaElement = document.getElementById(event.streamid);
+      if (mediaElement) {
+        mediaElement.parentNode.removeChild(mediaElement);
+      }
+    };
+
+    root.connection.onMediaError = function (e) {
+      if (e.message === "Concurrent mic process limit.") {
+        if (DetectRTC.audioInputDevices.length <= 1) {
+          alert("Please select external microphone. Check github issue number 483.");
+          return;
+        }
+
+        const secondaryMic = DetectRTC.audioInputDevices[1].deviceId;
+        root.connection.mediaConstraints.audio = {
+          deviceId: secondaryMic
+        };
+
+        root.connection.join(root.connection.sessionid);
+      }
+    };
+
   }
 
-  private looper = () => {
-    const root = this;
-    if (!$("#rooms-list").length) { return; }
-
-    this.rtcMultiConnection.socket.emit("get-public-rooms", this.publicRoomIdentifier, function (listOfRooms) {
-      root.updateListOfRooms(listOfRooms);
-      setTimeout(root.looper, 3000);
-    });
-  }
+  private looper = () => {}
 
   private alertBox(message, title, specialMessage?, callback?) {
     callback = callback || function () { /**/ };
@@ -99,224 +300,55 @@ class Broadcaster {
     });
   }
 
-  private updateListOfRooms = (rooms) => {
-    $("#active-rooms").html(rooms.length);
-
-    $("#rooms-list").html("");
-
-    if (!rooms.length) {
-      $("#rooms-list").html("<tr><td colspan=9>No active room found for this demo.</td></tr>");
-      return;
-    }
-
-    rooms.forEach(function (room, idx) {
-      const tr = document.createElement("tr");
-      let html = "";
-      if (!room.isPasswordProtected) {
-        html += "<td>" + (idx + 1) + "</td>";
-      } else {
-        html += "<td>" +
-          (idx + 1) +
-          // tslint:disable-next-line:max-line-length
-          '<img src="https://webrtcweb.com/password-protected.png" style="height: 15px; vertical-align: middle;" title="Password Protected Room"></td>';
-      }
-
-      html += '<td><span class="max-width" title="' + room.sessionid + '">' + room.sessionid + "</span></td>";
-      html += '<td><span class="max-width" title="' + room.owner + '">' + room.owner + "</span></td>";
-
-      html += "<td>";
-      Object.keys(room.session || {}).forEach(function (key) {
-        html += "<pre><b>" + key + ":</b> " + room.session[key] + "</pre>";
-      });
-      html += "</td>";
-
-      html += '<td><span class="max-width" title="' +
-        JSON.stringify(room.extra || {}).replace(/"/g, "`") + '">' + JSON.stringify(room.extra || {}) + "</span></td>";
-
-      html += "<td>";
-      room.participants.forEach(function (pid) {
-        html += '<span class="userinfo"><span class="max-width" title="' + pid + '">' + pid + "</span></span><br>";
-      });
-      html += "</td>";
-
-      // check if room is full
-      if (room.isRoomFull) {
-        // room.participants.length >= room.maxParticipantsAllowed
-        html += '<td><span style="border-bottom: 1px dotted red; color: red;">Room is full</span></td>';
-      } else {
-        html += '<td><button class="btn join-room" data-roomid="' +
-          room.sessionid + '" data-password-protected="' + (room.isPasswordProtected === true ? "true" : "false") + '">Join</button></td>';
-      }
-      $(tr).html(html);
-      $("#rooms-list").append(tr);
-
-      $(tr).find(".join-room").click(function () {
-        $(tr).find(".join-room").prop("disabled", true);
-
-        const roomid = $(this).attr("data-roomid");
-        $("#txt-roomid-hidden").val(roomid);
-
-        $("#btn-show-join-hidden-room").click();
-
-        if ($(this).attr("data-password-protected") === "true") {
-          $("#txt-room-password-hidden").parent().show();
-        } else {
-          $("#txt-room-password-hidden").parent().hide();
-        }
-
-        $(tr).find(".join-room").prop("disabled", false);
-      });
-    });
-  }
-
   private attachEvents() {
 
     const root = this;
 
-    $("#btn-show-join-hidden-room").click(function (e) {
-      e.preventDefault();
-      $("#txt-room-password-hidden").parent().hide();
-      $("#joinRoomModel").modal("show");
-    });
-
-    $("#btn-join-hidden-room").click(function () {
-      const roomid = $("#txt-roomid-hidden").val().toString();
-      if (!roomid || !roomid.replace(/ /g, "").length) {
-        root.alertBox("Please enter room-id.", "Room ID Is Required");
-        return;
-      }
-
-      const fullName = $("#txt-user-name-hidden").val().toString();
-      if (!fullName || !fullName.replace(/ /g, "").length) {
-        root.alertBox("Please enter your name.", "Your Name Is Required");
-        return;
-      }
-
-      root.rtcMultiConnection.extra.userFullName = fullName;
-
-      if ($("#txt-room-password-hidden").parent().css("display") !== "none") {
-        const roomPassword = $("#txt-room-password-hidden").val().toString();
-        if (!roomPassword || !roomPassword.replace(/ /g, "").length) {
-          root.alertBox("Please enter room password.", "Password Box Is Empty");
-          return;
+    document.getElementById("open-room").onclick = function () {
+      root.disableInputButtons();
+      root.connection.open(document.getElementById("room-id").value, function (isRoomOpened, roomid, error) {
+        if (isRoomOpened === true) {
+          root.showRoomURL(root.connection.sessionid);
         }
-        root.rtcMultiConnection.password = roomPassword;
-
-        root.rtcMultiConnection.socket.emit("is-valid-password",
-          root.rtcMultiConnection.password, roomid, function (isValidPassword, roomid_, error) {
-            if (isValidPassword === true) {
-              root.joinAHiddenRoom(roomid_);
-            } else {
-              root.alertBox(error, "Password Issue");
-            }
-          });
-        return;
-      }
-
-      root.joinAHiddenRoom(roomid);
-    });
-
-    $("#btn-create-room").click(function () {
-      console.log(" ??????? ");
-      const roomid = $("#txt-roomid").val().toString();
-      if (!roomid || !roomid.replace(/ /g, "").length) {
-        root.alertBox("Please enter room-id.", "Room ID Is Required");
-        return;
-      }
-
-      const fullName = $("#txt-user-name").val().toString();
-      if (!fullName || !fullName.replace(/ /g, "").length) {
-        root.alertBox("Please enter your name.", "Your Name Is Required");
-        return;
-      }
-
-      root.rtcMultiConnection.extra.userFullName = fullName;
-
-      if ($("#chk-room-password").prop("checked") === true) {
-        const roomPassword = $("#txt-room-password").val().toString();
-        if (!roomPassword || !roomPassword.replace(/ /g, "").length) {
-          root.alertBox("Please enter room password.", "Password Box Is Empty");
-          return;
+        else {
+          root.disableInputButtons(true);
+          if (error === "Room not available") {
+            alert("Someone already created this room. Please either join or create a separate room.");
+            return;
+          }
+          alert(error);
         }
-
-        root.rtcMultiConnection.password = roomPassword;
-      }
-
-      const initialHTML = $("#btn-create-room").html();
-
-      $("#btn-create-room").html("Please wait...").prop("disabled", true);
-
-      root.rtcMultiConnection.checkPresence(roomid, function (isRoomExist) {
-        if (isRoomExist === true) {
-          root.alertBox("This room-id is already taken and room is active. Please join instead.", "Room ID In Use");
-          return;
-        }
-
-        if ($("#chk-hidden-room").prop("checked") === true) {
-          // either make it unique!
-          // connection.publicRoomIdentifier = connection.token() + connection.token();
-
-          // or set an empty value (recommended)
-          root.rtcMultiConnection.publicRoomIdentifier = "";
-        }
-
-        root.rtcMultiConnection.sessionid = roomid;
-        root.rtcMultiConnection.isInitiator = true;
-        root.openInNewWindow();
-
-        $("#btn-create-room").html(initialHTML).prop("disabled", false);
       });
-    });
+    };
 
-    $("#chk-room-password").change(function () {
-      $("#txt-room-password").parent().css("display", this.checked === true ? "block" : "none");
-      $("#txt-room-password").focus();
-    });
+    document.getElementById("join-room").onclick = function () {
+      root.disableInputButtons();
+      root.connection.join((document.getElementById("room-id") as HTMLInputElement).value, function (isJoinedRoom, roomid, error) {
+        if (error) {
+          root.disableInputButtons(true);
+          if (error === "Room not available") {
+            alert("This room does not exist. Please either create it or wait for moderator to enter in the room.");
+            return;
+          }
+          alert(error);
+        }
+      });
+    };
 
-    this.txtRoomId = document.getElementById("txt-roomid");
+    document.getElementById("open-or-join-room").onclick = function () {
+      root.disableInputButtons();
+      root.connection.openOrJoin((document.getElementById("room-id") as HTMLInputElement).value, function (isRoomExist, roomid, error) {
+        if (error) {
+          root.disableInputButtons(true);
+          alert(error);
+        }
+        else if (root.connection.isInitiator === true) {
+          // if room doesn't exist, it means that current user will create the room
+          root.showRoomURL(roomid);
+        }
+      });
+    };
 
-    this.txtRoomId.onkeyup = this.txtRoomId.onblur = this.txtRoomId.oninput = this.txtRoomId.onpaste = function () {
-      localStorage.setItem("canvas-designer-roomid", (root.txtRoomId as HTMLInputElement).value);
-    } as any;
-
-    if (localStorage.getItem("canvas-designer-roomid")) {
-      (this.txtRoomId as HTMLInputElement).value = localStorage.getItem("canvas-designer-roomid");
-      $("#txt-roomid-hidden").val((this.txtRoomId as HTMLInputElement).value);
-    }
-
-    const userFullName = document.getElementById("txt-user-name");
-
-    userFullName.onkeyup = userFullName.onblur = userFullName.oninput = userFullName.onpaste = function () {
-      localStorage.setItem("canvas-designer-user-full-name", (userFullName as HTMLInputElement).value);
-    } as any;
-
-    if (localStorage.getItem("canvas-designer-user-full-name")) {
-      (userFullName as HTMLInputElement).value = localStorage.getItem("canvas-designer-user-full-name");
-      $("#txt-user-name-hidden").val((userFullName as HTMLInputElement).value);
-    }
-
-  }
-
-  private joinAHiddenRoom(roomid) {
-    const root = this;
-    const initialHTML = $("#btn-join-hidden-room").html();
-
-    $("#btn-join-hidden-room").html("Please wait...").prop("disabled", true);
-
-    root.rtcMultiConnection.checkPresence(roomid, function (isRoomExist) {
-      if (isRoomExist === false) {
-        root.alertBox("No such room exist on this server. Room-id: " + roomid, "Room Not Found");
-        $("#btn-join-hidden-room").html(initialHTML).prop("disabled", false);
-        return;
-      }
-
-      root.rtcMultiConnection.sessionid = roomid;
-      root.rtcMultiConnection.isInitiator = false;
-      $("#joinRoomModel").modal("hide");
-      root.openInNewWindow();
-
-      $("#btn-join-hidden-room").html(initialHTML).prop("disabled", false);
-    });
   }
 
   private confirmBox(message, callback) {
@@ -346,39 +378,34 @@ class Broadcaster {
     });
   }
 
+  private showRoomURL(roomid) {
+    const roomHashURL = "#" + roomid;
+    const roomQueryStringURL = "?roomid=" + roomid;
+
+    let html = "<h2>Unique URL for your room:</h2><br>";
+
+    html += 'Hash URL: <a href="' + roomHashURL + '" target="_blank">' + roomHashURL + "</a>";
+    html += "<br>";
+    html += 'QueryString URL: <a href="' + roomQueryStringURL + '" target="_blank">' + roomQueryStringURL + "</a>";
+
+    const roomURLsDiv = document.getElementById("room-urls");
+    roomURLsDiv.innerHTML = html;
+
+    roomURLsDiv.style.display = "block";
+}
+
+
   private openInNewWindow = () => {
+    //
+  }
 
-    const root = this;
-    let hrefLocal: any;
-
-    $("#startRoomModel").modal("hide");
-    // let href
-    const params = /*location.href*/ "?open=" +
-      root.rtcMultiConnection.isInitiator + "&sessionid=" + root.rtcMultiConnection.sessionid +
-      "&publicRoomIdentifier=" + root.rtcMultiConnection.publicRoomIdentifier +
-      "&userFullName=" + root.rtcMultiConnection.extra.userFullName;
-
-    if (!!root.rtcMultiConnection.password) {
-      hrefLocal += "&password=" + root.rtcMultiConnection.password;
-    }
-
-    const broadcasterMedia = new BroadcasterMedia(root, params);
-
-    /*
-    const newWin = window.open(href_);
-    if (!newWin || newWin.closed || typeof newWin.closed === "undefined") {
-      let html = "";
-      html += "<p>Please click following link:</p>";
-      html += '<p><a href="' + href_ + '" target="_blank">';
-      if (root.rtcMultiConnection.isInitiator) {
-        html += "Click To Open The Room";
-      } else {
-        html += "Click To Join The Room";
-      }
-      html += "</a></p>";
-      root.alertBox(html, "Popups Are Blocked");
-    }
-    */
+  private disableInputButtons(enable: boolean | undefined) {
+    (document.getElementById("room-id") as HTMLInputElement).onkeyup();
+    if (typeof enable === "undefined") { return; }
+    (document.getElementById("open-or-join-room") as HTMLInputElement).disabled = !enable;
+    (document.getElementById("open-room") as HTMLInputElement).disabled = !enable;
+    (document.getElementById("join-room") as HTMLInputElement).disabled = !enable;
+    (document.getElementById("room-id") as HTMLInputElement).disabled = !enable;
   }
 
   private showBroadcaster = () => {
