@@ -199,18 +199,14 @@ export function getHTMLMediaElement(mediaElement, config) {
             if (document.fullscreen) {
                 try {
                     document.cancelFullScreen();
-                } catch(err) {
-
-                }
+                } catch(err) {}
 
             }
 
             if (document.mozFullScreen) {
               try {
                 document.mozCancelFullScreen();
-              } catch(err) {
-
-                }
+              } catch(err) {}
 
             }
 
