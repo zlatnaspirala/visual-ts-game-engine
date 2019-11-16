@@ -107,9 +107,9 @@ Find configuration for client part at ./src/lib/client-config.ts
 
   /**
    * masterServerKey is channel access id used to connect
-   * multimedia server channel.
+   * multimedia servers channel (both multiRTC2/multiRTC3).
    */
-  private masterServerKey: string = "multi-platformer-sever1.maximum";
+  private masterServerKey: string = "maximumroulette.server1";
 
   /**
    * rtcServerPort Port used to connect multimedia server.
@@ -376,7 +376,7 @@ Fix : "failed: address already in use" :
     this.rtc3ServerPort = 12034;
     this.connectorPort = 1234;
     this.domain = "192.168.0.14";
-    this.masterServerKey = "multi-platformer-sever1.maximum";
+    this.masterServerKey = "maximumroulette.server1";
     this.protocol = "http";
     this.isSecure = false;
     this.appUseAccountsSystem = true;

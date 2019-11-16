@@ -12,7 +12,7 @@ class ServerConfig {
     this.connectorPort = 1234;
     // this.domain = "maximumroulette.com";
     this.domain = "localhost";
-    this.masterServerKey = "multi-platformer-sever1.maximum";
+    this.masterServerKey = "maximumroulette.server1";
     this.protocol = "http";
     this.isSecure = false;
 

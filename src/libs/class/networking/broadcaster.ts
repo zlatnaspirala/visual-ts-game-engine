@@ -2,22 +2,17 @@
 require("../../../externals/jquery.slim.min");
 const $ = require("jquery");
 import "popper.js";
-import "../../../externals/bootstrap.min";
-import { byId, bytesToSize, getElement, getRandomColor, htmlHeader } from "../system";
+import { byId, htmlHeader } from "../system";
+import { getHTMLMediaElement } from "./rtc-multi-connection/getHTMLMediaElement";
 import "./rtc-multi-connection/linkify";
-import  * as RTCMultiConnection3 from "./rtc-multi-connection/RTCMultiConnection3";
+import * as RTCMultiConnection3 from "./rtc-multi-connection/RTCMultiConnection3";
 import * as io from "./rtc-multi-connection/socket.io";
-import { getHTMLMediaElement } from "./rtc-multi-connection/getHTMLMediaElement"
 
 class Broadcaster {
 
   private connection: any;
   private engineConfig: any;
   private popupUI: HTMLDivElement = null;
-  private webCamView: HTMLDivElement;
-  private txtRoomId: HTMLElement;
-  private publicRoomIdentifier: string;
-  private connector;
   private chatContainer = document.querySelector('.chat-output');
 
   private showBroadcastOnInit: boolean = true;
@@ -26,7 +21,6 @@ class Broadcaster {
 
     (window as any).io = io;
 
-    const root = this;
     this.engineConfig = config;
     if (this.showBroadcastOnInit) {
       this.showBroadcaster();
@@ -40,27 +34,18 @@ class Broadcaster {
 
   private initWebRtc = () => {
     let root = this;
-    // ......................................................
-    // ..................RTCMultiConnection Code.............
-    // ......................................................
 
-    console.log("what is rtc", RTCMultiConnection3)
-    this.connection = new RTCMultiConnection3();
-
-    // by default, socket.io server is assumed to be deployed on your own URL
-    this.connection.socketURL = 'http://localhost:9001/';
-
-    // comment-out below line if you do not have your own socket.io server
-    // connection.socketURL = 'https://rtcmulticonnection.herokuapp.com:443/';
+    this.connection = new (RTCMultiConnection3 as any)();
+    this.connection.socketURL = root.engineConfig.getBroadcastSockRoute();
 
     this.connection.socketMessageEvent = 'audio-video-file-chat-demo';
-
-    this.connection.enableFileSharing = true; // by default, it is "false".
+    // by default, it is "false".
+    this.connection.enableFileSharing = true;
 
     this.connection.session = {
-        audio: true,
-        video: true,
-        data: true
+      audio: true,
+      video: true,
+      data: true
     };
 
     this.connection.sdpConstraints.mandatory = {
@@ -68,21 +53,14 @@ class Broadcaster {
         OfferToReceiveVideo: true
     };
 
-    // https://www.rtcmulticonnection.org/docs/iceServers/
-    // use your own TURN-server here!
     this.connection.iceServers = [{
-        'urls': [
-            'stun:stun.l.google.com:19302',
-            'stun:stun1.l.google.com:19302',
-            'stun:stun2.l.google.com:19302',
-            'stun:stun.l.google.com:19302?transport=udp',
-        ]
+        urls: root.engineConfig.getStunList()
     }];
 
     this.connection.videosContainer = document.getElementById('videos-container');
     this.connection.onstream = function(event) {
-        event.mediaElement.removeAttribute('src');
-        event.mediaElement.removeAttribute('srcObject');
+        event.mediaElement.removeAttribute("src");
+        event.mediaElement.removeAttribute("srcObject");
 
         var video = document.createElement('video');
         video.controls = true;
@@ -123,16 +101,16 @@ class Broadcaster {
         (document.getElementById('input-text-chat') as HTMLInputElement).disabled = false;
         (document.getElementById('btn-leave-room') as HTMLInputElement).disabled = false;
 
-        document.querySelector('h1').innerHTML = 'You are connected with: ' +
+        document.querySelector('#rtc3log').innerHTML = 'You are connected with: ' +
           root.connection.getAllParticipants().join(', ');
     };
 
     this.connection.onclose = function() {
-        if (this.connection.getAllParticipants().length) {
-            document.querySelector('h1').innerHTML = 'You are still connected with: ' +
-              this.connection.getAllParticipants().join(', ');
+        if (root.connection.getAllParticipants().length) {
+            (document.querySelector('#rtc3log') as HTMLInputElement).value = 'You are still connected with: ' +
+              root.connection.getAllParticipants().join(', ');
         } else {
-            document.querySelector('h1').innerHTML = 'Seems session has been closed or all participants left.';
+            (document.querySelector('#rtc3log') as HTMLInputElement).value = 'Seems session has been closed or all participants left.';
         }
     };
 
@@ -146,16 +124,16 @@ class Broadcaster {
         (document.getElementById('join-room') as HTMLInputElement).disabled = false;
         (document.getElementById('room-id') as HTMLInputElement).disabled = false;
 
-        this.connection.attachStreams.forEach(function(stream) {
+        root.connection.attachStreams.forEach(function(stream) {
             stream.stop();
         });
 
         // don't display alert for moderator
-        if (this.connection.userid === event.userid) return;
-        document.querySelector('h1').innerHTML = 'Entire session has been closed by the moderator: ' + event.userid;
+        if (root.connection.userid === event.userid) return;
+        document.querySelector('#rtc3log').innerHTML = 'Entire session has been closed by the moderator: ' + event.userid;
     };
 
-    this.connection.onUserIdAlreadyTaken = function(useridAlreadyTaken, yourNewUserId) {
+    this.connection.onUserIdAlreadyTaken = function(useridAlreadyTaken) {
         // seems room is already opened
         root.connection.join(useridAlreadyTaken);
     };
@@ -185,9 +163,10 @@ class Broadcaster {
         (document.getElementById('open-room') as HTMLInputElement).disabled = true;
         (document.getElementById('join-room') as HTMLInputElement).disabled = true;
         (document.getElementById('room-id') as HTMLInputElement).disabled = true;
+        (document.getElementById('btn-leave-room') as HTMLInputElement).disabled = false;
   }
 
-  private appendDIV(event) {
+  private appendDIV = (event) => {
         var div = document.createElement('div');
         div.innerHTML = event.data || event;
         this.chatContainer.insertBefore(div, this.chatContainer.firstChild);
@@ -196,28 +175,6 @@ class Broadcaster {
         document.getElementById('input-text-chat').focus();
   }
 
-  private alertBox(message, title, specialMessage?, callback?) {
-    callback = callback || function () { /**/ };
-
-    $(".btn-alert-close").unbind("click").bind("click", function (e) {
-      e.preventDefault();
-      $("#alert-box").modal("hide");
-      $("#confirm-box-topper").hide();
-
-      // backdrop $('#modal-backdrop').hide();
-      callback();
-    });
-
-    $("#alert-title").html(title || "Alert");
-    $("#alert-special").html(specialMessage || "");
-    $("#alert-message").html(message);
-    $("#confirm-box-topper").show();
-
-    $("#alert-box").modal({
-      backdrop: "static",
-      keyboard: false,
-    });
-  }
 
   private postAttach () {
 
@@ -297,7 +254,7 @@ class Broadcaster {
             // use this method if you did NOT set "autoCloseEntireSession===true"
             // for more info: https://github.com/muaz-khan/RTCMultiConnection#closeentiresession
             root.connection.closeEntireSession(function() {
-                document.querySelector('h1').innerHTML = 'Entire session has been closed.';
+                document.querySelector('#rtc3log').innerHTML = 'Entire session has been closed.';
             });
         } else {
             root.connection.leave();

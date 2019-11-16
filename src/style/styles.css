@@ -39,6 +39,10 @@ body {
   font-family: Impact, Arial;
 }
 
+.hide {
+  display:none;
+}
+
 canvas {
     margin:0 auto;
     font-family: Impact, Helvetica, Arial, sans-serif;
@@ -371,7 +375,7 @@ canvas {
 */
 
 .make-center {
-  height: 480px;
+  height: 100%;
   margin: 0 auto;
 }
 

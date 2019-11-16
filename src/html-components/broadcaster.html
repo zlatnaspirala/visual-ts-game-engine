@@ -1,38 +1,34 @@
-﻿<link href="styles/bootstrap.min.css" rel="stylesheet">
-<link href="styles/broadcaster.css" rel="stylesheet">
+﻿<link href="styles/broadcaster.css" rel="stylesheet">
+<link href="styles/getHTMLMediaElement.css" rel="stylesheet">
+
 <script src="externals/jquery-3.3.1.slim.min.js"></script>
 <script src="externals/popper.min.js"></script>
 <script src="externals/bootstrap.min.js"></script>
-<!--script src="/socket.io/socket.io.js"></script-->
 
 <div class="broadcaster" id="broadcasterUI">
+    <h3>
+        Networking model MultiRTC3
+    </h3>
+    <section class="make-fill">
+        <input type="text" id="rtc3log" value="rtc3log" autocorrect=off autocapitalize=off class="broadcastLabel" />
+        <input type="text" id="room-id" value="abcdef" autocorrect=off autocapitalize=off size=20/>
+        <button id="open-room" class="hide broadcastLabel">Open Room</button>
+        <button id="join-room" class="hide broadcastLabel">Join Room</button>
+        <button id="open-or-join-room" class="broadcastLabel" >Connect</button>
 
-  <link rel="stylesheet" href="/demos/stylesheet.css">
+        <br><br>
+        <input type="text" id="input-text-chat" placeholder="Enter Text Chat" disabled>
+        <button id="share-file" disabled>Share File</button>
+        <br><br>
+        <button id="btn-leave-room" disabled>Leave room</button>
 
-  <h3>
-    Audio+Video+TextChat+FileSharing
-    Multi-user (many-to-many) video streaming + text chat + file sharing using mesh networking model.
-  </h3>
+        <div id="room-urls" class="urlBox"></div>
 
-  <section class="make-center">
-    <input type="text" id="room-id" value="abcdef" autocorrect=off autocapitalize=off size=20>
-    <button id="open-room">Open Room</button>
-    <button id="join-room">Join Room</button>
-    <button id="open-or-join-room">Auto Open Or Join Room</button>
+        <div id="chat-container">
+            <div id="file-container"></div>
+            <div class="chat-output"></div>
+        </div>
+        <div id="videos-container"></div>
+    </section>
 
-    <br><br>
-    <input type="text" id="input-text-chat" placeholder="Enter Text Chat" disabled>
-    <button id="share-file" disabled>Share File</button>
-    <br><br>
-    <button id="btn-leave-room" disabled>Leave /or close the room</button>
-
-    <div id="room-urls" style="text-align: center;display: none;background: #F1EDED;margin: 15px -10px;border: 1px solid rgb(189, 189, 189);border-left: 0;border-right: 0;"></div>
-
-    <div id="chat-container">
-        <div id="file-container"></div>
-        <div class="chat-output"></div>
-    </div>
-    <div id="videos-container"></div>
-  </section>
-
-</div>
+</div>.urlBox

@@ -104,11 +104,8 @@ httpApp = httpApp.listen(process.env.PORT || PORT, process.env.IP || "0.0.0.0", 
 
 ioServer(httpApp).on('connection', function(socket) {
 
-    console.log(" CONNECTED !!");
+    console.log("MultiRTC3: new client.");
     RTCMultiConnectionServer.addSocket(socket, config);
-
-    // ----------------------
-    // below code is optional
 
     const params = socket.handshake.query;
 

@@ -197,11 +197,21 @@ export function getHTMLMediaElement(mediaElement, config) {
 
         function exitFullScreen() {
             if (document.fullscreen) {
-                document.cancelFullScreen();
+                try {
+                    document.cancelFullScreen();
+                } catch(err) {
+
+                }
+
             }
 
             if (document.mozFullScreen) {
+              try {
                 document.mozCancelFullScreen();
+              } catch(err) {
+
+                }
+
             }
 
             if (document.webkitIsFullScreen) {

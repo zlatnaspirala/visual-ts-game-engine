@@ -64,9 +64,9 @@ class ClientConfig {
 
   /**
    * masterServerKey is channel access id used to connect
-   * multimedia server channel.
+   * multimedia server channel.Both multiRTC2/3
    */
-  private masterServerKey: string = "multi-platformer-sever1.maximum";
+  private masterServerKey: string = "maximumroulette.server1";
 
   /**
    * rtcServerPort Port used to connect multimedia server.
@@ -88,6 +88,12 @@ class ClientConfig {
   private broadcasterPort: number = 9001;
 
   /**
+   * broadcaster socket.io address.
+   * Change it for production regime
+   */
+  private broadcastSockRoute: string = "http://localhost:9001/";
+
+  /**
    * @description Important note for this property: if you
    * disable (false) you cant use Account system or any other
    * network. Use 'false' if you wanna make single player game.
@@ -107,6 +113,12 @@ class ClientConfig {
    */
   private appUseBroadcaster: boolean = true;
 
+  private stunList: string[] = [
+    "stun:stun.l.google.com:19302",
+    "stun:stun1.l.google.com:19302",
+    "stun:stun2.l.google.com:19302",
+    "stun:stun.l.google.com:19302?transport=udp"
+  ];
   /**
    * Possible variant by default :
    * "register", "login"
@@ -157,6 +169,14 @@ class ClientConfig {
 
   public didAppUseBroadcast(): boolean {
     return this.appUseBroadcaster;
+  }
+
+  public getStunList(): string[] {
+    return this.stunList;
+  }
+
+  public getBroadcastSockRoute(): string {
+    return this.broadcastSockRoute;
   }
 
   public getStartUpHtmlForm(): string {

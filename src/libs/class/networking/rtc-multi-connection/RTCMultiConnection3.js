@@ -5747,7 +5747,7 @@ var RTCMultiConnection3 = function(roomid, forceOptions) {
         connection.onPeerStateChanged = function(state) {
             if (connection.enableLogs) {
                 if (state.iceConnectionState.search(/closed|failed/gi) !== -1) {
-                    console.error('Peer connection is closed between you & ', state.userid, state.extra, 'state:', state.iceConnectionState);
+                    console.warn('Peer connection is closed between you & ', state.userid, state.extra, 'state:', state.iceConnectionState);
                 }
             }
         };
