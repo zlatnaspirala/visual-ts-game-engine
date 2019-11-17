@@ -1,52 +1,51 @@
 .room-section {
-    background: deepskyblue;
-    min-height: 400px;
+  background: deepskyblue;
+  min-height: 400px;
 }
 
 .broadcaster {
-    position: absolute;
-    height: 100%;
-    right: 0;
-    width: 20%;
-    margin: 0 auto;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  margin: 0 auto;
 }
 
 .video-container {
-    display: block;
-    position: absolute;
-    top: 50px;
-    left: 0;
-    margin: 0 auto;
-    width: 35%;
-    height: auto;
+  display: block;
+  position: absolute;
+  top: 50px;
+  left: 0;
+  margin: 0 auto;
+  width: 35%;
+  height: auto;
 }
 
 .media-elements {
-    display: flex;
-    flex-wrap: wrap;
-    height: 400px;
-    align-content: space-between;
+  display: flex;
+  flex-wrap: wrap;
+  height: 400px;
+  align-content: space-between;
 }
 
 .dragging {
-    position: absolute;
-    background-color: green;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -o-user-select: none;
-    -ms-user-select: none;
-    -khtml-user-select: none;
-    user-select: none;
+  position: absolute;
+  background-color: green;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -o-user-select: none;
+  -ms-user-select: none;
+  -khtml-user-select: none;
+  user-select: none;
 }
 
 .urlBox {
-    text-align: center;
-    display: none;
-    background: #F1EDED;
-    margin: 15px -10px;
-    border: 1px solid rgb(189, 189, 189);
-    border-left: 0;
-    border-right: 0;
+  text-align: center;
+  display: none;
+  background: #F1EDED;
+  margin: 15px -10px;
+  border: 1px solid rgb(189, 189, 189);
+  border-left: 0;
+  border-right: 0;
 }
 
 .make-fill {
@@ -55,22 +54,78 @@
 }
 
 .blue-button {
-	color: #ffffff;
-	font-size: 18px;
-	font-family: Impact, sans-serif;
-	text-transform: uppercase;
-	letter-spacing: 1px;
-	margin-top: 1rem;
-	padding: .75rem;
-	display: block;
-	width: 100%;
-	background-color: rgba(19, 102, 180, 0.945);
-	border: none;
-	cursor: pointer;
+  color: #ffffff;
+  font-size: 120%;
+  font-family: Impact, sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: .75rem;
+  display: block;
+  width: 100%;
+  background-color: rgba(19, 102, 180, 0.945);
+  border: none;
+  cursor: pointer;
 }
 
 .blue-button:hover {
  background-color: rgba(237, 17, 17, 1);
+}
+
+.blue-label {
+  color: #ffffff;
+  font-size: 100%;
+  font-family: Impact, sans-serif;
+  text-transform: none;
+  letter-spacing: 1px;
+  padding: .75rem;
+  border-radius: 0.2rem;
+  display: block;
+  width: 100%;
+  background-color: rgba(19, 102, 180, 0.945);
+  border: 1px solid;
+}
+
+.blue-label:hover {
+  background-color: rgba(19, 102, 170, 0.9);
+}
+
+.title {
+  color: #ffffff;
+  font-size: 100%;
+  font-family: Impact, sans-serif;
+  text-transform: none;
+  letter-spacing: 1px;
+  padding: .75rem;
+  border-radius: 0.2rem;
+  display: block;
+  width: 100%;
+  background-color: rgba(19, 102, 180, 0.945);
+  border: none;
+  cursor: default;
+}
+
+.broadcastLabel {
+  color: black;
+  font-size: 1.15rem;
+  width: 50%;
+  padding: .5rem 1rem;
+  border: 2px solid transparent;
+  outline: none;
+  border-radius: 0.2rem;
+  background-color: rgba(19, 102, 180, 0.945);
+  letter-spacing: 1px;
+}
+
+.broadcastLabel:disabled {
+  background: #112c42;
+}
+
+.broadcastLabel:hover {
+  background-color: rgba(19, 102, 170, 0.9);
+}
+
+.broadcastLabel:hover:disabled {
+  background: #4b2323;
 }
 
 .red-link {
@@ -84,14 +139,38 @@
   z-index: 1;
 }
 
-.broadcastLabel:disabled {
-  background: #462d2d;
+.popup-left-box {
+  position: absolute;
+  margin: 0;
+  left : 70%;
+  top: 0;
+  width: 30vw;
+  height: 100%;
+  background-color: rgba(1,55,232,0.95);
+  box-shadow: 0 -20px 150px -20px rgba(0, 0, 0, 0.5);
+  z-index: 200;
 }
 
-.broadcastLabel:hover {
-  background-color: rgba(237, 17, 17, 1);
+.chat-input {
+  position:absolute;
+  bottom:0;
+  left:0;
+  width:100%;
+  z-index: 100;
 }
 
-.broadcastLabel:hover:disabled {
-  background: #4b2323;
+.share-btn {
+  position:absolute;
+  bottom:8%;
+  left:0;
+  width:50%;
+  z-index: 100;
+}
+
+.leave-btn {
+  position:absolute;
+  bottom:8%;
+  left:50%;
+  width:50%;
+  z-index: 100;
 }

@@ -530,7 +530,7 @@ button:focus {outline:0;}
   padding: .5rem 1rem;
   border: 2px solid transparent;
   outline: none;
-  border-radius: 1.5rem;
+  border-radius: 0.2rem;
   background-color: rgb(169, 11, 13);
   letter-spacing: 1px;
 }

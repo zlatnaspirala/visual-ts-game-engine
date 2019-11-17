@@ -6,30 +6,70 @@ javascript
 npm install
 ```
 
-  Fix and report if something missing in dependency.
+  Fix and report if something missing in dependency if there's a msg like
+  'missinig module'.
 
 ### Run data/media server based on MultiRTC2.2 vs socket.io : ###
 
+Run this command from root project folder:
 javascript
 ```
 npm run rtc
 ```
 
-  You can use this server also for video-chat it is already implemented.
-It is still better to use 'npm run broadcaster' for video chat. I use this server
-for data communication and session staff also any other use...
+ or use :
+
+```
+  node ./server/rtc/server.js
+```
+<pre>
+  You can use this server also for video-chat it is already implemented but it is no recommended for latest version of modern browser's.For UTF networking it is ok.
+  It is still better to use 'npm run broadcaster' for video chat. I use this server
+  for data communication and session staff also any other use...
+</pre>
 
 ### Run data/media server based on MultiRTC3 PTP: ###
 
   For now broadcaster use 'server\broadcaster-config.json' for input data.
- This will be replaced with uniq server config file.
 
-  Features comes with broadcaster:
+```
+  {
+  "socketURL": "http://localhost:9001/",
+  "dirPath": "/",
+  "homePage": "",
+  "socketMessageEvent": "RTCMultiConnection-Message",
+  "socketCustomEvent": "RTCMultiConnection-Custom-Message",
+  "port": "9001",
+  "enableLogs": "false",
+  "autoRebootServerOnFailure": "false",
+  "isUseHTTPs": "false",
+  "sslKey": "/etc/httpd/conf/ssl/maximumroulette.com.key",
+  "sslCert": "/etc/httpd/conf/ssl/maximumroulette_com.crt",
+  "sslCabundle": "/etc/httpd/conf/ssl/maximumroulette.ca-bundle",
+  "enableAdmin": "false",
+  "adminUserName": "username",
+  "adminPassword": "password"
+}
+```
+<pre>
+ Most important fields are:
 
+For dev:
+   - socketURL => http://localhost:9001/
+   - isUseHTTPs => false
+
+For prodc:
+  - socketURL => http://YOUR_DOMAIN:9001/
+  - isUseHTTPs => false
+</pre>
+
+Features comes with broadcaster:
+<pre>
  - Multiplatform video chat works with other hybrid frameworks or custom implementation throw the native
    mobile application web control (Chrome implementation usually).
-
- - Implemented dragable video containers.
+ - Chat in real time, share files with minimum server usage.
+ - Implemented dragable video containers with addons script.
+</pre>
 
 ```javascript
   npm run broadcaster
@@ -42,9 +82,16 @@ for data communication and session staff also any other use...
   If you wanna deploy database & server code on same host (without chanse for remote connection)
 then use next setup:
 
+For dev:
 javascript
 ```
   this.databaseRoot = "mongodb://localhost:27017";
+```
+
+For prod:
+javascript
+```
+  this.databaseRoot = "mongodb://YOUR_DOMAIN:27017";
 ```
 
  Must be in samo folder or input full path to the data folder.

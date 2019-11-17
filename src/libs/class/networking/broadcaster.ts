@@ -1,20 +1,19 @@
 
-require("../../../externals/jquery.slim.min");
-const $ = require("jquery");
-import "popper.js";
+// require("../../../externals/jquery.slim.min");
+// const $ = require("jquery");
+// import "popper.js";
+import "./rtc-multi-connection/FileBufferReader.js";
 import { byId, htmlHeader } from "../system";
 import { getHTMLMediaElement } from "./rtc-multi-connection/getHTMLMediaElement";
-import "./rtc-multi-connection/linkify";
 import * as RTCMultiConnection3 from "./rtc-multi-connection/RTCMultiConnection3";
 import * as io from "./rtc-multi-connection/socket.io";
+import ClientConfig from "../../../client-config.js";
 
 class Broadcaster {
 
   private connection: any;
-  private engineConfig: any;
+  private engineConfig: ClientConfig;
   private popupUI: HTMLDivElement = null;
-  private chatContainer = document.querySelector('.chat-output');
-
   private showBroadcastOnInit: boolean = true;
 
   constructor(config: any) {
@@ -49,93 +48,95 @@ class Broadcaster {
     };
 
     this.connection.sdpConstraints.mandatory = {
-        OfferToReceiveAudio: true,
-        OfferToReceiveVideo: true
+      OfferToReceiveAudio: true,
+      OfferToReceiveVideo: true
     };
 
     this.connection.iceServers = [{
-        urls: root.engineConfig.getStunList()
+      urls: root.engineConfig.getStunList()
     }];
 
     this.connection.videosContainer = document.getElementById('videos-container');
     this.connection.onstream = function(event) {
-        event.mediaElement.removeAttribute("src");
-        event.mediaElement.removeAttribute("srcObject");
+      event.mediaElement.removeAttribute("src");
+      event.mediaElement.removeAttribute("srcObject");
 
-        var video = document.createElement('video');
-        video.controls = true;
-        if(event.type === 'local') {
-            video.muted = true;
-        }
-        video.srcObject = event.stream;
+      var video = document.createElement('video');
+      video.controls = true;
+      if(event.type === 'local') {
+          video.muted = true;
+      }
+      video.srcObject = event.stream;
 
-        var width: number = parseInt(root.connection.videosContainer.clientWidth / 2) - 20;
-        var mediaElement = getHTMLMediaElement(video, {
-            title: event.userid,
-            buttons: ['full-screen'],
-            width: width,
-            showOnMouseEnter: false
-        });
+      var localNumberCW = root.connection.videosContainer.clientWidth / 2;
+      var width: number = parseInt(localNumberCW.toString()) - 20;
 
-        root.connection.videosContainer.appendChild(mediaElement);
+      var mediaElement = getHTMLMediaElement(video, {
+          title: event.userid,
+          buttons: ['full-screen'],
+          width: width,
+          showOnMouseEnter: false
+      });
 
-        setTimeout(function() {
-            (mediaElement as any).media.play();
-        }, 5000);
+      root.connection.videosContainer.appendChild(mediaElement);
 
-        mediaElement.id = event.streamid;
+      setTimeout(function() {
+          (mediaElement as any).media.play();
+      }, 5000);
+
+      mediaElement.id = event.streamid;
     };
 
     this.connection.onstreamended = function(event) {
-        var mediaElement = document.getElementById(event.streamid);
-        if (mediaElement) {
-            mediaElement.parentNode.removeChild(mediaElement);
-        }
+      var mediaElement = document.getElementById(event.streamid);
+      if (mediaElement) {
+          mediaElement.parentNode.removeChild(mediaElement);
+      }
     };
 
     this.connection.onmessage = root.appendDIV;
     this.connection.filesContainer = document.getElementById('file-container');
 
     this.connection.onopen = function() {
-        (document.getElementById('share-file') as HTMLInputElement).disabled = false;
-        (document.getElementById('input-text-chat') as HTMLInputElement).disabled = false;
-        (document.getElementById('btn-leave-room') as HTMLInputElement).disabled = false;
+      (document.getElementById('share-file') as HTMLInputElement).disabled = false;
+      (document.getElementById('input-text-chat') as HTMLInputElement).disabled = false;
+      (document.getElementById('btn-leave-room') as HTMLInputElement).disabled = false;
 
-        document.querySelector('#rtc3log').innerHTML = 'You are connected with: ' +
-          root.connection.getAllParticipants().join(', ');
+      document.querySelector('#rtc3log').innerHTML = 'You are connected with: ' +
+        root.connection.getAllParticipants().join(', ');
     };
 
     this.connection.onclose = function() {
-        if (root.connection.getAllParticipants().length) {
-            (document.querySelector('#rtc3log') as HTMLInputElement).value = 'You are still connected with: ' +
-              root.connection.getAllParticipants().join(', ');
-        } else {
-            (document.querySelector('#rtc3log') as HTMLInputElement).value = 'Seems session has been closed or all participants left.';
-        }
+      if (root.connection.getAllParticipants().length) {
+        (document.querySelector('#rtc3log') as HTMLInputElement).value = 'You are still connected with: ' +
+          root.connection.getAllParticipants().join(', ');
+      } else {
+        (document.querySelector('#rtc3log') as HTMLInputElement).value = 'Seems session has been closed or all participants left.';
+      }
     };
 
     this.connection.onEntireSessionClosed = function(event) {
-        (document.getElementById('share-file') as HTMLInputElement).disabled = true;
-        (document.getElementById('input-text-chat') as HTMLInputElement).disabled = true;
-        (document.getElementById('btn-leave-room') as HTMLInputElement).disabled = true;
+      (document.getElementById('share-file') as HTMLInputElement).disabled = true;
+      (document.getElementById('input-text-chat') as HTMLInputElement).disabled = true;
+      (document.getElementById('btn-leave-room') as HTMLInputElement).disabled = true;
 
-        (document.getElementById('open-or-join-room') as HTMLInputElement).disabled = false;
-        (document.getElementById('open-room') as HTMLInputElement).disabled = false;
-        (document.getElementById('join-room') as HTMLInputElement).disabled = false;
-        (document.getElementById('room-id') as HTMLInputElement).disabled = false;
+      (document.getElementById('open-or-join-room') as HTMLInputElement).disabled = false;
+      (document.getElementById('open-room') as HTMLInputElement).disabled = false;
+      (document.getElementById('join-room') as HTMLInputElement).disabled = false;
+      (document.getElementById('room-id') as HTMLInputElement).disabled = false;
 
-        root.connection.attachStreams.forEach(function(stream) {
-            stream.stop();
-        });
+      root.connection.attachStreams.forEach(function(stream) {
+          stream.stop();
+      });
 
-        // don't display alert for moderator
-        if (root.connection.userid === event.userid) return;
-        document.querySelector('#rtc3log').innerHTML = 'Entire session has been closed by the moderator: ' + event.userid;
+      // don't display alert for moderator
+      if (root.connection.userid === event.userid) return;
+      document.querySelector('#rtc3log').innerHTML = 'Entire session has been closed by the moderator: ' + event.userid;
     };
 
     this.connection.onUserIdAlreadyTaken = function(useridAlreadyTaken) {
-        // seems room is already opened
-        root.connection.join(useridAlreadyTaken);
+      // seems room is already opened
+      root.connection.join(useridAlreadyTaken);
     };
 
     this.postAttach()
@@ -159,22 +160,22 @@ class Broadcaster {
   }
 
   private disableInputButtons = function() {
-        (document.getElementById('open-or-join-room') as HTMLInputElement).disabled = true;
-        (document.getElementById('open-room') as HTMLInputElement).disabled = true;
-        (document.getElementById('join-room') as HTMLInputElement).disabled = true;
-        (document.getElementById('room-id') as HTMLInputElement).disabled = true;
-        (document.getElementById('btn-leave-room') as HTMLInputElement).disabled = false;
+    (document.getElementById('open-or-join-room') as HTMLInputElement).disabled = true;
+    (document.getElementById('open-room') as HTMLInputElement).disabled = true;
+    (document.getElementById('join-room') as HTMLInputElement).disabled = true;
+    (document.getElementById('room-id') as HTMLInputElement).disabled = true;
+    (document.getElementById('btn-leave-room') as HTMLInputElement).disabled = false;
   }
 
   private appendDIV = (event) => {
-        var div = document.createElement('div');
-        div.innerHTML = event.data || event;
-        this.chatContainer.insertBefore(div, this.chatContainer.firstChild);
-        div.tabIndex = 0;
-        div.focus();
-        document.getElementById('input-text-chat').focus();
+    var div = document.createElement('div');
+    div.innerHTML = event.data || event;
+    let chatContainer = document.querySelector('.chat-output');
+    chatContainer.insertBefore(div, chatContainer.firstChild);
+    div.tabIndex = 0;
+    div.focus();
+    document.getElementById('input-text-chat').focus();
   }
-
 
   private postAttach () {
 
@@ -185,6 +186,11 @@ class Broadcaster {
     } else {
       roomid = root.connection.token();
     }
+
+    if (root.engineConfig.getMasterServerKey()) {
+      roomid = root.engineConfig.getMasterServerKey();
+    }
+
     (document.getElementById('room-id') as HTMLInputElement).value = roomid;
     (document.getElementById('room-id') as HTMLInputElement).onkeyup = function() {
       localStorage.setItem(root.connection.socketMessageEvent, (this as HTMLInputElement).value);
@@ -261,10 +267,7 @@ class Broadcaster {
         }
     };
 
-    // ......................................................
     // ................FileSharing/TextChat Code.............
-    // ......................................................
-
     document.getElementById('share-file').onclick = function() {
         var fileSelector = new (window as any).FileSelector();
         fileSelector.selectSingleFile(function(file) {
@@ -284,19 +287,17 @@ class Broadcaster {
         (this as HTMLInputElement).value = '';
     };
 
-    // ......................................................
     // ......................Handling Room-ID................
-    // ......................................................
     (function() {
         var params = {},
-            r = /([^&=]+)=?([^&]*)/g;
+          r = /([^&=]+)=?([^&]*)/g;
 
         function d(s) {
-            return decodeURIComponent(s.replace(/\+/g, ' '));
+          return decodeURIComponent(s.replace(/\+/g, ' '));
         }
         var match, search = window.location.search;
         while (match = r.exec(search.substring(1)))
-            params[d(match[1])] = d(match[2]);
+          params[d(match[1])] = d(match[2]);
         (window as any).params = params;
     })();
 
@@ -312,7 +313,7 @@ class Broadcaster {
         return res.text();
       }).then(function (html) {
         // console.warn(html);
-        myInstance.popupUI = byId("popup") as HTMLDivElement;
+        myInstance.popupUI = byId("media-rtc3-controls") as HTMLDivElement;
         myInstance.popupUI.innerHTML = html;
         myInstance.popupUI.style.display = "block";
         // byId("reg-button").addEventListener("click", myInstance.registerUser, false);

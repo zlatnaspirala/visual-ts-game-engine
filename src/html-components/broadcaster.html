@@ -6,21 +6,20 @@
 <script src="externals/bootstrap.min.js"></script>
 
 <div class="broadcaster" id="broadcasterUI">
-    <h3>
+    <h3 id="rtc3log" class="title">
         Networking model MultiRTC3
     </h3>
     <section class="make-fill">
-        <input type="text" id="rtc3log" value="rtc3log" autocorrect=off autocapitalize=off class="broadcastLabel" />
-        <input type="text" id="room-id" value="abcdef" autocorrect=off autocapitalize=off size=20/>
+        <input type="text" id="room-id" value="abcdef"
+          autocorrect=off autocapitalize=off size=20 class="blue-label"/>
         <button id="open-room" class="hide broadcastLabel">Open Room</button>
         <button id="join-room" class="hide broadcastLabel">Join Room</button>
         <button id="open-or-join-room" class="broadcastLabel" >Connect</button>
 
         <br><br>
-        <input type="text" id="input-text-chat" placeholder="Enter Text Chat" disabled>
-        <button id="share-file" disabled>Share File</button>
-        <br><br>
-        <button id="btn-leave-room" disabled>Leave room</button>
+        <input type="text" id="input-text-chat" placeholder="Send Message" disabled class="blue-label chat-input">
+        <button id="share-file" class="broadcastLabel share-btn" disabled>Share File</button>
+        <button id="btn-leave-room" class="broadcastLabel leave-btn" disabled>Leave room</button>
 
         <div id="room-urls" class="urlBox"></div>
 
@@ -31,4 +30,4 @@
         <div id="videos-container"></div>
     </section>
 
-</div>.urlBox
+</div>
