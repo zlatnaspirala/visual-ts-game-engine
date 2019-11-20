@@ -5,6 +5,7 @@
   "main": ".rtc/server.js",
   "dependencies": {
     "@types/node": "^10.17.5",
+    "crypto": "^1.0.1",
     "eslint": "^4.19.1",
     "express": "^4.17.1",
     "gmail-send": "^1.8.10",

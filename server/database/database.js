@@ -8,23 +8,23 @@ const shared = require("./../common/shared");
  */
 class MyDatabase {
 
-  constructor(serverConfig, dataServeModules) {
+  constructor(serverConfig, crypto) {
 
     var root = this;
     this.config = serverConfig;
 
     var PlatformerActiveUsers = require("../data-serve/platformer/class/activeplayers");
     this.platformerActiveUsers = new PlatformerActiveUsers(this.config);
+    // CryptoHandler
+    this.crypto = crypto;
 
     /*
     this.dataServeModules = [];
-
     dataServeModules.forEach(function(myClass) {
       var instance = new myClass(serverConfig);
       root.dataServeModules.push(instance);
       console.log("<<<<INSTANCE<<<<<<<<<<<<<<<<<<<")
     });
-
     */
 
   }
@@ -37,6 +37,8 @@ class MyDatabase {
    * @param {classInstance} callerInstance
    */
   register(user, callerInstance) {
+
+    var root = this;
 
     /**
      * This line prevents method register
@@ -81,7 +83,7 @@ class MyDatabase {
 
           dbo.collection("users").insertOne({
             email: user.userRegData.email,
-            password: user.userRegData.password,
+            password: root.crypto.encrypt(user.userRegData.password),
             nickname: "no-nick-name" + shared.getDefaultNickName(),
             confirmed: false,
             token: uniqLocal,
@@ -154,7 +156,7 @@ class MyDatabase {
 
   loginUser(user, callerInstance) {
     // test
-
+    const root = this;
     const databaseName = this.config.databaseName;
     MongoClient.connect(this.config.getDatabaseRoot, { useNewUrlParser: true }, function(error, db) {
       if (error) {
@@ -163,8 +165,9 @@ class MyDatabase {
       }
 
       const dbo = db.db(databaseName);
+      const password = root.crypto.encrypt(user.password);
 
-      dbo.collection("users").findOne({ email: user.email, password: user.password, confirmed: true },
+      dbo.collection("users").findOne({}, { email: user.email, "password.iv" : password.iv, "password.encryptedData": password.encryptedData , confirmed: true },
         function(err, result) {
 
           if (err) { console.log("MyDatabase.login :" + err); return null; }

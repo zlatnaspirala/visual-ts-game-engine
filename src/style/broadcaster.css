@@ -105,7 +105,7 @@
 }
 
 .broadcastLabel {
-  color: black;
+  color: rgb(255, 255, 255);
   font-size: 1.15rem;
   width: 50%;
   padding: .5rem 1rem;
@@ -114,10 +114,11 @@
   border-radius: 0.2rem;
   background-color: rgba(19, 102, 180, 0.945);
   letter-spacing: 1px;
+  border: 1px white solid;
 }
 
 .broadcastLabel:disabled {
-  background: #112c42;
+  background-color: #112c42;
 }
 
 .broadcastLabel:hover {
@@ -165,6 +166,8 @@
   left:0;
   width:50%;
   z-index: 100;
+  background: url("../imgs/share-files.png");
+  background-repeat: no-repeat;
 }
 
 .leave-btn {

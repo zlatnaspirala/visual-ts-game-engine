@@ -83,7 +83,8 @@ class Connector {
     if (this.config.IsDatabaseActive) {
 
       let MyDatabase = require("../database/database");
-
+      let Crypto = require("../common/crypto");
+      let crypto = new Crypto();
       /*
       let dataServeModules = [];
       this.config.dataServeRoutes.forEach(function(path) {
@@ -91,9 +92,9 @@ class Connector {
         dataServeModules.push(myDataAccess);
       });
       */
-
-      this.database = new MyDatabase(this.config);
+      this.database = new MyDatabase(this.config, crypto);
       MyDatabase = null;
+      Crypto = null;
 
     }
 

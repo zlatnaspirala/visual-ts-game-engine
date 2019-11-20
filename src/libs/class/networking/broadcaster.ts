@@ -22,6 +22,7 @@ class Broadcaster {
 
     this.engineConfig = config;
     if (this.showBroadcastOnInit) {
+      require("../../../icon/permission/share-files.png");
       this.showBroadcaster();
     }
 

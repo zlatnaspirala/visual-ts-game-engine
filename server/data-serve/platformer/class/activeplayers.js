@@ -8,7 +8,7 @@ class PlatformerActiveUsers  {
 
     MongoClient.connect(config.getDatabaseRoot, { useNewUrlParser: true }, function(error, db) {
       if (error) {
-        console.warn("MyDatabase : err1:" + error);
+        console.warn("MyDatabase activeplayers : err:" + error);
         return;
       }
 
