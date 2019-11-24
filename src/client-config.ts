@@ -46,7 +46,7 @@ class ClientConfig {
 
   /**
    * aspectRatio default value, can be changed in run time.
-   * This is 800x600
+   * This is 800x600, 1.78 is also good fit for lot of desktop monitors screens
    */
   private aspectRatio: number = 1.333;
 
@@ -56,6 +56,14 @@ class ClientConfig {
    * like : 192.168.0.XXX if you wanna run ant test app with server.
    */
   private domain: string = "maximumroulette.com";
+
+  /**
+   * @description Important note for this property: if you
+   * disable (false) you cant use Account system or any other
+   * network. Use 'false' if you wanna make single player game.
+   * In other way keep it 'true'.
+   */
+  private appUseNetwork = true;
 
   /**
    * networkDeepLogs control of dev logs for webRTC context only.
@@ -94,12 +102,10 @@ class ClientConfig {
   private broadcastSockRoute: string = "http://localhost:9001/";
 
   /**
-   * @description Important note for this property: if you
-   * disable (false) you cant use Account system or any other
-   * network. Use 'false' if you wanna make single player game.
-   * In other way keep it 'true'.
+   * broadcaster socket.io address.
+   * Change it for production regime
    */
-  private appUseNetwork = true;
+  private broadcastAutoConnect: boolean = true;
 
   /**
    * appUseAccountsSystem If you don't want to use session
@@ -141,6 +147,10 @@ class ClientConfig {
     // Interconnection Network.Connector vs app.ts
     this.gameList = gameList;
 
+  }
+
+  public getBroadcastAutoConnect(): boolean {
+   return this.broadcastAutoConnect;
   }
 
   public getAddson(): Addson {

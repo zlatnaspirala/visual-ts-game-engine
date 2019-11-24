@@ -11,8 +11,15 @@ const sessionController = new Connector(serverConfig);
 const CHANNELS = {};
 const WebSocketServer = require("websocket").server;
 var file = new (static.Server)('/var/www/html/applications/visual-typescript-game-engine/build/');
-
+let broadcaster = null;
 let httpRtc = null;
+
+if (serverConfig.appUseBroadcaster) {
+  console.log("Run broadcaster!")
+  var Broadcaster = null;
+  Broadcaster = require("./broadcaster");
+  broadcaster = new Broadcaster();
+}
 
 if (serverConfig.getProtocol == "http") {
 
@@ -148,7 +155,4 @@ function truncateChannels(websocket) {
   }
 }
 
-console.warn("#################");
-console.warn("#.MultiRtc.2.2..#");
-console.warn("#.supported.....#");
-console.warn("#################");
+console.warn(" - MultiRtc.2.2 Session handler based on webSocket tech. also  running...");

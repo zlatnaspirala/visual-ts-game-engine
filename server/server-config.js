@@ -6,12 +6,20 @@ class ServerConfig {
     /**
      * Define backend staff
      */
+
+     // enum : 'dev' or 'prod'
+    this.serverMode = "dev";
+
     this.networkDeepLogs = false;
     this.rtcServerPort = 12034;
     this.rtc3ServerPort = 9001;
     this.connectorPort = 1234;
-    // this.domain = "maximumroulette.com";
-    this.domain = "localhost";
+
+    this.domain = {
+      dev: "localhost",
+      prod: "maximumroulette.com"
+    };
+
     this.masterServerKey = "maximumroulette.server1";
     this.protocol = "http";
     this.isSecure = false;
@@ -31,10 +39,13 @@ class ServerConfig {
     };
 
     this.appUseAccountsSystem = true;
-    this.appUseVideoChat = true;
+    this.appUseBroadcaster = true;
     this.databaseName = "masterdatabase";
-    // this.databaseRoot = "mongodb://userAdmin:********@maximumroulette.com:27017/admin";
-    this.databaseRoot = "mongodb://localhost:27017";
+
+    this.databaseRoot = {
+      dev: "mongodb://localhost:27017" ,
+      prod: "mongodb://userAdmin:********@maximumroulette.com:27017/admin"
+    };
 
     this.specialRoute = {
       "default": "/var/www/html/applications/visual-typescript-game-engine/build/app.html"
@@ -42,19 +53,32 @@ class ServerConfig {
 
     // this.dataServeRoutes = ["../data-serve/platformer/class/activeplayers"];
 
-    console.log("Server running under configuration: ");
-    console.log("-rtc domain", this.domain);
+    console.log("Server running under configuration => ", this.serverMode);
+
+    if (this.serverMode == "dev") {
+      console.log("-rtc domain dev", this.domain.dev);
+    } else if (this.serverMode == "prod") {
+      console.log("-rtc domain prod", this.domain.prod);
+    }
+
     console.log("-rtc masterServerKey", this.masterServerKey);
     console.log("-rtc rtcServerPort", this.rtcServerPort);
+    console.log("-rtc rtc3/broadcaster is enabled", this.appUseBroadcaster);
     console.log("-rtc rtc3ServerPort", this.rtc3ServerPort);
     console.log("-rtc connectorPort", this.connectorPort);
     console.log("-rtc protocol", this.protocol);
     console.log("-rtc isSecure", this.isSecure);
     console.log("-rtc appUseAccountsSystem", this.appUseAccountsSystem);
     console.log("-rtc databaseName", this.databaseName);
-    // console.log("-rtc databaseRoot", this.databaseRoot);
 
   }
+
+  /**
+   * @returns {any}
+   */
+  get getAppUseBroadcaster() {
+    return this.appUseBroadcaster;
+  };
 
   get getProtocol() {
 
@@ -75,7 +99,13 @@ class ServerConfig {
   }
 
   get getDatabaseRoot() {
-    return this.databaseRoot;
+
+    if (this.serverMode == "dev") {
+      return this.databaseRoot.dev;
+    } else if (this.serverMode == "prod") {
+      return this.databaseRoot.prod;
+    }
+
   }
 
   get IsDatabaseActive() {
@@ -87,7 +117,13 @@ class ServerConfig {
   }
 
   get getRemoteServerAddress() {
-    return (this.isSecure ? "wss" : "ws") + "://" + this.domain + ":" + this.rtcServerPort + "/";
+
+    if (this.serverMode == "dev") {
+      return (this.isSecure ? "wss" : "ws") + "://" + this.domain.dev + ":" + this.rtcServerPort + "/";
+    } else if (this.serverMode == "prod") {
+    return (this.isSecure ? "wss" : "ws") + "://" + this.domain.prod + ":" + this.rtcServerPort + "/";
+    }
+
   }
 
   set setNetworkDeepLog(newState) {

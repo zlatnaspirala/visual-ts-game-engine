@@ -16,6 +16,12 @@ class Broadcaster {
   private popupUI: HTMLDivElement = null;
   private showBroadcastOnInit: boolean = true;
 
+  private openRoomBtn: HTMLElement = document.getElementById('open-room');
+  private joinRoomBtn: HTMLElement = document.getElementById('join-room');
+  private openOrJoinBtn: HTMLElement = document.getElementById('open-or-join-room');
+  private leaveRoomBtn: HTMLElement = document.getElementById('btn-leave-room');
+  private shareFileBtn: HTMLElement = document.getElementById('share-file');
+
   constructor(config: any) {
 
     (window as any).io = io;
@@ -232,19 +238,19 @@ class Broadcaster {
     const root = this;
     (window as any).enableAdapter = true;
     // .......................UI Code........................
-    document.getElementById('open-room').onclick = function() {
+    root.openRoomBtn.onclick = function() {
         root.disableInputButtons();
         root.connection.open((document.getElementById('room-id') as HTMLInputElement).value, function() {
             root.showRoomURL(root.connection.sessionid);
         });
     };
 
-    document.getElementById('join-room').onclick = function() {
+    root.joinRoomBtn.onclick = function() {
         root.disableInputButtons();
         root.connection.join((document.getElementById('room-id') as HTMLInputElement).value);
     };
 
-    document.getElementById('open-or-join-room').onclick = function() {
+    root.openOrJoinBtn.onclick = function() {
         root.disableInputButtons();
         root.connection.openOrJoin((document.getElementById('room-id') as HTMLInputElement).value,
           function(isRoomExists, roomid) {
@@ -254,7 +260,7 @@ class Broadcaster {
           });
     };
 
-    (document.getElementById('btn-leave-room') as HTMLButtonElement).onclick = function() {
+    (root.leaveRoomBtn as HTMLButtonElement).onclick = function() {
         (this as HTMLButtonElement).disabled = true;
 
         if (root.connection.isInitiator) {
@@ -269,7 +275,7 @@ class Broadcaster {
     };
 
     // ................FileSharing/TextChat Code.............
-    document.getElementById('share-file').onclick = function() {
+    root.shareFileBtn.onclick = function() {
         var fileSelector = new (window as any).FileSelector();
         fileSelector.selectSingleFile(function(file) {
             root.connection.send(file);
@@ -288,7 +294,7 @@ class Broadcaster {
         (this as HTMLInputElement).value = '';
     };
 
-    // ......................Handling Room-ID................
+    // Handling Room-ID
     (function() {
         var params = {},
           r = /([^&=]+)=?([^&]*)/g;
@@ -317,9 +323,13 @@ class Broadcaster {
         myInstance.popupUI = byId("media-rtc3-controls") as HTMLDivElement;
         myInstance.popupUI.innerHTML = html;
         myInstance.popupUI.style.display = "block";
-        // byId("reg-button").addEventListener("click", myInstance.registerUser, false);
         myInstance.attachEvents();
         myInstance.initWebRtc();
+
+        if (myInstance.engineConfig.getBroadcastAutoConnect()) {
+          
+          myInstance.openOrJoinBtn.click();
+        }
 
       });
 
