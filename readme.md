@@ -52,7 +52,18 @@ account sessions. The setup this on false in main client config class.
 Find configuration for client part at ./src/lib/client-config.ts
 
 ```javascript
-    /**
+import { Addson } from "./libs/types/global";
+
+/**
+ * ClientConfig is config file for whole client part of application.
+ * It is a better to not mix with server config staff.
+ * All data is defined like default private property values.
+ * Use mmethod class to get proper.
+ * Class don't have any args passed.
+ */
+class ClientConfig {
+
+  /**
    * Addson
    * All addson are ansync loaded scripts.
    *  - Cache is based on webWorkers.
@@ -89,7 +100,7 @@ Find configuration for client part at ./src/lib/client-config.ts
 
   /**
    * aspectRatio default value, can be changed in run time.
-   * This is 800x600
+   * This is 800x600, 1.78 is also good fit for lot of desktop monitors screens
    */
   private aspectRatio: number = 1.333;
 
@@ -101,13 +112,21 @@ Find configuration for client part at ./src/lib/client-config.ts
   private domain: string = "maximumroulette.com";
 
   /**
+   * @description Important note for this property: if you
+   * disable (false) you cant use Account system or any other
+   * network. Use 'false' if you wanna make single player game.
+   * In other way keep it 'true'.
+   */
+  private appUseNetwork = true;
+
+  /**
    * networkDeepLogs control of dev logs for webRTC context only.
    */
   private networkDeepLogs: boolean = false;
 
   /**
    * masterServerKey is channel access id used to connect
-   * multimedia servers channel (both multiRTC2/multiRTC3).
+   * multimedia server channel.Both multiRTC2/3
    */
   private masterServerKey: string = "maximumroulette.server1";
 
@@ -131,12 +150,27 @@ Find configuration for client part at ./src/lib/client-config.ts
   private broadcasterPort: number = 9001;
 
   /**
-   * @description Important note for this property: if you
-   * disable (false) you cant use Account system or any other
-   * network. Use 'false' if you wanna make single player game.
-   * In other way keep it 'true'.
+   * broadcaster socket.io address.
+   * Change it for production regime
    */
-  private appUseNetwork = true;
+  private broadcastSockRoute: string = "http://localhost:9001/";
+
+  /**
+   * broadcaster socket.io address.
+   * Change it for production regime
+   */
+  private broadcastAutoConnect: boolean = true;
+
+  /**
+   * broadcaster rtc session init values.
+   * Change it for production regime
+   */
+  private broadcasterSessionDefaults: any = {
+    sessionAudio: false,
+    sessionVideo: false,
+    sessionData: true,
+    enableFileSharing: false
+  };
 
   /**
    * appUseAccountsSystem If you don't want to use session
@@ -150,6 +184,12 @@ Find configuration for client part at ./src/lib/client-config.ts
    */
   private appUseBroadcaster: boolean = true;
 
+  private stunList: string[] = [
+    "stun:stun.l.google.com:19302",
+    "stun:stun1.l.google.com:19302",
+    "stun:stun2.l.google.com:19302",
+    "stun:stun.l.google.com:19302?transport=udp"
+  ];
   /**
    * Possible variant by default :
    * "register", "login"
@@ -161,8 +201,20 @@ Find configuration for client part at ./src/lib/client-config.ts
   /**
    * Implement default gamePlay variable's
    */
-  private defaultGamePlayLevelName: string = "level1";
-  private autoStartGamePlay: boolean = true;
+  private defaultGamePlayLevelName: string = "public";
+  private autoStartGamePlay: boolean = false;
+
+  /**
+   * constructor will save interest data for game platform
+   */
+  constructor(gameList: any[]) {
+
+    // Interconnection Network.Connector vs app.ts
+    this.gameList = gameList;
+
+  }
+
+   ...
 
 
 ```
@@ -263,7 +315,6 @@ LICENSE
 |   |   |   |   |   ├── linkify.js
 |   |   |   |   |   ├── getHTMLMediaElement.js
 |   |   |   |   |   ├── socket.io.js
-|   |   |   |   ├── broadcaster-media.ts
 |   |   |   |   ├── broadcaster.ts
 |   |   |   |   ├── connector.ts
 |   |   |   |   ├── network.ts
@@ -271,6 +322,7 @@ LICENSE
 |   |   |   |   ├── sprite-animation.ts
 |   |   |   |   ├── text.ts
 |   |   |   |   ├── texture.ts
+|   |   |   ├── bot-behavior.ts
 |   |   |   ├── browser.ts
 |   |   |   ├── math.ts
 |   |   |   ├── position.ts
@@ -368,21 +420,52 @@ Fix : "failed: address already in use" :
 
  #### General networking config: ####
 
- Config property defined in constructor from ServerConfig class.
+ Config property defined in constructor from ServerConfig class:
 
 ```javascript
+    // enum : 'dev' or 'prod'
+    this.serverMode = "dev";
+
     this.networkDeepLogs = false;
     this.rtcServerPort = 12034;
-    this.rtc3ServerPort = 12034;
+    this.rtc3ServerPort = 9001;
     this.connectorPort = 1234;
-    this.domain = "192.168.0.14";
+
+    this.domain = {
+      dev: "localhost",
+      prod: "maximumroulette.com"
+    };
+
     this.masterServerKey = "maximumroulette.server1";
     this.protocol = "http";
     this.isSecure = false;
+
+    // localhost
+    this.certPathSelf = {
+      pKeyPath: "./server/rtc/self-cert/privatekey.pem",
+      pCertPath: "./server/rtc/self-cert/certificate.pem",
+      pCBPath: "./server/rtc/self-cert/certificate.pem",
+    };
+
+    // production
+    this.certPathProd = {
+      pKeyPath: "/etc/httpd/conf/ssl/maximumroulette.com.key",
+      pCertPath: "/etc/httpd/conf/ssl/maximumroulette_com.crt",
+      pCBPath: "/etc/httpd/conf/ssl/maximumroulette.ca-bundle"
+    };
+
     this.appUseAccountsSystem = true;
-    this.appUseVideoChat = true;
+    this.appUseBroadcaster = true;
     this.databaseName = "masterdatabase";
-    this.databaseRoot = "mongodb://localhost:27017";
+
+    this.databaseRoot = {
+      dev: "mongodb://localhost:27017" ,
+      prod: "mongodb://userAdmin:********@maximumroulette.com:27017/admin"
+    };
+
+    this.specialRoute = {
+      "default": "/var/www/html/applications/visual-typescript-game-engine/build/app.html"
+    };
 ```
 
 <b> - Running server is easy : </b>
@@ -390,16 +473,18 @@ Fix : "failed: address already in use" :
 ```javascript
   npm run rtc
 ```
+<pre>
 With this cmd : <i>npm run rtc</i> we run server.js and connector.ts websocket. Connector is our account session used for login , register etc.
-- Implemented video chat based on webRTC protocol.
+Implemented video chat based on webRTC protocol.
 
-<b> - Running rtc3 server is also easy : </b>
+<b> - Running rtc3 server is integrated : </b>
 
+If you wanna disable session-database-rtc2 features and run only `broadcaster`:
 Command 'npm run broadcaster' is not nessesery for begin.
 Features comes with broadcaster:
  - Multiplatform video chat works with other hybrid frameworks or custom implementation throw the native
    mobile application web control (Chrome implementation usually).
-
+</pre>
 
 ```javascript
   npm run broadcaster
@@ -410,7 +495,7 @@ Features comes with broadcaster:
  Follow link for API:
  [Application documentation](https://maximumroulette.com/applications/visual-typescript-game-engine/build/api-doc/globals.html)
 
- Possible to install from :
+ Possible to install from (It's good for instancing new clear base project):
 ```
    npm visual-ts
 ```

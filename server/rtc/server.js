@@ -15,10 +15,10 @@ let broadcaster = null;
 let httpRtc = null;
 
 if (serverConfig.appUseBroadcaster) {
-  console.log("Run broadcaster!")
   var Broadcaster = null;
   Broadcaster = require("./broadcaster");
   broadcaster = new Broadcaster();
+  console.log("Running broadcaster...");
 }
 
 if (serverConfig.getProtocol == "http") {

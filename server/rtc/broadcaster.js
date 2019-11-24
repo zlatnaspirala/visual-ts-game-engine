@@ -6,11 +6,11 @@ class Broadcaster {
         const fs = require('fs');
         const path = require('path');
         const url = require('url');
-        var httpServer = require('http');
-
         const ioServer = require('socket.io');
         const RTCMultiConnectionServer = require('rtcmulticonnection-server');
+        var httpServer = null;
 
+        // Direct input flags.
         var PORT = 9001;
         var isUseHTTPs = false;
 
@@ -27,13 +27,11 @@ class Broadcaster {
         config = getBashParameters(config, BASH_COLORS_HELPER);
 
         // if user didn't modifed "PORT" object
-        // then read value from "config.json"
-        console.log("CONFIG >port> ", config.port);
         if (PORT === 9001) {
             PORT = config.port;
         }
-        if (isUseHTTPs === false) {
-            isUseHTTPs = config.isUseHTTPs;
+        if (isUseHTTPs == false) {
+            isUseHTTPs = config.isSecure;
         }
 
         function serverHandler(request, response) {
@@ -57,8 +55,6 @@ class Broadcaster {
         if (isUseHTTPs) {
             httpServer = require('https');
 
-            // See how to use a valid certificate:
-            // https://github.com/muaz-khan/WebRTC-Experiment/issues/62
             var options = {
                 key: null,
                 cert: null,
@@ -96,6 +92,7 @@ class Broadcaster {
 
             httpApp = httpServer.createServer(options, serverHandler);
         } else {
+            httpServer = require('http');
             httpApp = httpServer.createServer(serverHandler);
         }
 
@@ -121,7 +118,9 @@ class Broadcaster {
             });
         });
 
-        console.log("CONFIG >> ", config);
+        console.log("Broadcaster runned under:");
+        console.log(config);
+        console.log("SSL protocol enabled:", isUseHTTPs)
 
     }
 

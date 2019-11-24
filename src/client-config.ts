@@ -32,6 +32,11 @@ class ClientConfig {
       enabled: true,
       scriptPath: "externals/drag.ts",
     },
+    {
+      name: "adapter",
+      enabled: true,
+      scriptPath: "externals/adapter.js",
+    },
   ];
 
   /**
@@ -106,6 +111,17 @@ class ClientConfig {
    * Change it for production regime
    */
   private broadcastAutoConnect: boolean = true;
+
+  /**
+   * broadcaster rtc session init values.
+   * Change it for production regime
+   */
+  private broadcasterSessionDefaults: any = {
+    sessionAudio: false,
+    sessionVideo: false,
+    sessionData: true,
+    enableFileSharing: false
+  };
 
   /**
    * appUseAccountsSystem If you don't want to use session
@@ -202,6 +218,10 @@ class ClientConfig {
 
   public getBroadcasterPort() {
     return this.broadcasterPort;
+  }
+
+  public getBroadcasterSessionDefaults() {
+    return this.broadcasterSessionDefaults;
   }
 
   public getConnectorPort() {

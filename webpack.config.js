@@ -8,7 +8,7 @@ const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
 
 var internalConfig = {
     createDocumentation: false,
-    stats: "errors-only"
+    stats: "errors-warnings"
 };
 
 let documentationPlugin = new TypedocWebpackPlugin({
@@ -110,8 +110,6 @@ let webPackModule = {
         }),
         new ExtractTextPlugin("src/style/styles.css"),
         new CopyWebpackPlugin([
-            { from: 'src/externals/bootstrap.min.js', to: 'externals/bootstrap.min.js' },
-            { from: 'src/externals/jquery.slim.min.js', to: 'externals/jquery.slim.min.js' },
             { from: 'src/style/broadcaster.css', to: 'styles/broadcaster.css' },
             { from: 'src/style/getHTMLMediaElement.css', to: 'styles/getHTMLMediaElement.css' },
             { from: './src/libs/addons/hacker-timer/hack-timer.js', to: 'externals/hack-timer.js'},
@@ -121,8 +119,9 @@ let webPackModule = {
             { from: './src/libs/addons/cache/cacheInit.ts', to: 'externals/cacheInit.ts' },
             { from: './src/libs/addons/cache/worker.js', to: 'worker.js' },
             { from: './src/libs/addons/cache/offline.html', to: 'offline.html' },
+            { from: './src/libs/addons/webrtc-adapter/adapter.js', to: 'externals/adapter.js' },
             { from: "./src/examples/platformer/ui/player-board.html", to: "templates/ui/player-board.html"}
-        ], { debug: 'info' }),
+        ], { debug: 'warn' }), // { debug: 'info' } make trace
 
     ],
     /**
