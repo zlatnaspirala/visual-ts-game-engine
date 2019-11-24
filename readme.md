@@ -473,8 +473,9 @@ Fix : "failed: address already in use" :
 ```javascript
   npm run rtc
 ```
-<pre>
-With this cmd : <i>npm run rtc</i> we run server.js and connector.ts websocket. Connector is our account session used for login , register etc.
+
+With this cmd : <i>npm run rtc</i> we run server.js and connector.ts websocket.
+Connector is our account session used for login , register etc.
 Implemented video chat based on webRTC protocol.
 
 <b> - Running rtc3 server is integrated : </b>
@@ -482,9 +483,9 @@ Implemented video chat based on webRTC protocol.
 If you wanna disable session-database-rtc2 features and run only `broadcaster`:
 Command 'npm run broadcaster' is not nessesery for begin.
 Features comes with broadcaster:
- - Multiplatform video chat works with other hybrid frameworks or custom implementation throw the native
-   mobile application web control (Chrome implementation usually).
-</pre>
+ - Multiplatform video chat works with other hybrid frameworks
+   or custom implementation throw the native mobile application
+   web control (Chrome implementation usually).
 
 ```javascript
   npm run broadcaster
