@@ -31,7 +31,6 @@ class GamePlay extends Platformer implements IMultiplayer {
 
       console.log("rtcEvent addNewPlayer: ", rtcEvent);
       this.root.addNetPlayer(this.root, rtcEvent);
-      // this.root.attachNetMatterEvent();
 
     },
 
