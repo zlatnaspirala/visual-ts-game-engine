@@ -10,7 +10,6 @@ class MyDatabase {
 
   constructor(serverConfig, crypto) {
 
-    var root = this;
     this.config = serverConfig;
 
     var PlatformerActiveUsers = require("../data-serve/platformer/class/activeplayers");
@@ -156,7 +155,7 @@ class MyDatabase {
 
   loginUser(user, callerInstance) {
     // test
-    const root = this;
+    const myCrypto = this.crypto;
     const databaseName = this.config.databaseName;
     MongoClient.connect(this.config.getDatabaseRoot, { useNewUrlParser: true }, function(error, db) {
       if (error) {
@@ -165,15 +164,23 @@ class MyDatabase {
       }
 
       const dbo = db.db(databaseName);
-      const password = root.crypto.encrypt(user.password);
 
-      dbo.collection("users").findOne({}, { email: user.email, "password.iv" : password.iv, "password.encryptedData": password.encryptedData , confirmed: true },
+      dbo.collection("users").findOne({ email: user.email, confirmed: true }, { },
         function(err, result) {
 
           if (err) { console.log("MyDatabase.login :" + err); return null; }
 
           if (result !== null) {
 
+            // "password.iv" : password.iv, "password.encryptedData": password.encryptedData
+            // Secure
+            const pass = myCrypto.crypto.decrypt(result.password);
+            if ( pass != user.password) {
+              console.warn("Session passed...");
+            } else {
+              // handle bad cert
+              console.warn("Session : Bad cert");
+            }
             // Security staff
             const userData = {
               email: result.email,
