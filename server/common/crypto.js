@@ -12,22 +12,21 @@ class CryptoHandler {
 
   encrypt(text) {
 
-    let root = this;
-    let cipher = this.crypto.createCipheriv('aes-256-cbc', Buffer.from(root.key), root.iv);
-    let encrypted = cipher.update(text);
-    encrypted = Buffer.concat([encrypted, cipher.final()]);
-    return { iv: this.iv.toString('hex'), encryptedData: encrypted.toString('hex') };
+    const password = text;
+    const cipher = this.crypto.createCipher('aes128', "a password");
+    var encrypted = cipher.update(password, 'utf8', 'hex');
+    encrypted += cipher.final('hex');
+    return encrypted;
 
   }
 
   decrypt(text) {
 
-    let iv = Buffer.from(text.iv, 'hex');
-    let encryptedText = Buffer.from(text.encryptedData, 'hex');
-    let decipher = this.crypto.createDecipheriv('aes-256-cbc', Buffer.from(root.key), root.iv);
-    let decrypted = decipher.update(encryptedText);
-    decrypted = Buffer.concat([decrypted, decipher.final()]);
-    return decrypted.toString();
+    const encrypt_password = text;
+    const decipher = this.crypto.createDecipher('aes128','a password');
+    var decrypted = decipher.update(encrypt_password,'hex', 'utf8');
+    decrypted += decipher.final('utf8');
+    return decrypted;
 
   }
 

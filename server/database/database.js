@@ -8,14 +8,12 @@ const shared = require("./../common/shared");
  */
 class MyDatabase {
 
-  constructor(serverConfig, crypto) {
+  constructor(serverConfig) {
 
     this.config = serverConfig;
 
     var PlatformerActiveUsers = require("../data-serve/platformer/class/activeplayers");
     this.platformerActiveUsers = new PlatformerActiveUsers(this.config);
-    // CryptoHandler
-    this.crypto = crypto;
 
     /*
     this.dataServeModules = [];
@@ -82,7 +80,7 @@ class MyDatabase {
 
           dbo.collection("users").insertOne({
             email: user.userRegData.email,
-            password: root.crypto.encrypt(user.userRegData.password),
+            password: callerInstance.crypto.encrypt(user.userRegData.password),
             nickname: "no-nick-name" + shared.getDefaultNickName(),
             confirmed: false,
             token: uniqLocal,
@@ -154,8 +152,7 @@ class MyDatabase {
   }
 
   loginUser(user, callerInstance) {
-    // test
-    const myCrypto = this.crypto;
+
     const databaseName = this.config.databaseName;
     MongoClient.connect(this.config.getDatabaseRoot, { useNewUrlParser: true }, function(error, db) {
       if (error) {
@@ -174,8 +171,8 @@ class MyDatabase {
 
             // "password.iv" : password.iv, "password.encryptedData": password.encryptedData
             // Secure
-            const pass = myCrypto.crypto.decrypt(result.password);
-            if ( pass != user.password) {
+            const pass = callerInstance.crypto.decrypt(result.password);
+            if (pass != user.password) {
               console.warn("Session passed...");
             } else {
               // handle bad cert

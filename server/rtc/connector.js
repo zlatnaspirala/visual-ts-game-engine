@@ -6,6 +6,7 @@
 const fs = require("fs");
 const shared = require("./../common/shared");
 const static = require('node-static');
+const CryptoHandler = require("../common/crypto");
 var file = new (static.Server)('/var/www/html/applications/visual-typescript-game-engine/build/');
 
 class Connector {
@@ -17,6 +18,7 @@ class Connector {
     this.userSockCollection = {};
     this.config = serverConfig;
     this.http = null;
+    this.crypto = new CryptoHandler();
 
     if (!serverConfig.isSecure) {
 
@@ -83,8 +85,6 @@ class Connector {
     if (this.config.IsDatabaseActive) {
 
       let MyDatabase = require("../database/database");
-      let Crypto = require("../common/crypto");
-      let crypto = new Crypto();
       /*
       let dataServeModules = [];
       this.config.dataServeRoutes.forEach(function(path) {
@@ -92,9 +92,8 @@ class Connector {
         dataServeModules.push(myDataAccess);
       });
       */
-      this.database = new MyDatabase(this.config, crypto);
+      this.database = new MyDatabase(this.config);
       MyDatabase = null;
-      Crypto = null;
 
     }
 
