@@ -290,8 +290,6 @@ class MyDatabase {
 
     });
 
-
-
   }
 
   fastLogin(user, callerInstance) {

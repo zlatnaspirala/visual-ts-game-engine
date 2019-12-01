@@ -10,7 +10,8 @@ class Broadcaster {
 
   private connection: any;
   private engineConfig: ClientConfig;
-  private showBroadcastOnInit: boolean = true;
+  // Internal config flag
+  private showBroadcasterOnInt: boolean = true;
 
   private popupUI: HTMLDivElement = null;
   private openRoomBtn: HTMLElement;
@@ -26,9 +27,9 @@ class Broadcaster {
     (window as any).io = io;
 
     this.engineConfig = config;
-    if (this.showBroadcastOnInit) {
+    if (this.engineConfig.getRunBroadcasterOnInt()) {
       require("../../../icon/permission/share-files.png");
-      this.showBroadcaster();
+      this.runBroadcaster();
     }
 
   }
@@ -38,13 +39,13 @@ class Broadcaster {
   }
 
   private initDOM() {
-    this.openRoomBtn = document.getElementById('open-room');
-    this.joinRoomBtn = document.getElementById('join-room');
-    this.openOrJoinBtn = document.getElementById('open-or-join-room');
-    this.leaveRoomBtn = document.getElementById('btn-leave-room');
-    this.shareFileBtn = document.getElementById('share-file');
-    this.inputChat = document.getElementById('input-text-chat');
-    this.inputRoomId = document.getElementById('room-id');
+    this.openRoomBtn = byId('open-room');
+    this.joinRoomBtn = byId('join-room');
+    this.openOrJoinBtn = byId('open-or-join-room');
+    this.leaveRoomBtn = byId('btn-leave-room');
+    this.shareFileBtn = byId('share-file');
+    this.inputChat = byId('input-text-chat');
+    this.inputRoomId = byId('room-id');
   }
 
   private initWebRtc = (options?) => {
@@ -335,7 +336,7 @@ class Broadcaster {
 
   }
 
-  private showBroadcaster = () => {
+  private runBroadcaster = () => {
 
     const myInstance = this;
     fetch("./templates/broadcaster.html", {
@@ -347,7 +348,13 @@ class Broadcaster {
         // console.warn(html);
         myInstance.popupUI = byId("media-rtc3-controls") as HTMLDivElement;
         myInstance.popupUI.innerHTML = html;
-        myInstance.popupUI.style.display = "block";
+
+        if (myInstance.showBroadcasterOnInt) {
+          myInstance.popupUI.style.display = "block"
+        } else {
+          myInstance.popupUI.style.display = "none"
+        }
+
         myInstance.initDOM();
         myInstance.attachEvents();
         myInstance.initWebRtc();

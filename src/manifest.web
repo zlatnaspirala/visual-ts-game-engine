@@ -1,10 +1,10 @@
 {
   "name": "Visual typescript game engine",
-  "short_name": "Visual ts",
+  "short_name": "Visual ts game engine",
   "start_url": "app.html",
   "orientation": "landscape",
   "theme_color": "aliceblue",
-  "background_color": "purple",
+  "background_color": "black",
   "description": "Typescript project based on matter.ts implementation. This version 2 of visualjs game engine totally different approach , export name lib name is visualjs2.js . Whole project is based fully dependency build. Main file is app.ts . Class ioc saves singlton instances also bind. In this project html and css is also present. Based on canvas2D. Used lib Matter.js/ts in typescript variant. ",
   "display": "standalone",
   "lang": "en-US",

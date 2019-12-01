@@ -113,6 +113,11 @@ class ClientConfig {
   private broadcastAutoConnect: boolean = true;
 
   /**
+   * runBroadcasterOnInt load broadcaster
+   */
+  private runBroadcasterOnInt: boolean = true;
+
+  /**
    * broadcaster rtc session init values.
    * Change it for production regime
    */
@@ -163,6 +168,10 @@ class ClientConfig {
     // Interconnection Network.Connector vs app.ts
     this.gameList = gameList;
 
+  }
+
+  public getRunBroadcasterOnInt() :boolean {
+    return this.runBroadcasterOnInt;
   }
 
   public getBroadcastAutoConnect(): boolean {

@@ -3,46 +3,214 @@ import { ICollectionEnemys, ICollectionItem, IGamePlayPlatformerMap, IStaticItem
 /**
  * Static body elements, backgrounds, enemys returns
  * Prepared for next level, 'loading from generated content'
+ * Path for images `../imgs/`
+ * Inject or predefine here
  */
 
 class GameMap implements IGamePlayPlatformerMap {
 
-  constructor() {/* Empty for now. */}
+  private options: any = null;
+
+  constructor(options?: any) {
+    // Options
+    if (typeof options !== 'undefined') {
+      this.options = options;
+    }
+  }
 
   public getStaticGrounds(): IStaticItem[] {
 
     const LocalWidth = 650;
     const imgRes = [require("../imgs/floor2.png")];
+    const imgResTest = [require("../imgs/grounds/texx.png")];
+    // const imgRes = [require("../imgs/backgrounds/forest.png")];
+
     const tileXLocal = 10;
     return [
       { x: 100, y: 0, w: LocalWidth, h: 60, tex: imgRes, tiles: { tilesX: tileXLocal, tilesY: 1 } },
       { x: 100, y: 500, w: LocalWidth, h: 60, tex: imgRes, tiles: { tilesX: tileXLocal, tilesY: 1 } },
-      { x: 100, y: 1000, w: 150, h: 60, tex: imgRes, tiles: { tilesX: 2, tilesY: 1 } },
-      { x: 100, y: 1500, w: LocalWidth, h: 60, tex: imgRes, tiles: { tilesX: tileXLocal, tilesY: 1 } },
-      { x: 100, y: 2000, w: LocalWidth, h: 60, tex: imgRes, tiles: { tilesX: tileXLocal, tilesY: 1 } },
-      { x: 100, y: 2500, w: LocalWidth, h: 60, tex: imgRes, tiles: { tilesX: tileXLocal, tilesY: 1 } },
-      { x: 500, y: 0, w: 150, h: 60, tex: imgRes, tiles: { tilesX: 2, tilesY: 1 } },
-      { x: 500, y: 200, w: LocalWidth, h: 60, tex: imgRes, tiles: { tilesX: tileXLocal, tilesY: 1 } },
-      { x: 500, y: 400, w: LocalWidth, h: 60, tex: imgRes, tiles: { tilesX: tileXLocal, tilesY: 1 } },
-      { x: 500, y: 800, w: LocalWidth, h: 60, tex: imgRes, tiles: { tilesX: tileXLocal, tilesY: 1 } },
-      { x: 500, y: 1500, w: LocalWidth, h: 60, tex: imgRes, tiles: { tilesX: tileXLocal, tilesY: 1 } },
-      { x: 1800, y: 0, w: LocalWidth, h: 60, tex: imgRes, tiles: { tilesX: tileXLocal, tilesY: 1 } },
-      { x: 1800, y: 300, w: LocalWidth, h: 60, tex: imgRes, tiles: { tilesX: tileXLocal, tilesY: 1} },
-      { x: 1800, y: 800, w: LocalWidth, h: 60, tex: imgRes, tiles: { tilesX: tileXLocal, tilesY: 1 } },
-      { x: 1800, y: 1200, w: LocalWidth, h: 60, tex: imgRes, tiles: { tilesX: tileXLocal, tilesY: 1 } },
-      { x: 1800, y: 1800, w: LocalWidth, h: 60, tex: imgRes, tiles: { tilesX: tileXLocal, tilesY: 1 } },
-      { x: 2800, y: 250, w: LocalWidth, h: 60, tex: imgRes, tiles: { tilesX: tileXLocal, tilesY: 1 } },
-      { x: 2800, y: 3100, w: LocalWidth, h: 60, tex: imgRes, tiles: { tilesX: tileXLocal, tilesY: 1 } },
+ {
+    "x": 134,
+    "y": 129,
+    "w": 100,
+    "h": 20,
+    "tex": "./imgs/texx.png",
+    "tiles": {
+      "tilesX": 5,
+      "tilesY": 1
+    }
+  },
+  {
+    "x": 325,
+    "y": 133,
+    "w": 100,
+    "h": 20,
+    "tex": "./imgs/texx.png",
+    "tiles": {
+      "tilesX": 5,
+      "tilesY": 1
+    }
+  },
+  {
+    "x": 539,
+    "y": 139,
+    "w": 100,
+    "h": 20,
+    "tex": "./imgs/texx.png",
+    "tiles": {
+      "tilesX": 5,
+      "tilesY": 1
+    }
+  },
+  {
+    "x": 741,
+    "y": 143,
+    "w": 100,
+    "h": 20,
+    "tex": "./imgs/texx.png",
+    "tiles": {
+      "tilesX": 5,
+      "tilesY": 1
+    }
+  },
+  {
+    "x": 944,
+    "y": 145,
+    "w": 100,
+    "h": 20,
+    "tex": "./imgs/texx.png",
+    "tiles": {
+      "tilesX": 5,
+      "tilesY": 1
+    }
+  },
+  {
+    "x": 1135,
+    "y": 142,
+    "w": 100,
+    "h": 20,
+    "tex": "./imgs/texx.png",
+    "tiles": {
+      "tilesX": 5,
+      "tilesY": 1
+    }
+  },
+  {
+    "x": 1350,
+    "y": 144,
+    "w": 100,
+    "h": 20,
+    "tex": "./imgs/texx.png",
+    "tiles": {
+      "tilesX": 5,
+      "tilesY": 1
+    }
+  },
+  {
+    "x": 1567,
+    "y": 148,
+    "w": 100,
+    "h": 20,
+    "tex": "./imgs/texx.png",
+    "tiles": {
+      "tilesX": 5,
+      "tilesY": 1
+    }
+  },
+  {
+    "x": 163,
+    "y": 257,
+    "w": 100,
+    "h": 20,
+    "tex": "./imgs/texx.png",
+    "tiles": {
+      "tilesX": 5,
+      "tilesY": 1
+    }
+  },
+  {
+    "x": 153,
+    "y": 350,
+    "w": 100,
+    "h": 20,
+    "tex": "./imgs/texx.png",
+    "tiles": {
+      "tilesX": 5,
+      "tilesY": 1
+    }
+  },
+  {
+    "x": 169,
+    "y": 458,
+    "w": 100,
+    "h": 20,
+    "tex": "./imgs/texx.png",
+    "tiles": {
+      "tilesX": 5,
+      "tilesY": 1
+    }
+  },
+  {
+    "x": 172,
+    "y": 555,
+    "w": 100,
+    "h": 20,
+    "tex": "./imgs/texx.png",
+    "tiles": {
+      "tilesX": 5,
+      "tilesY": 1
+    }
+  },
+  {
+    "x": 164,
+    "y": 648,
+    "w": 100,
+    "h": 20,
+    "tex": "./imgs/texx.png",
+    "tiles": {
+      "tilesX": 5,
+      "tilesY": 1
+    }
+  },
+  {
+    "x": 168,
+    "y": 750,
+    "w": 100,
+    "h": 20,
+    "tex": "./imgs/texx.png",
+    "tiles": {
+      "tilesX": 5,
+      "tilesY": 1
+    }
+  },
+  {
+    "x": 170,
+    "y": 839,
+    "w": 100,
+    "h": 20,
+    "tex": "./imgs/texx.png",
+    "tiles": {
+      "tilesX": 5,
+      "tilesY": 1
+    }
+  }
+
     ] as IStaticItem[];
   }
 
   public getStaticBackgrounds(): IStaticItem[] {
 
-    const backgroundWall = require("../imgs/wall3.png");
+    // const backgroundWall = require("../imgs/wall3.png");
+    const backgroundWall = [require("../imgs/backgrounds/forest.png")];
 
     const shema = {
       byX: 3,
-      byY: 3,
+      byY: 1,
+    };
+
+    const subShema = {
+      byX: 1,
+      byY: 1,
     };
 
     const b: IStaticItem[] = [];
@@ -54,7 +222,7 @@ class GameMap implements IGamePlayPlatformerMap {
             y: y * 1000,
             w: 1000,
             h: 1000,
-            tex: backgroundWall, tiles: { tilesX: 4, tilesY: 2 },
+            tex: backgroundWall, tiles: { tilesX: subShema.byX, tilesY: subShema.byY },
           });
       }
     }
