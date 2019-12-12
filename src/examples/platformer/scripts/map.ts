@@ -1,5 +1,6 @@
 import { ICollectionEnemys, ICollectionItem, IGamePlayPlatformerMap, IStaticItem, IStaticLabel } from "../../../libs/interface/global";
 
+import grounds_generated from "./packs/map2d"
 /**
  * Static body elements, backgrounds, enemys returns
  * Prepared for next level, 'loading from generated content'
@@ -26,176 +27,12 @@ class GameMap implements IGamePlayPlatformerMap {
     // const imgRes = [require("../imgs/backgrounds/forest.png")];
 
     const tileXLocal = 10;
-    return [
+    return grounds_generated as any[];
+   /* return [
       { x: 100, y: 0, w: LocalWidth, h: 60, tex: imgRes, tiles: { tilesX: tileXLocal, tilesY: 1 } },
       { x: 100, y: 500, w: LocalWidth, h: 60, tex: imgRes, tiles: { tilesX: tileXLocal, tilesY: 1 } },
- {
-    "x": 134,
-    "y": 129,
-    "w": 100,
-    "h": 20,
-    "tex": "./imgs/texx.png",
-    "tiles": {
-      "tilesX": 5,
-      "tilesY": 1
-    }
-  },
-  {
-    "x": 325,
-    "y": 133,
-    "w": 100,
-    "h": 20,
-    "tex": "./imgs/texx.png",
-    "tiles": {
-      "tilesX": 5,
-      "tilesY": 1
-    }
-  },
-  {
-    "x": 539,
-    "y": 139,
-    "w": 100,
-    "h": 20,
-    "tex": "./imgs/texx.png",
-    "tiles": {
-      "tilesX": 5,
-      "tilesY": 1
-    }
-  },
-  {
-    "x": 741,
-    "y": 143,
-    "w": 100,
-    "h": 20,
-    "tex": "./imgs/texx.png",
-    "tiles": {
-      "tilesX": 5,
-      "tilesY": 1
-    }
-  },
-  {
-    "x": 944,
-    "y": 145,
-    "w": 100,
-    "h": 20,
-    "tex": "./imgs/texx.png",
-    "tiles": {
-      "tilesX": 5,
-      "tilesY": 1
-    }
-  },
-  {
-    "x": 1135,
-    "y": 142,
-    "w": 100,
-    "h": 20,
-    "tex": "./imgs/texx.png",
-    "tiles": {
-      "tilesX": 5,
-      "tilesY": 1
-    }
-  },
-  {
-    "x": 1350,
-    "y": 144,
-    "w": 100,
-    "h": 20,
-    "tex": "./imgs/texx.png",
-    "tiles": {
-      "tilesX": 5,
-      "tilesY": 1
-    }
-  },
-  {
-    "x": 1567,
-    "y": 148,
-    "w": 100,
-    "h": 20,
-    "tex": "./imgs/texx.png",
-    "tiles": {
-      "tilesX": 5,
-      "tilesY": 1
-    }
-  },
-  {
-    "x": 163,
-    "y": 257,
-    "w": 100,
-    "h": 20,
-    "tex": "./imgs/texx.png",
-    "tiles": {
-      "tilesX": 5,
-      "tilesY": 1
-    }
-  },
-  {
-    "x": 153,
-    "y": 350,
-    "w": 100,
-    "h": 20,
-    "tex": "./imgs/texx.png",
-    "tiles": {
-      "tilesX": 5,
-      "tilesY": 1
-    }
-  },
-  {
-    "x": 169,
-    "y": 458,
-    "w": 100,
-    "h": 20,
-    "tex": "./imgs/texx.png",
-    "tiles": {
-      "tilesX": 5,
-      "tilesY": 1
-    }
-  },
-  {
-    "x": 172,
-    "y": 555,
-    "w": 100,
-    "h": 20,
-    "tex": "./imgs/texx.png",
-    "tiles": {
-      "tilesX": 5,
-      "tilesY": 1
-    }
-  },
-  {
-    "x": 164,
-    "y": 648,
-    "w": 100,
-    "h": 20,
-    "tex": "./imgs/texx.png",
-    "tiles": {
-      "tilesX": 5,
-      "tilesY": 1
-    }
-  },
-  {
-    "x": 168,
-    "y": 750,
-    "w": 100,
-    "h": 20,
-    "tex": "./imgs/texx.png",
-    "tiles": {
-      "tilesX": 5,
-      "tilesY": 1
-    }
-  },
-  {
-    "x": 170,
-    "y": 839,
-    "w": 100,
-    "h": 20,
-    "tex": "./imgs/texx.png",
-    "tiles": {
-      "tilesX": 5,
-      "tilesY": 1
-    }
-  }
+    ] as IStaticItem[]; */
 
-    ] as IStaticItem[];
   }
 
   public getStaticBackgrounds(): IStaticItem[] {
