@@ -1,6 +1,6 @@
 import { ICollectionEnemys, ICollectionItem, IGamePlayPlatformerMap, IStaticItem, IStaticLabel } from "../../../libs/interface/global";
 
-import grounds_generated from "./packs/map2d"
+import generatedMap from "./packs/map2d"
 /**
  * Static body elements, backgrounds, enemys returns
  * Prepared for next level, 'loading from generated content'
@@ -11,12 +11,36 @@ import grounds_generated from "./packs/map2d"
 class GameMap implements IGamePlayPlatformerMap {
 
   private options: any = null;
+  private staticGrounds: IStaticItem [] = [];
+  private collectItems: ICollectionItem [] = [];
 
   constructor(options?: any) {
     // Options
     if (typeof options !== 'undefined') {
       this.options = options;
     }
+
+    if (typeof generatedMap === 'undefined') return this;
+    this.loadGeneratedMap();
+
+  }
+
+  public loadGeneratedMap() {
+
+    const root = this;
+    generatedMap.forEach(function(item) {
+
+      if (typeof item.colectionLabel !== 'undefined') {
+        root.collectItems.push(item);
+        console.log("GOOD !!!")
+      } else if (typeof item.enemy !== 'undefined') {
+        console.log("next feature");
+      } else {
+        root.staticGrounds.push(item);
+      }
+
+    });
+
   }
 
   public getStaticGrounds(): IStaticItem[] {
@@ -24,30 +48,30 @@ class GameMap implements IGamePlayPlatformerMap {
     const LocalWidth = 650;
     const imgRes = [require("../imgs/floor2.png")];
     const imgResTest = [require("../imgs/grounds/texx.png")];
-    // const imgRes = [require("../imgs/backgrounds/forest.png")];
-
     const tileXLocal = 10;
-    return grounds_generated as any[];
-   /* return [
+
+    // Simple manual input
+    this.staticGrounds.push(
       { x: 100, y: 0, w: LocalWidth, h: 60, tex: imgRes, tiles: { tilesX: tileXLocal, tilesY: 1 } },
-      { x: 100, y: 500, w: LocalWidth, h: 60, tex: imgRes, tiles: { tilesX: tileXLocal, tilesY: 1 } },
-    ] as IStaticItem[]; */
+      { x: 100, y: 500, w: LocalWidth, h: 60, tex: imgRes, tiles: { tilesX: tileXLocal, tilesY: 1 } });
+    return this.staticGrounds as IStaticItem[];
 
   }
 
   public getStaticBackgrounds(): IStaticItem[] {
 
-    // const backgroundWall = require("../imgs/wall3.png");
-    const backgroundWall = [require("../imgs/backgrounds/forest.png")];
+    const backgroundDiameter = 1000;
+    const backgroundWall = require("../imgs/grounds/texx.jpg");
+    // const backgroundWall = [require("../imgs/backgrounds/forest.png")];
 
     const shema = {
-      byX: 3,
-      byY: 1,
+      byX: 4,
+      byY: 2,
     };
 
     const subShema = {
-      byX: 1,
-      byY: 1,
+      byX: 2,
+      byY: 2,
     };
 
     const b: IStaticItem[] = [];
@@ -55,10 +79,10 @@ class GameMap implements IGamePlayPlatformerMap {
       for (let y = 0; y < shema.byY; y++) {
         b.push(
           {
-            x: x * 1000,
-            y: y * 1000,
-            w: 1000,
-            h: 1000,
+            x: x * backgroundDiameter,
+            y: y * backgroundDiameter,
+            w: backgroundDiameter,
+            h: backgroundDiameter,
             tex: backgroundWall, tiles: { tilesX: subShema.byX, tilesY: subShema.byY },
           });
       }
@@ -72,9 +96,9 @@ class GameMap implements IGamePlayPlatformerMap {
     const tileXLocal = 1;
     const deltaYLocal = -200;
     const imgRes = [require("../imgs/collect-items/bitcoin.png")];
-    return [
-      { x: 0, y: 0, w: 50, h: 60, tex: imgRes, tiles: { tilesX: 2, tilesY: 2 }, colectionLabel: "bitcoin", points: 2 },
 
+    this.collectItems.push(
+      { x: 0, y: 0, w: 50, h: 60, tex: imgRes, tiles: { tilesX: 2, tilesY: 2 }, colectionLabel: "bitcoin", points: 2 },
       { x: 100, y: 0 + deltaYLocal, w: LocalWidth, h: 60, tex: imgRes, tiles: { tilesX: tileXLocal, tilesY: 1 }, colectionLabel: "bitcoin", points: 2 },
       { x: 100, y: 500 + deltaYLocal, w: LocalWidth, h: 60, tex: imgRes, tiles: { tilesX: tileXLocal, tilesY: 1 }, colectionLabel: "bitcoin", points: 2 },
       { x: 100, y: 1000 + deltaYLocal, w: LocalWidth, h: 60, tex: imgRes, tiles: { tilesX: tileXLocal, tilesY: 1 }, colectionLabel: "bitcoin", points: 2 },
@@ -84,17 +108,8 @@ class GameMap implements IGamePlayPlatformerMap {
       { x: 500, y: 0 + deltaYLocal, w: LocalWidth, h: 60, tex: imgRes, tiles: { tilesX: tileXLocal, tilesY: 1 }, colectionLabel: "bitcoin", points: 2  },
       { x: 500, y: 200 + deltaYLocal, w: LocalWidth, h: 60, tex: imgRes, tiles: { tilesX: tileXLocal, tilesY: 1 }, colectionLabel: "bitcoin", points: 2  },
       { x: 500, y: 400 + deltaYLocal, w: LocalWidth, h: 60, tex: imgRes, tiles: { tilesX: tileXLocal, tilesY: 1 }, colectionLabel: "bitcoin", points: 2  },
-      { x: 500, y: 800 + deltaYLocal, w: LocalWidth, h: 60, tex: imgRes, tiles: { tilesX: tileXLocal, tilesY: 1 }, colectionLabel: "bitcoin", points: 2  },
-      { x: 500, y: 1500 + deltaYLocal, w: LocalWidth, h: 60, tex: imgRes, tiles: { tilesX: tileXLocal, tilesY: 1 }, colectionLabel: "bitcoin", points: 2  },
-      { x: 1800, y: 0 + deltaYLocal, w: LocalWidth, h: 60, tex: imgRes, tiles: { tilesX: tileXLocal, tilesY: 1 }, colectionLabel: "bitcoin", points: 2  },
-      { x: 1800, y: 300 + deltaYLocal, w: LocalWidth, h: 60, tex: imgRes, tiles: { tilesX: tileXLocal, tilesY: 1 }, colectionLabel: "bitcoin", points: 2  },
-      { x: 1800, y: 800 + deltaYLocal, w: LocalWidth, h: 60, tex: imgRes, tiles: { tilesX: tileXLocal, tilesY: 1 }, colectionLabel: "bitcoin", points: 2  },
-      { x: 1800, y: 1200 + deltaYLocal, w: LocalWidth, h: 60, tex: imgRes, tiles: { tilesX: tileXLocal, tilesY: 1 }, colectionLabel: "bitcoin", points: 2  },
-      { x: 1800, y: 1800 + deltaYLocal, w: LocalWidth, h: 60, tex: imgRes, tiles: { tilesX: tileXLocal, tilesY: 1 }, colectionLabel: "bitcoin", points: 2  },
-      { x: 2800, y: 250 + deltaYLocal, w: LocalWidth, h: 60, tex: imgRes, tiles: { tilesX: tileXLocal, tilesY: 1 }, colectionLabel: "bitcoin", points: 2  },
-      { x: 2800, y: 3100 + deltaYLocal, w: LocalWidth, h: 60, tex: imgRes, tiles: { tilesX: tileXLocal, tilesY: 1 }, colectionLabel: "bitcoin", points: 2  },
-
-    ] as ICollectionItem[];
+    )
+    return this.collectItems as ICollectionItem[];
   }
 
   public getEnemys(): ICollectionEnemys[] {
