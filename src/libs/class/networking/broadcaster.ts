@@ -14,6 +14,8 @@ class Broadcaster {
   private showBroadcasterOnInt: boolean = true;
 
   private popupUI: HTMLDivElement = null;
+  private broadcasterUI: HTMLElement;
+  private titleStatus: HTMLElement;
   private openRoomBtn: HTMLElement;
   private joinRoomBtn: HTMLElement;
   private openOrJoinBtn: HTMLElement;
@@ -39,6 +41,8 @@ class Broadcaster {
   }
 
   private initDOM() {
+    this.broadcasterUI = byId('media-rtc3-controls');
+    this.titleStatus = byId('rtc3log');
     this.openRoomBtn = byId('open-room');
     this.joinRoomBtn = byId('join-room');
     this.openOrJoinBtn = byId('open-or-join-room');
@@ -264,6 +268,19 @@ class Broadcaster {
     const root = this;
     (window as any).enableAdapter = true;
     // UI Code
+
+    // hide right box (broadcaster)
+    // root.broadcasterUI
+    root.titleStatus.onclick = function() {
+      if (root.broadcasterUI.classList.contains('network-panel-show-ver-animation')) {
+      root.broadcasterUI.classList.remove('network-panel-show-ver-animation')
+      root.broadcasterUI.classList.add('network-panel-hide-ver-animation')
+      } else {
+      root.broadcasterUI.classList.add('network-panel-show-ver-animation')
+      root.broadcasterUI.classList.remove('network-panel-ver-hide-animation')
+      }
+    }
+
     root.openRoomBtn.onclick = function() {
         root.disableInputButtons();
         root.connection.open((root.inputRoomId as HTMLInputElement).value, function() {
@@ -302,8 +319,10 @@ class Broadcaster {
 
     // ................FileSharing/TextChat Code.............
     root.shareFileBtn.onclick = function() {
+       console.log("test >>> SHARE ")
         var fileSelector = new (window as any).FileSelector();
         fileSelector.selectSingleFile(function(file) {
+            console.log("test , ", file)
             root.connection.send(file);
         });
     };

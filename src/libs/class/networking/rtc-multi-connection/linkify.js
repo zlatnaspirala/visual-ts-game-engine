@@ -13,13 +13,13 @@ window.linkify = (function(){
     QUERY_FRAG = "(?:\\?[^#<>\\s]*)?(?:#[^<>\\s]*)?",
     URI1 = "\\b" + SCHEME + "[^<>\\s]+",
     URI2 = "\\b" + HOST_OR_IP + PATH + QUERY_FRAG + "(?!\\w)",
-    
+
     MAILTO = "mailto:",
     EMAIL = "(?:" + MAILTO + ")?[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@" + HOST_OR_IP + QUERY_FRAG + "(?!\\w)",
-    
+
     URI_RE = new RegExp( "(?:" + URI1 + "|" + URI2 + "|" + EMAIL + ")", "ig" ),
     SCHEME_RE = new RegExp( "^" + SCHEME, "i" ),
-    
+
     quotes = {
       "'": "`",
       '>': '<',
@@ -29,83 +29,86 @@ window.linkify = (function(){
       '»': '«',
       '›': '‹'
     },
-    
+
     default_options = {
       callback: function( text, href ) {
         return href ? '<a href="' + href + '" title="' + href + '" target="_blank">' + text + '<\/a>' : text;
       },
       punct_regexp: /(?:[!?.,:;'"]|(?:&|&amp;)(?:lt|gt|quot|apos|raquo|laquo|rsaquo|lsaquo);)$/
     };
-  
+
   return function( txt, options ) {
-	txt = getSmileys(txt);
+  txt = getSmileys(txt);
+  if (typeof txt.replace === 'undefined') {
+    return;
+  }
 	txt = txt.replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/ /g, '&nbsp;').replace(/\n/g, '<br />');
-	
+
     options = options || {};
-    
+
     // Temp variables.
     var arr,
       i,
       link,
       href,
-      
+
       // Output HTML.
       html = '',
-      
+
       // Store text / link parts, in order, for re-combination.
       parts = [],
-      
+
       // Used for keeping track of indices in the text.
       idx_prev,
       idx_last,
       idx,
       link_last,
-      
+
       // Used for trimming trailing punctuation and quotes from links.
       matches_begin,
       matches_end,
       quote_begin,
       quote_end;
-    
+
     // Initialize options.
     for ( i in default_options ) {
       if ( options[ i ] === undefined ) {
         options[ i ] = default_options[ i ];
       }
     }
-    
+
     // Find links.
     while ( arr = URI_RE.exec( txt ) ) {
-      
+
       link = arr[0];
       idx_last = URI_RE.lastIndex;
       idx = idx_last - link.length;
-      
+
       // Not a link if preceded by certain characters.
       if ( /[\/:]/.test( txt.charAt( idx - 1 ) ) ) {
         continue;
       }
-      
+
       // Trim trailing punctuation.
       do {
         // If no changes are made, we don't want to loop forever!
         link_last = link;
-        
+
         quote_end = link.substr( -1 )
         quote_begin = quotes[ quote_end ];
-        
+
         // Ending quote character?
         if ( quote_begin ) {
           matches_begin = link.match( new RegExp( '\\' + quote_begin + '(?!$)', 'g' ) );
           matches_end = link.match( new RegExp( '\\' + quote_end, 'g' ) );
-          
+
           // If quotes are unbalanced, remove trailing quote character.
           if ( ( matches_begin ? matches_begin.length : 0 ) < ( matches_end ? matches_end.length : 0 ) ) {
             link = link.substr( 0, link.length - 1 );
             idx_last--;
           }
         }
-        
+
         // Ending non-quote punctuation character?
         if ( options.punct_regexp ) {
           link = link.replace( options.punct_regexp, function(a){
@@ -114,9 +117,9 @@ window.linkify = (function(){
           });
         }
       } while ( link.length && link !== link_last );
-      
+
       href = link;
-      
+
       // Add appropriate protocol to naked links.
       if ( !SCHEME_RE.test( href ) ) {
         href = ( href.indexOf( '@' ) !== -1 ? ( !href.indexOf( MAILTO ) ? '' : MAILTO )
@@ -125,29 +128,29 @@ window.linkify = (function(){
           : 'http://' )
           + href;
       }
-      
+
       // Push preceding non-link text onto the array.
       if ( idx_prev != idx ) {
         parts.push([ txt.slice( idx_prev, idx ) ]);
         idx_prev = idx_last;
       }
-      
+
       // Push massaged link onto the array
       parts.push([ link, href ]);
     };
-    
+
     // Push remaining non-link text onto the array.
     parts.push([ txt.substr( idx_prev ) ]);
-    
+
     // Process the array items.
     for ( i = 0; i < parts.length; i++ ) {
       html += options.callback.apply( window, parts[i] );
     }
-    
+
     // In case of catastrophic failure, return the original text;
     return html || txt;
   };
-  
+
 })();
 
 function getSmileys(text) {

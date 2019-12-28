@@ -131,6 +131,24 @@ canvas {
   animation-duration: 1.2s;
 }
 
+.network-panel-hide-ver-animation {
+  -webkit-animation-fill-mode: forwards;
+  -webkit-animation-name: goBottom;
+  -webkit-animation-duration: 1.2s;
+  animation-fill-mode: forwards;
+  animation-name: goBottom;
+  animation-duration: 1.2s;
+}
+
+.network-panel-show-ver-animation {
+  -webkit-animation-fill-mode: forwards;
+  -webkit-animation-name: goUp;
+  -webkit-animation-duration: 1.2s;
+  animation-fill-mode: forwards;
+  animation-name: goUp;
+  animation-duration: 1.2s;
+}
+
 .message-box {
   position: absolute;
   background: black;

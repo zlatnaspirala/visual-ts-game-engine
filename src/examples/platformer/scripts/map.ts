@@ -30,13 +30,19 @@ class GameMap implements IGamePlayPlatformerMap {
     const root = this;
     generatedMap.forEach(function(item) {
 
-      if (typeof item.colectionLabel !== 'undefined') {
-        root.collectItems.push(item);
-        console.log("GOOD !!!")
-      } else if (typeof item.enemy !== 'undefined') {
+      if (typeof (item as ICollectionItem).colectionLabel !== 'undefined') {
+        (root.collectItems as any).push(item);
+        console.log("collectItems detected !")
+      } else if (typeof (item as any).enemy !== 'undefined') {
         console.log("next feature");
       } else {
+        //
+        // src\examples\platformer\imgs\grounds
+        // const imgRes = [require("../imgs/grounds/elementGlass019.png")];
+        console.log(item.tex)
+        // item.tex = [require("../imgs/grounds/elementGlass019.png")];
         root.staticGrounds.push(item);
+        console.log("ground detected !")
       }
 
     });
@@ -46,8 +52,8 @@ class GameMap implements IGamePlayPlatformerMap {
   public getStaticGrounds(): IStaticItem[] {
 
     const LocalWidth = 650;
-    const imgRes = [require("../imgs/floor2.png")];
-    const imgResTest = [require("../imgs/grounds/texx.png")];
+    const imgRes = [require("../imgs/grounds/elementGlass019.png")];
+    const imgResTest = [require("../imgs/grounds/floor2.png")];
     const tileXLocal = 10;
 
     // Simple manual input
@@ -61,17 +67,17 @@ class GameMap implements IGamePlayPlatformerMap {
   public getStaticBackgrounds(): IStaticItem[] {
 
     const backgroundDiameter = 1000;
-    const backgroundWall = require("../imgs/grounds/texx.jpg");
+    const backgroundWall = require("../imgs/backgrounds/wall3.png");
     // const backgroundWall = [require("../imgs/backgrounds/forest.png")];
 
     const shema = {
-      byX: 4,
-      byY: 2,
+      byX: 8,
+      byY: 4,
     };
 
     const subShema = {
-      byX: 2,
-      byY: 2,
+      byX: 4,
+      byY: 4,
     };
 
     const b: IStaticItem[] = [];

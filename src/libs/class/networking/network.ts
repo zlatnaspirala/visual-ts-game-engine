@@ -477,7 +477,7 @@ class Network {
       root.addNewMessage({
         header: event.extra.username,
         message: "Left the game!",
-        userinfo: root.getUserinfo(root.rtcMultiConnection.blobURLs[event.userid], '<img src="./imgs/warning.png" >'),
+        userinfo: root.getUserinfo(root.rtcMultiConnection.blobURLs[event.userid], '<img src="imgs/warning.png" >'),
         color: event.extra.color,
       });
 
@@ -531,7 +531,7 @@ class Network {
       root.addNewMessage({
         header: username,
         message: "Searching for existing game...",
-        userinfo: '<img class=".chatIcon" src="./imgs/warning.png">',
+        userinfo: '<img class=".chatIcon" src="imgs/warning.png">',
       });
 
       const roomid = root.roomUI.value;
@@ -545,7 +545,7 @@ class Network {
           root.addNewMessage({
             header: username,
             message: "Creating new host gamePlay id:" + root.roomUI.value,
-            userinfo: "<img class='.chatIcon' src='./imgs/warning.png'>",
+            userinfo: "<img class='.chatIcon' src='imgs/warning.png'>",
           });
 
           root.rtcMultiConnection.open();

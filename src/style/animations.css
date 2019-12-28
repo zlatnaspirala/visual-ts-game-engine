@@ -66,3 +66,29 @@
   0%   {background-color:rgba(255, 0, 0, 0.9); right:-26%; top:95%;}
   100%  {background-color:rgba(255, 255, 0, 0.9); right:0%; top:0px;}
 }
+
+/* Vertical */
+/* Network-Panel animation */
+
+/* Safari 4.0 - 8.0 */
+@-webkit-keyframes goBottom {
+  0%   {background-color:rgba(155, 101, 10, 0.9); top:0px;}
+  100%  {background-color:rgba(155, 155, 0, 0.9); top:95%;}
+}
+
+/* Standard syntax */
+@keyframes goBottom {
+  0%   {background-color:rgba(255, 120, 0, 0.9); top:0px;}
+  100%  {background-color:rgba(255, 25, 112, 0.9); top:95%;}
+}
+
+@-webkit-keyframes goUp {
+  0%   {background-color:rgba(255, 0, 0, 0.9); top:95%;}
+  100%  {background-color:rgba(255, 255, 0, 0.9); top:0px;}
+}
+
+/* Standard syntax */
+@keyframes goUp {
+  0%   {background-color:rgba(255, 0, 0, 0.9); top:95%;}
+  100%  {background-color:rgba(255, 255, 0, 0.9); top:0px;}
+}
