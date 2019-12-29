@@ -32,14 +32,14 @@ class GameMap implements IGamePlayPlatformerMap {
 
       if (typeof (item as ICollectionItem).colectionLabel !== 'undefined') {
         (root.collectItems as any).push(item);
-        console.log("collectItems detected !")
+        console.log("collectItems import >>> " + item.tex)
       } else if (typeof (item as any).enemy !== 'undefined') {
         console.log("next feature");
       } else {
         //
         // src\examples\platformer\imgs\grounds
         // const imgRes = [require("../imgs/grounds/elementGlass019.png")];
-        console.log(item.tex)
+        console.log("ground import >>> " + item.tex)
         // item.tex = [require("../imgs/grounds/elementGlass019.png")];
         root.staticGrounds.push(item);
         console.log("ground detected !")
@@ -58,7 +58,6 @@ class GameMap implements IGamePlayPlatformerMap {
 
     // Simple manual input
     this.staticGrounds.push(
-      { x: 100, y: 0, w: LocalWidth, h: 60, tex: imgRes, tiles: { tilesX: tileXLocal, tilesY: 1 } },
       { x: 100, y: 500, w: LocalWidth, h: 60, tex: imgRes, tiles: { tilesX: tileXLocal, tilesY: 1 } });
     return this.staticGrounds as IStaticItem[];
 
@@ -103,18 +102,18 @@ class GameMap implements IGamePlayPlatformerMap {
     const deltaYLocal = -200;
     const imgRes = [require("../imgs/collect-items/bitcoin.png")];
 
+    /**
+     * @Description manual map data input
+     * clear push array if you wanna only
+     * game object from generated map.
+     */
+    /*
     this.collectItems.push(
-      { x: 0, y: 0, w: 50, h: 60, tex: imgRes, tiles: { tilesX: 2, tilesY: 2 }, colectionLabel: "bitcoin", points: 2 },
-      { x: 100, y: 0 + deltaYLocal, w: LocalWidth, h: 60, tex: imgRes, tiles: { tilesX: tileXLocal, tilesY: 1 }, colectionLabel: "bitcoin", points: 2 },
-      { x: 100, y: 500 + deltaYLocal, w: LocalWidth, h: 60, tex: imgRes, tiles: { tilesX: tileXLocal, tilesY: 1 }, colectionLabel: "bitcoin", points: 2 },
-      { x: 100, y: 1000 + deltaYLocal, w: LocalWidth, h: 60, tex: imgRes, tiles: { tilesX: tileXLocal, tilesY: 1 }, colectionLabel: "bitcoin", points: 2 },
-      { x: 100, y: 1500 + deltaYLocal, w: LocalWidth, h: 60, tex: imgRes, tiles: { tilesX: tileXLocal, tilesY: 1 }, colectionLabel: "bitcoin", points: 2 },
-      { x: 100, y: 2000 + deltaYLocal, w: LocalWidth, h: 60, tex: imgRes, tiles: { tilesX: tileXLocal, tilesY: 1 }, colectionLabel: "bitcoin", points: 2  },
-      { x: 100, y: 2500 + deltaYLocal, w: LocalWidth, h: 60, tex: imgRes, tiles: { tilesX: tileXLocal, tilesY: 1 }, colectionLabel: "bitcoin", points: 2  },
-      { x: 500, y: 0 + deltaYLocal, w: LocalWidth, h: 60, tex: imgRes, tiles: { tilesX: tileXLocal, tilesY: 1 }, colectionLabel: "bitcoin", points: 2  },
-      { x: 500, y: 200 + deltaYLocal, w: LocalWidth, h: 60, tex: imgRes, tiles: { tilesX: tileXLocal, tilesY: 1 }, colectionLabel: "bitcoin", points: 2  },
-      { x: 500, y: 400 + deltaYLocal, w: LocalWidth, h: 60, tex: imgRes, tiles: { tilesX: tileXLocal, tilesY: 1 }, colectionLabel: "bitcoin", points: 2  },
+      { x: 0, y: 0, w: 50, h: 60, tex: imgRes, tiles: { tilesX: 2, tilesY: 2 }, colectionLabel: "collectItemPoint", points: 2 },
+      { x: 100, y: 0 + deltaYLocal, w: LocalWidth, h: 60, tex: imgRes, tiles: { tilesX: tileXLocal, tilesY: 1 }, colectionLabel: "collectItemPoint", points: 2 },
+      { x: 100, y: 500 + deltaYLocal, w: LocalWidth, h: 60, tex: imgRes, tiles: { tilesX: tileXLocal, tilesY: 1 }, colectionLabel: "collectItemPoint", points: 2 },
     )
+    */
     return this.collectItems as ICollectionItem[];
   }
 

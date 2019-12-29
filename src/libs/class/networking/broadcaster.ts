@@ -319,10 +319,9 @@ class Broadcaster {
 
     // ................FileSharing/TextChat Code.............
     root.shareFileBtn.onclick = function() {
-       console.log("test >>> SHARE ")
         var fileSelector = new (window as any).FileSelector();
         fileSelector.selectSingleFile(function(file) {
-            console.log("test , ", file)
+
             root.connection.send(file);
         });
     };

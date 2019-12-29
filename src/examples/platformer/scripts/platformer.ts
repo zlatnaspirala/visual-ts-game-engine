@@ -188,7 +188,7 @@ class Platformer implements IGamePlayModel {
       const pair = pairs[i];
       if (pair.activeContacts) {
 
-        if (pair.bodyA.label === "player" && pair.bodyB.label === "bitcoin") {
+        if (pair.bodyA.label === "player" && pair.bodyB.label === "collectItemPoint") {
           const collectitem = pair.bodyB;
           this.starter.destroyBody(collectitem);
         }

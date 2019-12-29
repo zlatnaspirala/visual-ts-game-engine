@@ -125,7 +125,7 @@ class ClientConfig {
     sessionAudio: false,
     sessionVideo: false,
     sessionData: true,
-    enableFileSharing: false
+    enableFileSharing: true
   };
 
   /**
