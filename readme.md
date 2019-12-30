@@ -3,7 +3,7 @@
 
 #### 2d canvas game engine based on Matter.js 2D physics engine for the web. ####
 
- - Writen in typescript current version 3.5.1.
+ - Writen in typescript current version 3.7.4.
  - Text editor used and recommended: Visual Studio Code. Luanch debugger configuration comes with
    this project.
  - Physics engine based on Matter.js.

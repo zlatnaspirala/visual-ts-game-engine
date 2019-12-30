@@ -4,8 +4,8 @@
   "description": "Improved render options like set tile, play sprite animation, multiplayer coordinate etc.. Whole project is based fully dependency build. Main file is app.ts . Class ioc saves singlton instances also bind. In this project html and css is not priory. Based on canvas 2D. Used lib Matter.js in typescript variant. This project is for middle level programmers.",
   "main": ".src/app.ts",
   "dependencies": {
-    "@types/matter-js": "^0.10.4",
-    "@types/node": "^12.12.14",
+    "@types/matter-js": "^0.10.7",
+    "@types/node": "^12.12.22",
     "express": "^4.17.1",
     "hacktimer": "^1.1.3",
     "jquery": ">=3.4.0",
@@ -17,7 +17,7 @@
     "socket.io-client": "^2.3.0",
     "tsconfig": "^7.0.0",
     "webrtc-adapter": "latest",
-    "websocket": "^1.0.30"
+    "websocket": "^1.0.31"
   },
   "devDependencies": {
     "clean-webpack-plugin": "^0.1.19",
@@ -30,10 +30,10 @@
     "style-loader": "^0.21.0",
     "ts-loader": "^4.4.2",
     "tslint": "^5.20.1",
-    "typedoc": "^0.15.3",
+    "typedoc": "^0.15.6",
     "typedoc-webpack-plugin": "^1.1.4",
-    "typescript": "^3.7.3",
-    "webpack": "^4.41.2",
+    "typescript": "^3.7.4",
+    "webpack": "^4.41.5",
     "webpack-cli": "^3.3.10"
   },
   "scripts": {
