@@ -11,7 +11,7 @@
     "jquery": ">=3.4.0",
     "matter-attractors": "^0.1.6",
     "matter-js": "^0.14.1",
-    "npm": "^5.10.0",
+    "npm": "^6.13.4",
     "popper.js": "^1.16.0",
     "script-ext-html-webpack-plugin": "^2.1.4",
     "socket.io-client": "^2.3.0",
