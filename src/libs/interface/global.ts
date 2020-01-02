@@ -19,19 +19,21 @@ export interface ICollectionItem extends IStaticItem {
   points: number;
 }
 
-export interface ICollectionEnemys extends IStaticItem {
-  colectionLabel: string;
+export interface IBotBehaviorOptions {
+  patrolType: string;
+  patrolPeriod: number;
+  patrolLoop: boolean;
+}
+
+// Remove any at the end
+export interface ICollectionEnemies extends IStaticItem {
+  enemyLabel: string;
+  enemyOptions: IBotBehaviorOptions | any;
 }
 
 export interface ISpriteShema {
   byX: number;
   byY: number;
-}
-
-export interface IBotBehaviorOptions {
-  patrolType: string;
-  patrolPeriod: number;
-  patrolLoop: boolean;
 }
 
 export interface IUserRegData {
@@ -60,7 +62,7 @@ export interface IGamePlayPlatformerMap {
   getStaticGrounds(): IStaticItem[];
   getStaticBackgrounds(): IStaticItem[];
   getCollectItems(): ICollectionItem[];
-  getEnemys(): ICollectionEnemys[];
+  getEnemys(): ICollectionEnemies[];
 }
 
 export interface IPoint {

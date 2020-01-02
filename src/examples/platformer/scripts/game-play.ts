@@ -359,9 +359,9 @@ class GamePlay extends Platformer implements IMultiplayer {
 
       let enemySprite;
 
-      if (item.colectionLabel === "enemy_crapmunch") {
+      if (item.enemyLabel === "crapmunch") {
         enemySprite = new SpriteTextureComponent("enemy", item.tex, { byX: 10, byY: 1 });
-      } else if (item.colectionLabel === "enemy_chopper") {
+      } else if (item.enemyLabel === "chopper") {
         enemySprite = new SpriteTextureComponent("enemy", item.tex, { byX: 5, byY: 1 });
       }
 
@@ -372,7 +372,7 @@ class GamePlay extends Platformer implements IMultiplayer {
         item.h,
         {
           isStatic: false,
-          label: item.colectionLabel,
+          label: item.enemyLabel,
           density: 0.0005,
           friction: 0.01,
           frictionAir: 0.06,
@@ -409,7 +409,7 @@ class GamePlay extends Platformer implements IMultiplayer {
         item.h,
         {
           isStatic: true,
-          label: item.colectionLabel,
+          label: item.enemyLabel,
           density: 0.0005,
           friction: 0.01,
           frictionAir: 0.06,

@@ -29,8 +29,8 @@ let dragging = function () {
         const e = event || window.event;
         let aX, aY;
         try {
-          aX = (e as any).clientX - diffX,
-          aY = (e as any).clientY - diffY;
+          aX = e.clientX - diffX,
+          aY = e.clientY - diffY;
         } catch (err) {
           console.log(err);
         }

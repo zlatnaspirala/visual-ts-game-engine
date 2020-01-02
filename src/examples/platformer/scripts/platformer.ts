@@ -193,10 +193,10 @@ class Platformer implements IGamePlayModel {
           this.starter.destroyBody(collectitem);
         }
 
-        if (pair.bodyA.label === "player" && pair.bodyB.label === "enemy_crapmunch") {
+        if (pair.bodyA.label === "player" && pair.bodyB.label === "crapmunch") {
           const collectitem = pair.bodyA;
           this.playerDie(collectitem);
-        } else if (pair.bodyB.label === "player" && pair.bodyA.label === "enemy_crapmunch") {
+        } else if (pair.bodyB.label === "player" && pair.bodyA.label === "crapmunch") {
           const collectitem = pair.bodyB;
           this.playerDie(collectitem);
         }

@@ -1,4 +1,4 @@
-import { ICollectionEnemys, ICollectionItem, IGamePlayPlatformerMap, IStaticItem, IStaticLabel } from "../../../libs/interface/global";
+import { ICollectionItem, IGamePlayPlatformerMap, IStaticItem, IStaticLabel, ICollectionEnemies } from "../../../libs/interface/global";
 
 import generatedMap from "./packs/map2d"
 /**
@@ -13,8 +13,10 @@ class GameMap implements IGamePlayPlatformerMap {
   private options: any = null;
   private staticGrounds: IStaticItem [] = [];
   private collectItems: ICollectionItem [] = [];
+  private collectEnemies: ICollectionEnemies [] = [];
 
   constructor(options?: any) {
+
     // Options
     if (typeof options !== 'undefined') {
       this.options = options;
@@ -25,24 +27,23 @@ class GameMap implements IGamePlayPlatformerMap {
 
   }
 
-  public loadGeneratedMap() {
+  /**
+   * Important method, we call only if object
+   * `generatedMap` is imported. I append generatedMap and object
+   * `from code` created in same array.
+   */
+  private loadGeneratedMap() {
 
     const root = this;
     generatedMap.forEach(function(item) {
 
       if (typeof (item as ICollectionItem).colectionLabel !== 'undefined') {
-        (root.collectItems as any).push(item);
-        console.log("collectItems import >>> " + item.tex)
-      } else if (typeof (item as any).enemy !== 'undefined') {
-        console.log("next feature");
+        root.collectItems.push(item as ICollectionItem);
+      } else if (typeof (item as ICollectionEnemies).enemyLabel !== 'undefined') {
+        root.collectEnemies.push(item as ICollectionEnemies);
+        console.log("next feature ENEMY");
       } else {
-        //
-        // src\examples\platformer\imgs\grounds
-        // const imgRes = [require("../imgs/grounds/elementGlass019.png")];
-        console.log("ground import >>> " + item.tex)
-        // item.tex = [require("../imgs/grounds/elementGlass019.png")];
         root.staticGrounds.push(item);
-        console.log("ground detected !")
       }
 
     });
@@ -117,81 +118,32 @@ class GameMap implements IGamePlayPlatformerMap {
     return this.collectItems as ICollectionItem[];
   }
 
-  public getEnemys(): ICollectionEnemys[] {
+  public getEnemys(): ICollectionEnemies[] {
 
-    const imgCrap = [require("../imgs/crapmunch/crapmunch.png")];
-    const imgCooper = [require("../imgs/chopper/chopper.png")];
+    const imgCrap = [require("../imgs/enemies/crapmunch.png")];
+    const imgCooper = [require("../imgs/enemies/chopper.png")];
 
     const deltaYLocal = 100;
     const enemyWidth = 100;
     const enemyHeight = 100;
 
-    return [
+    /*
+    this.collectEnemies.push(
       {
-        x: 0, y: -300 + deltaYLocal, w: enemyWidth, h: enemyHeight,
-         tex: imgCrap, tiles: { tilesX: 1, tilesY: 1 }, colectionLabel: "enemy_crapmunch"},
-      {
-        x: 0, y: 500 + deltaYLocal, w: enemyWidth, h: enemyHeight,
-         tex: imgCrap, tiles: { tilesX: 1, tilesY: 1 }, colectionLabel: "enemy_crapmunch"},
-      {
-        x: 0, y: 1000 + deltaYLocal, w: enemyWidth, h: enemyHeight,
-         tex: imgCrap, tiles: { tilesX: 1, tilesY: 1 }, colectionLabel: "enemy_crapmunch"},
-      {
-        x: 0, y: 1500 + deltaYLocal, w: enemyWidth, h: enemyHeight,
-         tex: imgCrap, tiles: { tilesX: 1, tilesY: 1 }, colectionLabel: "enemy_crapmunch" },
-      {
-        x: 0, y: 2000 + deltaYLocal, w: enemyWidth, h: enemyHeight,
-         tex: imgCrap, tiles: { tilesX: 1, tilesY: 1 }, colectionLabel: "enemy_crapmunch" },
-      {
-        x: 100, y: 2500 + deltaYLocal, w: enemyWidth, h: enemyHeight,
-         tex: imgCrap, tiles: { tilesX: 1, tilesY: 1 }, colectionLabel: "enemy_crapmunch" },
-      {
-        x: 500, y: 0 + deltaYLocal, w: enemyWidth, h: enemyHeight,
-         tex: imgCrap, tiles: { tilesX: 1, tilesY: 1 }, colectionLabel: "enemy_crapmunch" },
-      {
-        x: 500, y: 200 + deltaYLocal, w: enemyWidth, h: enemyHeight,
-         tex: imgCrap, tiles: { tilesX: 1, tilesY: 1 }, colectionLabel: "enemy_crapmunch"},
-      {
-        x: 500, y: 400 + deltaYLocal, w: enemyWidth, h: enemyHeight,
-         tex: imgCrap, tiles: { tilesX: 1, tilesY: 1 }, colectionLabel: "enemy_crapmunch" },
-      {
-        x: 500, y: 800 + deltaYLocal, w: enemyWidth, h: enemyHeight,
-         tex: imgCrap, tiles: { tilesX: 1, tilesY: 1 }, colectionLabel: "enemy_crapmunch" },
-      {
-        x: 500, y: 1500 + deltaYLocal, w: enemyWidth, h: enemyHeight,
-         tex: imgCrap, tiles: { tilesX: 1, tilesY: 1 }, colectionLabel: "enemy_crapmunch" },
-      {
-        x: 1800, y: 0 + deltaYLocal, w: enemyWidth, h: enemyHeight,
-         tex: imgCrap, tiles: { tilesX: 1, tilesY: 1 }, colectionLabel: "enemy_crapmunch" },
-      {
-        x: 1800, y: 300 + deltaYLocal, w: enemyWidth, h: enemyHeight,
-         tex: imgCrap, tiles: { tilesX: 1, tilesY: 1 }, colectionLabel: "enemy_crapmunch"},
-      {
-        x: 1800, y: 800 + deltaYLocal, w: enemyWidth, h: enemyHeight,
-         tex: imgCrap, tiles: { tilesX: 1, tilesY: 1 }, colectionLabel: "enemy_crapmunch" },
-      {
-        x: 1800, y: 1200 + deltaYLocal, w: enemyWidth, h: enemyHeight,
-         tex: imgCrap, tiles: { tilesX: 1, tilesY: 1 }, colectionLabel: "enemy_crapmunch" },
-      {
-        x: 1800, y: 1800 + deltaYLocal, w: enemyWidth, h: enemyHeight,
-         tex: imgCrap, tiles: { tilesX: 1, tilesY: 1 }, colectionLabel: "enemy_crapmunch"},
-      {
-        x: 2800, y: 250 + deltaYLocal, w: enemyWidth, h: enemyHeight,
-         tex: imgCrap, tiles: { tilesX: 1, tilesY: 1 }, colectionLabel: "enemy_crapmunch" },
-      {
-        x: 2800, y: 3100 + deltaYLocal, w: enemyWidth, h: enemyHeight,
-         tex: imgCrap, tiles: { tilesX: 1, tilesY: 1 }, colectionLabel: "enemy_crapmunch" },
-
-    ] as ICollectionItem[];
+        x: 0, y: -100 + deltaYLocal, w: enemyWidth, h: enemyHeight,
+        tex: imgCrap, tiles: { tilesX: 1, tilesY: 1 }, enemyLabel: "crapmunch", enemyOptions: ""},
+    );
+    */
+    return this.collectEnemies;
   }
 
-  public getDeadLines(): ICollectionEnemys[] {
+  public getDeadLines(): ICollectionEnemies[] {
 
     const img = [require("../imgs/flame2.png")];
 
     return [
-      { x: 500, y: 2500, w: 9000, h: 50, tex: img, tiles:   { tilesX: 3, tilesY: 3 }, colectionLabel: "deadline" },
-    ] as ICollectionEnemys[];
+      { x: 500, y: 2500, w: 9000, h: 50, tex: img, tiles:   { tilesX: 3, tilesY: 3 }, enemyLabel: "deadline", enemyOptions: "" },
+    ] as ICollectionEnemies[];
   }
 
   public getStaticBanners(): IStaticLabel[] {
