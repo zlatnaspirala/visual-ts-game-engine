@@ -25,6 +25,16 @@ class GamePlay extends Platformer implements IMultiplayer {
                                          Except: Folder src/libs with licence: <br/>\
                                          GNU LESSER GENERAL PUBLIC LICENSE Version 3 <br/>\
                                          Copyright (c) 2019 maximumroulette.com ";
+
+  /**
+   * @description deadZoneForBottom Definition and Default value
+   * - overrided from map or map2d(generated) by deadLines object
+   * DeadLines object in future can be used for enemy static action
+   * Next : deadZoneForLeft , deadZoneForRight
+   * this.starter.setWorldBounds(-300, -300, 10000, root.deadZoneForBottom);
+   * */
+  private deadZoneForBottom: number  = 4500;
+
   public multiPlayerRef: any = {
     root: this,
     init: function (rtcEvent) {
@@ -172,7 +182,6 @@ class GamePlay extends Platformer implements IMultiplayer {
     const root = this;
     const globalEvent = this.starter.ioc.get.GlobalEvent;
     const playerSpeed = 0.005;
-    const deadZoneByY = 2700;
 
     this.enemys.forEach(function (item) {
       const test = new BotBehavior(item);
@@ -183,7 +192,7 @@ class GamePlay extends Platformer implements IMultiplayer {
 
       if (!root.player) { return; }
 
-      if (root.player && root.player.position.y > deadZoneByY) {
+      if (root.player && root.player.position.y > root.deadZoneForBottom) {
         root.playerDie(root.player);
       }
 
@@ -276,8 +285,10 @@ class GamePlay extends Platformer implements IMultiplayer {
     const root = this;
     const gameMap: GameMap = new GameMap();
 
-    // Override data from starter.
-    this.starter.setWorldBounds(-300, -300, 10000, 2700);
+    /**
+     * @description Override data from starter.
+     */
+    this.starter.setWorldBounds(-300, -300, 10000, root.deadZoneForBottom);
 
     this.playerSpawn(false);
 
@@ -400,6 +411,10 @@ class GamePlay extends Platformer implements IMultiplayer {
     gameMap.getDeadLines().forEach((item) => {
 
       let enemySprite;
+
+
+      root.deadZoneForBottom = item.y;
+
       enemySprite = new SpriteTextureComponent("deadline", item.tex, { byX: item.tiles.tilesX, byY: item.tiles.tilesY });
 
       const newStaticElement: worldElement = Matter.Bodies.rectangle(

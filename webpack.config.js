@@ -7,7 +7,7 @@ const TypedocWebpackPlugin = require('typedoc-webpack-plugin');
 const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
 
 var internalConfig = {
-    createDocumentation: false,
+    createDocumentation: true,
     stats: "errors-warnings"
 };
 

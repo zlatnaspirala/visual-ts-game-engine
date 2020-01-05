@@ -139,10 +139,10 @@ class GameMap implements IGamePlayPlatformerMap {
 
   public getDeadLines(): ICollectionEnemies[] {
 
-    const img = [require("../imgs/flame2.png")];
+    const img = [require("../imgs/deadlines/flame2.png")];
 
     return [
-      { x: 500, y: 2500, w: 9000, h: 50, tex: img, tiles:   { tilesX: 3, tilesY: 3 }, enemyLabel: "deadline", enemyOptions: "" },
+      { x: 0, y: 4500, w: 9000, h: 50, tex: img, tiles:   { tilesX: 3, tilesY: 3 }, enemyLabel: "deadline", enemyOptions: "" },
     ] as ICollectionEnemies[];
   }
 
