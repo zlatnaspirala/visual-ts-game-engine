@@ -1,6 +1,6 @@
 import * as Matter from "matter-js";
 import ViewPort from "../libs/class/view-port";
-import Ioc from "../ioc";
+import Ioc from "../controllers/ioc";
 import { IUniVector } from "./interface/global";
 import { worldElement } from "./types/global";
 

@@ -5,8 +5,8 @@ require("./style/animations.css");
 require("./style/styles.css");
 
 import AppIcon from "./app-icon";
-import GamePlay from "./examples/platformer/scripts/game-play";
-import Ioc from "./controllers/ioc";
+import GamePlay from "./examples/platformer-single-player/scripts/game-play";
+import Ioc from "./controllers/ioc-single-player";
 
 /**
  * plarformerGameInfo
@@ -15,8 +15,8 @@ import Ioc from "./controllers/ioc";
  * Put any parameters here.
  */
 const plarformerGameInfo = {
-  name: "Platformer",
-  title: "Start Platformer game play",
+  name: "Platformer Single Player",
+  title: "Start Single Platformer game",
 };
 
 const gamesList: any[] = [
@@ -26,7 +26,7 @@ const gamesList: any[] = [
 const master = new Ioc(gamesList);
 const appIcon: AppIcon = new AppIcon(master.get.Browser);
 master.singlton(GamePlay, master.get.Starter);
-console.log("Platformer: ", master.get.GamePlay);
+console.log("Platformer single player: ", master.get.GamePlay);
 
 master.get.GamePlay.attachAppEvents();
 

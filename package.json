@@ -1,6 +1,6 @@
 {
   "name": "visual-ts",
-  "version": "0.2.0",
+  "version": "0.3.1",
   "description": "Improved render options like set tile, play sprite animation, multiplayer coordinate etc.. Whole project is based fully dependency build. Main file is app.ts . Class ioc saves singlton instances also bind. In this project html and css is not priory. Based on canvas 2D. Used lib Matter.js in typescript variant. This project is for middle level programmers.",
   "main": ".src/app.ts",
   "dependencies": {
@@ -11,7 +11,6 @@
     "jquery": ">=3.4.0",
     "matter-attractors": "^0.1.6",
     "matter-js": "^0.14.1",
-    "npm": "^6.13.4",
     "popper.js": "^1.16.0",
     "script-ext-html-webpack-plugin": "^2.1.4",
     "socket.io-client": "^2.3.0",
@@ -20,6 +19,7 @@
     "websocket": "^1.0.31"
   },
   "devDependencies": {
+    "npm": "^6.13.4",
     "clean-webpack-plugin": "^0.1.19",
     "copy-webpack-plugin": "^5.1.1",
     "css-loader": "^3.4.0",
@@ -39,6 +39,7 @@
   "scripts": {
     "dev": "webpack --config webpack.config.js",
     "prod": "webpack --config webpack.config.js",
+    "dev-all": "webpack --config webpack.config.multicompile.js",
     "rtc": "node ./server/rtc/server.js",
     "broadcaster": "node ./server/rtc/broadcaster.js",
     "datadebug": "node --inspect=27017 ./server/database/base.js",

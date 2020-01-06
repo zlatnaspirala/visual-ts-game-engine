@@ -1,11 +1,17 @@
 # Project : Visual ts game engine #
-## Version : Sunshine - 2019 ##
+## Version : We can fight - 2020 ##
 
 #### 2d canvas game engine based on Matter.js 2D physics engine for the web. ####
 
+  I use my own concept: `best of the best`. It means that i import only staff that i can't make
+  in proper way in proper time. For example `Physics` was imported in role of npm package for typescript
+   matter.js variant and i keep dependency healthy. In networking aspect i use full-duplex connection
+  under web-rtc protocol. Pretty nice working combination of physics and realtime-multiplayer connetions.
+  PeerToPeer used for game-play and classic websocket(socketio) for session staff.
+
  - Writen in typescript current version 3.7.4.
- - Text editor used and recommended: Visual Studio Code. Luanch debugger configuration comes with
-   this project.
+ - Text editor used and recommended: Last version of Visual Studio Code.
+   Luanch debugger configuration comes with this project (for server part).
  - Physics engine based on Matter.js.
  - Multiplatform video chat (for all browsers) implemented. SocketIO used for session staff.
    MultiRTC2 used for data transfer also for video chat. MultiRTC3 alias 'broadcaster' used for video chat.
@@ -20,11 +26,59 @@
   npm install
 ```
 
+Command:
 ```javascript
   npm run build
 ```
 
+Output:
+<pre>
+
+├── build/  (This is auto generated)
+|   ├── externals/
+|   ├── imgs/
+|   ├── styles/
+|   ├── templates/
+|   ├── app.html
+|   ├── manifest.web
+|   ├── offline.html
+|   ├── visualjs2.js
+|   ├── worker.js
+
+</pre>
+
+
 <b> Navigate in browser /build/app.html to see client app in action </b>
+
+### New way of building multi entryes.
+
+Sufix is `-all` . This is test for multi instancing webpack capabilities.
+Thanks for common object definition:
+
+```javascript
+let config = {
+    module: {},
+};
+```
+
+Point of Multi entries is to make independent healthy builds end point
+for our application. Current export's for 2 solutions looks like
+(runs webpack.multicompile.config.js) :
+
+Command:
+```javascript
+  npm run dev-all
+```
+
+Output:
+<pre>
+
+├── build/  (This is auto generated)
+|   ├── multiplayer/
+|   ├── singleplaye/
+
+</pre>
+
 
  -Client part is browser web application. No reloading or redirecting. This is single page
  application. I use html request only for loading local/staged html (like register, login etc.).
@@ -64,7 +118,7 @@ import { Addson } from "./libs/types/global";
 class ClientConfig {
 
   /**
-   * Addson
+   * Addson - Role is : "no dependencies scripts only"
    * All addson are ansync loaded scripts.
    *  - Cache is based on webWorkers.
    *  - hackerTimer is for better performace also based on webWorkers.
@@ -305,6 +359,9 @@ LICENSE
 ├── src/
 |   ├── style/
 |   |   ├── styles.css
+|   ├── controllers/
+|   |   ├── ioc.ts
+|   |   ├── ioc-single-player.ts
 |   ├── libs/
 |   |   ├── class/
 |   |   |   ├── networking/
@@ -476,20 +533,15 @@ Fix : "failed: address already in use" :
 
 With this cmd : <i>npm run rtc</i> we run server.js and connector.ts websocket.
 Connector is our account session used for login , register etc.
-Implemented video chat based on webRTC protocol.
-
-<b> - Running rtc3 server is integrated : </b>
+Implemented video chat based on webRTC protocol.Running rtc3 server is integrated.
 
 If you wanna disable session-database-rtc2 features and run only `broadcaster`:
-Command 'npm run broadcaster' is not nessesery for begin.
+
 Features comes with broadcaster:
  - Multiplatform video chat works with other hybrid frameworks
    or custom implementation throw the native mobile application
    web control (Chrome implementation usually).
 
-```javascript
-  npm run broadcaster
-```
 
 ## Documentation : ##
 
