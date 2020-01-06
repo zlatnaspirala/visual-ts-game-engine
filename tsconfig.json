@@ -17,6 +17,12 @@
         "dist",
         "build",
         "node_modules",
-        "**/*.spec.ts"
+        "**/*.spec.ts",
+        "src/libs/addons",
     ]
 }
+
+/*
+  Remove this line if you wanna track code correct for typescript
+  "src/libs/addons"
+*/
