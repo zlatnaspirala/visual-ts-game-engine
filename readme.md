@@ -1,18 +1,22 @@
 # Project : Visual ts game engine #
-## Version : We can fight - 2020 ##
+## Version : `We can fight` - 2020 ##
 
 #### 2d canvas game engine based on Matter.js 2D physics engine for the web. ####
 
-  I use my own concept: `best of the best`. It means that i import only staff that i can't make
-  in proper way in proper time. For example `Physics` was imported in role of npm package for typescript
-   matter.js variant and i keep dependency healthy. In networking aspect i use full-duplex connection
-  under web-rtc protocol. Pretty nice working combination of physics and realtime-multiplayer connetions.
-  PeerToPeer used for game-play and classic websocket(socketio) for session staff.
+  I use my own concept: `take lib for great benefits`. It means that i import only staff that i can't make
+  in proper way in proper time, all other coming from head. For example `Physics` was imported
+  in role of npm package for typescript matter.js variant and i keep dependency healthy. In
+  networking aspect i use full-duplex connection under web-rtc protocol. Pretty nice working
+  combination of physics and realtime-multiplayer connetions. PeerToPeer used for game-play
+  and classic websocket(socketio) for session staff. HTMLRequest used only for loading html
+  parts in run time (on request) because i want clear single page application with all PWA
+  features inside. Also video chat is integrated based on signaling server.
+  No video recording for now (next features).
 
  - Writen in typescript current version 3.7.4.
  - Text editor used and recommended: Last version of Visual Studio Code.
    Luanch debugger configuration comes with this project (for server part).
- - Physics engine based on Matter.js.
+ - Physics engine based on Matter.js - Matter.ts (npm project).
  - Multiplatform video chat (for all browsers) implemented. SocketIO used for session staff.
    MultiRTC2 used for data transfer also for video chat. MultiRTC3 alias 'broadcaster' used for video chat.
 
