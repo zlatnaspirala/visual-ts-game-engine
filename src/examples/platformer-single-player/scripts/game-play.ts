@@ -32,6 +32,7 @@ class GamePlay extends Platformer {
    * this.starter.setWorldBounds(-300, -300, 10000, root.deadZoneForBottom);
    * */
   private deadZoneForBottom: number  = 4500;
+  private deadZoneForRight: number  = 20000;
 
   constructor(starter: Starter) {
 
@@ -41,7 +42,7 @@ class GamePlay extends Platformer {
       this.load();
     }*/
 
-    this.load();
+    // this.load();
 
     // MessageBox
     this.starter.ioc.get.MessageBox.show(this.gamePlayWelcomeNote);
@@ -213,7 +214,7 @@ class GamePlay extends Platformer {
     /**
      * @description Override data from starter.
      */
-    this.starter.setWorldBounds(-300, -300, 10000, root.deadZoneForBottom);
+    this.starter.setWorldBounds(-300, -300, root.deadZoneForRight, root.deadZoneForBottom);
 
     this.playerSpawn(false);
 

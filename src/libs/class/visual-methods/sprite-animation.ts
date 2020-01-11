@@ -48,6 +48,16 @@ class SpriteTextureComponent extends TextureComponent {
     this.seqFrameY.onRepeat = this.nextColumn;
     this.seqFrameX.onRepeat = this.nextRow;
 
+    // Override
+    (this.flipImage as any) = function(image, ctx, sx, sy, sw, sh, dx, dy, dw, dh, flipH, flipV) {
+      const scaleH = flipH ? -1 : 1, scaleV = flipV ? -1 : 1;
+      ctx.save();
+      ctx.scale(scaleH, scaleV);
+      ctx.drawImage(
+        this.assets.getImg(), sx, sy, sw, sh, dx, dy, dw, dh);
+      ctx.restore();
+    }
+
   }
 
   // Override func
@@ -77,7 +87,7 @@ class SpriteTextureComponent extends TextureComponent {
           const dw = originW;
           const dh = originH;
 
-          this.flipImage(this.assets.getImg(),
+          (this.flipImage as any)(this.assets.getImg(),
             c, sx, sy, sw, sh, dx, dy, dw, dh,
             this.horizontalFlip, this.verticalFlip);
 
@@ -108,15 +118,6 @@ class SpriteTextureComponent extends TextureComponent {
 
   private nextColumn() {
     // test
-  }
-
-  private flipImage(image, ctx, sx, sy, sw, sh, dx, dy, dw, dh, flipH, flipV) {
-    const scaleH = flipH ? -1 : 1, scaleV = flipV ? -1 : 1;
-    ctx.save();
-    ctx.scale(scaleH, scaleV);
-    ctx.drawImage(
-      this.assets.getImg(), sx, sy, sw, sh, dx, dy, dw, dh);
-    ctx.restore();
   }
 
 }

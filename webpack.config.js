@@ -120,7 +120,8 @@ let webPackModule = {
             { from: './src/libs/addons/cache/worker.js', to: 'worker.js' },
             { from: './src/libs/addons/cache/offline.html', to: 'offline.html' },
             { from: './src/libs/addons/webrtc-adapter/adapter.js', to: 'externals/adapter.js' },
-            { from: "./src/examples/platformer/ui/player-board.html", to: "templates/ui/player-board.html"}
+            { from: "./src/examples/platformer/ui/player-board.html", to: "templates/ui/player-board.html"},
+            { from: "./src/examples/platformer-single-player/ui/select-player.html", to: "templates/ui/select-player.html"}
         ], { debug: 'warn' }), // { debug: 'info' } make trace
 
     ],

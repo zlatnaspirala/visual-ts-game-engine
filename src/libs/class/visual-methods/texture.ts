@@ -52,24 +52,26 @@ class TextureComponent implements IVisualComponent {
 
       for (let x = -this.verticalTiles / 2; x < this.verticalTiles / 2; x++) {
         for (let j = -this.horizontalTiles / 2; j < this.horizontalTiles / 2; j++) {
-
-          c.drawImage(
-            this.assets.getImg(),
+            this.flipImage( this.assets.getImg(), c,
             originX - originW * (x),
             originY - originH * (j),
             originW,
-            originH);
+            originH,
+            this.horizontalFlip,
+            this.verticalFlip
+          );
 
         }
       }
     } else {
-
-      c.drawImage(
-        this.assets.getImg(),
-        this.assets.getImg().width * -part.render.sprite.xOffset * part.render.sprite.xScale,
-        this.assets.getImg().height * -part.render.sprite.yOffset * part.render.sprite.yScale,
-        this.assets.getImg().width * part.render.sprite.xScale,
-        this.assets.getImg().height * part.render.sprite.yScale);
+      this.flipImage( this.assets.getImg(), c,
+      this.assets.getImg().width * -part.render.sprite.xOffset * part.render.sprite.xScale,
+      this.assets.getImg().height * -part.render.sprite.yOffset * part.render.sprite.yScale,
+      this.assets.getImg().width * part.render.sprite.xScale,
+      this.assets.getImg().height * part.render.sprite.yScale,
+      this.horizontalFlip,
+      this.verticalFlip
+    );
     }
 
   }
@@ -90,6 +92,15 @@ class TextureComponent implements IVisualComponent {
 
   public setVerticalFlip(newStatus: boolean) {
     this.verticalFlip = newStatus;
+  }
+
+  protected flipImage(image, ctx, sx, sy, sw, sh, flipH, flipV) {
+    const scaleH = flipH ? -1 : 1, scaleV = flipV ? -1 : 1;
+    ctx.save();
+    ctx.scale(scaleH, scaleV);
+    ctx.drawImage(
+      this.assets.getImg(), sx, sy, sw, sh);
+    ctx.restore();
   }
 
 }

@@ -1,13 +1,28 @@
 import Starter from "../starter";
 import { literalImageSrc, UniVector } from "../types/global";
+import Resources from "../class/resources";
+import SpriteTextureComponent from "../class/visual-methods/sprite-animation";
+import TextureComponent from "../class/visual-methods/texture";
 
 export interface ICollisionFilter { category: number; group: number; mask: number; }
 
 export interface IUniVector { [key: string]: any; }
 
+export interface ISelectedPlayer {
+  labelName: string;
+  resource: Resources;
+  type:string;
+  texCom: null | SpriteTextureComponent | TextureComponent;
+  playerDie: Resources,
+  playerDieType: string,
+  texDie: null| SpriteTextureComponent | TextureComponent;
+}
+
 export interface IStaticItem {
   x: number; y: number; w: number; h: number;
-  tex: literalImageSrc; tiles: { tilesX: number, tilesY: number}; collisionFilter?: ICollisionFilter;
+  tex: literalImageSrc;
+  tiles: { tilesX: number, tilesY: number};
+  collisionFilter?: ICollisionFilter;
 }
 export interface IStaticLabel {
   x: number; y: number; w: number; h: number;

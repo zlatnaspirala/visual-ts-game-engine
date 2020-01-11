@@ -2,11 +2,12 @@ import Matter = require("matter-js");
 import { byId, createAppEvent, htmlHeader } from "../../../libs/class/system";
 import SpriteTextureComponent from "../../../libs/class/visual-methods/sprite-animation";
 import TextComponent from "../../../libs/class/visual-methods/text";
-import { IGamePlayModel, IMultiplayer, IPoint } from "../../../libs/interface/global";
+import { IGamePlayModel, IMultiplayer, IPoint, ISelectedPlayer } from "../../../libs/interface/global";
 import Starter from "../../../libs/starter";
 import { worldElement, UniVector } from "../../../libs/types/global";
 import Network from "../../../libs/class/networking/network";
 import { threadId } from "worker_threads";
+import TextureComponent from "../../../libs/class/visual-methods/texture";
 // import { DEFAULT_PLAYER_DATA } from "../../../libs/defaults";
 
 /**
@@ -31,12 +32,13 @@ class Platformer implements IGamePlayModel {
   public deadLines: worldElement[] = [];
   public labels: worldElement[] = [];
   public v: any;
-
   public player: Matter.Body | any = undefined;
 
-  // move to maps 'labes text'
+  // move to maps 'labels text'
   public hudLives: Matter.Body | any = null;
 
+  public selectedPlayer : ISelectedPlayer;
+  private selectPlayerArray = [];
   private lives: number = 3;
   private preventDoubleExecution: boolean = false;
   private playerStartPositions: IPoint[] = [{x: 120, y: 200}];
@@ -49,22 +51,74 @@ class Platformer implements IGamePlayModel {
 
     this.starter = starter;
 
+    // dev
+    this.initSelectPlayer();
     this.addUIPlayerBoard();
     this.showPlayerBoardUI();
     this.attachUpdateLives();
 
   }
 
+  private initSelectPlayer() {
+
+    // Create UI for basic select player features.
+    // Register
+    this.selectPlayerArray.push({
+      labelName: "robot",
+      resource:  [
+        require("../imgs/players/robot/1.png"),
+        require("../imgs/players/robot/2.png"),
+        require("../imgs/players/robot/3.png"),
+        require("../imgs/players/robot/4.png"),
+        require("../imgs/players/robot/5.png"),
+        require("../imgs/players/robot/6.png"),
+        require("../imgs/players/robot/7.png"),
+        require("../imgs/players/robot/8.png"),
+      ],
+      type: "frameByFrame"
+    });
+
+    this.selectPlayerArray.push({
+      labelName: "cryptoBoy",
+      resource: [
+        require("../imgs/players/crypto-boy/walk.png"),
+        require("../imgs/explosion/explosion.png"),
+      ],
+      type: "sprite"
+    });
+
+  }
+
+  private selectPlayer(labelName: string = "cryptoBoy") {
+
+    this.selectPlayerArray.forEach((element, index) => {
+
+      if (element.labelName == labelName) {
+        console.log(">>>>", labelName);
+        this.selectedPlayer = element;
+
+        if (element.type == "frameByFrame") {
+         this.selectedPlayer.texCom = new TextureComponent("playerImage",
+           (this.selectedPlayer.resource as any))
+        } else if (element.type == "sprite") {
+          this.selectedPlayer.texCom = new SpriteTextureComponent("playerImage",
+           (this.selectedPlayer.resource as any),
+           { byX: 5, byY: 2 })
+        }
+
+
+      }
+
+    });
+
+  }
+
   public createPlayer(addToScene: boolean) {
 
+    let root = this;
     this.preventDoubleExecution = false;
-
-    const imgResMyPlayerSprite = [
-      require("../imgs/walk-boy2.png"),
-      require("../imgs/explosion/explosion.png"),
-    ];
-
     const playerRadius = 50;
+
     this.player = Matter.Bodies.circle(
       this.playerStartPositions[0].x,
       this.playerStartPositions[0].y,
@@ -81,9 +135,7 @@ class Platformer implements IGamePlayModel {
           category: this.playerCategory,
         } as any,
         render: {
-          visualComponent: new SpriteTextureComponent("playerImage",
-           imgResMyPlayerSprite,
-           { byX: 5, byY: 2 }),
+          visualComponent: root.selectedPlayer.texCom,
           fillStyle: "blue",
           sprite: {
             xScale: 1,
@@ -92,8 +144,17 @@ class Platformer implements IGamePlayModel {
         } as any,
     } as Matter.IBodyDefinition);
     this.player.collisionFilter.group = -1;
-    this.player.render.visualComponent.assets.SeqFrame.setNewSeqFrameRegimeType("CONST");
-    this.player.render.visualComponent.keepAspectRatio = true;
+
+    if (this.player.render.visualComponent instanceof SpriteTextureComponent) {
+      this.player.render.visualComponent.assets.SeqFrame.setNewSeqFrameRegimeType("CONST");
+      this.player.render.visualComponent.keepAspectRatio = true;
+    } else {
+      // this.player.render.visualComponent.assets.SeqFrame.setNewSeqFrameRegimeType("CONST");
+      this.player.render.visualComponent.keepAspectRatio = true;
+      this.player.render.sprite.xScale = 0.2;
+      this.player.render.sprite.yScale = 0.2
+    }
+    // this.player.render.visualComponent.setHorizontalFlip(false);
     this.player.render.visualComponent.setHorizontalFlip(true);
 
     if (addToScene) {
@@ -154,25 +215,69 @@ class Platformer implements IGamePlayModel {
     fetch("./templates/ui/player-board.html", {
       headers: htmlHeader,
     }).
-      then(function (res) {
-        return res.text();
-      }).then(function (html) {
-        myInstance.UIPlayerBoard = byId("UIPlayerBoard") as HTMLDivElement;
-        myInstance.UIPlayerBoard.innerHTML = html;
-        myInstance.UIPlayerBoard.style.display = "block";
-        myInstance.UIPlayAgainBtn = byId("playAgainBtn") as HTMLDivElement;
+    then(function (res) {
+      return res.text();
+    }).then(function (html) {
+      myInstance.UIPlayerBoard = byId("UIPlayerBoard") as HTMLDivElement;
+      myInstance.UIPlayerBoard.innerHTML = html;
+      myInstance.UIPlayerBoard.style.display = "block";
+      myInstance.UIPlayAgainBtn = byId("playAgainBtn") as HTMLDivElement;
 
-        myInstance.UIPlayAgainBtn.addEventListener("click", function (){
+      myInstance.UIPlayAgainBtn.addEventListener("click", function () {
+
+        const appStartGamePlay = createAppEvent("game-init",
+        {
+          game: myInstance.player,
+        });
+
+        (window as any).dispatchEvent(appStartGamePlay);
+
+      }, false);
+    });
+
+    // Select Player feature - Load UI
+    fetch("./templates/ui/select-player.html", {
+      headers: htmlHeader,
+    }).
+    then(function (res) {
+      return res.text();
+    }).then(function (html) {
+
+      var popup = byId("popup") as HTMLDivElement;
+      popup.innerHTML = html;
+      popup.style.display = "block";
+
+      myInstance.selectPlayerArray.forEach(function(itemPlayer) {
+
+        var local = document.createElement("div");
+        local.id = "" + itemPlayer.labelName;
+        local.className = "login-button";
+        local.innerHTML = "<span> Name:" + itemPlayer.labelName + "</span> <img src='imgs/1.png' width='100px' />";
+
+        local.addEventListener("click", function() {
+
+          myInstance.selectPlayer(itemPlayer.labelName);
 
           const appStartGamePlay = createAppEvent("game-init",
           {
-            game: myInstance.player,
+            game: myInstance.selectedPlayer,
           });
 
           (window as any).dispatchEvent(appStartGamePlay);
 
+          popup.innerHTML = "";
+          document.body.removeChild(popup);
+
         }, false);
+
+        byId('listOfPlayers').appendChild(local);
+        // popup.appendChild(local);
+
       });
+
+
+    });
+
 
   }
 

@@ -108,7 +108,7 @@ class Starter {
       } as Matter.IMouseConstraintDefinition | any,
     }) as Matter.MouseConstraint;
 
-    World.add(this.world, this.mouseConstraint as any);
+    // World.add(this.world, this.mouseConstraint as any);
 
     // keep the mouse in sync with rendering
     this.render.mouse = mouse;
