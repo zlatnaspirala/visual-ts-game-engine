@@ -1,4 +1,11 @@
 
+/**
+ * @description Dragging feature, depend only on args.
+ * Every 
+ * @argument divid
+ * @argument container
+ * @argument evt
+ */
 let dragging = function () {
 
   return {

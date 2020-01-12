@@ -46,7 +46,7 @@ let webPackModule = {
             { test: /\.tsx?$/, loader: "ts-loader" },
             {
                 test: /\.(jpg|png)$/, loader: "file-loader", options: {
-                    name: '[name].[ext]',
+                    name: '[hash][name].[ext]',
                     outputPath: "./imgs"
                 }
             },
@@ -61,6 +61,15 @@ let webPackModule = {
                     }
                 }
             },
+             {
+                 test: /\.(mp4|ogg)$/,
+                 // include: __dirname + "/src/examples/platformer-single-player/audios",
+                 loader: 'file-loader',
+                 options: {
+                     name: '[name].[ext]',
+                     outputPath: "/audios"
+                 }
+             },
             // All output '.js' files will have any sourcemaps re-processed by 'source-map-loader'.
             { enforce: "pre", test: /\.js$/, loader: "source-map-loader" }
         ]

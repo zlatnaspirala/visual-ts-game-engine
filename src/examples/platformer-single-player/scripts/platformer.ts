@@ -1,14 +1,13 @@
 import Matter = require("matter-js");
 import { byId, createAppEvent, htmlHeader } from "../../../libs/class/system";
 import SpriteTextureComponent from "../../../libs/class/visual-methods/sprite-animation";
-import TextComponent from "../../../libs/class/visual-methods/text";
-import { IGamePlayModel, IMultiplayer, IPoint, ISelectedPlayer } from "../../../libs/interface/global";
+import { IGamePlayModel, IPoint, ISelectedPlayer } from "../../../libs/interface/global";
 import Starter from "../../../libs/starter";
 import { worldElement, UniVector } from "../../../libs/types/global";
-import Network from "../../../libs/class/networking/network";
-import { threadId } from "worker_threads";
 import TextureComponent from "../../../libs/class/visual-methods/texture";
 // import { DEFAULT_PLAYER_DATA } from "../../../libs/defaults";
+
+require("../audios/map-themes/mishief-stroll.mp4");
 
 /**
  * @author Nikola Lukic
@@ -57,6 +56,10 @@ class Platformer implements IGamePlayModel {
     this.showPlayerBoardUI();
     this.attachUpdateLives();
 
+    // no sub dir in build
+    this.starter.ioc.get.Sound.createAudio("audios/mishief-stroll.mp4", "surfaceLevel", true); // .play();
+    // sthis.starter.ioc.get.Sound.audioBox['surfaceLevel'].play();
+
   }
 
   private initSelectPlayer() {
@@ -65,6 +68,7 @@ class Platformer implements IGamePlayModel {
     // Register
     this.selectPlayerArray.push({
       labelName: "robot",
+      poster: require("../imgs/players/robot/poster.png"),
       resource:  [
         require("../imgs/players/robot/1.png"),
         require("../imgs/players/robot/2.png"),
@@ -80,11 +84,24 @@ class Platformer implements IGamePlayModel {
 
     this.selectPlayerArray.push({
       labelName: "cryptoBoy",
+      poster: require("../imgs/players/crypto-boy/poster.png"),
       resource: [
         require("../imgs/players/crypto-boy/walk.png"),
         require("../imgs/explosion/explosion.png"),
       ],
-      type: "sprite"
+      type: "sprite",
+      spriteTile: { byX: 5, byY: 2 }
+    });
+
+    this.selectPlayerArray.push({
+      labelName: "smartGirl",
+      poster: require("../imgs/players/smart-girl/poster.png"),
+      resource: [
+        require("../imgs/players/smart-girl/smart-girl.png"),
+        require("../imgs/explosion/explosion.png"),
+      ],
+      type: "sprite",
+      spriteTile: { byX: 5, byY: 1 }
     });
 
   }
@@ -94,7 +111,7 @@ class Platformer implements IGamePlayModel {
     this.selectPlayerArray.forEach((element, index) => {
 
       if (element.labelName == labelName) {
-        console.log(">>>>", labelName);
+
         this.selectedPlayer = element;
 
         if (element.type == "frameByFrame") {
@@ -103,7 +120,7 @@ class Platformer implements IGamePlayModel {
         } else if (element.type == "sprite") {
           this.selectedPlayer.texCom = new SpriteTextureComponent("playerImage",
            (this.selectedPlayer.resource as any),
-           { byX: 5, byY: 2 })
+           (this.selectedPlayer.spriteTile as any))
         }
 
 
@@ -151,8 +168,9 @@ class Platformer implements IGamePlayModel {
     } else {
       // this.player.render.visualComponent.assets.SeqFrame.setNewSeqFrameRegimeType("CONST");
       this.player.render.visualComponent.keepAspectRatio = true;
+      // hardcode
       this.player.render.sprite.xScale = 0.2;
-      this.player.render.sprite.yScale = 0.2
+      this.player.render.sprite.yScale = 0.2;
     }
     // this.player.render.visualComponent.setHorizontalFlip(false);
     this.player.render.visualComponent.setHorizontalFlip(true);
@@ -251,8 +269,20 @@ class Platformer implements IGamePlayModel {
 
         var local = document.createElement("div");
         local.id = "" + itemPlayer.labelName;
-        local.className = "login-button";
-        local.innerHTML = "<span> Name:" + itemPlayer.labelName + "</span> <img src='imgs/1.png' width='100px' />";
+        local.className = "bounceIn";
+        var localStyle = "width: 30%;display:flex;";
+        local.setAttribute("style", "width: 30%;display:inline-block;cursor:pointer;");
+        // local. = "login-button";
+        local.innerHTML = "<span> Name:" + itemPlayer.labelName + "</span> <img src='" + itemPlayer.poster + "' width='150px' height='150px' />";
+
+        local.addEventListener("mouseenter", function(e) {
+          // console.log("add");
+          // (e.target as any).classList.add('bounceIn');
+        })
+        local.addEventListener("mouseleave", function(e) {
+         //  console.log("remove");
+         // (e.target as any).classList.remove('bounceIn');
+        })
 
         local.addEventListener("click", function() {
 
@@ -315,7 +345,7 @@ class Platformer implements IGamePlayModel {
       }
       setTimeout(function () {
         root.player.render.visualComponent.assets.SeqFrame.setNewValue(0);
-        root.player.render.visualComponent.shema = { byX: 5, byY: 2 };
+        root.player.render.visualComponent.shema = root.selectedPlayer.spriteTile;
         // Soft dead for now
         Matter.Body.setPosition(root.player, root.playerStartPositions[0]);
         root.playerSpawn(false);

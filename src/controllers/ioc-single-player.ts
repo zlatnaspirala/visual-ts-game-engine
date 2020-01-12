@@ -8,6 +8,7 @@ import GlobalEvent from "../libs/events/global-event";
 import { IUniVector } from "../libs/interface/global";
 import Starter from "../libs/starter";
 import MessageBox from "../libs/class/messager-box";
+import Sound from "../libs/class/sound";
 
 /**
  * Ioc is main dependency controller class.
@@ -38,6 +39,8 @@ class Ioc {
     this.config = new ClientConfig(gamesList);
 
     this.loadAddson();
+
+    this.singlton(Sound, undefined);
     this.singlton(MessageBox, undefined);
     this.singlton(Browser, undefined);
     this.singlton(ViewPort, this.config);

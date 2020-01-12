@@ -605,9 +605,10 @@ or use :
  <b>Crypto icons downloaded from :</b>
  https://www.behance.net/JunikStudio
 
- <b>Sprites downloaded from :</b>
-  dumbmanex.com
-  opengameart.org/content/animated-flame-texture
+ <b>Sprites downloaded from (freebies/no licence):</b>
+ - https://dumbmanex.com
+ - https://opengameart.org/content/animated-flame-texture
+ - https://www.gameart2d.com/
 
 ## Todo list for 2019 ##
 

@@ -4,6 +4,11 @@ import Resources from "../class/resources";
 import SpriteTextureComponent from "../class/visual-methods/sprite-animation";
 import TextureComponent from "../class/visual-methods/texture";
 
+export interface ISound {
+  name: string;
+  createAudio: (path, idCaller, loop?, autoplay?) => void;
+}
+
 export interface ICollisionFilter { category: number; group: number; mask: number; }
 
 export interface IUniVector { [key: string]: any; }
@@ -12,6 +17,7 @@ export interface ISelectedPlayer {
   labelName: string;
   resource: Resources;
   type:string;
+  spriteTile?: { byX: number, byY: number };
   texCom: null | SpriteTextureComponent | TextureComponent;
   playerDie: Resources,
   playerDieType: string,

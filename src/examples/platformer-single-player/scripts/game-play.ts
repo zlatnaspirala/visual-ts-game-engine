@@ -178,7 +178,7 @@ class GamePlay extends Platformer {
 
       } else if (globalEvent.activeKey[37] && root.player.angularVelocity > -limit) {
 
-        root.player.render.visualComponent.setHorizontalFlip(false);
+        root.player.render.visualComponent.setHorizontalFlip(true);
         root.player.force = {
           x: -playerSpeed,
           y: 0,
@@ -188,7 +188,7 @@ class GamePlay extends Platformer {
 
       } else if (globalEvent.activeKey[39] && root.player.angularVelocity < limit) {
 
-        root.player.render.visualComponent.setHorizontalFlip(true);
+        root.player.render.visualComponent.setHorizontalFlip(false);
         root.player.force = {
           x: playerSpeed,
           y: 0,
