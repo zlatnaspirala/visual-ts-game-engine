@@ -612,3 +612,7 @@ button:focus {outline:0;}
 .link:hover:disabled {
   background: #4b2323;
 }
+
+.selectPlayerItemBox {
+  margin-top: 5%;
+}

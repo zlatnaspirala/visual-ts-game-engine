@@ -270,35 +270,29 @@ class Platformer implements IGamePlayModel {
         var local = document.createElement("div");
         local.id = "" + itemPlayer.labelName;
         local.className = "bounceIn";
-        var localStyle = "width: 30%;display:flex;";
-        local.setAttribute("style", "width: 30%;display:inline-block;cursor:pointer;");
-        // local. = "login-button";
-        local.innerHTML = "<span> Name:" + itemPlayer.labelName + "</span> <img src='" + itemPlayer.poster + "' width='150px' height='150px' />";
-
-        local.addEventListener("mouseenter", function(e) {
-          // console.log("add");
-          // (e.target as any).classList.add('bounceIn');
-        })
-        local.addEventListener("mouseleave", function(e) {
-         //  console.log("remove");
-         // (e.target as any).classList.remove('bounceIn');
-        })
+        local.setAttribute("style", "width:30%;display:inline-block;cursor:pointer;text-align:center;padding: 9px;");
+        local.innerHTML = "<span> Name:" +
+          itemPlayer.labelName +
+          "</span> <img src='" +
+          itemPlayer.poster +
+          "' width='150px' height='150px' class='selectPlayerItemBox' />";
 
         local.addEventListener("click", function() {
 
           myInstance.selectPlayer(itemPlayer.labelName);
-
-          const appStartGamePlay = createAppEvent("game-init",
-          {
-            game: myInstance.selectedPlayer,
-          });
-
+          const appStartGamePlay = createAppEvent(
+            "game-init",
+            {
+              game: myInstance.selectedPlayer,
+            }
+          );
           (window as any).dispatchEvent(appStartGamePlay);
 
           popup.innerHTML = "";
           document.body.removeChild(popup);
 
         }, false);
+
 
         byId('listOfPlayers').appendChild(local);
         // popup.appendChild(local);
