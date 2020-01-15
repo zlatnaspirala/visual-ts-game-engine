@@ -32,7 +32,11 @@ export interface IStaticItem {
 }
 export interface IStaticLabel {
   x: number; y: number; w: number; h: number;
-  text: string; options: { color: string};
+  text: string;
+  options: {
+    color: string;
+    size: number;
+  };
 }
 
 export interface ICollectionItem extends IStaticItem {
