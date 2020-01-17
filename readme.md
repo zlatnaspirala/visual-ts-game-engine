@@ -602,13 +602,14 @@ or use :
  <b>- Base physics beased on :</b> <br/>
  Matter.js https://github.com/liabru/matter-js <br/>
 
- <b>Crypto icons downloaded from :</b>
- https://www.behance.net/JunikStudio
+ <b>Sprites downloaded from (freebies/no licence sites):</b>
 
- <b>Sprites downloaded from (freebies/no licence):</b>
+ - https://craftpix.net/
  - https://dumbmanex.com
  - https://opengameart.org/content/animated-flame-texture
  - https://www.gameart2d.com/
+ - https://www.behance.net/JunikStudio
+
 
 ## Todo list for 2019 ##
 
