@@ -1,6 +1,6 @@
 import { ICollectionItem, IGamePlayPlatformerMap, IStaticItem, IStaticLabel, ICollectionEnemies } from "../../../libs/interface/global";
 
-import generatedMap from "./packs/map2d"
+
 /**
  * Static body elements, backgrounds, enemys returns
  * Prepared for next level, 'loading from generated content'
@@ -10,7 +10,7 @@ import generatedMap from "./packs/map2d"
 
 class GameMap implements IGamePlayPlatformerMap {
 
-  private options: any = null;
+  private options: any = {};
   private staticGrounds: IStaticItem [] = [];
   private collectItems: ICollectionItem [] = [];
   private collectEnemies: ICollectionEnemies [] = [];
@@ -20,11 +20,11 @@ class GameMap implements IGamePlayPlatformerMap {
 
     // Options
     if (typeof options !== 'undefined') {
-      this.options = options;
-    }
 
-    if (typeof generatedMap === 'undefined') return this;
-    this.loadGeneratedMap();
+      this.options.mapPack = options;
+      this.loadGeneratedMap(this.options.mapPack);
+
+    }
 
   }
 
@@ -33,10 +33,10 @@ class GameMap implements IGamePlayPlatformerMap {
    * `generatedMap` is imported. I append generatedMap and object
    * `from code` created in same array.
    */
-  private loadGeneratedMap() {
+  private loadGeneratedMap(gMap) {
 
     const root = this;
-    generatedMap.forEach(function(item) {
+    gMap.forEach(function(item) {
 
       if (typeof (item  as any | ICollectionItem).colectionLabel !== 'undefined') {
         root.collectItems.push(item  as any | ICollectionItem);

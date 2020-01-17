@@ -8,6 +8,9 @@ import Starter from "../../../libs/starter";
 import { worldElement } from "../../../libs/types/global";
 import GameMap from "./map";
 import Platformer from "./Platformer";
+import generatedMap from "./packs/map2d";
+import Level1 from "./packs/map2d";
+import Level2 from "./packs/map2d";
 
 /**
  * @description Finally game start at here
@@ -90,7 +93,9 @@ class GamePlay extends Platformer {
 
             myInstance.starter.destroyGamePlay();
             (byId("playAgainBtn") as HTMLButtonElement).disabled = true;
-            (byId("openGamePlay") as HTMLButtonElement).disabled = false;
+            // try {
+              // (byId("openGamePlay") as HTMLButtonElement).disabled = false;
+            // } catch(e) {}
             (byId("out-of-game") as HTMLButtonElement).disabled = true;
 
             myInstance.deattachMatterEvents();
@@ -206,10 +211,14 @@ class GamePlay extends Platformer {
 
   }
 
-  private load() {
+  private load(mapPack?) {
 
     const root = this;
-    const gameMap: GameMap = new GameMap();
+
+    if (typeof mapPack === "undefined") {
+      mapPack = generatedMap;
+    }
+    const gameMap: GameMap = new GameMap(mapPack);
 
     /**
      * @description Override data from starter.

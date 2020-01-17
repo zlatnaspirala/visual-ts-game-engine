@@ -83,14 +83,14 @@ class Platformer implements IGamePlayModel {
     });
 
     this.selectPlayerArray.push({
-      labelName: "cryptoBoy",
-      poster: require("../imgs/players/crypto-boy/poster.png"),
+      labelName: "reaper",
+      poster: require("../imgs/players/reaper/poster.png"),
       resource: [
-        require("../imgs/players/crypto-boy/walk.png"),
+        require("../imgs/players/reaper/reaper-running.png"),
         require("../imgs/explosion/explosion.png"),
       ],
       type: "sprite",
-      spriteTile: { byX: 5, byY: 2 }
+      spriteTile: { byX: 5, byY: 1 }
     });
 
     this.selectPlayerArray.push({
@@ -166,14 +166,12 @@ class Platformer implements IGamePlayModel {
       this.player.render.visualComponent.assets.SeqFrame.setNewSeqFrameRegimeType("CONST");
       this.player.render.visualComponent.keepAspectRatio = true;
     } else {
-      // this.player.render.visualComponent.assets.SeqFrame.setNewSeqFrameRegimeType("CONST");
       this.player.render.visualComponent.keepAspectRatio = true;
-      // hardcode
+      // hardcode for now
       this.player.render.sprite.xScale = 0.2;
       this.player.render.sprite.yScale = 0.2;
     }
-    // this.player.render.visualComponent.setHorizontalFlip(false);
-    this.player.render.visualComponent.setHorizontalFlip(true);
+    this.player.render.visualComponent.setHorizontalFlip(false);
 
     if (addToScene) {
       this.player.id = 2;
@@ -194,10 +192,21 @@ class Platformer implements IGamePlayModel {
 
   public collisionCheck(event, ground: boolean) {
 
+    const myInstance = this;
+
     const pairs = event.pairs;
     for (let i = 0, j = pairs.length; i !== j; ++i) {
       const pair = pairs[i];
       if (pair.activeContacts) {
+
+        // single player teleport
+        // collectItemPoint used , this is next type :
+        // nextLevelItem or teleport
+        // Destroy world , player create next game play
+        if (pair.bodyA.label === "player" && pair.bodyB.label.indexOf("nextLevel") !== -1) {
+          const nextLevelItem = pair.bodyB.label;
+          myInstance.nextLevel(nextLevelItem);
+        }
 
         if (pair.bodyA.label === "player" && pair.bodyB.label === "collectItemPoint") {
           const collectitem = pair.bodyB;
@@ -368,6 +377,23 @@ class Platformer implements IGamePlayModel {
     this.UIPlayerBoard.className = "leftPanelUni";
 
     document.getElementsByTagName("body")[0].appendChild(this.UIPlayerBoard);
+  }
+
+  private nextLevel(data) {
+
+    if (data.indexOf("Level") !== -1) {
+
+      const appEndGamePlay = createAppEvent("game-end", { game: "platformer" });
+      (window as any).dispatchEvent(appEndGamePlay);
+        this.player = null;
+
+      setTimeout(function() {
+        const appStartGamePlay = createAppEvent("game-init", { game: data });
+        (window as any).dispatchEvent(appStartGamePlay);
+      }, 1000)
+
+    }
+
   }
 
 }
