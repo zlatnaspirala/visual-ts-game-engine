@@ -5,8 +5,12 @@ import { IGamePlayModel, IPoint, ISelectedPlayer } from "../../../libs/interface
 import Starter from "../../../libs/starter";
 import { worldElement, UniVector } from "../../../libs/types/global";
 import TextureComponent from "../../../libs/class/visual-methods/texture";
+import { DEFAULT_GAMEPLAY_ROLES } from "../../../libs/defaults";
 // import { DEFAULT_PLAYER_DATA } from "../../../libs/defaults";
+import generatedMap from "./packs/level1";
+import Level2 from "./packs/level2";
 
+// Prepare audios
 require("../audios/map-themes/mishief-stroll.mp4");
 
 /**
@@ -45,6 +49,11 @@ class Platformer implements IGamePlayModel {
 
   private UIPlayerBoard: HTMLDivElement;
   private UIPlayAgainBtn: HTMLDivElement;
+
+  private levelMaps: any = {
+    generatedMap: generatedMap,
+    Level2: Level2
+  };
 
   constructor(starter: Starter) {
 
@@ -203,7 +212,7 @@ class Platformer implements IGamePlayModel {
         // collectItemPoint used , this is next type :
         // nextLevelItem or teleport
         // Destroy world , player create next game play
-        if (pair.bodyA.label === "player" && pair.bodyB.label.indexOf("nextLevel") !== -1) {
+        if (pair.bodyA.label === "player" && pair.bodyB.label.indexOf("Level") !== -1) {
           const nextLevelItem = pair.bodyB.label;
           myInstance.nextLevel(nextLevelItem);
         }
@@ -292,7 +301,7 @@ class Platformer implements IGamePlayModel {
           const appStartGamePlay = createAppEvent(
             "game-init",
             {
-              game: myInstance.selectedPlayer,
+              game: myInstance.levelMaps.generatedMap,
             }
           );
           (window as any).dispatchEvent(appStartGamePlay);
@@ -301,7 +310,6 @@ class Platformer implements IGamePlayModel {
           document.body.removeChild(popup);
 
         }, false);
-
 
         byId('listOfPlayers').appendChild(local);
         // popup.appendChild(local);
@@ -381,16 +389,19 @@ class Platformer implements IGamePlayModel {
 
   private nextLevel(data) {
 
+    const root = this;
+
     if (data.indexOf("Level") !== -1) {
 
       const appEndGamePlay = createAppEvent("game-end", { game: "platformer" });
       (window as any).dispatchEvent(appEndGamePlay);
         this.player = null;
 
+
       setTimeout(function() {
-        const appStartGamePlay = createAppEvent("game-init", { game: data });
+        const appStartGamePlay = createAppEvent("game-init", { game: root.levelMaps[data] });
         (window as any).dispatchEvent(appStartGamePlay);
-      }, 1000)
+      }, DEFAULT_GAMEPLAY_ROLES.RESPAWN_INTERVAL)
 
     }
 
@@ -398,3 +409,4 @@ class Platformer implements IGamePlayModel {
 
 }
 export default Platformer;
+

@@ -1,6 +1,5 @@
 import { ICollectionItem, IGamePlayPlatformerMap, IStaticItem, IStaticLabel, ICollectionEnemies } from "../../../libs/interface/global";
 
-
 /**
  * Static body elements, backgrounds, enemys returns
  * Prepared for next level, 'loading from generated content'

@@ -8,9 +8,11 @@ import Starter from "../../../libs/starter";
 import { worldElement } from "../../../libs/types/global";
 import GameMap from "./map";
 import Platformer from "./Platformer";
-import generatedMap from "./packs/map2d";
-import Level1 from "./packs/map2d";
-import Level2 from "./packs/map2d";
+
+/**
+ * Manage Level's here
+ */
+import generatedMap from "./packs/level1";
 
 /**
  * @description Finally game start at here
@@ -41,10 +43,15 @@ class GamePlay extends Platformer {
 
     super(starter);
 
+    // Implement to the multiplayer solution ...
+    // levelManager
+
+    // depend on config
     /* if (this.starter.ioc.getConfig().getAutoStartGamePlay()) {
       this.load();
     }*/
 
+    // Load in anyway
     // this.load();
 
     // MessageBox
@@ -63,23 +70,21 @@ class GamePlay extends Platformer {
            ((e as any).detail.data.game !== "undefined" &&
            ( e as any).detail.data.game !== null &&
            ( e as any).detail.data.game.label === "player")) {
-          console.warn("Bad #00002 game-init attempt.");
+          console.warn("Bad #2 game-init attempt.");
           return;
 
         } else if ((e as any).detail &&
                   (e as any).detail.data.game === null ) {
-          console.info("game-init Player spawn. data.game === null");
-          // myInstance.starter.ioc.get.Network.connector.startNewGame(myInstance.gameName);
+          console.info("game-init Player spawn. Player are not destroyed at this moment...");
           myInstance.playerSpawn(true);
           return;
 
         }
 
-        // How to access netwoking
-        // myInstance.starter.ioc.get.Network.connector.startNewGame(myInstance.gameName);
-        myInstance.load();
-        console.info("Player spawn. game-init .startNewGame");
-      } catch (err) { console.error("Very bad #00001", err); }
+        console.info("Loading map: " + (e as any).detail.data.game)
+        myInstance.load((e as any).detail.data.game);
+        console.info("Player spawn on game-init");
+      } catch (err) { console.error("Very bad in game-init #1", err); }
 
     });
 
@@ -410,6 +415,10 @@ class GamePlay extends Platformer {
     this.starter.AddNewBodies(this.labels as worldElement);
     // this.createHud();
     this.attachMatterEvents();
+
+  }
+
+  private levelsChooser (): void {
 
   }
 

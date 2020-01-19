@@ -1,0 +1,17 @@
+let generatedMap = [
+  {"x": 800.0,
+  "y": 575.0,
+  "w": 50.0,
+  "h": 50.0,
+  "tex": require('../../imgs/grounds/boxAlt.png'),
+  "tiles": {"tilesX": 1.0,
+  "tilesY": 1.0}},
+  {"x": 300.0,
+  "y": 220.0,
+  "w": 50.0,
+  "h": 50.0,
+  "tex": require('../../imgs/collect-items/hudKey_blue.png'),
+  "tiles": {"tilesX": 1.0,
+  "tilesY": 1.0},
+  "colectionLabel": "Level2",
+  "points": 10}]; export default generatedMap;
