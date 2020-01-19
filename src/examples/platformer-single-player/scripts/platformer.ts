@@ -7,7 +7,8 @@ import { worldElement, UniVector } from "../../../libs/types/global";
 import TextureComponent from "../../../libs/class/visual-methods/texture";
 import { DEFAULT_GAMEPLAY_ROLES } from "../../../libs/defaults";
 // import { DEFAULT_PLAYER_DATA } from "../../../libs/defaults";
-import generatedMap from "./packs/level1";
+// import generatedMap from "./packs/map2d";
+import Level1 from "./packs/level1";
 import Level2 from "./packs/level2";
 
 // Prepare audios
@@ -51,7 +52,8 @@ class Platformer implements IGamePlayModel {
   private UIPlayAgainBtn: HTMLDivElement;
 
   private levelMaps: any = {
-    generatedMap: generatedMap,
+    generatedMap: Level1,
+    Level1: Level1,
     Level2: Level2
   };
 
@@ -263,7 +265,8 @@ class Platformer implements IGamePlayModel {
 
         const appStartGamePlay = createAppEvent("game-init",
         {
-          game: myInstance.player,
+          mapName: "Level1",
+          game: myInstance.levelMaps.Level1,
         });
 
         (window as any).dispatchEvent(appStartGamePlay);
@@ -301,7 +304,8 @@ class Platformer implements IGamePlayModel {
           const appStartGamePlay = createAppEvent(
             "game-init",
             {
-              game: myInstance.levelMaps.generatedMap,
+              mapName: "Level1",
+              game: myInstance.levelMaps.Level1,
             }
           );
           (window as any).dispatchEvent(appStartGamePlay);
@@ -366,8 +370,12 @@ class Platformer implements IGamePlayModel {
 
   }
 
-  private destroyGamePlay() {
+  protected destroyGamePlayPlatformer() {
     this.starter.destroyGamePlay();
+    this.grounds = [];
+    this.enemys = [];
+    this.deadLines = [];
+    this.labels = [];
   }
 
   private attachUpdateLives = () => {
@@ -393,13 +401,15 @@ class Platformer implements IGamePlayModel {
 
     if (data.indexOf("Level") !== -1) {
 
-      const appEndGamePlay = createAppEvent("game-end", { game: "platformer" });
+      const appEndGamePlay = createAppEvent("game-end", { game: "Level1" });
       (window as any).dispatchEvent(appEndGamePlay);
         this.player = null;
 
-
       setTimeout(function() {
-        const appStartGamePlay = createAppEvent("game-init", { game: root.levelMaps[data] });
+        const appStartGamePlay = createAppEvent("game-init", {
+          mapName: data,
+          game: root.levelMaps[data]
+        });
         (window as any).dispatchEvent(appStartGamePlay);
       }, DEFAULT_GAMEPLAY_ROLES.RESPAWN_INTERVAL)
 

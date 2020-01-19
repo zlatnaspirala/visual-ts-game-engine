@@ -12,7 +12,7 @@ import Platformer from "./Platformer";
 /**
  * Manage Level's here
  */
-import generatedMap from "./packs/level1";
+
 
 /**
  * @description Finally game start at here
@@ -69,6 +69,7 @@ class GamePlay extends Platformer {
         if ((e as any).detail &&
            ((e as any).detail.data.game !== "undefined" &&
            ( e as any).detail.data.game !== null &&
+           typeof ( e as any).detail.data.game.label !== "undefined" &&
            ( e as any).detail.data.game.label === "player")) {
           console.warn("Bad #2 game-init attempt.");
           return;
@@ -93,10 +94,11 @@ class GamePlay extends Platformer {
       try {
         if ((e as any).detail &&
            (e as any).detail.data.game !== "undefined" &&
-           (e as any).detail.data.game !== null &&
-           (e as any).detail.data.game === myInstance.gameName) {
+           (e as any).detail.data.game !== null
+           /*(e as any).detail.data.game === myInstance.gameName*/ ) {
 
-            myInstance.starter.destroyGamePlay();
+            // myInstance.starter.destroyGamePlay();
+            myInstance.destroyGamePlayPlatformer();
             (byId("playAgainBtn") as HTMLButtonElement).disabled = true;
             // try {
               // (byId("openGamePlay") as HTMLButtonElement).disabled = false;
@@ -116,6 +118,7 @@ class GamePlay extends Platformer {
 
   private deattachMatterEvents() {
     Matter.Events.off(this.starter.getEngine(), undefined, undefined);
+    console.info(" Matter.Events.off(this.starter.getEngine(), undefined, undefined); ")
   }
 
   private attachMatterEvents() {
