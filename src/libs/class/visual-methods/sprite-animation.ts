@@ -48,7 +48,7 @@ class SpriteTextureComponent extends TextureComponent {
     this.seqFrameY.onRepeat = this.nextColumn;
     this.seqFrameX.onRepeat = this.nextRow;
 
-    // Override
+    // Override to prepare for spritesheet scenario of image drawing.
     (this.flipImage as any) = function(image, ctx, sx, sy, sw, sh, dx, dy, dw, dh, flipH, flipV) {
       const scaleH = flipH ? -1 : 1, scaleV = flipV ? -1 : 1;
       ctx.save();
@@ -60,10 +60,42 @@ class SpriteTextureComponent extends TextureComponent {
 
   }
 
-  // Override func
+  /**
+   * @description It is not just set up xhema.byX, we need
+   * to reconstruct sequencer this.seqFrameX - his job is to
+   * to count frames by horisontal.
+   * @param byX It is the number for sprite by horisontal
+   * devine `img.width / x` operation.
+   */
+  public setNewShemaByX(byX: number): void {
+
+    this.shema.byX = byX;
+    const localSumX = this.shema.byX - 1;
+    this.seqFrameX = new Counter(0, localSumX, 1);
+
+  }
+
+  /**
+   * @description It is not just set up xhema.byY, we need
+   * to reconstruct sequencer this.seqFrameY - his job is to
+   * to count frames by vertical.
+   * @param byX It is the number for sprite by horisontal
+   * devine `img.height / y` operation.
+   */
+  public setNewShemaByY(byY: number): void {
+
+    this.shema.byY = byY;
+    const localSumY = this.shema.byY - 1;
+    this.seqFrameY = new Counter(0, localSumY, 1);
+
+  }
+
+  /**
+   * @description Override function drawComponent
+   * from TextureComponent parent class.
+   */
   public drawComponent(c: CanvasRenderingContext2D, part: any): void {
 
-    // if (part.vertices.length === 4) {
     if (this.keepAspectRatio === true) {
 
       const dist2 = getDistance(part.vertices[part.vertices.length / 2], part.vertices[part.vertices.length - 1]);

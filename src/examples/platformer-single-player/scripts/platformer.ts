@@ -42,7 +42,7 @@ class Platformer implements IGamePlayModel {
   public hudLives: Matter.Body | any = null;
 
   public selectedPlayer : ISelectedPlayer;
-  private selectPlayerArray = [];
+  private selectPlayerArray: ISelectedPlayer[]= [];
   private lives: number = 3;
   private preventDoubleExecution: boolean = false;
   private playerStartPositions: IPoint[] = [{x: 120, y: 200}];
@@ -61,15 +61,25 @@ class Platformer implements IGamePlayModel {
 
     this.starter = starter;
 
-    // dev
+    // this.starter.getEngine().enableSleeping = true;
+
     this.initSelectPlayer();
     this.addUIPlayerBoard();
     this.showPlayerBoardUI();
     this.attachUpdateLives();
 
-    // no sub dir in build
-    this.starter.ioc.get.Sound.createAudio("audios/mishief-stroll.mp4", "surfaceLevel", true); // .play();
-    // sthis.starter.ioc.get.Sound.audioBox['surfaceLevel'].play();
+    // this.starter.ioc.get.Sound.audioBox['surfaceLevel'].play();
+
+  }
+
+  private startGamplayAudioSystem() {
+
+    // background music
+    this.starter.ioc.get.Sound.createAudio(
+      "audios/mishief-stroll.mp4",
+      "surfaceLevel",
+      true
+    ); // .play();
 
   }
 
@@ -99,6 +109,7 @@ class Platformer implements IGamePlayModel {
       resource: [
         require("../imgs/players/reaper/reaper-running.png"),
         require("../imgs/explosion/explosion.png"),
+        require("../imgs/players/reaper/reaper-idle.png"),
       ],
       type: "sprite",
       spriteTile: { byX: 5, byY: 1 }

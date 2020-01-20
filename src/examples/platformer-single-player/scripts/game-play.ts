@@ -8,6 +8,8 @@ import Starter from "../../../libs/starter";
 import { worldElement } from "../../../libs/types/global";
 import GameMap from "./map";
 import Platformer from "./Platformer";
+import Level1 from "./packs/level1";
+import { DEFAULT_GAMEPLAY_ROLES } from "../../../libs/defaults";
 
 /**
  * Manage Level's here
@@ -32,21 +34,19 @@ class GamePlay extends Platformer {
   /**
    * @description deadZoneForBottom Definition and Default value
    * - overrided from map or map2d(generated) by deadLines object
-   * DeadLines object in future can be used for enemy static action
-   * Next : deadZoneForLeft , deadZoneForRight
-   * this.starter.setWorldBounds(-300, -300, 10000, root.deadZoneForBottom);
+   * DeadLines object. In future Can be used for enemy static action;
    * */
-  private deadZoneForBottom: number  = 4500;
-  private deadZoneForRight: number  = 20000;
+  private deadZoneForBottom: number  = DEFAULT_GAMEPLAY_ROLES.MAP_MARGIN_BOTTOM;
+  private deadZoneForRight: number  = DEFAULT_GAMEPLAY_ROLES.MAP_MARGIN_RIGHT;
 
   constructor(starter: Starter) {
 
     super(starter);
 
-    // Implement to the multiplayer solution ...
-    // levelManager
+    // Implement to the multiplayer solution:
+    // level feature.
 
-    // depend on config
+    // depend on config DISABLED
     /* if (this.starter.ioc.getConfig().getAutoStartGamePlay()) {
       this.load();
     }*/
@@ -99,7 +99,7 @@ class GamePlay extends Platformer {
 
             // myInstance.starter.destroyGamePlay();
             myInstance.destroyGamePlayPlatformer();
-            (byId("playAgainBtn") as HTMLButtonElement).disabled = true;
+            (byId("playAgainBtn") as HTMLButtonElement).disabled = false;
             // try {
               // (byId("openGamePlay") as HTMLButtonElement).disabled = false;
             // } catch(e) {}
@@ -121,10 +121,41 @@ class GamePlay extends Platformer {
     console.info(" Matter.Events.off(this.starter.getEngine(), undefined, undefined); ")
   }
 
+  private overrideOnKeyDown = () => {
+    // animation running mode setup
+
+    const vc = this.player.render.visualComponent;
+    // Take something uniq
+    if (vc.assets.SeqFrame.getValue() === 0) {
+      return;
+    }
+
+    this.player.render.visualComponent.setNewShemaByX(5);
+    this.player.render.visualComponent.assets.SeqFrame.setNewValue(0);
+    this.player.render.visualComponent.seqFrameX.setDelay(6);
+
+  }
+
+  private overrideOnKeyUp = () => {
+    // animation configuration block
+
+    const vc = this.player.render.visualComponent;
+    if (vc.assets.SeqFrame.getValue() === 2) {
+      return;
+    }
+
+    vc.setNewShemaByX(3);
+    vc.assets.SeqFrame.setNewValue(2);
+    vc.seqFrameX.setDelay(8);
+  }
+
   private attachMatterEvents() {
 
     const root = this;
     const globalEvent = this.starter.ioc.get.GlobalEvent;
+
+    globalEvent.providers.onkeydown = this.overrideOnKeyDown;
+    globalEvent.providers.onkeyup = this.overrideOnKeyUp;
     const playerSpeed = 0.005;
 
     this.enemys.forEach(function (item) {
@@ -187,6 +218,7 @@ class GamePlay extends Platformer {
           y: -(s),
         };
         Matter.Body.setVelocity(root.player, { x: 0, y: -s });
+
         // this.player.currentDir = "jump";
 
       } else if (globalEvent.activeKey[37] && root.player.angularVelocity > -limit) {
@@ -197,6 +229,7 @@ class GamePlay extends Platformer {
           y: 0,
         };
         Matter.Body.applyForce(root.player, { x: root.player.position.x, y: root.player.position.y }, root.player.force);
+
         root.player.currentDir = "left";
 
       } else if (globalEvent.activeKey[39] && root.player.angularVelocity < limit) {
@@ -207,10 +240,13 @@ class GamePlay extends Platformer {
           y: 0,
         };
         Matter.Body.applyForce(root.player, { x: root.player.position.x, y: root.player.position.y }, root.player.force);
+
         root.player.currentDir = "right";
 
       } else {
+
         root.player.currentDir = "idle";
+
       }
 
     });
@@ -224,14 +260,18 @@ class GamePlay extends Platformer {
     const root = this;
 
     if (typeof mapPack === "undefined") {
-      mapPack = generatedMap;
+      mapPack = Level1;
     }
     const gameMap: GameMap = new GameMap(mapPack);
 
     /**
      * @description Override data from starter.
      */
-    this.starter.setWorldBounds(-300, -300, root.deadZoneForRight, root.deadZoneForBottom);
+    this.starter.setWorldBounds(
+      DEFAULT_GAMEPLAY_ROLES.MAP_MARGIN_LEFT,
+      DEFAULT_GAMEPLAY_ROLES.MAP_MARGIN_TOP,
+      root.deadZoneForRight,
+      root.deadZoneForBottom);
 
     this.playerSpawn(false);
 
@@ -240,6 +280,7 @@ class GamePlay extends Platformer {
       const newStaticElement: worldElement = Matter.Bodies.rectangle(item.x, item.y, item.w, item.h,
         {
           isStatic: true,
+          isSleeping: false,
           label: "background",
           render: {
             visualComponent: new TextureComponent("wall", item.tex),
@@ -261,6 +302,7 @@ class GamePlay extends Platformer {
       const newStaticElement: worldElement = Matter.Bodies.rectangle(item.x, item.y, item.w, item.h,
         {
           isStatic: true,
+          isSleeping: false,
           label: "ground",
           collisionFilter: {
             group: this.staticCategory,
@@ -416,12 +458,7 @@ class GamePlay extends Platformer {
     this.starter.AddNewBodies(this.deadLines as worldElement);
     this.starter.AddNewBodies(this.player as worldElement);
     this.starter.AddNewBodies(this.labels as worldElement);
-    // this.createHud();
     this.attachMatterEvents();
-
-  }
-
-  private levelsChooser (): void {
 
   }
 

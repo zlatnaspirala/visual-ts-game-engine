@@ -1,27 +1,36 @@
 import Starter from "../starter";
-import { literalImageSrc, UniVector } from "../types/global";
-import Resources from "../class/resources";
+import { literalImageSrc, UniVector, imagesResource } from "../types/global";
+// import Resources from "../class/resources";
 import SpriteTextureComponent from "../class/visual-methods/sprite-animation";
 import TextureComponent from "../class/visual-methods/texture";
+
+export interface IPoint {
+  x: number;
+  y: number;
+}
 
 export interface ISound {
   name: string;
   createAudio: (path, idCaller, loop?, autoplay?) => void;
 }
 
-export interface ICollisionFilter { category: number; group: number; mask: number; }
+export interface ICollisionFilter {
+  category: number;
+  group: number;
+  mask: number;
+}
 
-export interface IUniVector { [key: string]: any; }
+export interface IUniVector {
+  [key: string]: any;
+}
 
 export interface ISelectedPlayer {
   labelName: string;
-  resource: Resources;
+  poster: imagesResource;
+  resource: imagesResource[];
   type:string;
   spriteTile?: { byX: number, byY: number };
-  texCom: null | SpriteTextureComponent | TextureComponent;
-  playerDie: Resources,
-  playerDieType: string,
-  texDie: null| SpriteTextureComponent | TextureComponent;
+  texCom?: undefined | SpriteTextureComponent | TextureComponent;
 }
 
 export interface IStaticItem {
@@ -30,6 +39,7 @@ export interface IStaticItem {
   tiles: { tilesX: number, tilesY: number};
   collisionFilter?: ICollisionFilter;
 }
+
 export interface IStaticLabel {
   x: number; y: number; w: number; h: number;
   text: string;
@@ -88,11 +98,6 @@ export interface IGamePlayPlatformerMap {
   getStaticBackgrounds(): IStaticItem[];
   getCollectItems(): ICollectionItem[];
   getEnemys(): ICollectionEnemies[];
-}
-
-export interface IPoint {
-  x: number;
-  y: number;
 }
 
 export interface IMultiplayer {
