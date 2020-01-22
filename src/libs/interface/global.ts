@@ -29,7 +29,8 @@ export interface ISelectedPlayer {
   poster: imagesResource;
   resource: imagesResource[];
   type:string;
-  spriteTile?: { byX: number, byY: number };
+  spriteTile?: { byX: number, byY: number }[];
+  spriteTileCurrent:  { byX: number, byY: number };
   texCom?: undefined | SpriteTextureComponent | TextureComponent;
 }
 

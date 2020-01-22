@@ -87,6 +87,8 @@ class Platformer implements IGamePlayModel {
 
     // Create UI for basic select player features.
     // Register
+
+    /*
     this.selectPlayerArray.push({
       labelName: "robot",
       poster: require("../imgs/players/robot/poster.png"),
@@ -102,6 +104,7 @@ class Platformer implements IGamePlayModel {
       ],
       type: "frameByFrame"
     });
+    */
 
     this.selectPlayerArray.push({
       labelName: "reaper",
@@ -112,7 +115,8 @@ class Platformer implements IGamePlayModel {
         require("../imgs/players/reaper/reaper-idle.png"),
       ],
       type: "sprite",
-      spriteTile: { byX: 5, byY: 1 }
+      spriteTile: [{ byX: 5, byY: 1 }, { byX: 3, byY: 1 }],
+      spriteTileCurrent: { byX: 5, byY: 1 }
     });
 
     this.selectPlayerArray.push({
@@ -121,9 +125,11 @@ class Platformer implements IGamePlayModel {
       resource: [
         require("../imgs/players/smart-girl/smart-girl.png"),
         require("../imgs/explosion/explosion.png"),
+        require("../imgs/players/smart-girl/smart-girl-idle.png"),
       ],
       type: "sprite",
-      spriteTile: { byX: 5, byY: 1 }
+      spriteTile: [{ byX: 5, byY: 1 }, { byX: 5, byY: 1 }],
+      spriteTileCurrent: { byX: 5, byY: 1 }
     });
 
   }
@@ -142,7 +148,7 @@ class Platformer implements IGamePlayModel {
         } else if (element.type == "sprite") {
           this.selectedPlayer.texCom = new SpriteTextureComponent("playerImage",
            (this.selectedPlayer.resource as any),
-           (this.selectedPlayer.spriteTile as any))
+           (this.selectedPlayer.spriteTileCurrent as any))
         }
 
 
@@ -155,6 +161,9 @@ class Platformer implements IGamePlayModel {
   public createPlayer(addToScene: boolean) {
 
     let root = this;
+    let TEST = new SpriteTextureComponent("playerImage",
+           (this.selectedPlayer.resource as any),
+           (this.selectedPlayer.spriteTileCurrent as any));
     this.preventDoubleExecution = false;
     const playerRadius = 50;
 
@@ -174,7 +183,7 @@ class Platformer implements IGamePlayModel {
           category: this.playerCategory,
         } as any,
         render: {
-          visualComponent: root.selectedPlayer.texCom,
+          visualComponent: TEST,
           fillStyle: "blue",
           sprite: {
             xScale: 1,
@@ -344,6 +353,7 @@ class Platformer implements IGamePlayModel {
       this.preventDoubleExecution = true;
       // Hard dead
       // this.starter.destroyBody(collectitem);
+      console.info("D>>>>>>>>>>>>>>>>>>>>")
       this.player.render.visualComponent.shema = { byX: 4, byY: 4 };
       this.player.render.visualComponent.assets.SeqFrame.setNewValue(1);
       this.lives = this.lives - 1;
@@ -371,7 +381,8 @@ class Platformer implements IGamePlayModel {
       }
       setTimeout(function () {
         root.player.render.visualComponent.assets.SeqFrame.setNewValue(0);
-        root.player.render.visualComponent.shema = root.selectedPlayer.spriteTile;
+        this.selectedPlayer.spriteTileCurrent =  root.selectedPlayer.spriteTile[0];
+        root.player.render.visualComponent.setNewShemaByX(this.selectedPlayer.spriteTileCurrent.byX);
         // Soft dead for now
         Matter.Body.setPosition(root.player, root.playerStartPositions[0]);
         root.playerSpawn(false);

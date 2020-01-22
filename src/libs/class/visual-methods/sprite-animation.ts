@@ -5,9 +5,9 @@ import Resources from "../resources";
 import TextureComponent from "./texture";
 
 /**
- * Class SpriteTextureComponent extends TextureComponent and override
+ * @description Class SpriteTextureComponent extends TextureComponent and override
  * main method drawComponent. We need to keep tiles system working!
- * Objective :
+ * Objective:
  * Store and manipulate with image texture data.
  * Render element
  * Tile
@@ -48,7 +48,7 @@ class SpriteTextureComponent extends TextureComponent {
     this.seqFrameY.onRepeat = this.nextColumn;
     this.seqFrameX.onRepeat = this.nextRow;
 
-    // Override to prepare for spritesheet scenario of image drawing.
+    // Override right here to prepare for spritesheet scenario of image drawing.
     (this.flipImage as any) = function(image, ctx, sx, sy, sw, sh, dx, dy, dw, dh, flipH, flipV) {
       const scaleH = flipH ? -1 : 1, scaleV = flipV ? -1 : 1;
       ctx.save();
@@ -68,11 +68,11 @@ class SpriteTextureComponent extends TextureComponent {
    * devine `img.width / x` operation.
    */
   public setNewShemaByX(byX: number): void {
-
     this.shema.byX = byX;
     const localSumX = this.shema.byX - 1;
     this.seqFrameX = new Counter(0, localSumX, 1);
-
+    this.seqFrameY.onRepeat = this.nextColumn;
+    this.seqFrameX.onRepeat = this.nextRow;
   }
 
   /**
@@ -83,11 +83,11 @@ class SpriteTextureComponent extends TextureComponent {
    * devine `img.height / y` operation.
    */
   public setNewShemaByY(byY: number): void {
-
     this.shema.byY = byY;
     const localSumY = this.shema.byY - 1;
     this.seqFrameY = new Counter(0, localSumY, 1);
-
+    this.seqFrameY.onRepeat = this.nextColumn;
+    this.seqFrameX.onRepeat = this.nextRow;
   }
 
   /**

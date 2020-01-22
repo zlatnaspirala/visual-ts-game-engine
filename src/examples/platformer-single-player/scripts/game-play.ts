@@ -12,12 +12,8 @@ import Level1 from "./packs/level1";
 import { DEFAULT_GAMEPLAY_ROLES } from "../../../libs/defaults";
 
 /**
- * Manage Level's here
- */
-
-
-/**
- * @description Finally game start at here
+ * @description Finally game start at here.
+ * Manage Level's here, Level1 will be default map.
  * @function Init start class and begin with matter.js scene rendering.
  * @return void
  */
@@ -47,9 +43,9 @@ class GamePlay extends Platformer {
     // level feature.
 
     // depend on config DISABLED
-    /* if (this.starter.ioc.getConfig().getAutoStartGamePlay()) {
-      this.load();
-    }*/
+    if (this.starter.ioc.getConfig().getAutoStartGamePlay()) {
+      // this.load();
+    }
 
     // Load in anyway
     // this.load();
@@ -97,20 +93,14 @@ class GamePlay extends Platformer {
            (e as any).detail.data.game !== null
            /*(e as any).detail.data.game === myInstance.gameName*/ ) {
 
-            // myInstance.starter.destroyGamePlay();
             myInstance.destroyGamePlayPlatformer();
-            (byId("playAgainBtn") as HTMLButtonElement).disabled = false;
-            // try {
-              // (byId("openGamePlay") as HTMLButtonElement).disabled = false;
-            // } catch(e) {}
-            (byId("out-of-game") as HTMLButtonElement).disabled = true;
-
             myInstance.deattachMatterEvents();
-
-            console.info("game-end global event. Destroying game play. DISCONNECT");
+            (byId("playAgainBtn") as HTMLButtonElement).disabled = false;
+            (byId("out-of-game") as HTMLButtonElement).disabled = true;
+            console.info("game-end global event. Destroying game play.");
 
         }
-      } catch (err) { console.error("Very bad #00003", err); }
+      } catch (err) { console.error("Very bad #00003 ", err); }
 
     });
 
@@ -118,35 +108,38 @@ class GamePlay extends Platformer {
 
   private deattachMatterEvents() {
     Matter.Events.off(this.starter.getEngine(), undefined, undefined);
-    console.info(" Matter.Events.off(this.starter.getEngine(), undefined, undefined); ")
+    console.info("Matter.Events.off")
   }
 
-  private overrideOnKeyDown = () => {
-    // animation running mode setup
+  private overrideOnKeyDown() {
 
+    // animation running mode setup
+    if (typeof this.player === "undefined" || this.player === null) { return; }
     const vc = this.player.render.visualComponent;
     // Take something uniq
     if (vc.assets.SeqFrame.getValue() === 0) {
       return;
     }
-
-    this.player.render.visualComponent.setNewShemaByX(5);
+    this.selectedPlayer.spriteTileCurrent = this.selectedPlayer.spriteTile[0];
+    this.player.render.visualComponent.setNewShemaByX(this.selectedPlayer.spriteTileCurrent.byX);
     this.player.render.visualComponent.assets.SeqFrame.setNewValue(0);
-    this.player.render.visualComponent.seqFrameX.setDelay(6);
+    this.player.render.visualComponent.seqFrameX.setDelay(8);
 
   }
 
-  private overrideOnKeyUp = () => {
-    // animation configuration block
+  private overrideOnKeyUp() {
 
+    // animation configuration block
+    if (typeof this.player === "undefined" || this.player === null) { return; }
     const vc = this.player.render.visualComponent;
     if (vc.assets.SeqFrame.getValue() === 2) {
       return;
     }
-
-    vc.setNewShemaByX(3);
     vc.assets.SeqFrame.setNewValue(2);
     vc.seqFrameX.setDelay(8);
+    this.selectedPlayer.spriteTileCurrent = this.selectedPlayer.spriteTile[1];
+    vc.setNewShemaByX( this.selectedPlayer.spriteTileCurrent.byX );
+
   }
 
   private attachMatterEvents() {

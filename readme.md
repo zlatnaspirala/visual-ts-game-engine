@@ -32,7 +32,7 @@
 
 Command:
 ```javascript
-  npm run build
+  npm run dev
 ```
 
 Output:
@@ -281,39 +281,74 @@ class ClientConfig {
 
  - Fisrt game template is Platformer.
      This is high level programming in this software. Class Platformer run
-     with procedural (method) level1. Class Starter is base class for my canvas part.
+     with procedural (method) level1. Class Starter is base class for my canvas part
+     (matter.js/ts).
      It is injected to the Platformer to make full operated work.
  - gamesList args for ioc constructor is for now just simbolic for now. (WIP)
  - In ioc you can make strong class dependency relations.
    Use it for your own structural changes. If you want to make light version for build
    than use ioc to remove everything you don't need in build.
 
+  ioc.ts files located at: `src\controllers`. In ioc file i import choosen classes and
+  create instance or bind. Ioc also save (singleton) instance's and we never make same
+  class instance again (this is the role). We just call game.ioc.get.NAME_OF_INSTANCE.
+  Object `.get` is key access object not array.
+  Best practice is to use only one ioc. In that way you will get clear build without
+  big shared in most time unnecessary data. If you application is big project.Than
+  best way is still use one ioc.ts for per web page. In that way i use refresh
+  or redirect moment to load optimised script bundle for current page.
+
 #### Main dependency file ####
 
+ - Current version: 
 ```typescript
 
-// Symbolic for now
+/**
+ * Import global css
+ */
+require("./style/animations.css");
+require("./style/styles.css");
+
+import AppIcon from "./app-icon";
+import GamePlay from "./examples/platformer/scripts/game-play";
+import Ioc from "./controllers/ioc";
+
+/**
+ * plarformerGameInfo
+ * This is strong connection.
+ * html-components are on the same level with app.ts
+ * Put any parameters here.
+ */
 const plarformerGameInfo = {
-  name: "Crypto-Runner",
-  title: "PLAY PLATFORMER CRYPTO RUNNER!",
+  name: "Platformer",
+  title: "Start Platformer game play",
 };
 
-// Symbolic for now
 const gamesList: any[] = [
   plarformerGameInfo,
 ];
 
 const master = new Ioc(gamesList);
 const appIcon: AppIcon = new AppIcon(master.get.Browser);
-master.singlton(Platformer, master.get.Starter);
-console.log("Platformer: ", master.get.Platformer);
-master.get.Platformer.attachAppEvents();
+master.singlton(GamePlay, master.get.Starter);
+console.log("Platformer: ", master.get.GamePlay);
+
+master.get.GamePlay.attachAppEvents();
+
+/**
+ * Make it global for fast access in console testing.
+ * (window as any).platformer = master.get.GamePlay;
+ */
+(window as any).master = master;
+(window as any).platformer = master.get.GamePlay;
+
 
 ```
 #### About runup gameplay ####
 
 In client-config :
 
+`Disabled at the moment for single-player solution.`
 javascript
 ```
   private autoStartGamePlay: boolean = false;
