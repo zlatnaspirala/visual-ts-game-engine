@@ -470,6 +470,15 @@ button:focus {outline:0;}
   font-size: x-large;
 }
 
+.form-selectplayer {
+  position: relative;
+  text-align: center;
+  z-index: 1;
+  padding: 1% 1% 4% 1%;
+  border-bottom: 1px solid rgba(255,255,255, 0.25);
+  font-size: x-large;
+}
+
 .nav {
     position: relative;
     padding: 0;
