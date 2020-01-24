@@ -382,7 +382,8 @@ class Platformer implements IGamePlayModel {
       setTimeout(function () {
         root.player.render.visualComponent.assets.SeqFrame.setNewValue(0);
         root.selectedPlayer.spriteTileCurrent =  root.selectedPlayer.spriteTile[0];
-        root.player.render.visualComponent.setNewShemaByX(root.selectedPlayer.spriteTileCurrent.byX);
+        // create general method !
+        root.player.render.visualComponent.setNewShema(root.selectedPlayer.spriteTileCurrent);
         // Soft dead for now
         Matter.Body.setPosition(root.player, root.playerStartPositions[0]);
         root.playerSpawn(false);

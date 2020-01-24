@@ -91,6 +91,15 @@ class SpriteTextureComponent extends TextureComponent {
   }
 
   /**
+   * New shema by x and y factor.
+   * @param shema Type of ISpriteShema
+   */
+  public setNewShema(shema: ISpriteShema): void {
+    this.setNewShemaByX(shema.byX);
+    this.setNewShemaByY(shema.byY);
+  }
+
+  /**
    * @description Override function drawComponent
    * from TextureComponent parent class.
    */
