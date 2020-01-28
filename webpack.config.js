@@ -130,25 +130,11 @@ let webPackModule = {
             { from: './src/libs/addons/cache/offline.html', to: 'offline.html' },
             { from: './src/libs/addons/webrtc-adapter/adapter.js', to: 'externals/adapter.js' },
             { from: "./src/examples/platformer/ui/player-board.html", to: "templates/ui/player-board.html"},
-            { from: "./src/examples/platformer-single-player/ui/select-player.html", to: "templates/ui/select-player.html"}
+            { from: "./src/examples/platformer-single-player/ui/select-player.html", to: "templates/ui/select-player.html"},
+            { from: "./src/examples/platformer-single-player/ui/player-board.html", to: "templates/ui/player-board.html"},
         ], { debug: 'warn' }), // { debug: 'info' } make trace
 
     ],
-    /**
-    * When importing a module whose path matches one of the following, just
-    * assume a corresponding global variable exists and use that instead.
-    * This is important because it allows us to avoid bundling all of our
-    * dependencies, which allows browsers to cache those libraries between builds.
-    *
-    * No active for now , looks like no benefit from react for canvas drawing
-    *
-    * externals: {
-    *   "react": "React",
-    *   "react-dom": "ReactDOM"
-    * },
-    *
-    */
-
     /*
     optimization: {
         splitChunks: {

@@ -10,6 +10,11 @@ import GameMap from "./map";
 import Platformer from "./Platformer";
 import Level1 from "./packs/level1";
 import { DEFAULT_GAMEPLAY_ROLES } from "../../../libs/defaults";
+import Level2 from "./packs/level2";
+import Level3 from "./packs/level3";
+import Level4 from "./packs/Level4";
+import Level5 from "./packs/Level5";
+import Level6 from "./packs/Level6";
 
 /**
  * @description Finally game start at here.
@@ -41,6 +46,8 @@ class GamePlay extends Platformer {
 
     // Implement to the multiplayer solution:
     // level feature.
+    // Override
+    this.deadZoneForBottom = 2500;
 
     // depend on config DISABLED
     if (this.starter.ioc.getConfig().getAutoStartGamePlay()) {
@@ -74,11 +81,14 @@ class GamePlay extends Platformer {
                   (e as any).detail.data.game === null ) {
           console.info("game-init Player spawn. Player are not destroyed at this moment...");
           myInstance.playerSpawn(true);
+
+          // test
+          myInstance.initSelectPlayer();
+          myInstance.selectPlayer("reaper");
+
           return;
 
         }
-
-        console.info("Loading map: " + (e as any).detail.data.game)
         myInstance.load((e as any).detail.data.game);
         console.info("Player spawn on game-init");
       } catch (err) { console.error("Very bad in game-init #1", err); }
@@ -94,7 +104,6 @@ class GamePlay extends Platformer {
            /*(e as any).detail.data.game === myInstance.gameName*/ ) {
 
             myInstance.destroyGamePlayPlatformer();
-            myInstance.deattachMatterEvents();
             (byId("playAgainBtn") as HTMLButtonElement).disabled = false;
             (byId("out-of-game") as HTMLButtonElement).disabled = true;
             console.info("game-end global event. Destroying game play.");
@@ -106,12 +115,7 @@ class GamePlay extends Platformer {
 
   }
 
-  private deattachMatterEvents() {
-    Matter.Events.off(this.starter.getEngine(), undefined, undefined);
-    console.info("Matter.Events.off")
-  }
-
-  private overrideOnKeyDown() {
+  private overrideOnKeyDown = () => {
 
     // animation running mode setup
     if (typeof this.player === "undefined" || this.player === null) { return; }
@@ -127,7 +131,7 @@ class GamePlay extends Platformer {
 
   }
 
-  private overrideOnKeyUp() {
+  private overrideOnKeyUp = () => {
 
     // animation configuration block
     if (typeof this.player === "undefined" || this.player === null) { return; }
@@ -142,7 +146,7 @@ class GamePlay extends Platformer {
 
   }
 
-  private attachMatterEvents() {
+  private attachMatterEvents(): void {
 
     const root = this;
     const globalEvent = this.starter.ioc.get.GlobalEvent;
@@ -248,13 +252,17 @@ class GamePlay extends Platformer {
 
   }
 
-  private load(mapPack?) {
+  private load(mapPack?): void {
 
     const root = this;
 
     if (typeof mapPack === "undefined") {
       mapPack = Level1;
     }
+
+
+    // HARDCODE mapPack = Level2;
+    mapPack = Level6;
     const gameMap: GameMap = new GameMap(mapPack);
 
     /**

@@ -83,7 +83,7 @@ class Platformer implements IGamePlayModel {
 
   }
 
-  private initSelectPlayer() {
+  public initSelectPlayer() {
 
     // Create UI for basic select player features.
     // Register
@@ -134,7 +134,7 @@ class Platformer implements IGamePlayModel {
 
   }
 
-  private selectPlayer(labelName: string = "cryptoBoy") {
+  protected selectPlayer(labelName: string = "reaper") {
 
     this.selectPlayerArray.forEach((element, index) => {
 
@@ -283,15 +283,27 @@ class Platformer implements IGamePlayModel {
 
       myInstance.UIPlayAgainBtn.addEventListener("click", function () {
 
+        // hard
+        // myInstance.destroyGamePlayPlatformer();
+
         const appStartGamePlay = createAppEvent("game-init",
         {
           mapName: "Level1",
-          game: myInstance.levelMaps.Level1,
+          // game: myInstance.levelMaps.Level1,
+          game: myInstance.player,
         });
 
         (window as any).dispatchEvent(appStartGamePlay);
 
+        // test fix
+        myInstance.player.render.visualComponent.assets.SeqFrame.setNewValue(0);
+        myInstance.selectedPlayer.spriteTileCurrent =  myInstance.selectedPlayer.spriteTile[0];
+        // create general method !
+        myInstance.player.render.visualComponent.setNewShema(myInstance.selectedPlayer.spriteTileCurrent);
+        myInstance.player.render.visualComponent.seqFrameX.setDelay(8);
+
       }, false);
+
     });
 
     // Select Player feature - Load UI
@@ -395,6 +407,7 @@ class Platformer implements IGamePlayModel {
 
   protected destroyGamePlayPlatformer() {
     this.starter.destroyGamePlay();
+    this.starter.deattachMatterEvents();
     this.grounds = [];
     this.enemys = [];
     this.deadLines = [];

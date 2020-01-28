@@ -212,5 +212,10 @@ class Starter {
     Matter.World.clear(this.world, false);
   }
 
+  public deattachMatterEvents(): void {
+    Matter.Events.off(this.getEngine(), undefined, undefined);
+    console.info("Matter.Events.off")
+  }
+
 }
 export default Starter;
