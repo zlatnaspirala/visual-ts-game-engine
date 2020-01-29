@@ -26,7 +26,7 @@ class BotBehavior implements IBotBehaviorOptions {
       this.patrolLoop = options.patrolLoop;
       console.log("Bot options loaded.");
     } else {
-      console.log("Bot default options loaded.");
+      // console.log("Bot default options loaded.");
       this.patrol = this.patrolLeftRight;
     }
   }

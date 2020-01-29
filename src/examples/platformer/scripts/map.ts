@@ -41,7 +41,6 @@ class GameMap implements IGamePlayPlatformerMap {
         root.collectItems.push(item as ICollectionItem);
       } else if (typeof (item as ICollectionEnemies).enemyLabel !== 'undefined') {
         root.collectEnemies.push(item as ICollectionEnemies);
-        console.log("next feature ENEMY");
       } else {
         root.staticGrounds.push(item);
       }

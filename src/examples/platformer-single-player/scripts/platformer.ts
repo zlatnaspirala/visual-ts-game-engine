@@ -439,7 +439,11 @@ class Platformer implements IGamePlayModel {
 
       const appEndGamePlay = createAppEvent("game-end", { game: "Level1" });
       (window as any).dispatchEvent(appEndGamePlay);
-        this.player = null;
+      // this.player = null;
+      root.player.render.visualComponent.assets.SeqFrame.setNewValue(0);
+      root.selectedPlayer.spriteTileCurrent =  root.selectedPlayer.spriteTile[0];
+      root.player.render.visualComponent.setNewShema(root.selectedPlayer.spriteTileCurrent);
+      root.player.render.visualComponent.seqFrameX.setDelay(8);
 
       setTimeout(function() {
         const appStartGamePlay = createAppEvent("game-init", {

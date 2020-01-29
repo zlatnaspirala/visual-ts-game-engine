@@ -208,7 +208,7 @@ class Starter {
   }
 
   public destroyGamePlay() {
-    console.log("destroy world also must be done for events !!!");
+    console.log("Destroy world.");
     Matter.World.clear(this.world, false);
   }
 

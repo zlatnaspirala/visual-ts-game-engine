@@ -39,7 +39,7 @@
   "scripts": {
     "dev": "webpack --config webpack.config.js",
     "prod": "webpack --config webpack.config.js",
-    "dev-all": "webpack --config webpack.config.multicompile.js",
+    "dev-all": "webpack --config webpack.multicompile.config.js",
     "rtc": "node ./server/rtc/server.js",
     "broadcaster": "node ./server/rtc/broadcaster.js",
     "datadebug": "node --inspect=27017 ./server/database/base.js",

@@ -81,14 +81,13 @@ class GamePlay extends Platformer {
                   (e as any).detail.data.game === null ) {
           console.info("game-init Player spawn. Player are not destroyed at this moment...");
           myInstance.playerSpawn(true);
-
           // test
           myInstance.initSelectPlayer();
           myInstance.selectPlayer("reaper");
-
           return;
 
         }
+
         myInstance.load((e as any).detail.data.game);
         console.info("Player spawn on game-init");
       } catch (err) { console.error("Very bad in game-init #1", err); }
@@ -260,9 +259,9 @@ class GamePlay extends Platformer {
       mapPack = Level1;
     }
 
+    // HARDCODE Test
+    // mapPack = Level6;
 
-    // HARDCODE mapPack = Level2;
-    mapPack = Level6;
     const gameMap: GameMap = new GameMap(mapPack);
 
     /**
