@@ -444,6 +444,7 @@ class Platformer implements IGamePlayModel {
       root.selectedPlayer.spriteTileCurrent =  root.selectedPlayer.spriteTile[0];
       root.player.render.visualComponent.setNewShema(root.selectedPlayer.spriteTileCurrent);
       root.player.render.visualComponent.seqFrameX.setDelay(8);
+      Matter.Body.setPosition(root.player, root.playerStartPositions[0]);
 
       setTimeout(function() {
         const appStartGamePlay = createAppEvent("game-init", {
