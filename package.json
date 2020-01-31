@@ -1,6 +1,6 @@
 {
   "name": "visual-ts",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "Improved render options like set tile, play sprite animation, multiplayer coordinate etc.. Whole project is based fully dependency build. Main file is app.ts . Class ioc saves singlton instances also bind. In this project html and css is not priory. Based on canvas 2D. Used lib Matter.js in typescript variant. This project is for middle level programmers.",
   "main": ".src/app.ts",
   "dependencies": {

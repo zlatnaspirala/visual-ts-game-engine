@@ -10,6 +10,10 @@ import { DEFAULT_GAMEPLAY_ROLES } from "../../../libs/defaults";
 // import generatedMap from "./packs/map2d";
 import Level1 from "./packs/level1";
 import Level2 from "./packs/level2";
+import Level3 from "./packs/level3";
+import Level4 from "./packs/level4";
+import Level5 from "./packs/level5";
+import Level6 from "./packs/level6";
 
 // Prepare audios
 require("../audios/map-themes/mishief-stroll.mp4");
@@ -51,10 +55,15 @@ class Platformer implements IGamePlayModel {
   private UIPlayerBoard: HTMLDivElement;
   private UIPlayAgainBtn: HTMLDivElement;
 
+  private currentLevelName: string = "Level1";
   private levelMaps: any = {
     generatedMap: Level1,
     Level1: Level1,
-    Level2: Level2
+    Level2: Level2,
+    Level3: Level3,
+    Level4: Level4,
+    Level5: Level5,
+    Level6: Level6,
   };
 
   constructor(starter: Starter) {

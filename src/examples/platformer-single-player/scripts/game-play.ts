@@ -12,9 +12,9 @@ import Level1 from "./packs/level1";
 import { DEFAULT_GAMEPLAY_ROLES } from "../../../libs/defaults";
 import Level2 from "./packs/level2";
 import Level3 from "./packs/level3";
-import Level4 from "./packs/Level4";
-import Level5 from "./packs/Level5";
-import Level6 from "./packs/Level6";
+import Level4 from "./packs/level4";
+import Level5 from "./packs/level5";
+import Level6 from "./packs/level6";
 
 /**
  * @description Finally game start at here.
