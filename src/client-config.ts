@@ -37,6 +37,11 @@ class ClientConfig {
       enabled: true,
       scriptPath: "externals/adapter.js",
     },
+    {
+      name: "facebook",
+      enabled: true,
+      scriptPath: "externals/fb.js",
+    }
   ];
 
   /**

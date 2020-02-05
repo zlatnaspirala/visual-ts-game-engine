@@ -123,6 +123,7 @@ let webPackModule = {
             { from: 'src/style/getHTMLMediaElement.css', to: 'styles/getHTMLMediaElement.css' },
             { from: './src/libs/addons/hacker-timer/hack-timer.js', to: 'externals/hack-timer.js'},
             { from: './src/libs/addons/drag/drag.ts', to: 'externals/drag.ts' },
+            { from: './src/libs/addons/facebook/fb.js', to: 'externals/fb.js' },
             { from: './src/libs/addons/hacker-timer/hack-timer-worker.js', to: 'externals/hack-timer-worker.js' },
             { from: './src/manifest.web', to: 'manifest.web' },
             { from: './src/libs/addons/cache/cacheInit.ts', to: 'externals/cacheInit.ts' },

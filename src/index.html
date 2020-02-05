@@ -53,6 +53,13 @@
   <div id="webCamView" class="webCamView myButton" style="display:none"></div>
   <div id="popup" class="popup" style="display:none"></div>
   <div id="media-rtc3-controls" class="popup-left-box" style="display:none"></div>
+
+  <div style="position: absolute;top: 40%;left:35%;z-index: 100000;">
+    <fb:login-button scope="public_profile,email" onlogin="checkLoginState();"></fb:login-button>
+    <div id="status"></div>
+    <div class="fb-like" data-share="true" data-width="450" data-show-faces="true"></div>
+  </div>
+
 </body>
 
 </html>
