@@ -298,8 +298,8 @@ class Platformer implements IGamePlayModel {
         const appStartGamePlay = createAppEvent("game-init",
         {
           mapName: "Level1",
-          // game: myInstance.levelMaps.Level1,
-          game: myInstance.player,
+          game: myInstance.levelMaps.Level1,
+          // game: myInstance.player,
         });
 
         (window as any).dispatchEvent(appStartGamePlay);
