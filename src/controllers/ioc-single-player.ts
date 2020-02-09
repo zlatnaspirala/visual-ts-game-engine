@@ -82,7 +82,7 @@ class Ioc {
     this.config.getAddson().forEach(function (addson) {
       if (addson.enabled) {
         scriptManager.load(addson.scriptPath);
-        console.log("Addson: " + addson.name + " loaded.");
+        // console.log("Addson: " + addson.name + " loaded.");
       }
 
     });

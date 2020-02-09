@@ -22,10 +22,21 @@ class GlobalEvent {
     this.browser = browser;
     // console.info("Is mobile: ", this.browser.isMobile);
 
-    // Register providers
+    // Register providers and dependency.
+    // = () => make's reflecting for selectedPlayer , tiles etc.
+    // Instance must be proveded sometimes.
+    this.providers.injected = {};
     this.providers.onkeydown = function() {};
     this.providers.onkeyup = function() {};
 
+  }
+
+  public injectDependency(alias: string, anyInstance: any) {
+    if (typeof this.providers.injected[alias] !== "undefined") {
+      console.warn("You already injected instance with this alias. Operation rejected.");
+      return;
+    }
+    this.providers.injected[alias] =anyInstance;
   }
 
   public activateKeyDetection() {

@@ -94,9 +94,9 @@ class SpriteTextureComponent extends TextureComponent {
    * New shema by x and y factor.
    * @param shema Type of ISpriteShema
    */
-  public setNewShema(shema: ISpriteShema): void {
-    this.setNewShemaByX(shema.byX);
-    this.setNewShemaByY(shema.byY);
+  public setNewShema(shema: any): void {
+    this.setNewShemaByX(shema.spriteTile[shema.spriteTileCurrent].byX);
+    this.setNewShemaByY(shema.spriteTile[shema.spriteTileCurrent].byY);
   }
 
   /**

@@ -42,8 +42,6 @@ This is from example part -
     }
     vc.assets.SeqFrame.setNewValue(2); // Point to the idle image
     vc.seqFrameX.setDelay(8);
-    this.selectedPlayer.spriteTileCurrent = this.selectedPlayer.spriteTile[1]; // point to then correct tile
-    vc.setNewShemaByX( this.selectedPlayer.spriteTileCurrent.byX );
 
   }
 ```

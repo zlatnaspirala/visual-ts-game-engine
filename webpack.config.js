@@ -46,7 +46,7 @@ let webPackModule = {
             { test: /\.tsx?$/, loader: "ts-loader" },
             {
                 test: /\.(jpg|png)$/, loader: "file-loader", options: {
-                    name: '[hash][name].[ext]',
+                    name: '[name].[ext]',
                     outputPath: "./imgs"
                 }
             },
@@ -132,7 +132,7 @@ let webPackModule = {
             { from: './src/libs/addons/webrtc-adapter/adapter.js', to: 'externals/adapter.js' },
             { from: "./src/examples/platformer/ui/player-board.html", to: "templates/ui/player-board.html"},
             { from: "./src/examples/platformer-single-player/ui/select-player.html", to: "templates/ui/select-player.html"},
-            { from: "./src/examples/platformer-single-player/ui/player-board.html", to: "templates/ui/player-board.html"},
+            { from: "./src/examples/platformer-single-player/ui/player-board.html", to: "templates/ui/single-player-board.html"},
         ], { debug: 'warn' }), // { debug: 'info' } make trace
 
     ],

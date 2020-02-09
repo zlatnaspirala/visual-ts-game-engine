@@ -10,11 +10,6 @@ import GameMap from "./map";
 import Platformer from "./Platformer";
 import Level1 from "./packs/level1";
 import { DEFAULT_GAMEPLAY_ROLES } from "../../../libs/defaults";
-import Level2 from "./packs/level2";
-import Level3 from "./packs/level3";
-import Level4 from "./packs/level4";
-import Level5 from "./packs/level5";
-import Level6 from "./packs/level6";
 
 /**
  * @description Finally game start at here.
@@ -81,7 +76,6 @@ class GamePlay extends Platformer {
                   (e as any).detail.data.game === null ) {
           console.info("game-init Player spawn. Player are not destroyed at this moment...");
           myInstance.playerSpawn(true);
-          // test
           myInstance.initSelectPlayer();
           myInstance.selectPlayer("reaper");
           return;
@@ -90,6 +84,7 @@ class GamePlay extends Platformer {
 
         myInstance.load((e as any).detail.data.game);
         console.info("Player spawn on game-init");
+
       } catch (err) { console.error("Very bad in game-init #1", err); }
 
     });
@@ -99,13 +94,11 @@ class GamePlay extends Platformer {
       try {
         if ((e as any).detail &&
            (e as any).detail.data.game !== "undefined" &&
-           (e as any).detail.data.game !== null
-           /*(e as any).detail.data.game === myInstance.gameName*/ ) {
+           (e as any).detail.data.game !== null) {
 
             myInstance.destroyGamePlayPlatformer();
             (byId("playAgainBtn") as HTMLButtonElement).disabled = false;
-            (byId("out-of-game") as HTMLButtonElement).disabled = true;
-            console.info("game-end global event. Destroying game play.");
+            console.info("game-end");
 
         }
       } catch (err) { console.error("Very bad #00003 ", err); }
@@ -116,32 +109,34 @@ class GamePlay extends Platformer {
 
   private overrideOnKeyDown = () => {
 
-    // animation running mode setup
-    if (typeof this.player === "undefined" || this.player === null) { return; }
-    const vc = this.player.render.visualComponent;
-    // Take something uniq
+    var testRoot = this;
+
+    if (typeof testRoot.player === "undefined" || testRoot.player === null) { return; }
+    const vc = testRoot.player.render.visualComponent;
     if (vc.assets.SeqFrame.getValue() === 0) {
       return;
     }
-    this.selectedPlayer.spriteTileCurrent = this.selectedPlayer.spriteTile[0];
-    this.player.render.visualComponent.setNewShemaByX(this.selectedPlayer.spriteTileCurrent.byX);
-    this.player.render.visualComponent.assets.SeqFrame.setNewValue(0);
-    this.player.render.visualComponent.seqFrameX.setDelay(8);
+
+    testRoot.selectedPlayer.setCurrentTile("run");
+    testRoot.player.render.visualComponent.setNewShema(testRoot.selectedPlayer);
+    testRoot.player.render.visualComponent.assets.SeqFrame.setNewValue(0);
+    testRoot.player.render.visualComponent.seqFrameX.setDelay(8);
 
   }
 
-  private overrideOnKeyUp = () => {
+  private overrideOnKeyUp= () => {
 
-    // animation configuration block
-    if (typeof this.player === "undefined" || this.player === null) { return; }
-    const vc = this.player.render.visualComponent;
+    var testRoot = this;
+
+    if (typeof testRoot.player === "undefined" || testRoot.player === null) { return; }
+    const vc = testRoot.player.render.visualComponent;
     if (vc.assets.SeqFrame.getValue() === 2) {
       return;
     }
+    testRoot.selectedPlayer.setCurrentTile("idle");
+    testRoot.player.render.visualComponent.setNewShema(testRoot.selectedPlayer);
     vc.assets.SeqFrame.setNewValue(2);
     vc.seqFrameX.setDelay(8);
-    this.selectedPlayer.spriteTileCurrent = this.selectedPlayer.spriteTile[1];
-    vc.setNewShemaByX( this.selectedPlayer.spriteTileCurrent.byX );
 
   }
 
@@ -149,9 +144,10 @@ class GamePlay extends Platformer {
 
     const root = this;
     const globalEvent = this.starter.ioc.get.GlobalEvent;
-
     globalEvent.providers.onkeydown = this.overrideOnKeyDown;
     globalEvent.providers.onkeyup = this.overrideOnKeyUp;
+    // globalEvent.injectDependency("platformerInstance", root);
+
     const playerSpeed = 0.005;
 
     this.enemys.forEach(function (item) {
@@ -159,7 +155,7 @@ class GamePlay extends Platformer {
       test.patrol();
     });
 
-    Matter.Events.on(this.starter.getEngine(), "beforeUpdate", function (event) {
+    Matter.Events.on(this.starter.getEngine(), "beforeUpdate", function () {
 
       if (!root.player) { return; }
 
@@ -201,7 +197,7 @@ class GamePlay extends Platformer {
       root.collisionCheck(event, false);
     });
 
-    Matter.Events.on(this.starter.getEngine(), "afterTick", function (event) {
+    Matter.Events.on(this.starter.getEngine(), "afterTick", function () {
 
       if (!root.player) { return; }
       // jump

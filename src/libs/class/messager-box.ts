@@ -12,9 +12,10 @@ class MessageBox {
   private asynContentFlag: boolean = false;
 
   constructor() {
-    console.warn("MessageBox is constructed.");
+
     this.popup = byId("message-box") as HTMLDivElement;
     this.init();
+    // console.info("MessageBox is constructed.");
 
   }
 
@@ -70,7 +71,7 @@ class MessageBox {
         myInstance.messageBox.classList.remove("message-box-hide-animation");
         myInstance.messageBoxContent = byId("message-box-content");
         myInstance.messageBoxContent.innerHTML = myInstance.welcomeMessage;
-        console.info("MessageBox is ready.");
+        // console.info("MessageBox is ready.");
         byId("message-box-btn").addEventListener("click", myInstance.hide, false);
 
         if (myInstance.asynContentFlag) {

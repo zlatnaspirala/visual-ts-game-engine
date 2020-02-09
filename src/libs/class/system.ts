@@ -1,4 +1,3 @@
-import { Script } from "vm";
 
 export let scriptManager = {
   scriptManager_ID: 0,
@@ -8,7 +7,7 @@ export let scriptManager = {
     s.onload = function () {
 
       scriptManager.scriptManager_ID++;
-      console.log("Async script id loaded: " + (this as any).src);
+      // console.log("Async script id loaded: " + (this as any).src);
       if (typeof (this as HTMLScriptElement).src !== "undefined") {
         let filename = (this as HTMLScriptElement).src.substring((this as HTMLScriptElement).src.lastIndexOf("/") + 1,
           (this as HTMLScriptElement).src.lastIndexOf("."));

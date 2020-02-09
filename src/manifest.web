@@ -26,9 +26,9 @@
     }
   ],
   "author": {
-		  "name": "Nikola Lukic",
-		  "website": "https://maximumroulette.com",
-		  "github": "https://github.com/zlatnaspirala",
-		  "source-repo": "https://github.com/zlatnaspirala/visual-ts-game-engine"
-	}
+      "name": "Nikola Lukic",
+      "website": "https://maximumroulette.com",
+      "github": "https://github.com/zlatnaspirala",
+      "source-repo": "https://github.com/zlatnaspirala/visual-ts-game-engine"
+  }
 }

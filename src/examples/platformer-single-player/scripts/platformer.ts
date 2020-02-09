@@ -3,11 +3,8 @@ import { byId, createAppEvent, htmlHeader } from "../../../libs/class/system";
 import SpriteTextureComponent from "../../../libs/class/visual-methods/sprite-animation";
 import { IGamePlayModel, IPoint, ISelectedPlayer } from "../../../libs/interface/global";
 import Starter from "../../../libs/starter";
-import { worldElement, UniVector } from "../../../libs/types/global";
-import TextureComponent from "../../../libs/class/visual-methods/texture";
+import { worldElement } from "../../../libs/types/global";
 import { DEFAULT_GAMEPLAY_ROLES } from "../../../libs/defaults";
-// import { DEFAULT_PLAYER_DATA } from "../../../libs/defaults";
-// import generatedMap from "./packs/map2d";
 import Level1 from "./packs/level1";
 import Level2 from "./packs/level2";
 import Level3 from "./packs/level3";
@@ -55,7 +52,6 @@ class Platformer implements IGamePlayModel {
   private UIPlayerBoard: HTMLDivElement;
   private UIPlayAgainBtn: HTMLDivElement;
 
-  private currentLevelName: string = "Level1";
   private levelMaps: any = {
     generatedMap: Level1,
     Level1: Level1,
@@ -81,16 +77,6 @@ class Platformer implements IGamePlayModel {
 
   }
 
-  private startGamplayAudioSystem() {
-
-    // background music
-    this.starter.ioc.get.Sound.createAudio(
-      "audios/mishief-stroll.mp4",
-      "surfaceLevel",
-      true
-    ); // .play();
-
-  }
 
   public initSelectPlayer() {
 
@@ -117,15 +103,18 @@ class Platformer implements IGamePlayModel {
 
     this.selectPlayerArray.push({
       labelName: "reaper",
-      poster: require("../imgs/players/reaper/poster.png"),
+      poster: require("../imgs/players/reaper/posterReaper.png"),
       resource: [
         require("../imgs/players/reaper/reaper-running.png"),
         require("../imgs/explosion/explosion.png"),
         require("../imgs/players/reaper/reaper-idle.png"),
       ],
       type: "sprite",
-      spriteTile: [{ byX: 5, byY: 1 }, { byX: 3, byY: 1 }],
-      spriteTileCurrent: { byX: 5, byY: 1 }
+      spriteTile:{run: { byX: 5, byY: 1 }, idle: { byX: 3, byY: 1 }},
+      spriteTileCurrent: "run",
+      setCurrentTile: function(key: string) {
+        this.spriteTileCurrent = key;
+      }
     });
 
     this.selectPlayerArray.push({
@@ -137,42 +126,30 @@ class Platformer implements IGamePlayModel {
         require("../imgs/players/smart-girl/smart-girl-idle.png"),
       ],
       type: "sprite",
-      spriteTile: [{ byX: 5, byY: 1 }, { byX: 5, byY: 1 }],
-      spriteTileCurrent: { byX: 5, byY: 1 }
+      spriteTile:{run: { byX: 5, byY: 1 }, idle: { byX: 5, byY: 1 }},
+      spriteTileCurrent: "idle",
+      setCurrentTile: function(key: string) {
+        this.spriteTileCurrent = key;
+      }
     });
 
   }
 
   protected selectPlayer(labelName: string = "reaper") {
 
-    this.selectPlayerArray.forEach((element, index) => {
-
+    this.selectPlayerArray.forEach((element) => {
       if (element.labelName == labelName) {
-
         this.selectedPlayer = element;
-
-        if (element.type == "frameByFrame") {
-         this.selectedPlayer.texCom = new TextureComponent("playerImage",
-           (this.selectedPlayer.resource as any))
-        } else if (element.type == "sprite") {
-          this.selectedPlayer.texCom = new SpriteTextureComponent("playerImage",
-           (this.selectedPlayer.resource as any),
-           (this.selectedPlayer.spriteTileCurrent as any))
-        }
-
-
       }
-
     });
 
   }
 
   public createPlayer(addToScene: boolean) {
 
-    let root = this;
     let TEST = new SpriteTextureComponent("playerImage",
            (this.selectedPlayer.resource as any),
-           (this.selectedPlayer.spriteTileCurrent as any));
+           ( { byX: 5, byY: 1 } as any));
     this.preventDoubleExecution = false;
     const playerRadius = 50;
 
@@ -279,7 +256,7 @@ class Platformer implements IGamePlayModel {
   public showPlayerBoardUI = () => {
 
     const myInstance = this;
-    fetch("./templates/ui/player-board.html", {
+    fetch("./templates/ui/single-player-board.html", {
       headers: htmlHeader,
     }).
     then(function (res) {
@@ -293,22 +270,20 @@ class Platformer implements IGamePlayModel {
       myInstance.UIPlayAgainBtn.addEventListener("click", function () {
 
         // hard
-        // myInstance.destroyGamePlayPlatformer();
+         myInstance.destroyGamePlayPlatformer();
 
+        (this as any).disabled = true;
         const appStartGamePlay = createAppEvent("game-init",
         {
           mapName: "Level1",
-          game: myInstance.levelMaps.Level1,
-          // game: myInstance.player,
+          game: myInstance.levelMaps.Level1
         });
 
         (window as any).dispatchEvent(appStartGamePlay);
 
-        // test fix
         myInstance.player.render.visualComponent.assets.SeqFrame.setNewValue(0);
-        myInstance.selectedPlayer.spriteTileCurrent =  myInstance.selectedPlayer.spriteTile[0];
-        // create general method !
-        myInstance.player.render.visualComponent.setNewShema(myInstance.selectedPlayer.spriteTileCurrent);
+        myInstance.selectedPlayer.spriteTileCurrent = "run";
+        myInstance.player.render.visualComponent.setNewShema(myInstance.selectedPlayer);
         myInstance.player.render.visualComponent.seqFrameX.setDelay(8);
 
       }, false);
@@ -374,7 +349,7 @@ class Platformer implements IGamePlayModel {
       this.preventDoubleExecution = true;
       // Hard dead
       // this.starter.destroyBody(collectitem);
-      console.info("D>>>>>>>>>>>>>>>>>>>>")
+      console.info("What is destroyed : ", collectitem)
       this.player.render.visualComponent.shema = { byX: 4, byY: 4 };
       this.player.render.visualComponent.assets.SeqFrame.setNewValue(1);
       this.lives = this.lives - 1;
@@ -402,9 +377,9 @@ class Platformer implements IGamePlayModel {
       }
       setTimeout(function () {
         root.player.render.visualComponent.assets.SeqFrame.setNewValue(0);
-        root.selectedPlayer.spriteTileCurrent =  root.selectedPlayer.spriteTile[0];
+        root.selectedPlayer.spriteTileCurrent = "run";
         // create general method !
-        root.player.render.visualComponent.setNewShema(root.selectedPlayer.spriteTileCurrent);
+        root.player.render.visualComponent.setNewShema(root.selectedPlayer);
         // Soft dead for now
         Matter.Body.setPosition(root.player, root.playerStartPositions[0]);
         root.playerSpawn(false);
@@ -450,8 +425,8 @@ class Platformer implements IGamePlayModel {
       (window as any).dispatchEvent(appEndGamePlay);
       // this.player = null;
       root.player.render.visualComponent.assets.SeqFrame.setNewValue(0);
-      root.selectedPlayer.spriteTileCurrent =  root.selectedPlayer.spriteTile[0];
-      root.player.render.visualComponent.setNewShema(root.selectedPlayer.spriteTileCurrent);
+      root.selectedPlayer.spriteTileCurrent = "run";
+      root.player.render.visualComponent.setNewShema(root.selectedPlayer);
       root.player.render.visualComponent.seqFrameX.setDelay(8);
       Matter.Body.setPosition(root.player, root.playerStartPositions[0]);
 
