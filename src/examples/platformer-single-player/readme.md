@@ -1,18 +1,23 @@
 
-### Platformer single player solution ###
+## Platformer single player solution ##
 
- Upgraded from multiplayer :
+### version 0.3.4 ###
+#### Published on apps facebook ####
+http://apps.facebook.com/nidzica
 
- - Select player feature
+ Next feature :
+
+ - Select player feature for multiplayer
 
 ```javascript
- export interface ISelectedPlayer {
+export interface ISelectedPlayer {
   labelName: string;
   poster: imagesResource;
   resource: imagesResource[];
   type:string;
-  spriteTile?: { byX: number, byY: number }[];
-  spriteTileCurrent:  { byX: number, byY: number };
+  spriteTile?:{key: { byX: number, byY: number }} | any;
+  spriteTileCurrent: string;
+  setCurrentTile(index: string): void;
   texCom?: undefined | SpriteTextureComponent | TextureComponent;
 }
 ```
@@ -32,25 +37,18 @@ This is from example part -
   Return player animation set to then idle regime on keyUp event:
 
 ```javascript
- private overrideOnKeyUp() {
+  private overrideOnKeyDown = () => {
 
-    // animation configuration block
-    if (typeof this.player === "undefined" || this.player === null) { return; }
-    const vc = this.player.render.visualComponent;
-    if (vc.assets.SeqFrame.getValue() === 2) {
-      return;
-    }
-    vc.assets.SeqFrame.setNewValue(2); // Point to the idle image
-    vc.seqFrameX.setDelay(8);
+    var testRoot = this;
+
+    if (typeof testRoot.player === "undefined" || testRoot.player === null) { return; }
+    const vc = testRoot.player.render.visualComponent;
+    if (vc.assets.SeqFrame.getValue() === 0) { return; }
+
+    testRoot.selectedPlayer.setCurrentTile("run");
+    testRoot.player.render.visualComponent.setNewShema(testRoot.selectedPlayer);
+    testRoot.player.render.visualComponent.assets.SeqFrame.setNewValue(0);
+    testRoot.player.render.visualComponent.seqFrameX.setDelay(8);
 
   }
 ```
-
-This can be improved in manir:
-
- animationSet { name: "run",  tiles , resource img/slot access index etc.. }
- animationSet { name: "attack",  tiles , resource img/slot access index etc.. }
- animationSet { name: "idle",  tiles , resource img/slot access index etc.. }
-
-
-...

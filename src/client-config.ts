@@ -9,12 +9,14 @@ import { Addson } from "./libs/types/global";
  */
 class ClientConfig {
 
-  /**
-   * Addson
+   /**
+   * Addson - Role is : "no dependencies scripts only"
    * All addson are ansync loaded scripts.
+   *  - hackerTimer is for better performace also based on webWorkers. Load this script on top.
    *  - Cache is based on webWorkers.
-   *  - hackerTimer is for better performace also based on webWorkers.
-   *  - dragging is script for dragging dom elements.
+   *  - dragging is script for dragging dom elements taken from stackoverflow.com.
+   *  - facebook addson is simple fb api implementation.
+   *  - adapter is powerfull media/communication fixer(Objective : working on all moder browsers).
    */
   private addson: Addson = [
     {

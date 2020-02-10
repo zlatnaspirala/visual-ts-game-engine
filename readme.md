@@ -91,6 +91,7 @@ Output:
  -webRTC can be used for any proporsion.
    Already implemented :
    -video chat webRTC (SIP) chat and data communication.
+   -Simple facebook api script.
 
  -Class 'Connector' (native webSocket) used for user session staff.
   For main account session staff like login, register etc.
@@ -124,9 +125,11 @@ class ClientConfig {
   /**
    * Addson - Role is : "no dependencies scripts only"
    * All addson are ansync loaded scripts.
+   *  - hackerTimer is for better performace also based on webWorkers. Load this script on top.
    *  - Cache is based on webWorkers.
-   *  - hackerTimer is for better performace also based on webWorkers.
-   *  - dragging is script for dragging dom elements.
+   *  - dragging is script for dragging dom elements taken from stackoverflow.com.
+   *  - facebook addson is simple fb api implementation.
+   *  - adapter is powerfull media/communication fixer(Objective : working on all moder browsers).
    */
   private addson: Addson = [
     {
@@ -144,6 +147,16 @@ class ClientConfig {
       enabled: true,
       scriptPath: "externals/drag.ts",
     },
+    {
+      name: "adapter",
+      enabled: true,
+      scriptPath: "externals/adapter.js",
+    },
+    {
+      name: "facebook",
+      enabled: true,
+      scriptPath: "externals/fb.js",
+    }
   ];
 
   /**
@@ -300,7 +313,7 @@ class ClientConfig {
 
 #### Main dependency file ####
 
- - Current version: 
+ - Current version:
 ```typescript
 
 /**
@@ -516,7 +529,9 @@ Fix : "failed: address already in use" :
 
  #### General networking config: ####
 
- Config property defined in constructor from ServerConfig class:
+ Config property defined in constructor from ServerConfig class
+ in interest way. With two defined flags dev & prod it is easy resolved
+ boring problem with migration localhost - public server :
 
 ```javascript
     // enum : 'dev' or 'prod'

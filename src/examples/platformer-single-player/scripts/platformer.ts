@@ -4,7 +4,7 @@ import SpriteTextureComponent from "../../../libs/class/visual-methods/sprite-an
 import { IGamePlayModel, IPoint, ISelectedPlayer } from "../../../libs/interface/global";
 import Starter from "../../../libs/starter";
 import { worldElement } from "../../../libs/types/global";
-import { DEFAULT_GAMEPLAY_ROLES } from "../../../libs/defaults";
+import { DEFAULT_GAMEPLAY_ROLES, DEFAULT_PLAYER_DATA } from "../../../libs/defaults";
 import Level1 from "./packs/level1";
 import Level2 from "./packs/level2";
 import Level3 from "./packs/level3";
@@ -44,7 +44,7 @@ class Platformer implements IGamePlayModel {
 
   public selectedPlayer : ISelectedPlayer;
   private selectPlayerArray: ISelectedPlayer[]= [];
-  private lives: number = 3;
+  private lives: number = DEFAULT_PLAYER_DATA.INITIAL_LIVES;
   private preventDoubleExecution: boolean = false;
   private playerStartPositions: IPoint[] = [{x: 120, y: 200}];
   private playerDeadPauseInterval: number = 550;
@@ -273,6 +273,9 @@ class Platformer implements IGamePlayModel {
          myInstance.destroyGamePlayPlatformer();
 
         (this as any).disabled = true;
+        byId("UIPlayerLives").innerText = "3";
+        myInstance.lives = DEFAULT_PLAYER_DATA.INITIAL_LIVES;
+
         const appStartGamePlay = createAppEvent("game-init",
         {
           mapName: "Level1",

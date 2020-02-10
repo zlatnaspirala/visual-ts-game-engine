@@ -49,6 +49,11 @@
         document.getElementById('status').innerHTML =
           'Thanks for logging in, ' + response.name + '!';
       });
+
+      // Addons facebook  depend on HTMLElement with id `fbInviteBtn`
+      // Put it anywhere on active page.
+      window.FB = FB;
+
     }
 
   }

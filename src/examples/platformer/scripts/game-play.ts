@@ -10,6 +10,7 @@ import GameMap from "./map";
 import Platformer from "./Platformer";
 import Network from "../../../libs/class/networking/network";
 import { IMultiplayer } from "../../../libs/interface/global";
+import Level1 from "./packs/level1";
 
 /**
  * @description Finally game start at here
