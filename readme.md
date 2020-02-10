@@ -671,6 +671,12 @@ or use :
   (table games, actions , platformers , basic demo trow the api doc etc.).
  - Implementing AR and webGL2.
 
+
+## Platformer single player solution ##
+### version 0.3.4 ###
+#### Published on apps facebook ####
+http://apps.facebook.com/nidzica
+
 ![Platformer](https://github.com/zlatnaspirala/visual-ts/blob/master/platformer-typescript.png)
 
 ## [Live demo Platformer](https://codepen.io/zlatnaspirala/full/exxvQq) ##
