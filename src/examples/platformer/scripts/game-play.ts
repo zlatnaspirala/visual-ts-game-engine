@@ -128,22 +128,26 @@ class GamePlay extends Platformer implements IMultiplayer {
 
       try {
         if ((e as any).detail &&
-           ((e as any).detail.data.game !== "undefined" &&
-           ( e as any).detail.data.game !== null &&
-           ( e as any).detail.data.game.label === "player")) {
-          console.warn("Bad #00002 game-init attempt.");
-          return;
+           ((e as any).detail.data.game === "undefined")) {
+
+            console.warn("Bad game-init attempt. No data.game param.");
+            return;
 
         } else if ((e as any).detail &&
                   (e as any).detail.data.game === null ) {
           console.info("game-init Player spawn. data.game === null");
           myInstance.starter.ioc.get.Network.connector.startNewGame(myInstance.gameName);
-          myInstance.playerSpawn(true);
+
           myInstance.initSelectPlayer();
           myInstance.selectPlayer("nidzica");
+          myInstance.playerSpawn(true);
+
           return;
 
         }
+
+        myInstance.initSelectPlayer();
+        myInstance.selectPlayer("nidzica");
 
         // How to access netwoking
         myInstance.starter.ioc.get.Network.connector.startNewGame(myInstance.gameName);

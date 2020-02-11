@@ -12,7 +12,9 @@ import Level4 from "./packs/level4";
 import Level5 from "./packs/level5";
 import Level6 from "./packs/level6";
 // Prepare audios
-require("../audios/map-themes/mishief-stroll.mp4");
+// require("../audios/map-themes/mishief-stroll.mp4");
+import "./audios/map-themes/mishief-stroll.mp4";
+
 // import"../audios/map-themes/mishief-stroll
 import Network from "../../../libs/class/networking/network";
 // import { DEFAULT_PLAYER_DATA } from "../../../libs/defaults";
@@ -48,7 +50,7 @@ class Platformer implements IGamePlayModel {
   public network: Network;
   public netBodies: UniVector = {};
 
-  public selectedPlayer : ISelectedPlayer;
+  public selectedPlayer: ISelectedPlayer;
   private selectPlayerArray: ISelectedPlayer[]= [];
   private lives: number = DEFAULT_PLAYER_DATA.INITIAL_LIVES;
 
@@ -205,9 +207,10 @@ class Platformer implements IGamePlayModel {
 
   protected selectPlayer(labelName: string = "nidzica") {
 
+    const root = this;
     this.selectPlayerArray.forEach((element) => {
       if (element.labelName == labelName) {
-        this.selectedPlayer = element;
+        root.selectedPlayer = element;
       }
     });
 
@@ -350,6 +353,54 @@ class Platformer implements IGamePlayModel {
 
         }, false);
       });
+
+    // Select Player feature - Load UI
+    fetch("./templates/ui/select-player.html", {
+      headers: htmlHeader,
+    }).
+    then(function (res) {
+      return res.text();
+    }).then(function (html) {
+
+      var popup = byId("popup") as HTMLDivElement;
+      popup.innerHTML = html;
+      popup.style.display = "block";
+
+      myInstance.selectPlayerArray.forEach(function(itemPlayer) {
+
+        var local = document.createElement("div");
+        local.id = "" + itemPlayer.labelName;
+        local.className = "bounceIn";
+        local.setAttribute("style", "width:30%;display:inline-block;cursor:pointer;text-align:center;padding: 9px;");
+        local.innerHTML = "<span> Name:" +
+          itemPlayer.labelName +
+          "</span> <img src='" +
+          itemPlayer.poster +
+          "' width='150px' height='150px' class='selectPlayerItemBox' />";
+
+        local.addEventListener("click", function() {
+
+          myInstance.selectPlayer(itemPlayer.labelName);
+          const appStartGamePlay = createAppEvent(
+            "game-init",
+            {
+              mapName: "Level1",
+              game: myInstance.levelMaps.Level1,
+            }
+          );
+          (window as any).dispatchEvent(appStartGamePlay);
+
+          popup.innerHTML = "";
+          document.body.removeChild(popup);
+
+        }, false);
+
+        byId('listOfPlayers').appendChild(local);
+        // popup.appendChild(local);
+
+      });
+
+    });
 
   }
 

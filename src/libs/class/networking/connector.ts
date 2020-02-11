@@ -452,11 +452,13 @@ class ConnectorClient {
 
   private openGamePlayFor = (e) => {
 
+    const myInstance = this;
     e.preventDefault();
 
     const appStartGamePlay = createAppEvent("game-init",
     {
-      game: e.target, // .getAttribute("game"),
+      mapName: "Level1",
+      // game: 'Level1'// myInstance.levelMaps.Level1
     });
 
     (window as any).dispatchEvent(appStartGamePlay);

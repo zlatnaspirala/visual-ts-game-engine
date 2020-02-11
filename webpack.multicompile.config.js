@@ -60,6 +60,15 @@ const roles = [
       }
     }
   },
+  {
+    test: /\.(mp4|ogg)$/,
+    // include: __dirname + "/src/examples/platformer-single-player/audios",
+    loader: 'file-loader',
+    options: {
+        name: '[name].[ext]',
+        outputPath: "/audios"
+    }
+  },
   // All output '.js' files will have any sourcemaps re-processed by 'source-map-loader'.
   { enforce: "pre", test: /\.js$/, loader: "source-map-loader" }
 ];
@@ -143,8 +152,10 @@ let webPackModuleMultiPlayerSolution = {
             { from: './src/libs/addons/cache/worker.js', to: 'worker.js' },
             { from: './src/libs/addons/cache/offline.html', to: 'offline.html' },
             { from: './src/libs/addons/webrtc-adapter/adapter.js', to: 'externals/adapter.js' },
-            { from: "./src/examples/platformer/ui/player-board.html", to: "templates/ui/player-board.html"}
-        ], { debug: 'warn' }), // { debug: 'info' } make trace
+            { from: "./src/examples/platformer/ui/player-board.html", to: "templates/ui/player-board.html"},
+            { from: "./src/examples/platformer/ui/select-player.html", to: "templates/ui/select-player.html"},
+        ], { debug: 'warn' }),
+        // { debug: 'info' } make trace
 
     ],
 
