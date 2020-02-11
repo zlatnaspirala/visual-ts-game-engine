@@ -17,7 +17,7 @@ require("../audios/map-themes/mishief-stroll.mp4");
 
 /**
  * @author Nikola Lukic
- * @class Platformer
+ * @class Platformer Single player solution.
  * @param Starter
  * @description This is game logic part
  * we stil use class based methodology.
@@ -65,9 +65,7 @@ class Platformer implements IGamePlayModel {
   constructor(starter: Starter) {
 
     this.starter = starter;
-
     // this.starter.getEngine().enableSleeping = true;
-
     this.initSelectPlayer();
     this.addUIPlayerBoard();
     this.showPlayerBoardUI();
@@ -102,12 +100,12 @@ class Platformer implements IGamePlayModel {
     */
 
     this.selectPlayerArray.push({
-      labelName: "reaper",
-      poster: require("../imgs/players/reaper/posterReaper.png"),
+      labelName: "nidzica",
+      poster: require("../imgs/players/nidzica/posterNidzica.png"),
       resource: [
-        require("../imgs/players/reaper/reaper-running.png"),
+        require("../imgs/players/nidzica/nidzica-running.png"),
         require("../imgs/explosion/explosion.png"),
-        require("../imgs/players/reaper/reaper-idle.png"),
+        require("../imgs/players/nidzica/nidzica-idle.png"),
       ],
       type: "sprite",
       spriteTile:{run: { byX: 5, byY: 1 }, idle: { byX: 3, byY: 1 }},
@@ -135,7 +133,7 @@ class Platformer implements IGamePlayModel {
 
   }
 
-  protected selectPlayer(labelName: string = "reaper") {
+  protected selectPlayer(labelName: string = "nidzica") {
 
     this.selectPlayerArray.forEach((element) => {
       if (element.labelName == labelName) {
@@ -147,9 +145,12 @@ class Platformer implements IGamePlayModel {
 
   public createPlayer(addToScene: boolean) {
 
-    let TEST = new SpriteTextureComponent("playerImage",
-           (this.selectedPlayer.resource as any),
-           ( { byX: 5, byY: 1 } as any));
+    let sptTexCom = new SpriteTextureComponent(
+      "playerImage",
+      (this.selectedPlayer.resource as any),
+      ( { byX: 5, byY: 1 } as any)
+    );
+
     this.preventDoubleExecution = false;
     const playerRadius = 50;
 
@@ -169,7 +170,7 @@ class Platformer implements IGamePlayModel {
           category: this.playerCategory,
         } as any,
         render: {
-          visualComponent: TEST,
+          visualComponent: sptTexCom,
           fillStyle: "blue",
           sprite: {
             xScale: 1,
@@ -411,6 +412,7 @@ class Platformer implements IGamePlayModel {
   }
 
   private addUIPlayerBoard = () => {
+
     this.UIPlayerBoard = document.createElement("div");
     this.UIPlayerBoard.id = "UIPlayerBoard";
     this.UIPlayerBoard.className = "leftPanelUni";
@@ -418,6 +420,11 @@ class Platformer implements IGamePlayModel {
     document.getElementsByTagName("body")[0].appendChild(this.UIPlayerBoard);
   }
 
+  /**
+   * @description Jump intro new wourld.
+   * @param data
+   * @type Void
+   */
   private nextLevel(data) {
 
     const root = this;

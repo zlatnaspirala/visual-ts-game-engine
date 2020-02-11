@@ -77,7 +77,7 @@ class GamePlay extends Platformer {
           console.info("game-init Player spawn. Player are not destroyed at this moment...");
           myInstance.playerSpawn(true);
           myInstance.initSelectPlayer();
-          myInstance.selectPlayer("reaper");
+          myInstance.selectPlayer("nidzica");
           return;
 
         }

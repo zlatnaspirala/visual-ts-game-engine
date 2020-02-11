@@ -6,11 +6,12 @@ import TextComponent from "../../../libs/class/visual-methods/text";
 import TextureComponent from "../../../libs/class/visual-methods/texture";
 import Starter from "../../../libs/starter";
 import { worldElement } from "../../../libs/types/global";
-import GameMap from "./map";
 import Platformer from "./Platformer";
 import Network from "../../../libs/class/networking/network";
 import { IMultiplayer } from "../../../libs/interface/global";
 import Level1 from "./packs/level1";
+import { DEFAULT_GAMEPLAY_ROLES } from "../../../libs/defaults";
+import GameMap from "./map";
 
 /**
  * @description Finally game start at here
@@ -30,11 +31,10 @@ class GamePlay extends Platformer implements IMultiplayer {
   /**
    * @description deadZoneForBottom Definition and Default value
    * - overrided from map or map2d(generated) by deadLines object
-   * DeadLines object in future can be used for enemy static action
-   * Next : deadZoneForLeft , deadZoneForRight
-   * this.starter.setWorldBounds(-300, -300, 10000, root.deadZoneForBottom);
+   * DeadLines object. In future Can be used for enemy static action;
    * */
-  private deadZoneForBottom: number  = 4500;
+  private deadZoneForBottom: number  = DEFAULT_GAMEPLAY_ROLES.MAP_MARGIN_BOTTOM;
+  private deadZoneForRight: number  = DEFAULT_GAMEPLAY_ROLES.MAP_MARGIN_RIGHT;
 
   public multiPlayerRef: any = {
     root: this,
@@ -100,7 +100,14 @@ class GamePlay extends Platformer implements IMultiplayer {
   constructor(starter: Starter) {
 
     super(starter);
+
     if (this.starter.ioc.getConfig().getAutoStartGamePlay()) {
+
+      // Implement to the multiplayer solution:
+      // level feature.
+      // Override
+      this.deadZoneForBottom = 2500;
+
       this.load();
     }
 
@@ -132,13 +139,15 @@ class GamePlay extends Platformer implements IMultiplayer {
           console.info("game-init Player spawn. data.game === null");
           myInstance.starter.ioc.get.Network.connector.startNewGame(myInstance.gameName);
           myInstance.playerSpawn(true);
+          myInstance.initSelectPlayer();
+          myInstance.selectPlayer("nidzica");
           return;
 
         }
 
         // How to access netwoking
         myInstance.starter.ioc.get.Network.connector.startNewGame(myInstance.gameName);
-        myInstance.load();
+        myInstance.load((e as any).detail.data.game);
         console.info("Player spawn. game-init .startNewGame");
       } catch (err) { console.error("Very bad #00001", err); }
 
@@ -152,7 +161,7 @@ class GamePlay extends Platformer implements IMultiplayer {
            (e as any).detail.data.game !== null &&
            (e as any).detail.data.game === myInstance.gameName) {
 
-            myInstance.starter.destroyGamePlay();
+            myInstance.destroyGamePlayPlatformer();
             (byId("playAgainBtn") as HTMLButtonElement).disabled = true;
             (byId("openGamePlay") as HTMLButtonElement).disabled = false;
             (byId("out-of-game") as HTMLButtonElement).disabled = true;
@@ -178,10 +187,46 @@ class GamePlay extends Platformer implements IMultiplayer {
     Matter.Events.off(this.starter.getEngine(), undefined, undefined);
   }
 
+
+  private overrideOnKeyDown = () => {
+
+    var testRoot = this;
+
+    if (typeof testRoot.player === "undefined" || testRoot.player === null) { return; }
+    const vc = testRoot.player.render.visualComponent;
+    if (vc.assets.SeqFrame.getValue() === 0) {
+      return;
+    }
+
+    testRoot.selectedPlayer.setCurrentTile("run");
+    testRoot.player.render.visualComponent.setNewShema(testRoot.selectedPlayer);
+    testRoot.player.render.visualComponent.assets.SeqFrame.setNewValue(0);
+    testRoot.player.render.visualComponent.seqFrameX.setDelay(8);
+
+  }
+
+  private overrideOnKeyUp= () => {
+
+    var testRoot = this;
+
+    if (typeof testRoot.player === "undefined" || testRoot.player === null) { return; }
+    const vc = testRoot.player.render.visualComponent;
+    if (vc.assets.SeqFrame.getValue() === 2) {
+      return;
+    }
+    testRoot.selectedPlayer.setCurrentTile("idle");
+    testRoot.player.render.visualComponent.setNewShema(testRoot.selectedPlayer);
+    vc.assets.SeqFrame.setNewValue(2);
+    vc.seqFrameX.setDelay(8);
+
+  }
+
   private attachMatterEvents() {
 
     const root = this;
     const globalEvent = this.starter.ioc.get.GlobalEvent;
+    globalEvent.providers.onkeydown = this.overrideOnKeyDown;
+    globalEvent.providers.onkeyup = this.overrideOnKeyUp;
     const playerSpeed = 0.005;
 
     this.enemys.forEach(function (item) {
@@ -281,15 +326,28 @@ class GamePlay extends Platformer implements IMultiplayer {
 
   }
 
-  private load() {
+
+  private load(mapPack?): void {
 
     const root = this;
-    const gameMap: GameMap = new GameMap();
+
+    if (typeof mapPack === "undefined") {
+      mapPack = Level1;
+    }
+
+    // HARDCODE Test
+    // mapPack = Level6;
+
+    const gameMap: GameMap = new GameMap(mapPack);
 
     /**
      * @description Override data from starter.
      */
-    this.starter.setWorldBounds(-300, -300, 10000, root.deadZoneForBottom);
+    this.starter.setWorldBounds(
+      DEFAULT_GAMEPLAY_ROLES.MAP_MARGIN_LEFT,
+      DEFAULT_GAMEPLAY_ROLES.MAP_MARGIN_TOP,
+      root.deadZoneForRight,
+      root.deadZoneForBottom);
 
     this.playerSpawn(false);
 
@@ -298,6 +356,7 @@ class GamePlay extends Platformer implements IMultiplayer {
       const newStaticElement: worldElement = Matter.Bodies.rectangle(item.x, item.y, item.w, item.h,
         {
           isStatic: true,
+          isSleeping: false,
           label: "background",
           render: {
             visualComponent: new TextureComponent("wall", item.tex),
@@ -319,6 +378,7 @@ class GamePlay extends Platformer implements IMultiplayer {
       const newStaticElement: worldElement = Matter.Bodies.rectangle(item.x, item.y, item.w, item.h,
         {
           isStatic: true,
+          isSleeping: false,
           label: "ground",
           collisionFilter: {
             group: this.staticCategory,
@@ -474,7 +534,6 @@ class GamePlay extends Platformer implements IMultiplayer {
     this.starter.AddNewBodies(this.deadLines as worldElement);
     this.starter.AddNewBodies(this.player as worldElement);
     this.starter.AddNewBodies(this.labels as worldElement);
-    // this.createHud();
     this.attachMatterEvents();
 
   }
