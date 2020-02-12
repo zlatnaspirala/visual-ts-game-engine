@@ -1,0 +1,3 @@
+[submodule "tools/creator-2dmap"]
+	path = tools/creator-2dmap
+	url = https://github.com/zlatnaspirala/creator-2dmap
