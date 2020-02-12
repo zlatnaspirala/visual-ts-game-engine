@@ -13,7 +13,7 @@
   features inside. Also video chat is integrated based on signaling server.
   No video recording for now (next features).
 
- - Writen in typescript current version 3.7.4.
+ - Written in typescript current version 3.7.4.
  - Text editor used and recommended: Last version of Visual Studio Code.
    Luanch debugger configuration comes with this project (for server part).
  - Physics engine based on Matter.js - Matter.ts (npm project).
@@ -596,8 +596,32 @@ Features comes with broadcaster:
    or custom implementation throw the native mobile application
    web control (Chrome implementation usually).
 
+### GUI Tools ###
 
-## Documentation : ##
+To get GUI tools first download python3 for your OS.
+`creator2dmap` is python3 canvas oriented application.
+
+```javascript
+  cd tools
+  git submodule init
+  git submodule update
+  // or
+  git clone --recurse-submodules https://github.com/zlatnaspirala/visual-ts-game-engine
+
+  // update
+  git fetch
+  git merge
+```
+In this way you will get project: https://github.com/zlatnaspirala/creator-2dmap
+intro `tools/creator2dmap/` folder.
+
+Start application with:
+```
+  python.exe tool.py (win)
+  ./python3 tool.py (macos)
+```
+
+## Documentation: ##
 
  Follow link for API:
  [Application documentation](https://maximumroulette.com/applications/visual-typescript-game-engine/build/api-doc/globals.html)
@@ -661,7 +685,7 @@ or use :
  - https://www.behance.net/JunikStudio
 
 
-## Todo list for 2019 ##
+## Todo list for 2020 ##
 
   <b>I'am still far a away from project objective :</b>
 
