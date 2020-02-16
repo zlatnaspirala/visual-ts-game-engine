@@ -48,7 +48,8 @@
     "tslint": "tslint -c tslint.json 'src/**/*.ts'",
     "doc": "E://web_server/xampp/htdocs/PRIVATE_SERVER/visual-ts/doc-style",
     "all-server": "(start npm run dataserver && start npm run rtc) || (npm run dataserver & npm run rtc)",
-    "all": "(start npm run dev && npm run dataserver && start npm run rtc) || (npm run dataserver & npm run dev & npm run rtc)"
+    "all": "(start npm run dev && npm run dataserver && start npm run rtc) || (npm run dataserver & npm run dev & npm run rtc)",
+    "creator": "(python.exe tools\\creator-2dmap\\tool.py) || (./python3 tools/creator-2dmap/tool.py)"
   },
   "author": {
     "name": "Nikola Lukic",
