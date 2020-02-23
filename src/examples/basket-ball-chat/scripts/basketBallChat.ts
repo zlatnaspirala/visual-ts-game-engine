@@ -27,7 +27,7 @@ import Network from "../../../libs/class/networking/network";
 
 class BasketBallChat implements IGamePlayModel {
 
-  public gameName: string = "platformer";
+  public gameName: string = "Basket Ball chat";
   public version: number = 0.3;
   public playerCategory = 0x0002;
   public staticCategory = 0x0004;
@@ -65,8 +65,10 @@ class BasketBallChat implements IGamePlayModel {
     this.starter = starter;
     // this.starter.getEngine().enableSleeping = true;
     this.initSelectPlayer();
-    this.addUIPlayerBoard();
-    this.showPlayerBoardUI();
+
+    // this.addUIPlayerBoard();
+    // this.showPlayerBoardUI();
+
     this.attachUpdateLives();
 
   }

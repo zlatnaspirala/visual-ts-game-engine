@@ -60,7 +60,7 @@ class GameMap implements IGamePlayPlatformerMap {
 
     // Simple manual input
     this.staticGrounds.push(
-      { x: 100, y: 500, w: LocalWidth, h: 60, tex: imgRes, tiles: { tilesX: tileXLocal, tilesY: 1 } });
+      { x: 100, y: 600, w: LocalWidth, h: 60, tex: imgRes, tiles: { tilesX: tileXLocal, tilesY: 1 } });
     return this.staticGrounds as IStaticItem[];
 
   }

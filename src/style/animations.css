@@ -47,24 +47,24 @@
 /* Safari 4.0 - 8.0 */
 @-webkit-keyframes rightmove {
   0%   {background-color:rgba(255, 0, 0, 0.9); right:0%; top:0px;}
-  100%  {background-color:rgba(255, 255, 0, 0.9); right:-26%; top:95%;}
+  100%  {background-color:rgba(13, 46, 65, 0.9); right:-26%; top:95%;}
 }
 
 /* Standard syntax */
 @keyframes rightmove {
   0%   {background-color:rgba(255, 0, 0, 0.9); right:0%; top:0px;}
-  100%  {background-color:rgba(255, 255, 0, 0.9); right:-26%; top:95%;}
+  100%  {background-color:rgba(13, 46, 65, 0.9); right:-26%; top:95%;}
 }
 
 @-webkit-keyframes leftmove {
   0%   {background-color:rgba(255, 0, 0, 0.9); right:-26%; top:95%;}
-  100%  {background-color:rgba(255, 255, 0, 0.9); right:0%; top:0px;}
+  100%  {background-color:rgba(13, 46, 65, 0.9); right:0%; top:0px;}
 }
 
 /* Standard syntax */
 @keyframes leftmove {
   0%   {background-color:rgba(255, 0, 0, 0.9); right:-26%; top:95%;}
-  100%  {background-color:rgba(255, 255, 0, 0.9); right:0%; top:0px;}
+  100%  {background-color:rgba(13, 46, 65, 0.9); right:0%; top:0px;}
 }
 
 /* Vertical */
@@ -73,7 +73,7 @@
 /* Safari 4.0 - 8.0 */
 @-webkit-keyframes goBottom {
   0%   {background-color:rgba(155, 101, 10, 0.9); top:0px;}
-  100%  {background-color:rgba(155, 155, 0, 0.9); top:95%;}
+  100%  {background-color:rgba(13, 46, 65, 0.9); top:95%;}
 }
 
 /* Standard syntax */
@@ -84,13 +84,13 @@
 
 @-webkit-keyframes goUp {
   0%   {background-color:rgba(255, 0, 0, 0.9); top:95%;}
-  100%  {background-color:rgba(255, 255, 0, 0.9); top:0px;}
+  100%  {background-color:rgba(13, 46, 65, 0.9); top:0px;}
 }
 
 /* Standard syntax */
 @keyframes goUp {
   0%   {background-color:rgba(255, 0, 0, 0.9); top:95%;}
-  100%  {background-color:rgba(255, 255, 0, 0.9); top:0px;}
+  100%  {background-color:rgba(13, 46, 65, 0.9); top:0px;}
 }
 
 /* bounceIn */

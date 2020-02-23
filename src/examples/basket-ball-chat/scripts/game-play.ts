@@ -13,6 +13,7 @@ import Level1 from "../scripts/packs/BasketBallChat-level1";
 import { DEFAULT_GAMEPLAY_ROLES } from "../../../libs/defaults";
 import GameMap from "./map";
 import BasketBallChat from "./basketBallChat";
+import { Events } from "matter-js";
 
 /**
  * @description Finally game start at here
@@ -97,6 +98,18 @@ class GamePlay extends BasketBallChat implements IMultiplayer {
     }
 
   };
+
+  // Basket Ball Chat
+  // Modification for new game
+  // add bodies
+  private ground;
+  private rockOptions;
+  private rock;
+  private anchor;
+  private elastic;
+  private pyramid;
+  private ground2;
+  private pyramid2;
 
   constructor(starter: Starter) {
 
@@ -239,6 +252,15 @@ class GamePlay extends BasketBallChat implements IMultiplayer {
       test.patrol();
     });
 
+
+    Events.on(this.starter.getEngine(), 'afterUpdate', function() {
+        if (root.starter.getMouseConstraint().mouse.button === -1 && (root.rock.position.x > 190 || root.rock.position.y < 430)) {
+            root.rock = Matter.Bodies.polygon(170, 450, 7, 20, root.rockOptions);
+            Matter.World.add(root.starter.getEngine().world, root.rock);
+            root.elastic.bodyB = root.rock;
+        }
+    });
+
     Matter.Events.on(this.starter.getEngine(), "beforeUpdate", function (event) {
 
       if (!root.player) { return; }
@@ -260,6 +282,7 @@ class GamePlay extends BasketBallChat implements IMultiplayer {
         if (root.player.velocity.x < 0.00001 && root.player.velocity.y == 0 &&
           root.player.currentDir == "idle" ) {
         } else {
+          console.log(" root.network.rtcMultiConnection.send({  ", root.network.rtcMultiConnection.send );
           root.network.rtcMultiConnection.send({
             netPos: root.player.position,
             netDir: root.player.currentDir
@@ -356,6 +379,47 @@ class GamePlay extends BasketBallChat implements IMultiplayer {
 
     this.playerSpawn(false);
 
+    // Modification for new game
+    // add bodies
+    this.ground = Matter.Bodies.rectangle(395, 600, 815, 50,
+       { isStatic: true,
+         collisionFilter: {group: -1}
+       }),
+      this.rockOptions = {
+        density: 0.004 ,
+      collisionFilter: {
+            group: this.staticCategory,
+             mask: this.staticCategory,
+          }
+      },
+      this.rock = Matter.Bodies.polygon(170, 450, 8, 20, this.rockOptions),
+      this.anchor = { x: 170, y: 450 },
+      this.elastic = Matter.Constraint.create({
+        pointA: this.anchor,
+        bodyB: this.rock,
+        stiffness: 0.05
+      });
+
+    this.pyramid = Matter.Composites.pyramid(500, 300, 9, 10, 0, 0, function(x, y) {
+      return Matter.Bodies.rectangle(
+        x, y, 25, 40,
+        { collisionFilter: {
+            category: root.staticCategory,
+          } as any
+        })
+  });
+
+    this.ground2 = Matter.Bodies.rectangle(610, 250, 200, 20, { isStatic: true });
+
+    this.pyramid2 = Matter.Composites.pyramid(550, 0, 5, 10, 0, 0, function(x, y) {
+        return Matter.Bodies.rectangle(x, y, 25, 40,
+          { collisionFilter: {
+            category: root.staticCategory,
+          } as any
+        });
+    });
+
+    /*
     gameMap.getStaticBackgrounds().forEach((item) => {
 
       const newStaticElement: worldElement = Matter.Bodies.rectangle(item.x, item.y, item.w, item.h,
@@ -377,6 +441,7 @@ class GamePlay extends BasketBallChat implements IMultiplayer {
         setHorizontalTiles(item.tiles.tilesX);
 
     });
+    */
 
     gameMap.getStaticGrounds().forEach((item) => {
 
@@ -538,6 +603,8 @@ class GamePlay extends BasketBallChat implements IMultiplayer {
     this.starter.AddNewBodies(this.enemys as worldElement);
     this.starter.AddNewBodies(this.deadLines as worldElement);
     this.starter.AddNewBodies(this.player as worldElement);
+    this.starter.AddNewBodies(
+      [this.ground, this.pyramid, this.ground2, this.pyramid2, this.rock, this.elastic] as worldElement);
     this.starter.AddNewBodies(this.labels as worldElement);
     this.attachMatterEvents();
 
