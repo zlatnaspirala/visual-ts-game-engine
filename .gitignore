@@ -10,4 +10,5 @@
 /src/icon/.DS_Store
 /server/broadcaster-config.maximum.json
 /server/broadcaster-config.ori.json
+tools/
 tools/creator-2dmap
