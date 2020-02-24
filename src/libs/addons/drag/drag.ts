@@ -1,7 +1,7 @@
 
 /**
  * @description Dragging feature, depend only on args.
- * Every 
+ * Every
  * @argument divid
  * @argument container
  * @argument evt

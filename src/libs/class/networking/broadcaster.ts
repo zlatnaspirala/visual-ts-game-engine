@@ -12,9 +12,6 @@ class Broadcaster {
 
   private connection: any;
   private engineConfig: ClientConfig;
-  // Internal config flag
-  private showBroadcasterOnInt: boolean = true;
-
   private popupUI: HTMLDivElement = null;
   private broadcasterUI: HTMLElement;
   private titleStatus: HTMLElement;
@@ -52,6 +49,7 @@ class Broadcaster {
   }
 
   private initDOM() {
+
     this.broadcasterUI = byId('media-rtc3-controls');
     this.titleStatus = byId('rtc3log');
     this.openRoomBtn = byId('open-room');
@@ -67,11 +65,11 @@ class Broadcaster {
   }
 
   private initWebRtc = (options?) => {
+
     let root = this;
 
     this.connection = new (RTCMultiConnection3 as any)();
     this.connection.socketURL = root.engineConfig.getBroadcastSockRoute();
-
     this.connection.socketMessageEvent = 'audio-video-file-chat-demo';
 
     if (typeof options !== 'undefined') {
@@ -105,13 +103,14 @@ class Broadcaster {
       urls: root.engineConfig.getStunList()
     }];
 
-    this.connection.videosContainer = document.getElementById('videos-container');
+    this.connection.videosContainer = document.getElementById('videos-container') as HTMLDivElement;
+
+     this.connection.videosContainer.setAttribute('style', 'position:absolute;left:0;top:0;width:300px;height:300px;');
 
     this.connection.onstream = function(event) {
 
       event.mediaElement.removeAttribute("src");
       event.mediaElement.removeAttribute("srcObject");
-
       var video = document.createElement('video');
       video.controls = true;
       if(event.type === 'local') {
@@ -130,6 +129,65 @@ class Broadcaster {
       });
 
       root.connection.videosContainer.appendChild(mediaElement);
+
+let dragging = function () {
+
+  return {
+    move (divid, xpos, ypos) {
+      divid.style.left = xpos + "px";
+      divid.style.top = ypos + "px";
+    },
+    startMoving (divid, container, evt?) {
+      evt = evt || window.event;
+      const posX = evt.clientX,
+        posY = evt.clientY,
+        eWi = parseInt(divid.style.width, 10),
+        eHe = parseInt(divid.style.height, 10),
+        cWi = parseInt(document.getElementById(container).style.width, 10),
+        cHe = parseInt(document.getElementById(container).style.height, 10);
+
+      let divTop = divid.style.top,
+        divLeft = divid.style.left;
+
+      document.getElementById(container).style.cursor = "move";
+      divTop = divTop.replace("px", "");
+      divLeft = divLeft.replace("px", "");
+      const diffX = posX - divLeft,
+        diffY = posY - divTop;
+
+      document.onmousemove = function (event) {
+
+        const e = event || window.event;
+        let aX, aY;
+        try {
+          aX = event.clientX - diffX,
+          aY = event.clientY - diffY;
+        } catch (err) {
+          console.log(err);
+        }
+        if (aX < 0) { aX = 0; }
+        if (aY < 0) { aY = 0; }
+        if (aX + eWi > cWi) { aX = cWi - eWi; }
+        if (aY + eHe > cHe) { aY = cHe - eHe; }
+        dragging.move(divid, aX, aY);
+      };
+    },
+    stopMoving (container) {
+      const a = document.createElement("script");
+      document.getElementById(container).style.cursor = "default";
+      // document.onmousemove = function () {};
+      document.onmousemove = undefined;
+    },
+  };
+}();
+
+      mediaElement.onmousedown = function(event) {
+        dragging.startMoving(this,"videos-container",event);
+      }
+
+      mediaElement.onmouseup  = function(event) {
+        dragging.stopMoving("videos-container")
+      }
 
       setTimeout(function() {
         (mediaElement as any).media.play();
@@ -386,7 +444,7 @@ class Broadcaster {
         myInstance.popupUI = byId("media-rtc3-controls") as HTMLDivElement;
         myInstance.popupUI.innerHTML = html;
 
-        if (myInstance.showBroadcasterOnInt) {
+        if (myInstance.engineConfig.showBroadcasterOnInt) {
           myInstance.popupUI.style.display = "block"
         } else {
           myInstance.popupUI.style.display = "none"

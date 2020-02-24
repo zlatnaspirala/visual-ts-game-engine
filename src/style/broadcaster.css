@@ -27,7 +27,7 @@
   align-content: space-between;
 }
 
-.dragging {
+.v {
   position: absolute;
   background-color: green;
   -webkit-user-select: none;

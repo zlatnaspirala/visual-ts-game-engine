@@ -42,7 +42,8 @@ export function getHTMLMediaElement(mediaElement, config) {
     };
 
     var mediaElementContainer = document.createElement('div');
-    mediaElementContainer.className = 'media-container';
+    mediaElementContainer.classList.add('media-container');
+    mediaElementContainer.setAttribute('style', 'position:absolute;left:0;top:0;width:100px;height:100px;');
 
     var mediaControls = document.createElement('div');
     mediaControls.className = 'media-controls';

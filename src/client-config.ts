@@ -102,6 +102,17 @@ class ClientConfig {
   private connectorPort: number = 1234;
 
   /**
+   * appUseAccountsSystem If you don't want to use session
+   * in your application just setup this variable to the false.
+   */
+  private appUseAccountsSystem: boolean = true;
+
+  /**
+   * appUseBroadcaster Disable or enable broadcaster for
+   * video chats.
+   */
+  private appUseBroadcaster: boolean = true;
+  /**
    * broadcasterPort Port used to connect multimedia server MultiRTC3.
    * I will use it for explicit video chat multiplatform support.
    * Default value is 9001
@@ -125,6 +136,8 @@ class ClientConfig {
    */
   private runBroadcasterOnInt: boolean = true;
 
+  public showBroadcasterOnInt: boolean = true;
+
   /**
    * broadcaster rtc session init values.
    * Change it for production regime
@@ -135,18 +148,6 @@ class ClientConfig {
     sessionData: true,
     enableFileSharing: true
   };
-
-  /**
-   * appUseAccountsSystem If you don't want to use session
-   * in your application just setup this variable to the false.
-   */
-  private appUseAccountsSystem: boolean = true;
-
-  /**
-   * appUseBroadcaster Disable or enable broadcaster for
-   * video chats.
-   */
-  private appUseBroadcaster: boolean = true;
 
   private stunList: string[] = [
     "stun:stun.l.google.com:19302",
