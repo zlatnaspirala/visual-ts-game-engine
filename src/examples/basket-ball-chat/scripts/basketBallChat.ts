@@ -28,7 +28,7 @@ import Network from "../../../libs/class/networking/network";
 class BasketBallChat implements IGamePlayModel {
 
   public gameName: string = "Basket Ball chat";
-  public version: number = 0.3;
+  public version: number = 0.1;
   public playerCategory = 0x0002;
   public staticCategory = 0x0004;
 
@@ -65,10 +65,8 @@ class BasketBallChat implements IGamePlayModel {
     this.starter = starter;
     // this.starter.getEngine().enableSleeping = true;
     this.initSelectPlayer();
-
     // this.addUIPlayerBoard();
     // this.showPlayerBoardUI();
-
     this.attachUpdateLives();
 
   }
@@ -143,24 +141,6 @@ class BasketBallChat implements IGamePlayModel {
 
     // Create UI for basic select player features.
     // Register
-
-    /*
-    this.selectPlayerArray.push({
-      labelName: "robot",
-      poster: require("../imgs/players/robot/poster.png"),
-      resource:  [
-        require("../imgs/players/robot/1.png"),
-        require("../imgs/players/robot/2.png"),
-        require("../imgs/players/robot/3.png"),
-        require("../imgs/players/robot/4.png"),
-        require("../imgs/players/robot/5.png"),
-        require("../imgs/players/robot/6.png"),
-        require("../imgs/players/robot/7.png"),
-        require("../imgs/players/robot/8.png"),
-      ],
-      type: "frameByFrame"
-    });
-    */
 
     this.selectPlayerArray.push({
       labelName: "nidzica",
@@ -405,7 +385,8 @@ class BasketBallChat implements IGamePlayModel {
       this.player.render.visualComponent.shema = { byX: 4, byY: 4 };
       this.player.render.visualComponent.assets.SeqFrame.setNewValue(1);
       this.lives = this.lives - 1;
-      (this.UIPlayerBoard.getElementsByClassName("UIPlayerLives")[0] as HTMLSpanElement).innerText = this.lives.toString();
+
+      // (this.UIPlayerBoard.getElementsByClassName("UIPlayerLives")[0] as HTMLSpanElement).innerText = this.lives.toString();
 
       if (this.lives === 0 || this.lives < 0) {
 

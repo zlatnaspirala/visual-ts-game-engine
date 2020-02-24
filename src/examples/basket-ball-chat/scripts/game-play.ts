@@ -14,6 +14,7 @@ import { DEFAULT_GAMEPLAY_ROLES } from "../../../libs/defaults";
 import GameMap from "./map";
 import BasketBallChat from "./basketBallChat";
 import { Events } from "matter-js";
+import Broadcaster from "../../../libs/class/networking/broadcaster";
 
 /**
  * @description Finally game start at here
@@ -111,6 +112,8 @@ class GamePlay extends BasketBallChat implements IMultiplayer {
   private ground2;
   private pyramid2;
 
+  public broadcaster: Broadcaster;
+
   constructor(starter: Starter) {
 
     super(starter);
@@ -128,6 +131,9 @@ class GamePlay extends BasketBallChat implements IMultiplayer {
     // check this with config flag
     this.network = starter.ioc.get.Network;
     this.network.injector = this.multiPlayerRef;
+
+    this.broadcaster = starter.ioc.get.Broadcaster;
+    console.log(">>>this.broadcaster", this.broadcaster);
 
     // MessageBox
     this.starter.ioc.get.MessageBox.show(this.gamePlayWelcomeNote);
@@ -149,8 +155,10 @@ class GamePlay extends BasketBallChat implements IMultiplayer {
 
         } else if ((e as any).detail &&
                   (e as any).detail.data.game === null ) {
+
           console.info("game-init Player spawn. data.game === null");
           myInstance.starter.ioc.get.Network.connector.startNewGame(myInstance.gameName);
+          myInstance.broadcaster.openOrJoinBtn.click();
 
           myInstance.initSelectPlayer();
           myInstance.selectPlayer("nidzica");
@@ -165,6 +173,8 @@ class GamePlay extends BasketBallChat implements IMultiplayer {
 
         // How to access netwoking
         myInstance.starter.ioc.get.Network.connector.startNewGame(myInstance.gameName);
+        myInstance.broadcaster.openOrJoinBtn.click();
+
         myInstance.load((e as any).detail.data.game);
         console.info("Player spawn. game-init .startNewGame");
       } catch (err) { console.error("Very bad #00001", err); }
@@ -253,11 +263,13 @@ class GamePlay extends BasketBallChat implements IMultiplayer {
     });
 
 
-    Events.on(this.starter.getEngine(), 'afterUpdate', function() {
+    Matter.Events.on(this.starter.getEngine(), 'afterUpdate', function() {
         if (root.starter.getMouseConstraint().mouse.button === -1 && (root.rock.position.x > 190 || root.rock.position.y < 430)) {
+            console.log("# TEST");
             root.rock = Matter.Bodies.polygon(170, 450, 7, 20, root.rockOptions);
             Matter.World.add(root.starter.getEngine().world, root.rock);
             root.elastic.bodyB = root.rock;
+            console.log("# TEST2");
         }
     });
 
@@ -282,7 +294,7 @@ class GamePlay extends BasketBallChat implements IMultiplayer {
         if (root.player.velocity.x < 0.00001 && root.player.velocity.y == 0 &&
           root.player.currentDir == "idle" ) {
         } else {
-          console.log(" root.network.rtcMultiConnection.send({  ", root.network.rtcMultiConnection.send );
+          // console.log(" root.network.rtcMultiConnection.send({  ", root.network.rtcMultiConnection.send );
           root.network.rtcMultiConnection.send({
             netPos: root.player.position,
             netDir: root.player.currentDir
@@ -326,7 +338,7 @@ class GamePlay extends BasketBallChat implements IMultiplayer {
 
       } else if (globalEvent.activeKey[37] && root.player.angularVelocity > -limit) {
 
-        root.player.render.visualComponent.setHorizontalFlip(false);
+        root.player.render.visualComponent.setHorizontalFlip(true);
         root.player.force = {
           x: -playerSpeed,
           y: 0,
@@ -336,7 +348,7 @@ class GamePlay extends BasketBallChat implements IMultiplayer {
 
       } else if (globalEvent.activeKey[39] && root.player.angularVelocity < limit) {
 
-        root.player.render.visualComponent.setHorizontalFlip(true);
+        root.player.render.visualComponent.setHorizontalFlip(false);
         root.player.force = {
           x: playerSpeed,
           y: 0,
@@ -387,10 +399,9 @@ class GamePlay extends BasketBallChat implements IMultiplayer {
        }),
       this.rockOptions = {
         density: 0.004 ,
-      collisionFilter: {
-            group: this.staticCategory,
-             mask: this.staticCategory,
-          }
+        collisionFilter: {
+          category: this.playerCategory,
+        } as any
       },
       this.rock = Matter.Bodies.polygon(170, 450, 8, 20, this.rockOptions),
       this.anchor = { x: 170, y: 450 },

@@ -8,6 +8,8 @@ import ClientConfig from "../../../client-config.js";
 
 class Broadcaster {
 
+  public openOrJoinBtn: HTMLElement;
+
   private connection: any;
   private engineConfig: ClientConfig;
   // Internal config flag
@@ -18,7 +20,6 @@ class Broadcaster {
   private titleStatus: HTMLElement;
   private openRoomBtn: HTMLElement;
   private joinRoomBtn: HTMLElement;
-  private openOrJoinBtn: HTMLElement;
   private leaveRoomBtn: HTMLElement;
   private shareFileBtn: HTMLElement;
   private inputChat: HTMLElement;
@@ -40,6 +41,16 @@ class Broadcaster {
     this.connection.close();
   }
 
+  public openRoomBtnVisible = (visible: boolean) => {
+
+    if (visible === true) {
+      byId('open-room').classList.remove('hide');
+    } else {
+      byId('open-room').classList.add('hide');
+    }
+
+  }
+
   private initDOM() {
     this.broadcasterUI = byId('media-rtc3-controls');
     this.titleStatus = byId('rtc3log');
@@ -50,6 +61,9 @@ class Broadcaster {
     this.shareFileBtn = byId('share-file');
     this.inputChat = byId('input-text-chat');
     this.inputRoomId = byId('room-id');
+
+    this.openRoomBtnVisible(true);
+
   }
 
   private initWebRtc = (options?) => {
@@ -82,7 +96,6 @@ class Broadcaster {
 
     }
 
-
     this.connection.sdpConstraints.mandatory = {
       OfferToReceiveAudio: true,
       OfferToReceiveVideo: true
@@ -93,7 +106,9 @@ class Broadcaster {
     }];
 
     this.connection.videosContainer = document.getElementById('videos-container');
+
     this.connection.onstream = function(event) {
+
       event.mediaElement.removeAttribute("src");
       event.mediaElement.removeAttribute("srcObject");
 
@@ -104,29 +119,31 @@ class Broadcaster {
       }
       video.srcObject = event.stream;
 
-      var localNumberCW = root.connection.videosContainer.clientWidth / 2;
+      var localNumberCW = root.connection.videosContainer.clientWidth / 3;
       var width: number = parseInt(localNumberCW.toString()) - 20;
 
       var mediaElement = getHTMLMediaElement(video, {
-          title: event.userid,
-          buttons: ['full-screen'],
-          width: width,
-          showOnMouseEnter: false
+        title: event.userid,
+        buttons: ['full-screen'],
+        width: width,
+        showOnMouseEnter: false
       });
 
       root.connection.videosContainer.appendChild(mediaElement);
 
       setTimeout(function() {
-          (mediaElement as any).media.play();
+        (mediaElement as any).media.play();
       }, 5000);
 
       mediaElement.id = event.streamid;
+
+      // test
     };
 
     this.connection.onstreamended = function(event) {
       var mediaElement = document.getElementById(event.streamid);
       if (mediaElement) {
-          mediaElement.parentNode.removeChild(mediaElement);
+        mediaElement.parentNode.removeChild(mediaElement);
       }
     };
 
@@ -176,7 +193,7 @@ class Broadcaster {
       root.connection.join(useridAlreadyTaken);
     };
 
-    this.postAttach()
+    this.postAttach();
 
   }
 
@@ -197,11 +214,13 @@ class Broadcaster {
   }
 
   private disableInputButtons = function() {
+
     (this.openOrJoinBtn as HTMLInputElement).disabled = true;
     (this.openRoomBtn as HTMLInputElement).disabled = true;
     (this.inputRoomId as HTMLInputElement).disabled = true;
     (this.inputRoomId as HTMLInputElement).disabled = true;
     (this.leaveRoomBtn as HTMLInputElement).disabled = false;
+
   }
 
   private appendDIV = (event) => {
@@ -214,7 +233,7 @@ class Broadcaster {
     document.getElementById('input-text-chat').focus();
   }
 
-  private postAttach () {
+  private postAttach() {
 
     let root = this;
     var roomid = '';
@@ -250,12 +269,12 @@ class Broadcaster {
       // auto-join-room
       (function reCheckRoomPresence() {
         root.connection.checkPresence(roomid, function(isRoomExists) {
-            if (isRoomExists) {
-                root.connection.join(roomid);
-                return;
-            }
+          if (isRoomExists) {
+            root.connection.join(roomid);
+            return;
+          }
 
-            setTimeout(reCheckRoomPresence, 5000);
+          setTimeout(reCheckRoomPresence, 5000);
         });
       })();
 
@@ -376,10 +395,11 @@ class Broadcaster {
         myInstance.initDOM();
         myInstance.attachEvents();
         myInstance.initWebRtc();
+        myInstance.inputRoomId.nodeValue = myInstance.engineConfig.getMasterServerKey();
 
         if (myInstance.engineConfig.getBroadcastAutoConnect()) {
 
-          myInstance.inputRoomId.nodeValue = myInstance.engineConfig.getMasterServerKey();
+          // myInstance.inputRoomId.nodeValue = myInstance.engineConfig.getMasterServerKey();
           myInstance.openOrJoinBtn.click();
         }
 

@@ -1,4 +1,5 @@
 import { Addson } from "./libs/types/global";
+import { IBroadcasterSession } from "./libs/interface/global";
 
 /**
  * ClientConfig is config file for whole client part of application.
@@ -117,7 +118,7 @@ class ClientConfig {
    * broadcaster socket.io address.
    * Change it for production regime
    */
-  private broadcastAutoConnect: boolean = true;
+  private broadcastAutoConnect: boolean = false;
 
   /**
    * runBroadcasterOnInt load broadcaster
@@ -128,9 +129,9 @@ class ClientConfig {
    * broadcaster rtc session init values.
    * Change it for production regime
    */
-  private broadcasterSessionDefaults: any = {
-    sessionAudio: false,
-    sessionVideo: false,
+  private broadcasterSessionDefaults: IBroadcasterSession = {
+    sessionAudio: true,
+    sessionVideo: true,
     sessionData: true,
     enableFileSharing: true
   };
@@ -150,7 +151,6 @@ class ClientConfig {
   private stunList: string[] = [
     "stun:stun.l.google.com:19302",
     "stun:stun1.l.google.com:19302",
-    "stun:stun2.l.google.com:19302",
     "stun:stun.l.google.com:19302?transport=udp"
   ];
   /**

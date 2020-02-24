@@ -106,3 +106,10 @@ export interface IMultiplayer {
   multiPlayerRef: any;
   netBodies: any;
 }
+
+export interface IBroadcasterSession {
+  sessionAudio: Boolean;
+  sessionVideo: Boolean;
+  sessionData: Boolean;
+  enableFileSharing: Boolean;
+}
