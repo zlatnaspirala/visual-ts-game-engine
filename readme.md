@@ -20,7 +20,7 @@
  - Multiplatform video chat (for all browsers) implemented. SocketIO used for session staff.
    MultiRTC2 used for data transfer also for video chat. MultiRTC3 alias 'broadcaster' used for video chat.
 
-![visualTS](https://github.com/zlatnaspirala/visual-ts/blob/master/nonproject-files/logo.png)
+![visualTS](https://github.com/zlatnaspirala/visual-ts/blob/dev/nonproject-files/logo.png)
 
 
 ## Abour visual tools ##
@@ -34,9 +34,9 @@
   npm run creator
 ```
 
-![Creator 2d map](https://github.com/zlatnaspirala/visual-ts/blob/master/nonproject-files/creator2dmap.png)
+![Creator 2d map](https://github.com/zlatnaspirala/visual-ts-game-engine/blob/dev/tools/readme.mdg)
 
-![About tools setup](https://github.com/zlatnaspirala/visual-ts/blob/master/tools/readme.md)
+![About tools setup](https://github.com/zlatnaspirala/visual-ts/blob/dev/tools/readme.md)
 
 ## Client part ##
 
