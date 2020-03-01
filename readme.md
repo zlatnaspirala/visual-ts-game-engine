@@ -20,7 +20,23 @@
  - Multiplatform video chat (for all browsers) implemented. SocketIO used for session staff.
    MultiRTC2 used for data transfer also for video chat. MultiRTC3 alias 'broadcaster' used for video chat.
 
-![visualTS](https://github.com/zlatnaspirala/visual-ts/blob/master/logo.png)
+![visualTS](https://github.com/zlatnaspirala/visual-ts/blob/master/nonproject-files/logo.png)
+
+
+## Abour visual tools ##
+
+ Based on python3 tk tech.It is standalone git project imported like
+ git submodule.
+
+ Open from cli with command:
+
+```javascript
+  npm run creator
+```
+
+![Creator 2d map](https://github.com/zlatnaspirala/visual-ts/blob/master/nonproject-files/creator2dmap.png)
+
+![About tools setup](https://github.com/zlatnaspirala/visual-ts/blob/master/tools/readme.md)
 
 ## Client part ##
 
@@ -30,9 +46,17 @@
   npm install
 ```
 
-Command:
+Command (current: single player solution build):
 ```javascript
   npm run dev
+```
+
+Command
+  current: single player solution build,
+           multiplayer platformer
+           basketBall chat (dev) :
+```javascript
+  npm run dev-all
 ```
 
 Output:
@@ -56,8 +80,10 @@ Output:
 
 ### New way of building multi entryes.
 
-Sufix is `-all` . This is test for multi instancing webpack capabilities.
+Command is `npm run dev-all` . This is test for multi instancing webpack capabilities.
+Webpack in this case use `webpack.multicompile.config.js`.
 Thanks for common object definition:
+
 
 ```javascript
 let config = {
@@ -66,7 +92,7 @@ let config = {
 ```
 
 Point of Multi entries is to make independent healthy builds end point
-for our application. Current export's for 2 solutions looks like
+for our application. Current export's for 3 solutions looks like
 (runs webpack.multicompile.config.js) :
 
 Command:
@@ -80,17 +106,21 @@ Output:
 ├── build/  (This is auto generated)
 |   ├── multiplayer/
 |   ├── singleplaye/
+|   ├── basket-ball-chat/ [WIP]
 
 </pre>
 
 
  -Client part is browser web application. No reloading or redirecting. This is single page
  application. I use html request only for loading local/staged html (like register, login etc.).
- Networking is based on webSocket full-duplex communication only. This is bad for old fasion programmers.
- You must be conform with classic socket connection methodology.
+ Networking is based on  webSocket full-duplex communication only. This is bad for old fasion programmers.
+ You must be conform with classic socket connection methodology and your own idea about connections.
  -webRTC can be used for any proporsion.
-   Already implemented :
+   Already implemented:
    -video chat webRTC (SIP) chat and data communication.
+     -multiRTC2 for old version of brosers
+     -multiRTC3 for all modern browser's and hybryd implementation
+      (android, ios etc.)
    -Simple facebook api script.
 
  -Class 'Connector' (native webSocket) used for user session staff.
