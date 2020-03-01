@@ -77,28 +77,29 @@ Last version:
   Games template based on version: 0.4.4
   https://apps.facebook.com/nidzica/ single player platformer solution.
 
-###  creator2dmap is python3 application for creating visuat-ts game engine 2d maps
-###  LICENCE: GNU LESSER GENERAL PUBLIC LICENSE Version 3
-###  https://github.com/zlatnaspirala/creator-2dmap
-###  Code style ~camel
-###  Version: 0.4.4
-###  - Types of game object: [ground, collectItem, enemies, labels]
-###  - Show/Hide grids
-###  - Sticklers enable disable
-###  - defaults.py - general config
-###  - Save/Load direct (template map) it is : map2d.creator file in the root of
-###     project. If you have already manualy added and than load default map it will
-###     be append together in current map.
-###    Save/Load dialog for custom maps. Default folder `saved-maps/`
-###   Clear map - Force clear without warning
-###   Reset input - for reset left box input values to the minimum.
-###  - Relocate last added game object
-###  - Remove last added element
-###   Scroll vertical & horizontal canvas, help to create large maps.
-###   Adding basic Text component (args: text , color)
-###   Change canvas background
-###   nextLevel item collection model. Item will teleport player to the next level/map
-###   Export As - Feature Export and give a map name (without `.ts`)
+  - creator2dmap is python3 application for creating visuat-ts game engine 2d maps.
+
+####  LICENCE: GNU LESSER GENERAL PUBLIC LICENSE Version 3
+####  https://github.com/zlatnaspirala/creator-2dmap
+####  Code style ~camel
+####  Version: 0.4.4
+####  - Types of game object: [ground, collectItem, enemies, labels]
+####  - Show/Hide grids
+####  - Sticklers enable disable
+####  - defaults.py - general config
+####  - Save/Load direct (template map) it is : map2d.creator file in the root of
+####     project. If you have already manualy added and than load default map it will
+####     be append together in current map.
+####    Save/Load dialog for custom maps. Default folder `saved-maps/`
+####   Clear map - Force clear without warning
+####   Reset input - for reset left box input values to the minimum.
+####  - Relocate last added game object
+####  - Remove last added element
+####   Scroll vertical & horizontal canvas, help to create large maps.
+####   Adding basic Text component (args: text , color)
+####   Change canvas background
+####   nextLevel item collection model. Item will teleport player to the next level/map
+####   Export As - Feature Export and give a map name (without `.ts`)
 
 ## Licence:
 GNU LESSER GENERAL PUBLIC LICENSE Version 3 maximumroulette.com 2020
