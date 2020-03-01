@@ -34,9 +34,9 @@
   npm run creator
 ```
 
-![Creator 2d map](https://github.com/zlatnaspirala/visual-ts-game-engine/blob/dev/tools/readme.md)
+![Creator 2d map](https://github.com/zlatnaspirala/visual-ts-game-engine/blob/dev/nonproject-files/creator2dmap.png)
 
-[About tools setup](https://github.com/zlatnaspirala/visual-ts/blob/dev/tools/readme.md)
+[About tools setup](https://github.com/zlatnaspirala/visual-ts-game-engine/blob/dev/tools/readme.md)
 
 ## Client part ##
 
