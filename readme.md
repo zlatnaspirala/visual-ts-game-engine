@@ -28,7 +28,11 @@
  Based on python3 tk tech.It is standalone git project imported like
  git submodule.
 
- Open from cli with command:
+ https://github.com/zlatnaspirala/creator-2dmap
+
+[Important - About tools setup](https://github.com/zlatnaspirala/visual-ts-game-engine/blob/dev/tools/readme.md)
+
+After setup run python app from cli with command:
 
 ```javascript
   npm run creator
@@ -36,7 +40,6 @@
 
 ![Creator 2d map](https://github.com/zlatnaspirala/visual-ts-game-engine/blob/dev/nonproject-files/creator2dmap.png)
 
-[About tools setup](https://github.com/zlatnaspirala/visual-ts-game-engine/blob/dev/tools/readme.md)
 
 ## Client part ##
 
