@@ -3,6 +3,7 @@ import ViewPort from "../libs/class/view-port";
 import Ioc from "../controllers/ioc";
 import { IUniVector } from "./interface/global";
 import { worldElement } from "./types/global";
+import { DEFAULT_GAMEPLAY_ROLES, DEFAULT_RENDER_BOUNDS } from "./defaults";
 
 /**
  * Real begin of graphic canvas staff.
@@ -74,15 +75,18 @@ class Starter {
       element: (document as Document).body,
       engine: this.engine,
       options: {
-        width: 800,
-        height: 600,
+        width: DEFAULT_RENDER_BOUNDS.WIDTH,
+        height: DEFAULT_RENDER_BOUNDS.HEIGHT,
         wireframes: false,
       },
     });
 
-    this.setWorldBounds(-300,
-      -300,
-      1100, 900);
+    this.setWorldBounds(
+      DEFAULT_GAMEPLAY_ROLES.MAP_MARGIN_LEFT,
+      DEFAULT_GAMEPLAY_ROLES.MAP_MARGIN_TOP,
+      DEFAULT_GAMEPLAY_ROLES.MAP_MARGIN_RIGHT,
+      DEFAULT_GAMEPLAY_ROLES.MAP_MARGIN_BOTTOM
+    );
 
     this.render.options.background = "black";
 
@@ -113,15 +117,15 @@ class Starter {
     // keep the mouse in sync with rendering
     this.render.mouse = mouse;
 
-    // fit the render viewport to the scene
+            // fit the render viewport to the scene
     (Render as any).lookAt(this.render, {
       min: {
         x: 0,
         y: 0,
       },
       max: {
-        x: 800,
-        y: 600,
+        x: DEFAULT_RENDER_BOUNDS.WIDTH,
+        y: DEFAULT_RENDER_BOUNDS.WIDTH,
       },
     });
 
@@ -198,6 +202,11 @@ class Starter {
 
   public destroyBody(destroyBody) {
     Matter.Composite.remove(this.world, destroyBody);
+  }
+
+  public setRenderView(renderWidth, renderHeight): void {
+    this.render.options.width = renderWidth;
+    this.render.options.height = renderHeight;
   }
 
   public setWorldBounds(minX: number, minY: number, maxX: number, maxY: number) {

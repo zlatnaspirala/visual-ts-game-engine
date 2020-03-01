@@ -14,6 +14,7 @@ import "../audios/map-themes/mishief-stroll.mp4";
 
 // import"../audios/map-themes/mishief-stroll
 import Network from "../../../libs/class/networking/network";
+import TextureStreamComponent from "../../../libs/class/visual-methods/texture-stream";
 // import { DEFAULT_PLAYER_DATA } from "../../../libs/defaults";
 
 /**
@@ -48,9 +49,11 @@ class BasketBallChat implements IGamePlayModel {
   private selectPlayerArray: ISelectedPlayer[]= [];
   private lives: number = DEFAULT_PLAYER_DATA.INITIAL_LIVES;
 
+  private playerStream: any;
+
   private preventDoubleExecution: boolean = false;
   private playerStartPositions: IPoint[] = [{x: 120, y: 200}];
-  private playerDeadPauseInterval: number = 550;
+  private playerDeadPauseInterval: number = 500;
 
   private UIPlayerBoard: HTMLDivElement;
   private UIPlayAgainBtn: HTMLDivElement;
@@ -188,6 +191,25 @@ class BasketBallChat implements IGamePlayModel {
   }
 
   public createPlayer(addToScene: boolean) {
+
+    this.playerStream = Matter.Bodies.rectangle(100, 100, 100, 100,
+    {
+      isStatic: true,
+      isSleeping: false,
+      label: "stream video",
+      collisionFilter: {
+        group: this.staticCategory,
+      } as any,
+      render: {
+        visualComponent: new TextureStreamComponent("streamTexture", (this.selectedPlayer.resource as any)),
+        sprite: {
+          olala: true,
+        },
+      } as any | Matter.IBodyRenderOptions,
+    });
+
+    // fix this later
+    this.grounds.push(this.playerStream);
 
     let sptTexCom = new SpriteTextureComponent(
       "playerImage",
@@ -483,6 +505,10 @@ class BasketBallChat implements IGamePlayModel {
 
     }
 
+  }
+
+  public setStreamTexture(texStream) {
+    this.playerStream.render.visualComponent.setStreamTexture(texStream);
   }
 
 }

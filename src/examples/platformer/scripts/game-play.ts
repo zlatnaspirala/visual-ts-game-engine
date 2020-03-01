@@ -10,7 +10,7 @@ import Platformer from "./Platformer";
 import Network from "../../../libs/class/networking/network";
 import { IMultiplayer } from "../../../libs/interface/global";
 import Level1 from "./packs/level1";
-import { DEFAULT_GAMEPLAY_ROLES } from "../../../libs/defaults";
+import { DEFAULT_GAMEPLAY_ROLES, DEFAULT_RENDER_BOUNDS } from "../../../libs/defaults";
 import GameMap from "./map";
 
 /**
@@ -233,6 +233,8 @@ class GamePlay extends Platformer implements IMultiplayer {
     globalEvent.providers.onkeyup = this.overrideOnKeyUp;
     const playerSpeed = 0.005;
 
+    root.starter.setRenderView(DEFAULT_RENDER_BOUNDS.WIDTH, DEFAULT_RENDER_BOUNDS.HEIGHT);
+
     this.enemys.forEach(function (item) {
       const test = new BotBehavior(item);
       test.patrol();
@@ -252,8 +254,8 @@ class GamePlay extends Platformer implements IMultiplayer {
 
         Matter.Bounds.shift(root.starter.getRender().bounds,
         {
-          x: root.player.position.x - 400,
-          y: root.player.position.y - 300,
+          x: root.player.position.x - root.starter.getRender().options.width / 1.5,
+          y: root.player.position.y- root.starter.getRender().options.height / 1.5,
         });
 
         if (root.player.velocity.x < 0.00001 && root.player.velocity.y == 0 &&

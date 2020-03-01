@@ -11,7 +11,11 @@ import Resources from "../resources";
  */
 class TextureStreamComponent implements IVisualComponent {
 
+  public streamTexture: any;
+
+  // For no stream texture moment
   public assets: Resources = new Resources();
+
   public keepAspectRatio: boolean = false;
   protected verticalTiles: number = 1;
   protected horizontalTiles: number = 1;
@@ -19,7 +23,11 @@ class TextureStreamComponent implements IVisualComponent {
   protected horizontalFlip: boolean = false;
   protected verticalFlip: boolean = false;
 
-  constructor(name: string, imgRes: string | string[]) {
+  constructor(name: string, imgRes: string | string[], streamTex?: any) {
+
+    if (typeof streamTex !== 'undefined') {
+      this.streamTexture = streamTex;
+    }
 
     if (name === undefined) {
       throw console.error("You miss first arg : name in TextureComponent instancing...");
@@ -54,6 +62,7 @@ class TextureStreamComponent implements IVisualComponent {
 
       for (let x = -this.verticalTiles / 2; x < this.verticalTiles / 2; x++) {
         for (let j = -this.horizontalTiles / 2; j < this.horizontalTiles / 2; j++) {
+
             this.flipImage( this.assets.getImg(), c,
             originX - originW * (x),
             originY - originH * (j),
@@ -76,6 +85,10 @@ class TextureStreamComponent implements IVisualComponent {
     );
     }
 
+  }
+
+  public setStreamTexture(streamTexture: any): void {
+    this.streamTexture = streamTexture;
   }
 
   public setVerticalTiles(newVerticalTiles: number) {

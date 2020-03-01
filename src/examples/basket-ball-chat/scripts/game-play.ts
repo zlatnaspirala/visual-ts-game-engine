@@ -10,7 +10,7 @@ import Platformer from "./basketBallChat";
 import Network from "../../../libs/class/networking/network";
 import { IMultiplayer } from "../../../libs/interface/global";
 import Level1 from "../scripts/packs/BasketBallChat-level1";
-import { DEFAULT_GAMEPLAY_ROLES } from "../../../libs/defaults";
+import { DEFAULT_GAMEPLAY_ROLES, DEFAULT_RENDER_BOUNDS } from "../../../libs/defaults";
 import GameMap from "./map";
 import BasketBallChat from "./basketBallChat";
 import { Events } from "matter-js";
@@ -131,13 +131,10 @@ class GamePlay extends BasketBallChat implements IMultiplayer {
     // check this with config flag
     this.network = starter.ioc.get.Network;
     this.network.injector = this.multiPlayerRef;
-
     this.broadcaster = starter.ioc.get.Broadcaster;
-    console.log(">>>this.broadcaster", this.broadcaster);
-
 
     // MessageBox
-    this.starter.ioc.get.MessageBox.show(this.gamePlayWelcomeNote);
+    // this.starter.ioc.get.MessageBox.show(this.gamePlayWelcomeNote);
 
   }
 
@@ -145,7 +142,7 @@ class GamePlay extends BasketBallChat implements IMultiplayer {
 
     const myInstance = this;
 
-    window.addEventListener("game-init", function (e) {
+    window.addEventListener("game-init", function(e) {
 
       try {
         if ((e as any).detail &&
@@ -182,7 +179,7 @@ class GamePlay extends BasketBallChat implements IMultiplayer {
 
     });
 
-    window.addEventListener("game-end", function (e) {
+    window.addEventListener("game-end", function(e) {
 
       try {
         if ((e as any).detail &&
@@ -210,12 +207,22 @@ class GamePlay extends BasketBallChat implements IMultiplayer {
 
     });
 
+    window.addEventListener("stream-loaded", function(e) {
+
+      try {
+
+        console.info("Loaded stream: ", byId((e as CustomEvent).detail.data.streamId));
+        console.info("Loaded stream: ", (e as CustomEvent).detail.data.streamId);
+
+      } catch (err) { console.error("Very bad #00004", err); }
+
+    });
+
   }
 
   private deattachMatterEvents() {
     Matter.Events.off(this.starter.getEngine(), undefined, undefined);
   }
-
 
   private overrideOnKeyDown = () => {
 
@@ -258,6 +265,8 @@ class GamePlay extends BasketBallChat implements IMultiplayer {
     globalEvent.providers.onkeyup = this.overrideOnKeyUp;
     const playerSpeed = 0.005;
 
+    root.starter.setRenderView(DEFAULT_RENDER_BOUNDS.WIDTH, DEFAULT_RENDER_BOUNDS.HEIGHT);
+
     this.enemys.forEach(function (item) {
       const test = new BotBehavior(item);
       test.patrol();
@@ -266,7 +275,7 @@ class GamePlay extends BasketBallChat implements IMultiplayer {
 
     Matter.Events.on(this.starter.getEngine(), 'afterUpdate', function() {
         if (root.starter.getMouseConstraint().mouse.button === -1 && (root.rock.position.x > 190 || root.rock.position.y < 430)) {
-            console.log("# TEST");
+
             root.rock = Matter.Bodies.polygon(170, 450, 7, 20, root.rockOptions);
             Matter.World.add(root.starter.getEngine().world, root.rock);
             root.elastic.bodyB = root.rock;
@@ -288,8 +297,8 @@ class GamePlay extends BasketBallChat implements IMultiplayer {
 
         Matter.Bounds.shift(root.starter.getRender().bounds,
         {
-          x: root.player.position.x - 400,
-          y: root.player.position.y - 300,
+          x: root.player.position.x - root.starter.getRender().options.width / 1.3,
+          y: root.player.position.y- root.starter.getRender().options.height / 1.3,
         });
 
         if (root.player.velocity.x < 0.00001 && root.player.velocity.y == 0 &&
@@ -367,7 +376,6 @@ class GamePlay extends BasketBallChat implements IMultiplayer {
 
   }
 
-
   private load(mapPack?): void {
 
     const root = this;
@@ -375,9 +383,6 @@ class GamePlay extends BasketBallChat implements IMultiplayer {
     if (typeof mapPack === "undefined") {
       mapPack = Level1;
     }
-
-    // HARDCODE Test
-    // mapPack = Level6;
 
     const gameMap: GameMap = new GameMap(mapPack);
 
@@ -390,6 +395,19 @@ class GamePlay extends BasketBallChat implements IMultiplayer {
       root.deadZoneForRight,
       root.deadZoneForBottom);
 
+    this.starter.setRenderView( 1200,  600);
+
+     this.starter.getRender().controller.lookAt(this.starter.getRender(), {
+      min: {
+        x: 0,
+        y: 0,
+      },
+      max: {
+        x: 1200,
+        y: 600,
+      },
+    });
+
     this.playerSpawn(false);
 
     // Modification for new game
@@ -398,7 +416,7 @@ class GamePlay extends BasketBallChat implements IMultiplayer {
        { isStatic: true,
          collisionFilter: {group: -1}
        }),
-      this.rockOptions = {
+       this.rockOptions = {
         density: 0.004 ,
         collisionFilter: {
           category: this.playerCategory,
@@ -419,7 +437,7 @@ class GamePlay extends BasketBallChat implements IMultiplayer {
             category: root.staticCategory,
           } as any
         })
-  });
+    });
 
     this.ground2 = Matter.Bodies.rectangle(610, 250, 200, 20, { isStatic: true });
 
