@@ -22,6 +22,10 @@
 
 ![visualTS](https://github.com/zlatnaspirala/visual-ts/blob/dev/nonproject-files/logo.png)
 
+   - Please don't use fake email address to test public maximumroulette.com platformer example.
+  Project even in dev stage is totally `production` approach. You can't pass registration with fake email.
+  Just clone , install and run in local (client & server). You need to install and run also MongoDB on
+  your system. Change flag in databased confimed to the `true` value to skip registration confirmation process.
 
 ## Abour visual tools ##
 
@@ -116,15 +120,16 @@ Output:
 
  -Client part is browser web application. No reloading or redirecting. This is single page
  application. I use html request only for loading local/staged html (like register, login etc.).
- Networking is based on  webSocket full-duplex communication only. This is bad for old fasion programmers.
+ Networking is based on  webSocket full-duplex communication only. This is good cross for old
+ fasion native programmers not for web server REST oriented skills. No `mix` in communication usage.
  You must be conform with classic socket connection methodology and your own idea about connections.
  -webRTC can be used for any proporsion.
    Already implemented:
    -video chat webRTC (SIP) chat and data communication.
-     -multiRTC2 for old version of brosers
+     -multiRTC2 for old version of brosers (UDP/TCP)
      -multiRTC3 for all modern browser's and hybryd implementation
-      (android, ios etc.)
-   -Simple facebook api script.
+      (android, ios etc.) (UDP/TCP)
+   -Simple facebook api script (addson).
 
  -Class 'Connector' (native webSocket) used for user session staff.
   For main account session staff like login, register etc.
