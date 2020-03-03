@@ -6,14 +6,11 @@ import TextComponent from "../../../libs/class/visual-methods/text";
 import TextureComponent from "../../../libs/class/visual-methods/texture";
 import Starter from "../../../libs/starter";
 import { worldElement } from "../../../libs/types/global";
-import Platformer from "./basketBallChat";
-import Network from "../../../libs/class/networking/network";
 import { IMultiplayer } from "../../../libs/interface/global";
 import Level1 from "../scripts/packs/BasketBallChat-level1";
 import { DEFAULT_GAMEPLAY_ROLES, DEFAULT_RENDER_BOUNDS } from "../../../libs/defaults";
 import GameMap from "./map";
 import BasketBallChat from "./basketBallChat";
-import { Events } from "matter-js";
 import Broadcaster from "../../../libs/class/networking/broadcaster";
 
 /**
@@ -22,14 +19,6 @@ import Broadcaster from "../../../libs/class/networking/broadcaster";
  * @return void
  */
 class GamePlay extends BasketBallChat implements IMultiplayer {
-
-  private gamePlayWelcomeNote: string = "This application was created on visual-ts <br/>\
-                                         Example: Real time multiplayer `Basket Ball Chat` zlatnaspirala@gmail.com <br/>\
-                                         General: MIT License <br/>\
-                                         Copyright (c) 2019 Nikola Lukic zlatnaspirala@gmail.com Serbia Nis <br/>\
-                                         Except: Folder src/libs with licence: <br/>\
-                                         GNU LESSER GENERAL PUBLIC LICENSE Version 3 <br/>\
-                                         Copyright (c) 2020 maximumroulette.com ";
 
   /**
    * @description deadZoneForBottom Definition and Default value
@@ -211,8 +200,14 @@ class GamePlay extends BasketBallChat implements IMultiplayer {
 
       try {
 
+        var mediaDom = byId((e as CustomEvent).detail.data.streamId);
+        mediaDom = mediaDom.getElementsByTagName("video")[0];
+
         console.info("Loaded stream: ", byId((e as CustomEvent).detail.data.streamId));
-        console.info("Loaded stream: ", (e as CustomEvent).detail.data.streamId);
+        console.info("Loaded stream: ", mediaDom);
+
+        myInstance.playerStream.render.visualComponent.setStreamTexture(mediaDom);
+
 
       } catch (err) { console.error("Very bad #00004", err); }
 
@@ -283,7 +278,7 @@ class GamePlay extends BasketBallChat implements IMultiplayer {
         }
     });
 
-    Matter.Events.on(this.starter.getEngine(), "beforeUpdate", function (event) {
+    Matter.Events.on(this.starter.getEngine(), "beforeUpdate", function () {
 
       if (!root.player) { return; }
 
@@ -331,7 +326,7 @@ class GamePlay extends BasketBallChat implements IMultiplayer {
       root.collisionCheck(event, false);
     });
 
-    Matter.Events.on(this.starter.getEngine(), "afterTick", function (event) {
+    Matter.Events.on(this.starter.getEngine(), "afterTick", function () {
 
       if (!root.player) { return; }
       // jump

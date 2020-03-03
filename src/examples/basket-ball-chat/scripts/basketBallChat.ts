@@ -49,7 +49,7 @@ class BasketBallChat implements IGamePlayModel {
   private selectPlayerArray: ISelectedPlayer[]= [];
   private lives: number = DEFAULT_PLAYER_DATA.INITIAL_LIVES;
 
-  private playerStream: any;
+  protected playerStream: worldElement;
 
   private preventDoubleExecution: boolean = false;
   private playerStartPositions: IPoint[] = [{x: 120, y: 200}];
@@ -192,9 +192,41 @@ class BasketBallChat implements IGamePlayModel {
 
   public createPlayer(addToScene: boolean) {
 
-    this.playerStream = Matter.Bodies.rectangle(100, 100, 100, 100,
+        // add bodies
+    var group = Matter.Body.nextGroup(true);
+
+    var ropeA = Matter.Composites.stack(100, 350, 8, 1, 10, 10, function(x, y) {
+        return Matter.Bodies.rectangle(x, y, 50, 20, { collisionFilter: { group: group } });
+    });
+
+    Matter.Composites.chain(ropeA, 0.5, 0, -0.5, 0, { stiffness: 0.8, length: 2, render: { type: 'line' } });
+    Matter.Composite.add(ropeA, Matter.Constraint.create({
+        bodyB: ropeA.bodies[0],
+        pointB: { x: -25, y: 0 },
+        pointA: { x: ropeA.bodies[0].position.x, y: ropeA.bodies[0].position.y },
+        stiffness: 0.5
+    }));
+
+    group = Matter.Body.nextGroup(true);
+
+    var ropeB = Matter.Composites.stack(350, 50, 10, 1, 10, 10, function(x, y) {
+        return Matter.Bodies.circle(x, y, 20, { collisionFilter: { group: group } });
+    });
+
+    Matter.Composites.chain(ropeB, 0.5, 0, -0.5, 0, { stiffness: 0.8, length: 2, render: { type: 'line' } });
+    Matter.Composite.add(ropeB, Matter.Constraint.create({
+        bodyB: ropeB.bodies[0],
+        pointB: { x: -20, y: 0 },
+        pointA: { x: ropeB.bodies[0].position.x, y: ropeB.bodies[0].position.y },
+        stiffness: 0.5
+    }));
+
+    group = Matter.Body.nextGroup(true);
+
+
+    this.playerStream = Matter.Bodies.rectangle(100, 200, 100, 100,
     {
-      isStatic: true,
+      isStatic: false,
       isSleeping: false,
       label: "stream video",
       collisionFilter: {
@@ -507,8 +539,8 @@ class BasketBallChat implements IGamePlayModel {
 
   }
 
-  public setStreamTexture(texStream) {
-    this.playerStream.render.visualComponent.setStreamTexture(texStream);
+  public setStreamTexture(texStream: HTMLVideoElement) {
+    (this.playerStream as any).render.visualComponent.setStreamTexture(texStream);
   }
 
 }

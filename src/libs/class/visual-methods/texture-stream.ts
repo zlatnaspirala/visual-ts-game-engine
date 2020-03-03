@@ -11,7 +11,7 @@ import Resources from "../resources";
  */
 class TextureStreamComponent implements IVisualComponent {
 
-  public streamTexture: any;
+  public streamTexture: any = null;
 
   // For no stream texture moment
   public assets: Resources = new Resources();
@@ -63,14 +63,31 @@ class TextureStreamComponent implements IVisualComponent {
       for (let x = -this.verticalTiles / 2; x < this.verticalTiles / 2; x++) {
         for (let j = -this.horizontalTiles / 2; j < this.horizontalTiles / 2; j++) {
 
+          if (this.streamTexture !== null) {
+
+            this.flipImage( this.streamTexture , c,
+              originX - originW * (x),
+              originY - originH * (j),
+              originW,
+              originH,
+              this.horizontalFlip,
+              this.verticalFlip
+            );
+
+
+          } else {
+
             this.flipImage( this.assets.getImg(), c,
-            originX - originW * (x),
-            originY - originH * (j),
-            originW,
-            originH,
-            this.horizontalFlip,
-            this.verticalFlip
-          );
+              originX - originW * (x),
+              originY - originH * (j),
+              originW,
+              originH,
+              this.horizontalFlip,
+              this.verticalFlip
+            );
+
+           }
+
 
         }
       }
@@ -87,7 +104,7 @@ class TextureStreamComponent implements IVisualComponent {
 
   }
 
-  public setStreamTexture(streamTexture: any): void {
+  public setStreamTexture(streamTexture: HTMLVideoElement): void {
     this.streamTexture = streamTexture;
   }
 
@@ -114,7 +131,7 @@ class TextureStreamComponent implements IVisualComponent {
     ctx.save();
     ctx.scale(scaleH, scaleV);
     ctx.drawImage(
-      this.assets.getImg(), sx, sy, sw, sh);
+      image, sx, sy, sw, sh);
     ctx.restore();
   }
 
