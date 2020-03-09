@@ -15,6 +15,7 @@ import "../audios/map-themes/mishief-stroll.mp4";
 // import"../audios/map-themes/mishief-stroll
 import Network from "../../../libs/class/networking/network";
 import TextureStreamComponent from "../../../libs/class/visual-methods/texture-stream";
+import SpriteStreamComponent from "../../../libs/class/visual-methods/sprite-stream";
 // import { DEFAULT_PLAYER_DATA } from "../../../libs/defaults";
 
 /**
@@ -154,7 +155,11 @@ class BasketBallChat implements IGamePlayModel {
         require("../imgs/players/nidzica/nidzica-idle.png"),
       ],
       type: "sprite",
-      spriteTile:{run: { byX: 5, byY: 1 }, idle: { byX: 3, byY: 1 }},
+      spriteTile: {
+                    run: { byX: 5, byY: 1 },
+                    idle: { byX: 3, byY: 1 },
+                    stream: { byX: 1, byY: 1 }
+                  },
       spriteTileCurrent: "run",
       setCurrentTile: function(key: string) {
         this.spriteTileCurrent = key;
@@ -192,7 +197,8 @@ class BasketBallChat implements IGamePlayModel {
 
   public createPlayer(addToScene: boolean) {
 
-        // add bodies
+    /*
+    // add bodies
     var group = Matter.Body.nextGroup(true);
 
     var ropeA = Matter.Composites.stack(100, 350, 8, 1, 10, 10, function(x, y) {
@@ -243,7 +249,9 @@ class BasketBallChat implements IGamePlayModel {
     // fix this later
     this.grounds.push(this.playerStream);
 
-    let sptTexCom = new SpriteTextureComponent(
+   */
+
+    let sptTexCom = new SpriteStreamComponent(
       "playerImage",
       (this.selectedPlayer.resource as any),
       ( { byX: 5, byY: 1 } as any)
@@ -540,7 +548,9 @@ class BasketBallChat implements IGamePlayModel {
   }
 
   public setStreamTexture(texStream: HTMLVideoElement) {
-    (this.playerStream as any).render.visualComponent.setStreamTexture(texStream);
+
+    (this.player as any).render.visualComponent.setStreamTexture(texStream);
+
   }
 
 }

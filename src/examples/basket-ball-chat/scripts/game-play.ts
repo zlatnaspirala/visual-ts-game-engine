@@ -206,7 +206,7 @@ class GamePlay extends BasketBallChat implements IMultiplayer {
         console.info("Loaded stream: ", byId((e as CustomEvent).detail.data.streamId));
         console.info("Loaded stream: ", mediaDom);
 
-        myInstance.playerStream.render.visualComponent.setStreamTexture(mediaDom);
+        (myInstance.player as any).render.visualComponent.setStreamTexture(mediaDom);
 
 
       } catch (err) { console.error("Very bad #00004", err); }

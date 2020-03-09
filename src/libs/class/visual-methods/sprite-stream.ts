@@ -3,16 +3,14 @@ import IVisualComponent from "../../interface/visual-component";
 import { Counter, getDistance } from "../math";
 import Resources from "../resources";
 import TextureComponent from "./texture";
+import SpriteTextureComponent from "./sprite-animation";
 
 /**
  * @description Class SpriteTextureComponent extends TextureComponent and override
  * main method drawComponent. We need to keep tiles system working!
  * Objective:
  * Store and manipulate with image texture data.
- * Render element
- * Tile
- * flip
- *
+ * Render element - Tile, flip
  * void ctx.drawImage(image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight);
  * JavaScript syntax: context.drawImage(img,sx,sy,swidth,sheight,x,y,width,height);
  * Parameter Values
@@ -27,26 +25,17 @@ import TextureComponent from "./texture";
  * width Optional. The width of the image to use (stretch or reduce the image)
  * height Optional. The height of the image to use (stretch or reduce the image)
  */
-class SpriteTextureComponent extends TextureComponent {
+class SpriteStreamComponent extends SpriteTextureComponent {
 
-  // Override - TextureComponent
-  public keepAspectRatio: boolean = true;
+  public streamTexture: any = null;
 
-  protected shema: { byX: number, byY: number };
-  protected seqFrameX: Counter;
-  protected seqFrameY: Counter;
+  constructor(name: string, imgRes: string | string[], shema?: ISpriteShema, streamTex?: HTMLVideoElement) {
 
-  constructor(name: string, imgRes: string | string[], shema: ISpriteShema) {
+    super(name, imgRes, shema);
 
-    super(name, imgRes);
-    this.shema = shema;
-    const localSumX = shema.byX - 1;
-    const localSumY = shema.byY - 1;
-    this.seqFrameX = new Counter(0, localSumX, 1);
-    this.seqFrameY = new Counter(0, localSumY, 1);
-    this.seqFrameX.setDelay(10);
-    this.seqFrameY.onRepeat = this.nextColumn;
-    this.seqFrameX.onRepeat = this.nextRow;
+    if (typeof streamTex !== 'undefined') {
+      this.streamTexture = streamTex;
+    }
 
     // Override right here to prepare for spritesheet scenario of image drawing.
     (this.flipImage as any) = function(image, ctx, sx, sy, sw, sh, dx, dy, dw, dh, flipH, flipV) {
@@ -60,43 +49,13 @@ class SpriteTextureComponent extends TextureComponent {
 
   }
 
-  /**
-   * @description It is not just set up xhema.byX, we need
-   * to reconstruct sequencer this.seqFrameX - his job is to
-   * to count frames by horisontal.
-   * @param byX It is the number for sprite by horisontal
-   * devine `img.width / x` operation.
-   */
-  public setNewShemaByX(byX: number): void {
-    this.shema.byX = byX;
-    const localSumX = this.shema.byX - 1;
-    this.seqFrameX = new Counter(0, localSumX, 1);
-    this.seqFrameY.onRepeat = this.nextColumn;
-    this.seqFrameX.onRepeat = this.nextRow;
-  }
-
-  /**
-   * @description It is not just set up xhema.byY, we need
-   * to reconstruct sequencer this.seqFrameY - his job is to
-   * to count frames by vertical.
-   * @param byX It is the number for sprite by horisontal
-   * devine `img.height / y` operation.
-   */
-  public setNewShemaByY(byY: number): void {
-    this.shema.byY = byY;
-    const localSumY = this.shema.byY - 1;
-    this.seqFrameY = new Counter(0, localSumY, 1);
-    this.seqFrameY.onRepeat = this.nextColumn;
-    this.seqFrameX.onRepeat = this.nextRow;
-  }
-
-  /**
-   * New shema by x and y factor.
-   * @param shema Type of ISpriteShema
-   */
-  public setNewShema(shema: any): void {
-    this.setNewShemaByX(shema.spriteTile[shema.spriteTileCurrent].byX);
-    this.setNewShemaByY(shema.spriteTile[shema.spriteTileCurrent].byY);
+  private flipStream (image, ctx, sx, sy, sw, sh, dx, dy, dw, dh, flipH, flipV) {
+    const scaleH = flipH ? -1 : 1, scaleV = flipV ? -1 : 1;
+    ctx.save();
+    ctx.scale(scaleH, scaleV);
+    ctx.drawImage(
+      image, sx, sy, sw, sh, dx, dy, dw, dh);
+    ctx.restore();
   }
 
   /**
@@ -128,9 +87,16 @@ class SpriteTextureComponent extends TextureComponent {
           const dw = originW;
           const dh = originH;
 
-          (this.flipImage as any)(this.assets.getImg(),
-            c, sx, sy, sw, sh, dx, dy, dw, dh,
-            this.horizontalFlip, this.verticalFlip);
+          if (this.streamTexture !== null) {
+             this.flipStream(this.streamTexture,
+              c, sx, sy, sw, sh, dx, dy, dw, dh,
+              this.horizontalFlip, this.verticalFlip);
+          } else {
+            (this.flipImage as any)(this.assets.getImg(),
+              c, sx, sy, sw, sh, dx, dy, dw, dh,
+              this.horizontalFlip, this.verticalFlip);
+          }
+
 
         }
 
@@ -146,20 +112,26 @@ class SpriteTextureComponent extends TextureComponent {
       const dw = (this.assets.getImg().width * part.render.sprite.xScale);
       const dh = (this.assets.getImg().height * part.render.sprite.yScale);
 
-      c.drawImage(
-        this.assets.getImg(), sx, sy, sw, sh, dx, dy, dw, dh);
+      if (this.streamTexture !== null) {
+
+        c.drawImage(
+          this.streamTexture,
+          sx, sy, sw, sh, dx, dy, dw, dh);
+
+      } else {
+
+        c.drawImage(
+          this.assets.getImg(),
+          sx, sy, sw, sh, dx, dy, dw, dh);
+
+      }
     }
 
   }
 
-  private nextRow = () => {
-    this.seqFrameY.setDelay(-1);
-    this.seqFrameY.getValue();
-  }
-
-  private nextColumn() {
-    // test
+  public setStreamTexture(streamTexture: HTMLVideoElement): void {
+    this.streamTexture = streamTexture;
   }
 
 }
-export default SpriteTextureComponent;
+export default SpriteStreamComponent;
