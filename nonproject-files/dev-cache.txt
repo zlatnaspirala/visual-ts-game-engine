@@ -1,0 +1,106 @@
+
+    // add bodies ROPE
+    var group = Matter.Body.nextGroup(true);
+
+    var ropeA = Matter.Composites.stack(100, 350, 8, 1, 10, 10, function(x, y) {
+        return Matter.Bodies.rectangle(x, y, 50, 20, { collisionFilter: { group: group } });
+    });
+
+    Matter.Composites.chain(ropeA, 0.5, 0, -0.5, 0, { stiffness: 0.8, length: 2, render: { type: 'line' } });
+    Matter.Composite.add(ropeA, Matter.Constraint.create({
+        bodyB: ropeA.bodies[0],
+        pointB: { x: -25, y: 0 },
+        pointA: { x: ropeA.bodies[0].position.x, y: ropeA.bodies[0].position.y },
+        stiffness: 0.5
+    }));
+
+    group = Matter.Body.nextGroup(true);
+
+    var ropeB = Matter.Composites.stack(350, 50, 10, 1, 10, 10, function(x, y) {
+        return Matter.Bodies.circle(x, y, 20, { collisionFilter: { group: group } });
+    });
+
+    Matter.Composites.chain(ropeB, 0.5, 0, -0.5, 0, { stiffness: 0.8, length: 2, render: { type: 'line' } });
+    Matter.Composite.add(ropeB, Matter.Constraint.create({
+        bodyB: ropeB.bodies[0],
+        pointB: { x: -20, y: 0 },
+        pointA: { x: ropeB.bodies[0].position.x, y: ropeB.bodies[0].position.y },
+        stiffness: 0.5
+    }));
+
+    group = Matter.Body.nextGroup(true);
+
+    // Object stream
+    this.playerStream = Matter.Bodies.rectangle(100, 200, 100, 100,
+    {
+      isStatic: false,
+      isSleeping: false,
+      label: "stream video",
+      collisionFilter: {
+        group: this.staticCategory,
+      } as any,
+      render: {
+        visualComponent: new TextureStreamComponent("streamTexture", (this.selectedPlayer.resource as any)),
+        sprite: {
+          olala: true,
+        },
+      } as any | Matter.IBodyRenderOptions,
+    });
+
+    // fix this later
+    this.grounds.push(this.playerStream);
+
+
+// working
+    // Modification for new game
+    // add bodies
+    this.ground = Matter.Bodies.rectangle(395, 600, 815, 50,
+       { isStatic: true,
+         collisionFilter: {group: -1}
+       }),
+       this.rockOptions = {
+        density: 0.004 ,
+        collisionFilter: {
+          category: this.playerCategory,
+        } as any
+      },
+      this.rock = Matter.Bodies.polygon(170, 450, 8, 20, this.rockOptions),
+      this.anchor = { x: 170, y: 450 },
+      this.elastic = Matter.Constraint.create({
+        pointA: this.anchor,
+        bodyB: this.rock,
+        stiffness: 0.05
+      });
+
+    this.pyramid = Matter.Composites.pyramid(500, 300, 9, 10, 0, 0, function(x, y) {
+      return Matter.Bodies.rectangle(
+        x, y, 25, 40,
+        { collisionFilter: {
+            category: root.staticCategory,
+          } as any
+        })
+    });
+
+    this.ground2 = Matter.Bodies.rectangle(610, 250, 200, 20, { isStatic: true });
+
+    this.pyramid2 = Matter.Composites.pyramid(550, 0, 5, 10, 0, 0, function(x, y) {
+        return Matter.Bodies.rectangle(x, y, 25, 40,
+          { collisionFilter: {
+            category: root.staticCategory,
+          } as any
+        });
+    });
+
+    // add
+
+    // collide
+
+        if (root.starter.getMouseConstraint().mouse.button === -1 && (root.rock.position.x > 190 || root.rock.position.y < 430)) {
+
+            root.rock = Matter.Bodies.polygon(170, 450, 7, 20, root.rockOptions);
+            Matter.World.add(root.starter.getEngine().world, root.rock);
+            root.elastic.bodyB = root.rock;
+            console.log("# TEST2");
+        }
+
+

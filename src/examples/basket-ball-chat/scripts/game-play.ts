@@ -206,6 +206,12 @@ class GamePlay extends BasketBallChat implements IMultiplayer {
         console.info("Loaded stream: ", byId((e as CustomEvent).detail.data.streamId));
         console.info("Loaded stream: ", mediaDom);
 
+        (myInstance as any).selectedPlayer.setCurrentTile("stream");
+        (myInstance.player as any).render.visualComponent.setNewShema((myInstance as any).selectedPlayer);
+        (myInstance.player as any).render.visualComponent.assets.SeqFrame.setNewValue(1);
+        //(myInstance.player as any).render.visualComponent.seqFrameX.setDelay(8);
+
+
         (myInstance.player as any).render.visualComponent.setStreamTexture(mediaDom);
 
 
@@ -225,7 +231,8 @@ class GamePlay extends BasketBallChat implements IMultiplayer {
 
     if (typeof testRoot.player === "undefined" || testRoot.player === null) { return; }
     const vc = testRoot.player.render.visualComponent;
-    if (vc.assets.SeqFrame.getValue() === 0) {
+    if (vc.assets.SeqFrame.getValue() === 0 ||
+        testRoot.selectedPlayer.spriteTileCurrent === "stream") {
       return;
     }
 
@@ -240,9 +247,12 @@ class GamePlay extends BasketBallChat implements IMultiplayer {
 
     var testRoot = this;
 
-    if (typeof testRoot.player === "undefined" || testRoot.player === null) { return; }
+    if (typeof testRoot.player === "undefined" || testRoot.player === null) {
+      return;
+    }
     const vc = testRoot.player.render.visualComponent;
-    if (vc.assets.SeqFrame.getValue() === 2) {
+    if (vc.assets.SeqFrame.getValue() === 2 ||
+        testRoot.selectedPlayer.spriteTileCurrent === "stream") {
       return;
     }
     testRoot.selectedPlayer.setCurrentTile("idle");
@@ -269,13 +279,7 @@ class GamePlay extends BasketBallChat implements IMultiplayer {
 
 
     Matter.Events.on(this.starter.getEngine(), 'afterUpdate', function() {
-        if (root.starter.getMouseConstraint().mouse.button === -1 && (root.rock.position.x > 190 || root.rock.position.y < 430)) {
 
-            root.rock = Matter.Bodies.polygon(170, 450, 7, 20, root.rockOptions);
-            Matter.World.add(root.starter.getEngine().world, root.rock);
-            root.elastic.bodyB = root.rock;
-            console.log("# TEST2");
-        }
     });
 
     Matter.Events.on(this.starter.getEngine(), "beforeUpdate", function () {
@@ -404,45 +408,6 @@ class GamePlay extends BasketBallChat implements IMultiplayer {
     });
 
     this.playerSpawn(false);
-
-    // Modification for new game
-    // add bodies
-    this.ground = Matter.Bodies.rectangle(395, 600, 815, 50,
-       { isStatic: true,
-         collisionFilter: {group: -1}
-       }),
-       this.rockOptions = {
-        density: 0.004 ,
-        collisionFilter: {
-          category: this.playerCategory,
-        } as any
-      },
-      this.rock = Matter.Bodies.polygon(170, 450, 8, 20, this.rockOptions),
-      this.anchor = { x: 170, y: 450 },
-      this.elastic = Matter.Constraint.create({
-        pointA: this.anchor,
-        bodyB: this.rock,
-        stiffness: 0.05
-      });
-
-    this.pyramid = Matter.Composites.pyramid(500, 300, 9, 10, 0, 0, function(x, y) {
-      return Matter.Bodies.rectangle(
-        x, y, 25, 40,
-        { collisionFilter: {
-            category: root.staticCategory,
-          } as any
-        })
-    });
-
-    this.ground2 = Matter.Bodies.rectangle(610, 250, 200, 20, { isStatic: true });
-
-    this.pyramid2 = Matter.Composites.pyramid(550, 0, 5, 10, 0, 0, function(x, y) {
-        return Matter.Bodies.rectangle(x, y, 25, 40,
-          { collisionFilter: {
-            category: root.staticCategory,
-          } as any
-        });
-    });
 
     /*
     gameMap.getStaticBackgrounds().forEach((item) => {
@@ -628,8 +593,8 @@ class GamePlay extends BasketBallChat implements IMultiplayer {
     this.starter.AddNewBodies(this.enemys as worldElement);
     this.starter.AddNewBodies(this.deadLines as worldElement);
     this.starter.AddNewBodies(this.player as worldElement);
-    this.starter.AddNewBodies(
-      [this.ground, this.pyramid, this.ground2, this.pyramid2, this.rock, this.elastic] as worldElement);
+    // this.starter.AddNewBodies(
+      // [this.ground, this.pyramid, this.ground2, this.pyramid2, this.rock, this.elastic] as worldElement);
     this.starter.AddNewBodies(this.labels as worldElement);
     this.attachMatterEvents();
 

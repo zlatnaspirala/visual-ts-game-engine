@@ -47,7 +47,6 @@ class Demo1 implements IGamePlayModel {
       spriteTile: {
                     run: { byX: 5, byY: 1 },
                     idle: { byX: 3, byY: 1 },
-                    stream: { byX: 1, byY: 1 }
                   },
       spriteTileCurrent: "run",
       setCurrentTile: function(key: string) {

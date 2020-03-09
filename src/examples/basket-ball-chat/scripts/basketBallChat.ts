@@ -30,7 +30,7 @@ import SpriteStreamComponent from "../../../libs/class/visual-methods/sprite-str
 class BasketBallChat implements IGamePlayModel {
 
   public gameName: string = "Basket Ball chat";
-  public version: number = 0.1;
+  public version: number = 0.2;
   public playerCategory = 0x0002;
   public staticCategory = 0x0004;
 
@@ -50,7 +50,7 @@ class BasketBallChat implements IGamePlayModel {
   private selectPlayerArray: ISelectedPlayer[]= [];
   private lives: number = DEFAULT_PLAYER_DATA.INITIAL_LIVES;
 
-  protected playerStream: worldElement;
+  // protected playerStream: worldElement;
 
   private preventDoubleExecution: boolean = false;
   private playerStartPositions: IPoint[] = [{x: 120, y: 200}];
@@ -171,11 +171,14 @@ class BasketBallChat implements IGamePlayModel {
       poster: require("../imgs/players/smart-girl/poster.png"),
       resource: [
         require("../imgs/players/smart-girl/smart-girl.png"),
-        require("../imgs/explosion/explosion.png"),
+        require("../imgs/explosion/flame.png"),
         require("../imgs/players/smart-girl/smart-girl-idle.png"),
       ],
       type: "sprite",
-      spriteTile:{run: { byX: 5, byY: 1 }, idle: { byX: 5, byY: 1 }},
+      spriteTile:{
+        run: { byX: 5, byY: 1 },
+        idle: { byX: 3, byY: 1 },
+        stream: { byX: 1, byY: 1 }},
       spriteTileCurrent: "idle",
       setCurrentTile: function(key: string) {
         this.spriteTileCurrent = key;
@@ -197,60 +200,6 @@ class BasketBallChat implements IGamePlayModel {
 
   public createPlayer(addToScene: boolean) {
 
-    /*
-    // add bodies
-    var group = Matter.Body.nextGroup(true);
-
-    var ropeA = Matter.Composites.stack(100, 350, 8, 1, 10, 10, function(x, y) {
-        return Matter.Bodies.rectangle(x, y, 50, 20, { collisionFilter: { group: group } });
-    });
-
-    Matter.Composites.chain(ropeA, 0.5, 0, -0.5, 0, { stiffness: 0.8, length: 2, render: { type: 'line' } });
-    Matter.Composite.add(ropeA, Matter.Constraint.create({
-        bodyB: ropeA.bodies[0],
-        pointB: { x: -25, y: 0 },
-        pointA: { x: ropeA.bodies[0].position.x, y: ropeA.bodies[0].position.y },
-        stiffness: 0.5
-    }));
-
-    group = Matter.Body.nextGroup(true);
-
-    var ropeB = Matter.Composites.stack(350, 50, 10, 1, 10, 10, function(x, y) {
-        return Matter.Bodies.circle(x, y, 20, { collisionFilter: { group: group } });
-    });
-
-    Matter.Composites.chain(ropeB, 0.5, 0, -0.5, 0, { stiffness: 0.8, length: 2, render: { type: 'line' } });
-    Matter.Composite.add(ropeB, Matter.Constraint.create({
-        bodyB: ropeB.bodies[0],
-        pointB: { x: -20, y: 0 },
-        pointA: { x: ropeB.bodies[0].position.x, y: ropeB.bodies[0].position.y },
-        stiffness: 0.5
-    }));
-
-    group = Matter.Body.nextGroup(true);
-
-
-    this.playerStream = Matter.Bodies.rectangle(100, 200, 100, 100,
-    {
-      isStatic: false,
-      isSleeping: false,
-      label: "stream video",
-      collisionFilter: {
-        group: this.staticCategory,
-      } as any,
-      render: {
-        visualComponent: new TextureStreamComponent("streamTexture", (this.selectedPlayer.resource as any)),
-        sprite: {
-          olala: true,
-        },
-      } as any | Matter.IBodyRenderOptions,
-    });
-
-    // fix this later
-    this.grounds.push(this.playerStream);
-
-   */
-
     let sptTexCom = new SpriteStreamComponent(
       "playerImage",
       (this.selectedPlayer.resource as any),
@@ -259,7 +208,7 @@ class BasketBallChat implements IGamePlayModel {
 
     this.preventDoubleExecution = false;
 
-    const playerRadius = 50;
+    const playerRadius = 55;
     this.player = Matter.Bodies.circle(
       this.playerStartPositions[0].x,
       this.playerStartPositions[0].y,
@@ -300,7 +249,6 @@ class BasketBallChat implements IGamePlayModel {
     if (addToScene) {
       this.player.id = 2;
       this.starter.AddNewBodies(this.player as worldElement);
-      console.info("Player body created from 'dead'.");
     }
   }
 
@@ -548,9 +496,7 @@ class BasketBallChat implements IGamePlayModel {
   }
 
   public setStreamTexture(texStream: HTMLVideoElement) {
-
     (this.player as any).render.visualComponent.setStreamTexture(texStream);
-
   }
 
 }
