@@ -12,7 +12,6 @@ import Level1 from "../scripts/packs/BasketBallChat-level1";
 // require("../audios/map-themes/mishief-stroll.mp4");
 import "../audios/map-themes/mishief-stroll.mp4";
 
-// import"../audios/map-themes/mishief-stroll
 import Network from "../../../libs/class/networking/network";
 import TextureStreamComponent from "../../../libs/class/visual-methods/texture-stream";
 import SpriteStreamComponent from "../../../libs/class/visual-methods/sprite-stream";
@@ -497,6 +496,7 @@ class BasketBallChat implements IGamePlayModel {
 
   public setStreamTexture(texStream: HTMLVideoElement) {
     (this.player as any).render.visualComponent.setStreamTexture(texStream);
+
   }
 
 }

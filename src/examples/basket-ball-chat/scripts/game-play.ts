@@ -206,11 +206,19 @@ class GamePlay extends BasketBallChat implements IMultiplayer {
         console.info("Loaded stream: ", byId((e as CustomEvent).detail.data.streamId));
         console.info("Loaded stream: ", mediaDom);
 
-        (myInstance as any).selectedPlayer.setCurrentTile("stream");
+        (myInstance as any).selectedPlayer.setCurrentTile("run");
         (myInstance.player as any).render.visualComponent.setNewShema((myInstance as any).selectedPlayer);
-        (myInstance.player as any).render.visualComponent.assets.SeqFrame.setNewValue(1);
-        //(myInstance.player as any).render.visualComponent.seqFrameX.setDelay(8);
 
+        // (myInstance.player as any).render.visualComponent.assets.SeqFrame.setNewValue(1);
+        // (myInstance.player as any).render.visualComponent.seqFrameX.setDelay(8);
+         (myInstance.player as any).render.visualComponent.assets.SeqFrame.setNewSeqFrameRegimeType("CONST");
+         (myInstance.player as any).render.visualComponent.seqFrameX.regimeType = "CONST";
+         (myInstance.player as any).render.visualComponent.seqFrameY.regimeType = "CONST";
+        //  (myInstance.player as any).render.visualComponent.assets.SeqFrame.value = 2;
+         (myInstance.player as any).render.visualComponent.assets.SeqFrame.value = 0;
+         (myInstance.player as any).render.visualComponent.seqFrameY.value = 0;
+         (myInstance.player as any).render.visualComponent.seqFrameX.value = 0;
+        console.log("COOOLl");
 
         (myInstance.player as any).render.visualComponent.setStreamTexture(mediaDom);
 

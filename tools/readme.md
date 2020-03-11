@@ -4,17 +4,21 @@ Folder tools/ is git submodule root folder.
 
 ### Project name: creator-2dmap ###
 
-First level of visual tools staff.
-Generate you static, text, enemies item game element with positions and dimensions.
+First level of visual tool's staff.
+Generate for you static, text, enemies item's as game element with positions and dimensions.
 
 Download support for python3 for your OS.
-Download python script creator-2dmap at:
 
-  https://github.com/zlatnaspirala/creator-2dmap
+You can download creator:
+ - https://github.com/zlatnaspirala/creator-2dmap
 
 Download visual-ts-game-engine from:
 
-  https://github.com/zlatnaspirala/visual-ts-game-engine
+- https://github.com/zlatnaspirala/visual-ts-game-engine
+
+```
+git clone --recurse-submodules https://github.com/zlatnaspirala/visual-ts-game-engine
+```
 
 Install with pip3 what app need and run:
 ```bash
@@ -25,17 +29,21 @@ Install with pip3 what app need and run:
 Minimum dependency (Python3 + tkinter)
 Basic is done: put grounds static and collectItem game element, save, load and export map...
 
-### creator-2dmap
+### creator-2dmap ###
 2d Map Generator for platformer (visual-ts game engine)
-This is tool for creating map objects for platformer game template in visual-typescript game engine project.
 
-Download engine source from : https://github.com/zlatnaspirala/visual-ts-game-engine
-
-For visual-ts-game-engine follow : https://github.com/zlatnaspirala/visual-ts-game-engine/blob/master/readme.md for help. In best way you need to install npm modules and run :
+For visual-ts-game-engine follow : https://github.com/zlatnaspirala/visual-ts-game-engine/blob/master/readme.md for help. In best way you need to install npm modules and run:
 
 ```
   npm run dev
   npm run rtc
+```
+
+Then `cd tools/` if you not use --re clone
+
+```bash
+ git submodule init
+ git submodule update
 ```
 
 ### Help:
@@ -101,17 +109,18 @@ Last version:
 ####   nextLevel item collection model. Item will teleport player to the next level/map
 ####   Export As - Feature Export and give a map name (without `.ts`)
 
-## Licence:
+## Licence: ##
 GNU LESSER GENERAL PUBLIC LICENSE Version 3 maximumroulette.com 2020
 
-### About licence:
+### About licence: ###
+
   - If you use this code you need to provide your modification like open source
     with same licence GPL v3.
     In short way explanation: You can use it in commercial or noncommercial projects
-  - if you provide origin licence with software, refer your modification source code with public link.
+  - if you provide origin licence with software, refer and publish your modification source code with public link.
     If you make some improvements then let other people to use source just like you did.
 
-#### Export structure:
+#### Export structure: ####
 
 ```javascript
 let generatedMap = [
@@ -147,4 +156,11 @@ let generatedMap = [
 ```
 
 I use best inside logic.Use undefined to make determination of type object. Textures tex param and tiles indicate TextureComponent If I catch colectionLabel then i check value for this key and if i find "Level" sub string then teleport is my current model. enemies refer to the enemy object.
+
+If you use tool.py like submodules you can run GUI creator 2dmap from visual code with:
+
+```
+  npm run creator
+```
+
 
