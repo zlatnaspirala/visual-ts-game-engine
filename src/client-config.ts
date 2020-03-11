@@ -1,4 +1,5 @@
 import { Addson } from "./libs/types/global";
+import { IBroadcasterSession } from "./libs/interface/global";
 
 /**
  * ClientConfig is config file for whole client part of application.
@@ -101,6 +102,17 @@ class ClientConfig {
   private connectorPort: number = 1234;
 
   /**
+   * appUseAccountsSystem If you don't want to use session
+   * in your application just setup this variable to the false.
+   */
+  private appUseAccountsSystem: boolean = true;
+
+  /**
+   * appUseBroadcaster Disable or enable broadcaster for
+   * video chats.
+   */
+  private appUseBroadcaster: boolean = true;
+  /**
    * broadcasterPort Port used to connect multimedia server MultiRTC3.
    * I will use it for explicit video chat multiplatform support.
    * Default value is 9001
@@ -117,40 +129,29 @@ class ClientConfig {
    * broadcaster socket.io address.
    * Change it for production regime
    */
-  private broadcastAutoConnect: boolean = true;
+  private broadcastAutoConnect: boolean = false;
 
   /**
    * runBroadcasterOnInt load broadcaster
    */
   private runBroadcasterOnInt: boolean = true;
 
+  public showBroadcasterOnInt: boolean = true;
+
   /**
    * broadcaster rtc session init values.
    * Change it for production regime
    */
-  private broadcasterSessionDefaults: any = {
-    sessionAudio: false,
-    sessionVideo: false,
+  private broadcasterSessionDefaults: IBroadcasterSession = {
+    sessionAudio: true,
+    sessionVideo: true,
     sessionData: true,
     enableFileSharing: true
   };
 
-  /**
-   * appUseAccountsSystem If you don't want to use session
-   * in your application just setup this variable to the false.
-   */
-  private appUseAccountsSystem: boolean = true;
-
-  /**
-   * appUseBroadcaster Disable or enable broadcaster for
-   * video chats.
-   */
-  private appUseBroadcaster: boolean = true;
-
   private stunList: string[] = [
     "stun:stun.l.google.com:19302",
     "stun:stun1.l.google.com:19302",
-    "stun:stun2.l.google.com:19302",
     "stun:stun.l.google.com:19302?transport=udp"
   ];
   /**

@@ -13,14 +13,37 @@
   features inside. Also video chat is integrated based on signaling server.
   No video recording for now (next features).
 
- - Writen in typescript current version 3.7.4.
+ - Written in typescript current version 3.7.4.
  - Text editor used and recommended: Last version of Visual Studio Code.
    Luanch debugger configuration comes with this project (for server part).
  - Physics engine based on Matter.js - Matter.ts (npm project).
  - Multiplatform video chat (for all browsers) implemented. SocketIO used for session staff.
    MultiRTC2 used for data transfer also for video chat. MultiRTC3 alias 'broadcaster' used for video chat.
 
-![visualTS](https://github.com/zlatnaspirala/visual-ts/blob/master/logo.png)
+![visualTS](https://github.com/zlatnaspirala/visual-ts/blob/dev/nonproject-files/logo.png)
+
+   - Please don't use fake email address to test public maximumroulette.com platformer example.
+  Project even in dev stage is totally `production` approach. You can't pass registration with fake email.
+  Just clone , install and run in local (client & server). You need to install and run also MongoDB on
+  your system. Change flag in databased confimed to the `true` value to skip registration confirmation process.
+
+## Abour visual tools ##
+
+ Based on python3 tk tech.It is standalone git project imported like
+ git submodule.
+
+ https://github.com/zlatnaspirala/creator-2dmap
+
+[Important - About tools setup](https://github.com/zlatnaspirala/visual-ts-game-engine/blob/dev/tools/readme.md)
+
+After setup run python app from cli with command:
+
+```javascript
+  npm run creator
+```
+
+![Creator 2d map](https://github.com/zlatnaspirala/visual-ts-game-engine/blob/dev/nonproject-files/creator2dmap.png)
+
 
 ## Client part ##
 
@@ -30,9 +53,17 @@
   npm install
 ```
 
-Command:
+Command (current: single player solution build):
 ```javascript
   npm run dev
+```
+
+Command
+  current: single player solution build,
+           multiplayer platformer
+           basketBall chat (dev) :
+```javascript
+  npm run dev-all
 ```
 
 Output:
@@ -56,8 +87,10 @@ Output:
 
 ### New way of building multi entryes.
 
-Sufix is `-all` . This is test for multi instancing webpack capabilities.
+Command is `npm run dev-all` . This is test for multi instancing webpack capabilities.
+Webpack in this case use `webpack.multicompile.config.js`.
 Thanks for common object definition:
+
 
 ```javascript
 let config = {
@@ -66,7 +99,7 @@ let config = {
 ```
 
 Point of Multi entries is to make independent healthy builds end point
-for our application. Current export's for 2 solutions looks like
+for our application. Current export's for 3 solutions looks like
 (runs webpack.multicompile.config.js) :
 
 Command:
@@ -80,18 +113,23 @@ Output:
 ├── build/  (This is auto generated)
 |   ├── multiplayer/
 |   ├── singleplaye/
+|   ├── basket-ball-chat/ [WIP]
 
 </pre>
 
 
  -Client part is browser web application. No reloading or redirecting. This is single page
  application. I use html request only for loading local/staged html (like register, login etc.).
- Networking is based on webSocket full-duplex communication only. This is bad for old fasion programmers.
- You must be conform with classic socket connection methodology.
+ Networking is based on  webSocket full-duplex communication only. This is good cross for old
+ fasion native programmers not for web server REST oriented skills. No `mix` in communication usage.
+ You must be conform with classic socket connection methodology and your own idea about connections.
  -webRTC can be used for any proporsion.
-   Already implemented :
+   Already implemented:
    -video chat webRTC (SIP) chat and data communication.
-   -Simple facebook api script.
+     -multiRTC2 for old version of brosers (UDP/TCP)
+     -multiRTC3 for all modern browser's and hybryd implementation
+      (android, ios etc.) (UDP/TCP)
+   -Simple facebook api script (addson).
 
  -Class 'Connector' (native webSocket) used for user session staff.
   For main account session staff like login, register etc.
@@ -596,8 +634,32 @@ Features comes with broadcaster:
    or custom implementation throw the native mobile application
    web control (Chrome implementation usually).
 
+### GUI Tools ###
 
-## Documentation : ##
+To get GUI tools first download python3 for your OS.
+`creator2dmap` is python3 canvas oriented application.
+
+```javascript
+  cd tools
+  git submodule init
+  git submodule update
+  // or
+  git clone --recurse-submodules https://github.com/zlatnaspirala/visual-ts-game-engine
+
+  // update
+  git fetch
+  git merge
+```
+In this way you will get project: https://github.com/zlatnaspirala/creator-2dmap
+intro `tools/creator2dmap/` folder.
+
+Start application with:
+```
+  python.exe tool.py (win)
+  ./python3 tool.py (macos)
+```
+
+## Documentation: ##
 
  Follow link for API:
  [Application documentation](https://maximumroulette.com/applications/visual-typescript-game-engine/build/api-doc/globals.html)
@@ -661,7 +723,7 @@ or use :
  - https://www.behance.net/JunikStudio
 
 
-## Todo list for 2019 ##
+## Todo list for 2020 ##
 
   <b>I'am still far a away from project objective :</b>
 

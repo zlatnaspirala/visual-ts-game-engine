@@ -9,7 +9,7 @@ import { worldElement } from "../../../libs/types/global";
 import GameMap from "./map";
 import Platformer from "./Platformer";
 import Level1 from "./packs/level1";
-import { DEFAULT_GAMEPLAY_ROLES } from "../../../libs/defaults";
+import { DEFAULT_GAMEPLAY_ROLES, DEFAULT_RENDER_BOUNDS } from "../../../libs/defaults";
 
 /**
  * @description Finally game start at here.
@@ -77,7 +77,7 @@ class GamePlay extends Platformer {
           console.info("game-init Player spawn. Player are not destroyed at this moment...");
           myInstance.playerSpawn(true);
           myInstance.initSelectPlayer();
-          myInstance.selectPlayer("reaper");
+          myInstance.selectPlayer("nidzica");
           return;
 
         }
@@ -148,6 +148,8 @@ class GamePlay extends Platformer {
     globalEvent.providers.onkeyup = this.overrideOnKeyUp;
     // globalEvent.injectDependency("platformerInstance", root);
 
+    root.starter.setRenderView(DEFAULT_RENDER_BOUNDS.WIDTH, DEFAULT_RENDER_BOUNDS.HEIGHT);
+
     const playerSpeed = 0.005;
 
     this.enemys.forEach(function (item) {
@@ -164,13 +166,14 @@ class GamePlay extends Platformer {
       }
 
       if (root.player) {
+
         Matter.Body.setAngle(root.player, -Math.PI * 0);
-      // Matter.Body.setAngle(root.enemys[0] as Matter.Body, -Math.PI * 0);
+       // Matter.Body.setAngle(root.enemys[0] as Matter.Body, -Math.PI * 0);
 
         Matter.Bounds.shift(root.starter.getRender().bounds,
         {
-          x: root.player.position.x - 400,
-          y: root.player.position.y - 300,
+          x: root.player.position.x - root.starter.getRender().options.width / 1.5,
+          y: root.player.position.y - root.starter.getRender().options.height / 1.5,
         });
 
         if (root.player.velocity.x < 0.00001 && root.player.velocity.y == 0 &&

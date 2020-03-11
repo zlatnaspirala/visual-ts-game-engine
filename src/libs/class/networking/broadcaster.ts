@@ -1,6 +1,6 @@
 
 import "./rtc-multi-connection/FileBufferReader.js";
-import { byId, htmlHeader } from "../system";
+import { byId, htmlHeader, createAppEvent } from "../system";
 import { getHTMLMediaElement } from "./rtc-multi-connection/getHTMLMediaElement";
 import * as RTCMultiConnection3 from "./rtc-multi-connection/RTCMultiConnection3";
 import * as io from "./rtc-multi-connection/socket.io";
@@ -8,17 +8,15 @@ import ClientConfig from "../../../client-config.js";
 
 class Broadcaster {
 
+  public openOrJoinBtn: HTMLElement;
+
   private connection: any;
   private engineConfig: ClientConfig;
-  // Internal config flag
-  private showBroadcasterOnInt: boolean = true;
-
   private popupUI: HTMLDivElement = null;
   private broadcasterUI: HTMLElement;
   private titleStatus: HTMLElement;
   private openRoomBtn: HTMLElement;
   private joinRoomBtn: HTMLElement;
-  private openOrJoinBtn: HTMLElement;
   private leaveRoomBtn: HTMLElement;
   private shareFileBtn: HTMLElement;
   private inputChat: HTMLElement;
@@ -40,7 +38,18 @@ class Broadcaster {
     this.connection.close();
   }
 
+  public openRoomBtnVisible = (visible: boolean) => {
+
+    if (visible === true) {
+      byId('open-room').classList.remove('hide');
+    } else {
+      byId('open-room').classList.add('hide');
+    }
+
+  }
+
   private initDOM() {
+
     this.broadcasterUI = byId('media-rtc3-controls');
     this.titleStatus = byId('rtc3log');
     this.openRoomBtn = byId('open-room');
@@ -50,14 +59,27 @@ class Broadcaster {
     this.shareFileBtn = byId('share-file');
     this.inputChat = byId('input-text-chat');
     this.inputRoomId = byId('room-id');
+
+    this.openRoomBtnVisible(true);
+
+  }
+
+  private streamLoaded(userId, streamAccess) {
+
+    const broadcasterStreamLoaded = createAppEvent("stream-loaded", {
+      streamId: streamAccess,
+      userId: userId
+    });
+    (window as any).dispatchEvent(broadcasterStreamLoaded);
+    return streamAccess;
   }
 
   private initWebRtc = (options?) => {
+
     let root = this;
 
     this.connection = new (RTCMultiConnection3 as any)();
     this.connection.socketURL = root.engineConfig.getBroadcastSockRoute();
-
     this.connection.socketMessageEvent = 'audio-video-file-chat-demo';
 
     if (typeof options !== 'undefined') {
@@ -82,7 +104,6 @@ class Broadcaster {
 
     }
 
-
     this.connection.sdpConstraints.mandatory = {
       OfferToReceiveAudio: true,
       OfferToReceiveVideo: true
@@ -92,11 +113,14 @@ class Broadcaster {
       urls: root.engineConfig.getStunList()
     }];
 
-    this.connection.videosContainer = document.getElementById('videos-container');
+    this.connection.videosContainer = document.getElementById('videos-container') as HTMLDivElement;
+
+    this.connection.videosContainer.setAttribute('style', 'position:absolute;left:0;top:0;width:400px;height:300px;');
+
     this.connection.onstream = function(event) {
+
       event.mediaElement.removeAttribute("src");
       event.mediaElement.removeAttribute("srcObject");
-
       var video = document.createElement('video');
       video.controls = true;
       if(event.type === 'local') {
@@ -104,29 +128,91 @@ class Broadcaster {
       }
       video.srcObject = event.stream;
 
-      var localNumberCW = root.connection.videosContainer.clientWidth / 2;
-      var width: number = parseInt(localNumberCW.toString()) - 20;
+      var localNumberCW = root.connection.videosContainer.clientWidth;
+      var width: number = parseInt(localNumberCW.toString());
 
       var mediaElement = getHTMLMediaElement(video, {
-          title: event.userid,
-          buttons: ['full-screen'],
-          width: width,
-          showOnMouseEnter: false
+        title: event.userid,
+        buttons: ['full-screen'],
+        width: width,
+        showOnMouseEnter: false
       });
 
       root.connection.videosContainer.appendChild(mediaElement);
 
+      let dragging = function () {
+
+        return {
+          move (divid, xpos, ypos) {
+            divid.style.left = xpos + "px";
+            divid.style.top = ypos + "px";
+          },
+          startMoving (divid, container, evt?) {
+            evt = evt || window.event;
+            const posX = evt.clientX,
+              posY = evt.clientY,
+              eWi = parseInt(divid.style.width, 10),
+              eHe = parseInt(divid.style.height, 10),
+              cWi = parseInt(document.getElementById(container).style.width, 10),
+              cHe = parseInt(document.getElementById(container).style.height, 10);
+
+            let divTop = divid.style.top,
+              divLeft = divid.style.left;
+
+            document.getElementById(container).style.cursor = "move";
+            divTop = divTop.replace("px", "");
+            divLeft = divLeft.replace("px", "");
+            const diffX = posX - divLeft,
+              diffY = posY - divTop;
+
+            document.onmousemove = function (event) {
+
+              const e = event || window.event;
+              let aX, aY;
+              try {
+                aX = event.clientX - diffX,
+                aY = event.clientY - diffY;
+              } catch (err) {
+                console.log(err);
+              }
+              if (aX < 0) { aX = 0; }
+              if (aY < 0) { aY = 0; }
+              if (aX + eWi > cWi) { aX = cWi - eWi; }
+              if (aY + eHe > cHe) { aY = cHe - eHe; }
+              dragging.move(divid, aX, aY);
+            };
+          },
+          stopMoving (container) {
+            const a = document.createElement("script");
+            document.getElementById(container).style.cursor = "default";
+            // document.onmousemove = function () {};
+            document.onmousemove = undefined;
+          },
+        };
+      }();
+
+      mediaElement.onmousedown = function(event) {
+        dragging.startMoving(this,"videos-container",event);
+      }
+
+      mediaElement.onmouseup  = function(event) {
+        dragging.stopMoving("videos-container")
+      }
+
       setTimeout(function() {
-          (mediaElement as any).media.play();
-      }, 5000);
+        (mediaElement as any).media.play();
+      }, 4000);
 
       mediaElement.id = event.streamid;
+
+      root.streamLoaded(event.userid, event.streamid);
+
     };
 
     this.connection.onstreamended = function(event) {
       var mediaElement = document.getElementById(event.streamid);
       if (mediaElement) {
-          mediaElement.parentNode.removeChild(mediaElement);
+        mediaElement.parentNode.removeChild(mediaElement);
       }
     };
 
@@ -176,7 +262,7 @@ class Broadcaster {
       root.connection.join(useridAlreadyTaken);
     };
 
-    this.postAttach()
+    this.postAttach();
 
   }
 
@@ -197,11 +283,13 @@ class Broadcaster {
   }
 
   private disableInputButtons = function() {
+
     (this.openOrJoinBtn as HTMLInputElement).disabled = true;
     (this.openRoomBtn as HTMLInputElement).disabled = true;
     (this.inputRoomId as HTMLInputElement).disabled = true;
     (this.inputRoomId as HTMLInputElement).disabled = true;
     (this.leaveRoomBtn as HTMLInputElement).disabled = false;
+
   }
 
   private appendDIV = (event) => {
@@ -214,7 +302,7 @@ class Broadcaster {
     document.getElementById('input-text-chat').focus();
   }
 
-  private postAttach () {
+  private postAttach() {
 
     let root = this;
     var roomid = '';
@@ -250,12 +338,12 @@ class Broadcaster {
       // auto-join-room
       (function reCheckRoomPresence() {
         root.connection.checkPresence(roomid, function(isRoomExists) {
-            if (isRoomExists) {
-                root.connection.join(roomid);
-                return;
-            }
+          if (isRoomExists) {
+            root.connection.join(roomid);
+            return;
+          }
 
-            setTimeout(reCheckRoomPresence, 5000);
+          setTimeout(reCheckRoomPresence, 5000);
         });
       })();
 
@@ -367,7 +455,7 @@ class Broadcaster {
         myInstance.popupUI = byId("media-rtc3-controls") as HTMLDivElement;
         myInstance.popupUI.innerHTML = html;
 
-        if (myInstance.showBroadcasterOnInt) {
+        if (myInstance.engineConfig.showBroadcasterOnInt) {
           myInstance.popupUI.style.display = "block"
         } else {
           myInstance.popupUI.style.display = "none"
@@ -376,10 +464,11 @@ class Broadcaster {
         myInstance.initDOM();
         myInstance.attachEvents();
         myInstance.initWebRtc();
+        myInstance.inputRoomId.nodeValue = myInstance.engineConfig.getMasterServerKey();
 
         if (myInstance.engineConfig.getBroadcastAutoConnect()) {
 
-          myInstance.inputRoomId.nodeValue = myInstance.engineConfig.getMasterServerKey();
+          // myInstance.inputRoomId.nodeValue = myInstance.engineConfig.getMasterServerKey();
           myInstance.openOrJoinBtn.click();
         }
 

@@ -32,9 +32,9 @@ class SpriteTextureComponent extends TextureComponent {
   // Override - TextureComponent
   public keepAspectRatio: boolean = true;
 
-  private shema: { byX: number, byY: number };
-  private seqFrameX: Counter;
-  private seqFrameY: Counter;
+  protected shema: { byX: number, byY: number };
+  protected seqFrameX: Counter;
+  protected seqFrameY: Counter;
 
   constructor(name: string, imgRes: string | string[], shema: ISpriteShema) {
 

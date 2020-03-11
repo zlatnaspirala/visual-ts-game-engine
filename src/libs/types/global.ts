@@ -12,11 +12,15 @@ export type worldElement = Matter.MouseConstraint |
   Matter.Body[] |
   Matter.Composite[] |
   Matter.Constraint[];
+
 export type drawableObject = HTMLImageElement | HTMLCanvasElement | HTMLVideoElement | ImageBitmap;
+
 export type imagesResource = HTMLImageElement | HTMLImageElement[];
+
 export type literalImageSrc = string | string[];
 
 export type UniClick = MouseEvent | TouchEvent;
+
 // tslint:disable-next-line:interface-over-type-literal
 export type UniVector = { [key: string]: any };
 

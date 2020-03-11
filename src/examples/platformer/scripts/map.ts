@@ -1,6 +1,5 @@
 import { ICollectionItem, IGamePlayPlatformerMap, IStaticItem, IStaticLabel, ICollectionEnemies } from "../../../libs/interface/global";
 
-import generatedMap from "./packs/map2d"
 /**
  * Static body elements, backgrounds, enemys returns
  * Prepared for next level, 'loading from generated content'
@@ -10,20 +9,21 @@ import generatedMap from "./packs/map2d"
 
 class GameMap implements IGamePlayPlatformerMap {
 
-  private options: any = null;
+  private options: any = {};
   private staticGrounds: IStaticItem [] = [];
   private collectItems: ICollectionItem [] = [];
   private collectEnemies: ICollectionEnemies [] = [];
+  private collectLabels: IStaticLabel [] = [];
 
   constructor(options?: any) {
 
     // Options
     if (typeof options !== 'undefined') {
-      this.options = options;
-    }
 
-    if (typeof generatedMap === 'undefined') return this;
-    this.loadGeneratedMap();
+      this.options.mapPack = options;
+      this.loadGeneratedMap(this.options.mapPack);
+
+    }
 
   }
 
@@ -32,17 +32,19 @@ class GameMap implements IGamePlayPlatformerMap {
    * `generatedMap` is imported. I append generatedMap and object
    * `from code` created in same array.
    */
-  private loadGeneratedMap() {
+  private loadGeneratedMap(gMap) {
 
     const root = this;
-    generatedMap.forEach(function(item) {
+    gMap.forEach(function(item) {
 
-      if (typeof (item as ICollectionItem).colectionLabel !== 'undefined') {
-        root.collectItems.push(item as ICollectionItem);
-      } else if (typeof (item as ICollectionEnemies).enemyLabel !== 'undefined') {
-        root.collectEnemies.push(item as ICollectionEnemies);
+      if (typeof (item  as any | ICollectionItem).colectionLabel !== 'undefined') {
+        root.collectItems.push(item  as any | ICollectionItem);
+      } else if (typeof (item  as any | ICollectionEnemies).enemyLabel !== 'undefined') {
+        root.collectEnemies.push(item  as any | ICollectionEnemies);
+      } else if (typeof (item as any | IStaticLabel).text !== 'undefined') {
+        root.collectLabels.push((item as any));
       } else {
-        root.staticGrounds.push(item);
+        root.staticGrounds.push((item  as any));
       }
 
     });
@@ -141,19 +143,40 @@ class GameMap implements IGamePlayPlatformerMap {
     const img = [require("../imgs/deadlines/flame2.png")];
 
     return [
-      { x: 0, y: 4500, w: 9000, h: 50, tex: img, tiles:   { tilesX: 3, tilesY: 3 }, enemyLabel: "deadline", enemyOptions: "" },
+      { x: 0, y: 2500, w: 9000, h: 50, tex: img, tiles:   { tilesX: 3, tilesY: 3 }, enemyLabel: "deadline", enemyOptions: "" },
     ] as ICollectionEnemies[];
   }
 
   public getStaticBanners(): IStaticLabel[] {
 
-    return [
-      { x: 0, y: -120, w: 400, h: 50, text: "Collect virtual bitcoins", options: { color: "black" }},
-      { x: -120, y: 170, w: 400, h: 150, text: "Welcome `Platformer` social chat app" , options: { color: "black" } },
-      { x: -120, y: 210, w: 400, h: 100, text: "Created with visual ts game engine", options: { color: "black" } },
-      { x: 1000, y: 900, w: 400, h: 100, text: "Run & explore", options: { color: "blue" } },
-      { x: 1400, y: 200, w: 400, h: 100, text: "Love is in the air", options: { color: "red" } },
-    ] as  IStaticLabel[];
+    (this.collectLabels as any).forEach(function(item, i, array) {
+
+      array[i].x = parseFloat(array[i].x);
+      array[i].y = parseFloat(array[i].y);
+      array[i].w = 200.0;
+      array[i].h = 150;
+      if (typeof  array[i].options === "undefined") {
+         array[i].options = {
+           color: "lime",
+           size: 20
+         };
+      }
+      array[i].options.color = (item as any).textColor;
+      array[i].options.size = (item as any).textSize;
+
+    });
+
+    this.collectLabels.push(
+      { x: 0, y: 200, w: 400, h: 150,
+        text: " `Platformer` single player mod ",
+        options: {
+          color: "black",
+          size: 20
+        }
+      },
+    );
+
+    return this.collectLabels as  IStaticLabel[];
   }
 
 }

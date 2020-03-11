@@ -249,9 +249,13 @@ class ConnectorClient {
 
           (window as any).dispatchEvent(appUpdateLivesGamePlay);
 
-          (byId("UIPlayerLives") as HTMLSpanElement).innerText = DEFAULT_PLAYER_DATA.INITIAL_LIVES.toString();
+          if ((byId("UIPlayerLives") as HTMLSpanElement) !== null) {
+            (byId("UIPlayerLives") as HTMLSpanElement).innerText = DEFAULT_PLAYER_DATA.INITIAL_LIVES.toString();
+          }
           (byId("your-name") as HTMLInputElement).value = this.memo.load("nickname");
-          (byId("out-of-game") as HTMLButtonElement).disabled = false;
+          if ((byId("out-of-game") as HTMLButtonElement) !== null) {
+            (byId("out-of-game") as HTMLButtonElement).disabled = false;
+          }
           (byId("continue") as HTMLButtonElement).disabled = false;
           (byId("continue") as HTMLButtonElement).click();
           console.log(" (byId continue as HTMLButtonElement).click(); ");
@@ -343,7 +347,8 @@ class ConnectorClient {
         (byId("user-email") as HTMLInputElement).value = dataReceive.data.user.email;
         (byId("nick-name") as HTMLInputElement).value = dataReceive.data.user.nickname;
         byId("log-out").addEventListener("click", myInstance.logOutFromSession, false);
-        byId("out-of-game").addEventListener("click", myInstance.exitCurrentGame, false);
+        // Disable for now.
+        // byId("out-of-game").addEventListener("click", myInstance.exitCurrentGame, false);
         byId("games-list").addEventListener("click", myInstance.showGamesList, false);
         byId("store-form").addEventListener("click", myInstance.showStore, false);
         byId("set-nickname-profile").addEventListener("click", myInstance.setNewNickName, false);
@@ -410,7 +415,8 @@ class ConnectorClient {
   }
 
   private showGamesList = (e) => {
-    e.preventDefault();
+    console.log("showGamesList");
+    if (e) e.preventDefault();
 
     const myInstance = this;
     fetch("./templates/games-list.html", {
@@ -452,11 +458,13 @@ class ConnectorClient {
 
   private openGamePlayFor = (e) => {
 
+    const myInstance = this;
     e.preventDefault();
 
     const appStartGamePlay = createAppEvent("game-init",
     {
-      game: e.target, // .getAttribute("game"),
+      mapName: "Level1",
+      // game: 'Level1'// myInstance.levelMaps.Level1
     });
 
     (window as any).dispatchEvent(appStartGamePlay);

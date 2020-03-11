@@ -461,7 +461,7 @@ class Network {
         });
       }
 
-      e.mediaElement.style.width = "50%";
+      // e.mediaElement.style.width = "50%";
       root.webCamView.appendChild(e.mediaElement);
 
     };
