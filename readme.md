@@ -27,24 +27,6 @@
   Just clone , install and run in local (client & server). You need to install and run also MongoDB on
   your system. Change flag in databased confimed to the `true` value to skip registration confirmation process.
 
-## Abour visual tools ##
-
- Based on python3 tk tech.It is standalone git project imported like
- git submodule.
-
- https://github.com/zlatnaspirala/creator-2dmap
-
-[Important - About tools setup](https://github.com/zlatnaspirala/visual-ts-game-engine/blob/dev/tools/readme.md)
-
-After setup run python app from cli with command:
-
-```javascript
-  npm run creator
-```
-
-![Creator 2d map](https://github.com/zlatnaspirala/visual-ts-game-engine/blob/dev/nonproject-files/creator2dmap.png)
-
-
 ## Client part ##
 
 #### To make all dependency works in build proccess we need some plugins. ####
@@ -698,6 +680,25 @@ or use :
   tslint -c tslint.json 'src/**/*.ts' --fix
   tslint -c tslint.json 'src/**/*.ts'
 ```
+
+
+## Abour visual tools ##
+
+ Based on python3 tk tech.It is standalone git project imported like
+ git submodule.
+
+ https://github.com/zlatnaspirala/creator-2dmap
+
+[Important - About tools setup](https://github.com/zlatnaspirala/visual-ts-game-engine/blob/dev/tools/readme.md)
+
+After setup run python app from cli with command:
+
+```javascript
+  npm run creator
+```
+
+![Creator 2d map](https://github.com/zlatnaspirala/visual-ts-game-engine/blob/dev/nonproject-files/creator2dmap.png)
+
 
 ## Licence ##
 
