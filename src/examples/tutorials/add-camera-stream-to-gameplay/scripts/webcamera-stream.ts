@@ -1,25 +1,25 @@
 
 import Matter = require("matter-js");
-import { byId, createAppEvent, htmlHeader } from "../../../libs/class/system";
-import SpriteTextureComponent from "../../../libs/class/visual-methods/sprite-animation";
-import { DEFAULT_GAMEPLAY_ROLES, DEFAULT_PLAYER_DATA } from "../../../libs/defaults";
-import { IGamePlayModel, IPoint, ISelectedPlayer } from "../../../libs/interface/global";
-import Starter from "../../../libs/starter";
-import { UniVector, worldElement } from "../../../libs/types/global";
-import Level1 from "../scripts/packs/BasketBallChat-level1";
+import { byId, createAppEvent, htmlHeader } from "../../../../libs/class/system";
+import SpriteTextureComponent from "../../../../libs/class/visual-methods/sprite-animation";
+import { DEFAULT_GAMEPLAY_ROLES, DEFAULT_PLAYER_DATA } from "../../../../libs/defaults";
+import { IGamePlayModel, IPoint, ISelectedPlayer } from "../../../../libs/interface/global";
+import Starter from "../../../../libs/starter";
+import { UniVector, worldElement } from "../../../../libs/types/global";
+import Level1 from "./packs/BasketBallChat-level1";
 
 // Prepare audios
 // require("../audios/map-themes/mishief-stroll.mp4");
 import "../audios/map-themes/mishief-stroll.mp4";
 
-import Network from "../../../libs/class/networking/network";
-import SpriteStreamComponent from "../../../libs/class/visual-methods/sprite-stream";
-import TextureStreamComponent from "../../../libs/class/visual-methods/texture-stream";
+import Network from "../../../../libs/class/networking/network";
+import SpriteStreamComponent from "../../../../libs/class/visual-methods/sprite-stream";
+import TextureStreamComponent from "../../../../libs/class/visual-methods/texture-stream";
 // import { DEFAULT_PLAYER_DATA } from "../../../libs/defaults";
 
 /**
  * @author Nikola Lukic
- * @class Basket Ball Chat Multiplayer Solution.
+ * @class Webcamera basic stream example.
  * @param Starter
  * @description This is game logic part
  * we stil use class based methodology.

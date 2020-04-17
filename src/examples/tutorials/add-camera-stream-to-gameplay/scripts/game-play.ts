@@ -1,43 +1,44 @@
-import * as Matter from "matter-js";
-import BotBehavior from "../../../libs/class/bot-behavior";
-import Network from "../../../libs/class/networking/network";
-import { byId } from "../../../libs/class/system";
-import SpriteTextureComponent from "../../../libs/class/visual-methods/sprite-animation";
-import TextComponent from "../../../libs/class/visual-methods/text";
-import TextureComponent from "../../../libs/class/visual-methods/texture";
-import { DEFAULT_GAMEPLAY_ROLES, DEFAULT_RENDER_BOUNDS } from "../../../libs/defaults";
-import { IMultiplayer } from "../../../libs/interface/global";
-import Starter from "../../../libs/starter";
-import { worldElement } from "../../../libs/types/global";
+
+import Matter = require("matter-js");
+import BotBehavior from "../../../../libs/class/bot-behavior";
+import Broadcaster from "../../../../libs/class/networking/broadcaster";
+import { byId } from "../../../../libs/class/system";
+import SpriteTextureComponent from "../../../../libs/class/visual-methods/sprite-animation";
+import TextComponent from "../../../../libs/class/visual-methods/text";
+import TextureComponent from "../../../../libs/class/visual-methods/texture";
+import { DEFAULT_GAMEPLAY_ROLES, DEFAULT_RENDER_BOUNDS } from "../../../../libs/defaults";
+import { IMultiplayer } from "../../../../libs/interface/global";
+import Starter from "../../../../libs/starter";
+import { worldElement } from "../../../../libs/types/global";
 import GameMap from "./map";
-import Level1 from "./packs/level1";
-import Platformer from "./Platformer";
+import Level1 from "./packs/BasketBallChat-level1";
+import BasketBallChat from "./webcamera-stream";
 
 /**
  * @description Finally game start at here
- * @function level1
+ * @function Handling muliplayer part and manage whole gam play.
  * @return void
  */
-class GamePlay extends Platformer implements IMultiplayer {
+class GamePlay extends BasketBallChat implements IMultiplayer {
 
   public multiPlayerRef: any = {
     root: this,
-    init: function (rtcEvent) {
+    init (rtcEvent) {
 
       console.log("rtcEvent addNewPlayer: ", rtcEvent);
       this.root.addNetPlayer(this.root, rtcEvent);
 
     },
 
-    update: function (multiplayer) {
+    update (multiplayer) {
 
       if (multiplayer.data.netPos) {
 
-        Matter.Body.setPosition(this.root.netBodies["netObject_" + multiplayer.userid], { x: multiplayer.data.netPos.x, y: multiplayer.data.netPos.y })
+        Matter.Body.setPosition(this.root.netBodies["netObject_" + multiplayer.userid], { x: multiplayer.data.netPos.x, y: multiplayer.data.netPos.y });
 
         Matter.Body.setAngle(
           this.root.netBodies["netObject_" + multiplayer.userid],
-          -Math.PI * 0
+          -Math.PI * 0,
         );
 
         if (multiplayer.data.netDir) {
@@ -47,7 +48,6 @@ class GamePlay extends Platformer implements IMultiplayer {
             this.root.netBodies["netObject_" + multiplayer.userid].render.visualComponent.setHorizontalFlip(true);
           }
         }
-
 
       } else if (multiplayer.data.noMoreLives === true) {
         // What to do with gameplay ?!
@@ -63,7 +63,6 @@ class GamePlay extends Platformer implements IMultiplayer {
 
       }
 
-
     },
 
     /**
@@ -71,31 +70,37 @@ class GamePlay extends Platformer implements IMultiplayer {
      * - remove from scene
      * - clear object from netObject_x
      */
-    leaveGamePlay: function (rtcEvent) {
+    leaveGamePlay (rtcEvent) {
 
       console.info("rtcEvent LEAVE GAME: ", rtcEvent.userid);
       this.root.starter.destroyBody(this.root.netBodies["netObject_" + rtcEvent.userid]);
       delete this.root.netBodies["netObject_" + rtcEvent.userid];
 
-    }
+    },
 
   };
 
-  private gamePlayWelcomeNote: string = "This application was created on visual-ts <br/>\
-                                         Example: Real time multiplayer `Platformer` zlatnaspirala@gmail.com <br/>\
-                                         General: MIT License <br/>\
-                                         Copyright (c) 2019 Nikola Lukic zlatnaspirala@gmail.com Serbia Nis <br/>\
-                                         Except: Folder src/libs with licence: <br/>\
-                                         GNU LESSER GENERAL PUBLIC LICENSE Version 3 <br/>\
-                                         Copyright (c) 2019 maximumroulette.com ";
+  public broadcaster: Broadcaster;
 
   /**
    * @description deadZoneForBottom Definition and Default value
    * - overrided from map or map2d(generated) by deadLines object
    * DeadLines object. In future Can be used for enemy static action;
-   * */
+   */
   private deadZoneForBottom: number  = DEFAULT_GAMEPLAY_ROLES.MAP_MARGIN_BOTTOM;
   private deadZoneForRight: number  = DEFAULT_GAMEPLAY_ROLES.MAP_MARGIN_RIGHT;
+
+  // Basket Ball Chat
+  // Modification for new game
+  // add bodies
+  private ground;
+  private rockOptions;
+  private rock;
+  private anchor;
+  private elastic;
+  private pyramid;
+  private ground2;
+  private pyramid2;
 
   constructor(starter: Starter) {
 
@@ -114,9 +119,10 @@ class GamePlay extends Platformer implements IMultiplayer {
     // check this with config flag
     this.network = starter.ioc.get.Network;
     this.network.injector = this.multiPlayerRef;
+    this.broadcaster = starter.ioc.get.Broadcaster;
 
     // MessageBox
-    this.starter.ioc.get.MessageBox.show(this.gamePlayWelcomeNote);
+    // this.starter.ioc.get.MessageBox.show(this.gamePlayWelcomeNote);
 
   }
 
@@ -135,8 +141,10 @@ class GamePlay extends Platformer implements IMultiplayer {
 
         } else if ((e as any).detail &&
                   (e as any).detail.data.game === null ) {
+
           console.info("game-init Player spawn. data.game === null");
           myInstance.starter.ioc.get.Network.connector.startNewGame(myInstance.gameName);
+          myInstance.broadcaster.openOrJoinBtn.click();
 
           myInstance.initSelectPlayer();
           myInstance.selectPlayer("nidzica");
@@ -151,6 +159,8 @@ class GamePlay extends Platformer implements IMultiplayer {
 
         // How to access netwoking
         myInstance.starter.ioc.get.Network.connector.startNewGame(myInstance.gameName);
+        myInstance.broadcaster.openOrJoinBtn.click();
+
         myInstance.load((e as any).detail.data.game);
         console.info("Player spawn. game-init .startNewGame");
       } catch (err) { console.error("Very bad #00001", err); }
@@ -185,20 +195,44 @@ class GamePlay extends Platformer implements IMultiplayer {
 
     });
 
+    window.addEventListener("stream-loaded", function (e) {
+
+      try {
+
+        let mediaDom = byId((e as CustomEvent).detail.data.streamId);
+        mediaDom = mediaDom.getElementsByTagName("video")[0];
+
+        console.info("Loaded stream: ", byId((e as CustomEvent).detail.data.streamId));
+        console.info("Loaded stream: ", mediaDom);
+
+        (myInstance as any).selectedPlayer.setCurrentTile("stream");
+        (myInstance.player as any).render.visualComponent.setNewShema((myInstance as any).selectedPlayer);
+        (myInstance.player as any).render.visualComponent.assets.SeqFrame.setNewSeqFrameRegimeType("CONST");
+        (myInstance.player as any).render.visualComponent.seqFrameX.regimeType = "CONST";
+        (myInstance.player as any).render.visualComponent.seqFrameY.regimeType = "CONST";
+        (myInstance.player as any).render.visualComponent.assets.SeqFrame.value = 3;
+
+        (myInstance.player as any).render.visualComponent.setStreamTexture(mediaDom);
+        console.log("Stream added.");
+
+      } catch (err) { console.error("Very bad #00004", err); }
+
+    });
+
   }
 
   private deattachMatterEvents() {
     Matter.Events.off(this.starter.getEngine(), undefined, undefined);
   }
 
-
   private overrideOnKeyDown = () => {
 
-    var testRoot = this;
+    let testRoot = this;
 
     if (typeof testRoot.player === "undefined" || testRoot.player === null) { return; }
     const vc = testRoot.player.render.visualComponent;
-    if (vc.assets.SeqFrame.getValue() === 0) {
+    if (vc.assets.SeqFrame.getValue() === 0 ||
+        testRoot.selectedPlayer.spriteTileCurrent === "stream") {
       return;
     }
 
@@ -209,13 +243,16 @@ class GamePlay extends Platformer implements IMultiplayer {
 
   }
 
-  private overrideOnKeyUp= () => {
+  private overrideOnKeyUp = () => {
 
-    var testRoot = this;
+    const testRoot = this;
 
-    if (typeof testRoot.player === "undefined" || testRoot.player === null) { return; }
+    if (typeof testRoot.player === "undefined" || testRoot.player === null) {
+      return;
+    }
     const vc = testRoot.player.render.visualComponent;
-    if (vc.assets.SeqFrame.getValue() === 2) {
+    if (vc.assets.SeqFrame.getValue() === 0 ||
+        testRoot.selectedPlayer.spriteTileCurrent === "stream") {
       return;
     }
     testRoot.selectedPlayer.setCurrentTile("idle");
@@ -240,7 +277,11 @@ class GamePlay extends Platformer implements IMultiplayer {
       test.patrol();
     });
 
-    Matter.Events.on(this.starter.getEngine(), "beforeUpdate", function (event) {
+    Matter.Events.on(this.starter.getEngine(), "afterUpdate", function () {
+
+    });
+
+    Matter.Events.on(this.starter.getEngine(), "beforeUpdate", function () {
 
       if (!root.player) { return; }
 
@@ -254,16 +295,19 @@ class GamePlay extends Platformer implements IMultiplayer {
 
         Matter.Bounds.shift(root.starter.getRender().bounds,
         {
-          x: root.player.position.x - root.starter.getRender().options.width / 1.5,
-          y: root.player.position.y- root.starter.getRender().options.height / 1.5,
+          x: root.player.position.x - root.starter.getRender().options.width / 1.3,
+          y: root.player.position.y - root.starter.getRender().options.height / 1.3,
         });
 
         if (root.player.velocity.x < 0.00001 && root.player.velocity.y == 0 &&
-          root.player.currentDir == "idle" ) {
+          // tslint:disable-next-line: no-empty
+          root.player.currentDir === "idle" ) {
+            // empty
         } else {
+          // console.log(" root.network.rtcMultiConnection.send({  ", root.network.rtcMultiConnection.send );
           root.network.rtcMultiConnection.send({
             netPos: root.player.position,
-            netDir: root.player.currentDir
+            netDir: root.player.currentDir,
           });
         }
 
@@ -287,7 +331,7 @@ class GamePlay extends Platformer implements IMultiplayer {
       root.collisionCheck(event, false);
     });
 
-    Matter.Events.on(this.starter.getEngine(), "afterTick", function (event) {
+    Matter.Events.on(this.starter.getEngine(), "afterTick", function () {
 
       if (!root.player) { return; }
       // jump
@@ -304,7 +348,7 @@ class GamePlay extends Platformer implements IMultiplayer {
 
       } else if (globalEvent.activeKey[37] && root.player.angularVelocity > -limit) {
 
-        root.player.render.visualComponent.setHorizontalFlip(false);
+        root.player.render.visualComponent.setHorizontalFlip(true);
         root.player.force = {
           x: -playerSpeed,
           y: 0,
@@ -314,7 +358,7 @@ class GamePlay extends Platformer implements IMultiplayer {
 
       } else if (globalEvent.activeKey[39] && root.player.angularVelocity < limit) {
 
-        root.player.render.visualComponent.setHorizontalFlip(true);
+        root.player.render.visualComponent.setHorizontalFlip(false);
         root.player.force = {
           x: playerSpeed,
           y: 0,
@@ -332,7 +376,6 @@ class GamePlay extends Platformer implements IMultiplayer {
 
   }
 
-
   private load(mapPack?): void {
 
     const root = this;
@@ -340,9 +383,6 @@ class GamePlay extends Platformer implements IMultiplayer {
     if (typeof mapPack === "undefined") {
       mapPack = Level1;
     }
-
-    // HARDCODE Test
-    // mapPack = Level6;
 
     const gameMap: GameMap = new GameMap(mapPack);
 
@@ -355,8 +395,22 @@ class GamePlay extends Platformer implements IMultiplayer {
       root.deadZoneForRight,
       root.deadZoneForBottom);
 
+    this.starter.setRenderView( 1200,  600);
+
+    this.starter.getRender().controller.lookAt(this.starter.getRender(), {
+      min: {
+        x: 0,
+        y: 0,
+      },
+      max: {
+        x: 1200,
+        y: 600,
+      },
+    });
+
     this.playerSpawn(false);
 
+    /*
     gameMap.getStaticBackgrounds().forEach((item) => {
 
       const newStaticElement: worldElement = Matter.Bodies.rectangle(item.x, item.y, item.w, item.h,
@@ -378,6 +432,7 @@ class GamePlay extends Platformer implements IMultiplayer {
         setHorizontalTiles(item.tiles.tilesX);
 
     });
+    */
 
     gameMap.getStaticGrounds().forEach((item) => {
 
@@ -479,7 +534,6 @@ class GamePlay extends Platformer implements IMultiplayer {
 
       let enemySprite;
 
-
       root.deadZoneForBottom = item.y;
 
       enemySprite = new SpriteTextureComponent("deadline", item.tex, { byX: item.tiles.tilesX, byY: item.tiles.tilesY });
@@ -539,6 +593,8 @@ class GamePlay extends Platformer implements IMultiplayer {
     this.starter.AddNewBodies(this.enemys as worldElement);
     this.starter.AddNewBodies(this.deadLines as worldElement);
     this.starter.AddNewBodies(this.player as worldElement);
+    // this.starter.AddNewBodies(
+      // [this.ground, this.pyramid, this.ground2, this.pyramid2, this.rock, this.elastic] as worldElement);
     this.starter.AddNewBodies(this.labels as worldElement);
     this.attachMatterEvents();
 

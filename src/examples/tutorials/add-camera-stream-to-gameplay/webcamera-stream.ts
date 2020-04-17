@@ -1,13 +1,12 @@
 /**
  * Import global css
  */
-require("./style/animations.css");
-require("./style/styles.css");
+require("../../../style/animations.css");
+require("../../../style/styles.css");
 
-import AppIcon from "./app-icon";
-import GamePlay from "./examples/platformer-single-player/scripts/game-play";
-// tslint:disable-next-line: ordered-imports
-import Ioc from "./controllers/ioc-single-player";
+import AppIcon from "../../../app-icon";
+import Ioc from "../../../controllers/ioc";
+import GamePlay from "./scripts/game-play";
 
 /**
  * plarformerGameInfo
@@ -15,19 +14,19 @@ import Ioc from "./controllers/ioc-single-player";
  * html-components are on the same level with app.ts
  * Put any parameters here.
  */
-const plarformerGameInfo = {
-  name: "Platformer Single Player",
-  title: "Start Single Platformer game",
+const gameInfo = {
+  name: "Web camera stream example",
+  title: "Add webcamera-stream example to the game play. Networking - npm run rtc",
 };
 
 const gamesList: any[] = [
-  plarformerGameInfo,
+  gameInfo,
 ];
 
 const master = new Ioc(gamesList);
 const appIcon: AppIcon = new AppIcon(master.get.Browser);
 master.singlton(GamePlay, master.get.Starter);
-console.log("Platformer single player: ", master.get.GamePlay);
+console.log("root: ", master.get.GamePlay);
 
 master.get.GamePlay.attachAppEvents();
 

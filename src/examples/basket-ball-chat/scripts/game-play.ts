@@ -1,17 +1,17 @@
 import * as Matter from "matter-js";
 import BotBehavior from "../../../libs/class/bot-behavior";
+import Broadcaster from "../../../libs/class/networking/broadcaster";
 import { byId } from "../../../libs/class/system";
 import SpriteTextureComponent from "../../../libs/class/visual-methods/sprite-animation";
 import TextComponent from "../../../libs/class/visual-methods/text";
 import TextureComponent from "../../../libs/class/visual-methods/texture";
+import { DEFAULT_GAMEPLAY_ROLES, DEFAULT_RENDER_BOUNDS } from "../../../libs/defaults";
+import { IMultiplayer } from "../../../libs/interface/global";
 import Starter from "../../../libs/starter";
 import { worldElement } from "../../../libs/types/global";
-import { IMultiplayer } from "../../../libs/interface/global";
 import Level1 from "../scripts/packs/BasketBallChat-level1";
-import { DEFAULT_GAMEPLAY_ROLES, DEFAULT_RENDER_BOUNDS } from "../../../libs/defaults";
-import GameMap from "./map";
 import BasketBallChat from "./basketBallChat";
-import Broadcaster from "../../../libs/class/networking/broadcaster";
+import GameMap from "./map";
 
 /**
  * @description Finally game start at here
@@ -20,32 +20,24 @@ import Broadcaster from "../../../libs/class/networking/broadcaster";
  */
 class GamePlay extends BasketBallChat implements IMultiplayer {
 
-  /**
-   * @description deadZoneForBottom Definition and Default value
-   * - overrided from map or map2d(generated) by deadLines object
-   * DeadLines object. In future Can be used for enemy static action;
-   * */
-  private deadZoneForBottom: number  = DEFAULT_GAMEPLAY_ROLES.MAP_MARGIN_BOTTOM;
-  private deadZoneForRight: number  = DEFAULT_GAMEPLAY_ROLES.MAP_MARGIN_RIGHT;
-
   public multiPlayerRef: any = {
     root: this,
-    init: function (rtcEvent) {
+    init (rtcEvent) {
 
       console.log("rtcEvent addNewPlayer: ", rtcEvent);
       this.root.addNetPlayer(this.root, rtcEvent);
 
     },
 
-    update: function (multiplayer) {
+    update (multiplayer) {
 
       if (multiplayer.data.netPos) {
 
-        Matter.Body.setPosition(this.root.netBodies["netObject_" + multiplayer.userid], { x: multiplayer.data.netPos.x, y: multiplayer.data.netPos.y })
+        Matter.Body.setPosition(this.root.netBodies["netObject_" + multiplayer.userid], { x: multiplayer.data.netPos.x, y: multiplayer.data.netPos.y });
 
         Matter.Body.setAngle(
           this.root.netBodies["netObject_" + multiplayer.userid],
-          -Math.PI * 0
+          -Math.PI * 0,
         );
 
         if (multiplayer.data.netDir) {
@@ -55,7 +47,6 @@ class GamePlay extends BasketBallChat implements IMultiplayer {
             this.root.netBodies["netObject_" + multiplayer.userid].render.visualComponent.setHorizontalFlip(true);
           }
         }
-
 
       } else if (multiplayer.data.noMoreLives === true) {
         // What to do with gameplay ?!
@@ -71,7 +62,6 @@ class GamePlay extends BasketBallChat implements IMultiplayer {
 
       }
 
-
     },
 
     /**
@@ -79,15 +69,25 @@ class GamePlay extends BasketBallChat implements IMultiplayer {
      * - remove from scene
      * - clear object from netObject_x
      */
-    leaveGamePlay: function (rtcEvent) {
+    leaveGamePlay (rtcEvent) {
 
       console.info("rtcEvent LEAVE GAME: ", rtcEvent.userid);
       this.root.starter.destroyBody(this.root.netBodies["netObject_" + rtcEvent.userid]);
       delete this.root.netBodies["netObject_" + rtcEvent.userid];
 
-    }
+    },
 
   };
+
+  public broadcaster: Broadcaster;
+
+  /**
+   * @description deadZoneForBottom Definition and Default value
+   * - overrided from map or map2d(generated) by deadLines object
+   * DeadLines object. In future Can be used for enemy static action;
+   */
+  private deadZoneForBottom: number  = DEFAULT_GAMEPLAY_ROLES.MAP_MARGIN_BOTTOM;
+  private deadZoneForRight: number  = DEFAULT_GAMEPLAY_ROLES.MAP_MARGIN_RIGHT;
 
   // Basket Ball Chat
   // Modification for new game
@@ -100,8 +100,6 @@ class GamePlay extends BasketBallChat implements IMultiplayer {
   private pyramid;
   private ground2;
   private pyramid2;
-
-  public broadcaster: Broadcaster;
 
   constructor(starter: Starter) {
 
@@ -131,7 +129,7 @@ class GamePlay extends BasketBallChat implements IMultiplayer {
 
     const myInstance = this;
 
-    window.addEventListener("game-init", function(e) {
+    window.addEventListener("game-init", function (e) {
 
       try {
         if ((e as any).detail &&
@@ -168,7 +166,7 @@ class GamePlay extends BasketBallChat implements IMultiplayer {
 
     });
 
-    window.addEventListener("game-end", function(e) {
+    window.addEventListener("game-end", function (e) {
 
       try {
         if ((e as any).detail &&
@@ -196,32 +194,25 @@ class GamePlay extends BasketBallChat implements IMultiplayer {
 
     });
 
-    window.addEventListener("stream-loaded", function(e) {
+    window.addEventListener("stream-loaded", function (e) {
 
       try {
 
-        var mediaDom = byId((e as CustomEvent).detail.data.streamId);
+        let mediaDom = byId((e as CustomEvent).detail.data.streamId);
         mediaDom = mediaDom.getElementsByTagName("video")[0];
 
         console.info("Loaded stream: ", byId((e as CustomEvent).detail.data.streamId));
         console.info("Loaded stream: ", mediaDom);
 
-        (myInstance as any).selectedPlayer.setCurrentTile("run");
+        (myInstance as any).selectedPlayer.setCurrentTile("stream");
         (myInstance.player as any).render.visualComponent.setNewShema((myInstance as any).selectedPlayer);
-
-        // (myInstance.player as any).render.visualComponent.assets.SeqFrame.setNewValue(1);
-        // (myInstance.player as any).render.visualComponent.seqFrameX.setDelay(8);
-         (myInstance.player as any).render.visualComponent.assets.SeqFrame.setNewSeqFrameRegimeType("CONST");
-         (myInstance.player as any).render.visualComponent.seqFrameX.regimeType = "CONST";
-         (myInstance.player as any).render.visualComponent.seqFrameY.regimeType = "CONST";
-        //  (myInstance.player as any).render.visualComponent.assets.SeqFrame.value = 2;
-         (myInstance.player as any).render.visualComponent.assets.SeqFrame.value = 0;
-         (myInstance.player as any).render.visualComponent.seqFrameY.value = 0;
-         (myInstance.player as any).render.visualComponent.seqFrameX.value = 0;
-        console.log("COOOLl");
+        (myInstance.player as any).render.visualComponent.assets.SeqFrame.setNewSeqFrameRegimeType("CONST");
+        (myInstance.player as any).render.visualComponent.seqFrameX.regimeType = "CONST";
+        (myInstance.player as any).render.visualComponent.seqFrameY.regimeType = "CONST";
+        (myInstance.player as any).render.visualComponent.assets.SeqFrame.value = 3;
 
         (myInstance.player as any).render.visualComponent.setStreamTexture(mediaDom);
-
+        console.log("Stream added.");
 
       } catch (err) { console.error("Very bad #00004", err); }
 
@@ -235,7 +226,7 @@ class GamePlay extends BasketBallChat implements IMultiplayer {
 
   private overrideOnKeyDown = () => {
 
-    var testRoot = this;
+    let testRoot = this;
 
     if (typeof testRoot.player === "undefined" || testRoot.player === null) { return; }
     const vc = testRoot.player.render.visualComponent;
@@ -251,15 +242,15 @@ class GamePlay extends BasketBallChat implements IMultiplayer {
 
   }
 
-  private overrideOnKeyUp= () => {
+  private overrideOnKeyUp = () => {
 
-    var testRoot = this;
+    const testRoot = this;
 
     if (typeof testRoot.player === "undefined" || testRoot.player === null) {
       return;
     }
     const vc = testRoot.player.render.visualComponent;
-    if (vc.assets.SeqFrame.getValue() === 2 ||
+    if (vc.assets.SeqFrame.getValue() === 0 ||
         testRoot.selectedPlayer.spriteTileCurrent === "stream") {
       return;
     }
@@ -285,8 +276,7 @@ class GamePlay extends BasketBallChat implements IMultiplayer {
       test.patrol();
     });
 
-
-    Matter.Events.on(this.starter.getEngine(), 'afterUpdate', function() {
+    Matter.Events.on(this.starter.getEngine(), "afterUpdate", function () {
 
     });
 
@@ -305,16 +295,18 @@ class GamePlay extends BasketBallChat implements IMultiplayer {
         Matter.Bounds.shift(root.starter.getRender().bounds,
         {
           x: root.player.position.x - root.starter.getRender().options.width / 1.3,
-          y: root.player.position.y- root.starter.getRender().options.height / 1.3,
+          y: root.player.position.y - root.starter.getRender().options.height / 1.3,
         });
 
         if (root.player.velocity.x < 0.00001 && root.player.velocity.y == 0 &&
-          root.player.currentDir == "idle" ) {
+          // tslint:disable-next-line: no-empty
+          root.player.currentDir === "idle" ) {
+            // empty
         } else {
           // console.log(" root.network.rtcMultiConnection.send({  ", root.network.rtcMultiConnection.send );
           root.network.rtcMultiConnection.send({
             netPos: root.player.position,
-            netDir: root.player.currentDir
+            netDir: root.player.currentDir,
           });
         }
 
@@ -404,7 +396,7 @@ class GamePlay extends BasketBallChat implements IMultiplayer {
 
     this.starter.setRenderView( 1200,  600);
 
-     this.starter.getRender().controller.lookAt(this.starter.getRender(), {
+    this.starter.getRender().controller.lookAt(this.starter.getRender(), {
       min: {
         x: 0,
         y: 0,
@@ -540,7 +532,6 @@ class GamePlay extends BasketBallChat implements IMultiplayer {
     gameMap.getDeadLines().forEach((item) => {
 
       let enemySprite;
-
 
       root.deadZoneForBottom = item.y;
 
