@@ -12,14 +12,14 @@ import Starter from "../../../../libs/starter";
 import { worldElement } from "../../../../libs/types/global";
 import GameMap from "./map";
 import Level1 from "./packs/BasketBallChat-level1";
-import BasketBallChat from "./webcamera-stream";
+import WebCamStream from "./webcamera-stream";
 
 /**
  * @description Finally game start at here
  * @function Handling muliplayer part and manage whole gam play.
  * @return void
  */
-class GamePlay extends BasketBallChat implements IMultiplayer {
+class GamePlay extends WebCamStream implements IMultiplayer {
 
   public multiPlayerRef: any = {
     root: this,
@@ -227,7 +227,7 @@ class GamePlay extends BasketBallChat implements IMultiplayer {
 
   private overrideOnKeyDown = () => {
 
-    let testRoot = this;
+    const testRoot = this;
 
     if (typeof testRoot.player === "undefined" || testRoot.player === null) { return; }
     const vc = testRoot.player.render.visualComponent;
@@ -278,7 +278,7 @@ class GamePlay extends BasketBallChat implements IMultiplayer {
     });
 
     Matter.Events.on(this.starter.getEngine(), "afterUpdate", function () {
-
+      // empty
     });
 
     Matter.Events.on(this.starter.getEngine(), "beforeUpdate", function () {
@@ -299,7 +299,7 @@ class GamePlay extends BasketBallChat implements IMultiplayer {
           y: root.player.position.y - root.starter.getRender().options.height / 1.3,
         });
 
-        if (root.player.velocity.x < 0.00001 && root.player.velocity.y == 0 &&
+        if (root.player.velocity.x < 0.00001 && root.player.velocity.y === 0 &&
           // tslint:disable-next-line: no-empty
           root.player.currentDir === "idle" ) {
             // empty

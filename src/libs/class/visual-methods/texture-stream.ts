@@ -25,7 +25,7 @@ class TextureStreamComponent implements IVisualComponent {
 
   constructor(name: string, imgRes: string | string[], streamTex?: any) {
 
-    if (typeof streamTex !== 'undefined') {
+    if (typeof streamTex !== "undefined") {
       this.streamTexture = streamTex;
     }
 
@@ -71,9 +71,8 @@ class TextureStreamComponent implements IVisualComponent {
               originW,
               originH,
               this.horizontalFlip,
-              this.verticalFlip
+              this.verticalFlip,
             );
-
 
           } else {
 
@@ -83,11 +82,10 @@ class TextureStreamComponent implements IVisualComponent {
               originW,
               originH,
               this.horizontalFlip,
-              this.verticalFlip
+              this.verticalFlip,
             );
 
            }
-
 
         }
       }
@@ -98,7 +96,7 @@ class TextureStreamComponent implements IVisualComponent {
       this.assets.getImg().width * part.render.sprite.xScale,
       this.assets.getImg().height * part.render.sprite.yScale,
       this.horizontalFlip,
-      this.verticalFlip
+      this.verticalFlip,
     );
     }
 

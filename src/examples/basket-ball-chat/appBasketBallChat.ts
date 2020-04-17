@@ -5,8 +5,8 @@ require("../../style/animations.css");
 require("../../style/styles.css");
 
 import AppIcon from "../../app-icon";
-import GamePlay from "./scripts/game-play";
 import Ioc from "../../controllers/ioc";
+import GamePlay from "./scripts/game-play";
 
 /**
  * plarformerGameInfo

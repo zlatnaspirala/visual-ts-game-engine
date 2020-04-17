@@ -1,20 +1,16 @@
 
 import Matter = require("matter-js");
+// Prepare audios require("../audios/map-themes/mishief-stroll.mp4");
+import Network from "../../../../libs/class/networking/network";
 import { byId, createAppEvent, htmlHeader } from "../../../../libs/class/system";
 import SpriteTextureComponent from "../../../../libs/class/visual-methods/sprite-animation";
+import SpriteStreamComponent from "../../../../libs/class/visual-methods/sprite-stream";
 import { DEFAULT_GAMEPLAY_ROLES, DEFAULT_PLAYER_DATA } from "../../../../libs/defaults";
 import { IGamePlayModel, IPoint, ISelectedPlayer } from "../../../../libs/interface/global";
 import Starter from "../../../../libs/starter";
 import { UniVector, worldElement } from "../../../../libs/types/global";
 import Level1 from "./packs/BasketBallChat-level1";
-
-// Prepare audios
-// require("../audios/map-themes/mishief-stroll.mp4");
-import "../audios/map-themes/mishief-stroll.mp4";
-
-import Network from "../../../../libs/class/networking/network";
-import SpriteStreamComponent from "../../../../libs/class/visual-methods/sprite-stream";
-import TextureStreamComponent from "../../../../libs/class/visual-methods/texture-stream";
+// import TextureStreamComponent from "../../../../libs/class/visual-methods/texture-stream";
 // import { DEFAULT_PLAYER_DATA } from "../../../libs/defaults";
 
 /**
@@ -26,7 +22,7 @@ import TextureStreamComponent from "../../../../libs/class/visual-methods/textur
  * About resource we use require
  */
 
-class BasketBallChat implements IGamePlayModel {
+class WebCamStream implements IGamePlayModel {
 
   public gameName: string = "Basket Ball chat";
   public version: number = 0.2;
@@ -378,14 +374,13 @@ class BasketBallChat implements IGamePlayModel {
 
   public setStreamTexture(texStream: HTMLVideoElement) {
     (this.player as any).render.visualComponent.setStreamTexture(texStream);
-
   }
 
   protected selectPlayer(labelName: string = "nidzica") {
 
     const root = this;
     this.selectPlayerArray.forEach((element) => {
-      if (element.labelName == labelName) {
+      if (element.labelName === labelName) {
         root.selectedPlayer = element;
       }
     });
@@ -505,4 +500,4 @@ class BasketBallChat implements IGamePlayModel {
   }
 
 }
-export default BasketBallChat;
+export default WebCamStream;

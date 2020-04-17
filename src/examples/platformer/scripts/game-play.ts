@@ -22,22 +22,22 @@ class GamePlay extends Platformer implements IMultiplayer {
 
   public multiPlayerRef: any = {
     root: this,
-    init: function (rtcEvent) {
+    init (rtcEvent) {
 
       console.log("rtcEvent addNewPlayer: ", rtcEvent);
       this.root.addNetPlayer(this.root, rtcEvent);
 
     },
 
-    update: function (multiplayer) {
+    update (multiplayer) {
 
       if (multiplayer.data.netPos) {
 
-        Matter.Body.setPosition(this.root.netBodies["netObject_" + multiplayer.userid], { x: multiplayer.data.netPos.x, y: multiplayer.data.netPos.y })
+        Matter.Body.setPosition(this.root.netBodies["netObject_" + multiplayer.userid], { x: multiplayer.data.netPos.x, y: multiplayer.data.netPos.y });
 
         Matter.Body.setAngle(
           this.root.netBodies["netObject_" + multiplayer.userid],
-          -Math.PI * 0
+          -Math.PI * 0,
         );
 
         if (multiplayer.data.netDir) {
@@ -47,7 +47,6 @@ class GamePlay extends Platformer implements IMultiplayer {
             this.root.netBodies["netObject_" + multiplayer.userid].render.visualComponent.setHorizontalFlip(true);
           }
         }
-
 
       } else if (multiplayer.data.noMoreLives === true) {
         // What to do with gameplay ?!
@@ -63,7 +62,6 @@ class GamePlay extends Platformer implements IMultiplayer {
 
       }
 
-
     },
 
     /**
@@ -71,13 +69,13 @@ class GamePlay extends Platformer implements IMultiplayer {
      * - remove from scene
      * - clear object from netObject_x
      */
-    leaveGamePlay: function (rtcEvent) {
+    leaveGamePlay (rtcEvent) {
 
       console.info("rtcEvent LEAVE GAME: ", rtcEvent.userid);
       this.root.starter.destroyBody(this.root.netBodies["netObject_" + rtcEvent.userid]);
       delete this.root.netBodies["netObject_" + rtcEvent.userid];
 
-    }
+    },
 
   };
 
@@ -93,7 +91,7 @@ class GamePlay extends Platformer implements IMultiplayer {
    * @description deadZoneForBottom Definition and Default value
    * - overrided from map or map2d(generated) by deadLines object
    * DeadLines object. In future Can be used for enemy static action;
-   * */
+   */
   private deadZoneForBottom: number  = DEFAULT_GAMEPLAY_ROLES.MAP_MARGIN_BOTTOM;
   private deadZoneForRight: number  = DEFAULT_GAMEPLAY_ROLES.MAP_MARGIN_RIGHT;
 
@@ -191,10 +189,9 @@ class GamePlay extends Platformer implements IMultiplayer {
     Matter.Events.off(this.starter.getEngine(), undefined, undefined);
   }
 
-
   private overrideOnKeyDown = () => {
 
-    var testRoot = this;
+    const testRoot = this;
 
     if (typeof testRoot.player === "undefined" || testRoot.player === null) { return; }
     const vc = testRoot.player.render.visualComponent;
@@ -209,9 +206,9 @@ class GamePlay extends Platformer implements IMultiplayer {
 
   }
 
-  private overrideOnKeyUp= () => {
+  private overrideOnKeyUp = () => {
 
-    var testRoot = this;
+    const testRoot = this;
 
     if (typeof testRoot.player === "undefined" || testRoot.player === null) { return; }
     const vc = testRoot.player.render.visualComponent;
@@ -255,15 +252,16 @@ class GamePlay extends Platformer implements IMultiplayer {
         Matter.Bounds.shift(root.starter.getRender().bounds,
         {
           x: root.player.position.x - root.starter.getRender().options.width / 1.5,
-          y: root.player.position.y- root.starter.getRender().options.height / 1.5,
+          y: root.player.position.y - root.starter.getRender().options.height / 1.5,
         });
 
-        if (root.player.velocity.x < 0.00001 && root.player.velocity.y == 0 &&
-          root.player.currentDir == "idle" ) {
+        if (root.player.velocity.x < 0.00001 && root.player.velocity.y === 0 &&
+          root.player.currentDir === "idle" ) {
+            // empty
         } else {
           root.network.rtcMultiConnection.send({
             netPos: root.player.position,
-            netDir: root.player.currentDir
+            netDir: root.player.currentDir,
           });
         }
 
@@ -331,7 +329,6 @@ class GamePlay extends Platformer implements IMultiplayer {
     globalEvent.activateKeyDetection();
 
   }
-
 
   private load(mapPack?): void {
 
@@ -478,7 +475,6 @@ class GamePlay extends Platformer implements IMultiplayer {
     gameMap.getDeadLines().forEach((item) => {
 
       let enemySprite;
-
 
       root.deadZoneForBottom = item.y;
 

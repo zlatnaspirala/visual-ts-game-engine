@@ -226,7 +226,7 @@ class GamePlay extends BasketBallChat implements IMultiplayer {
 
   private overrideOnKeyDown = () => {
 
-    let testRoot = this;
+    const testRoot = this;
 
     if (typeof testRoot.player === "undefined" || testRoot.player === null) { return; }
     const vc = testRoot.player.render.visualComponent;
@@ -278,6 +278,16 @@ class GamePlay extends BasketBallChat implements IMultiplayer {
 
     Matter.Events.on(this.starter.getEngine(), "afterUpdate", function () {
 
+      if (root.starter.getMouseConstraint().mouse.button === -1 &&
+         (root.player.position.x > 190 || root.player.position.y < 430)) {
+
+        // root.rock = Matter.Bodies.polygon(170, 450, 7, 20, root.rockOptions);
+        // Matter.World.add(root.starter.getEngine().world, root.player);
+        // root.elastic.bodyB = root.player;
+
+        console.log(" eLASTICK TEST");
+      }
+
     });
 
     Matter.Events.on(this.starter.getEngine(), "beforeUpdate", function () {
@@ -298,7 +308,7 @@ class GamePlay extends BasketBallChat implements IMultiplayer {
           y: root.player.position.y - root.starter.getRender().options.height / 1.3,
         });
 
-        if (root.player.velocity.x < 0.00001 && root.player.velocity.y == 0 &&
+        if (root.player.velocity.x < 0.00001 && root.player.velocity.y === 0 &&
           // tslint:disable-next-line: no-empty
           root.player.currentDir === "idle" ) {
             // empty
@@ -588,12 +598,50 @@ class GamePlay extends BasketBallChat implements IMultiplayer {
 
     });
 
+    // Elasticks objects.
+    this.ground = Matter.Bodies.rectangle(395, 600, 815, 50,
+       { isStatic: true,
+         collisionFilter: {group: -1},
+       }),
+       this.rockOptions = {
+        density: 0.004 ,
+        collisionFilter: {
+          category: this.playerCategory,
+        } as any,
+      },
+      this.rock = Matter.Bodies.polygon(170, 450, 8, 20, this.rockOptions),
+      this.anchor = { x: 170, y: 450 },
+      this.elastic = Matter.Constraint.create({
+        pointA: this.anchor,
+        bodyB: this.rock,
+        stiffness: 0.05,
+      });
+
+    this.pyramid = Matter.Composites.pyramid(500, 300, 9, 10, 0, 0, function (x, y) {
+      return Matter.Bodies.rectangle(
+        x, y, 25, 40,
+        { collisionFilter: {
+            category: root.staticCategory,
+          } as any,
+        });
+    });
+
+    this.ground2 = Matter.Bodies.rectangle(610, 250, 200, 20, { isStatic: true });
+
+    this.pyramid2 = Matter.Composites.pyramid(550, 0, 5, 10, 0, 0, function (x, y) {
+        return Matter.Bodies.rectangle(x, y, 25, 40,
+          { collisionFilter: {
+            category: root.staticCategory,
+          } as any,
+        });
+    });
+
     this.starter.AddNewBodies(this.grounds as worldElement);
     this.starter.AddNewBodies(this.enemys as worldElement);
     this.starter.AddNewBodies(this.deadLines as worldElement);
     this.starter.AddNewBodies(this.player as worldElement);
-    // this.starter.AddNewBodies(
-      // [this.ground, this.pyramid, this.ground2, this.pyramid2, this.rock, this.elastic] as worldElement);
+    this.starter.AddNewBodies(
+      [this.ground, this.pyramid, this.ground2, this.pyramid2, this.rock, this.elastic] as worldElement);
     this.starter.AddNewBodies(this.labels as worldElement);
     this.attachMatterEvents();
 

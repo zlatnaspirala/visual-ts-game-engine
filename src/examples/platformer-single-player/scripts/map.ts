@@ -1,4 +1,4 @@
-import { ICollectionItem, IGamePlayPlatformerMap, IStaticItem, IStaticLabel, ICollectionEnemies } from "../../../libs/interface/global";
+import { ICollectionEnemies, ICollectionItem, IGamePlayPlatformerMap, IStaticItem, IStaticLabel } from "../../../libs/interface/global";
 
 /**
  * Static body elements, backgrounds, enemys returns
@@ -18,36 +18,12 @@ class GameMap implements IGamePlayPlatformerMap {
   constructor(options?: any) {
 
     // Options
-    if (typeof options !== 'undefined') {
+    if (typeof options !== "undefined") {
 
       this.options.mapPack = options;
       this.loadGeneratedMap(this.options.mapPack);
 
     }
-
-  }
-
-  /**
-   * Important method, we call only if object
-   * `generatedMap` is imported. I append generatedMap and object
-   * `from code` created in same array.
-   */
-  private loadGeneratedMap(gMap) {
-
-    const root = this;
-    gMap.forEach(function(item) {
-
-      if (typeof (item  as any | ICollectionItem).colectionLabel !== 'undefined') {
-        root.collectItems.push(item  as any | ICollectionItem);
-      } else if (typeof (item  as any | ICollectionEnemies).enemyLabel !== 'undefined') {
-        root.collectEnemies.push(item  as any | ICollectionEnemies);
-      } else if (typeof (item as any | IStaticLabel).text !== 'undefined') {
-        root.collectLabels.push((item as any));
-      } else {
-        root.staticGrounds.push((item  as any));
-      }
-
-    });
 
   }
 
@@ -149,7 +125,7 @@ class GameMap implements IGamePlayPlatformerMap {
 
   public getStaticBanners(): IStaticLabel[] {
 
-    (this.collectLabels as any).forEach(function(item, i, array) {
+    (this.collectLabels as any).forEach(function (item, i, array) {
 
       array[i].x = parseFloat(array[i].x);
       array[i].y = parseFloat(array[i].y);
@@ -158,7 +134,7 @@ class GameMap implements IGamePlayPlatformerMap {
       if (typeof  array[i].options === "undefined") {
          array[i].options = {
            color: "lime",
-           size: 20
+           size: 20,
          };
       }
       array[i].options.color = (item as any).textColor;
@@ -171,12 +147,36 @@ class GameMap implements IGamePlayPlatformerMap {
         text: " `Platformer` single player mod ",
         options: {
           color: "black",
-          size: 20
-        }
+          size: 20,
+        },
       },
     );
 
     return this.collectLabels as  IStaticLabel[];
+  }
+
+  /**
+   * Important method, we call only if object
+   * `generatedMap` is imported. I append generatedMap and object
+   * `from code` created in same array.
+   */
+  private loadGeneratedMap(gMap) {
+
+    const root = this;
+    gMap.forEach(function (item) {
+
+      if (typeof (item  as any | ICollectionItem).colectionLabel !== "undefined") {
+        root.collectItems.push(item  as any | ICollectionItem);
+      } else if (typeof (item  as any | ICollectionEnemies).enemyLabel !== "undefined") {
+        root.collectEnemies.push(item  as any | ICollectionEnemies);
+      } else if (typeof (item as any | IStaticLabel).text !== "undefined") {
+        root.collectLabels.push((item as any));
+      } else {
+        root.staticGrounds.push((item  as any));
+      }
+
+    });
+
   }
 
 }

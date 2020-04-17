@@ -55,7 +55,7 @@ module.exports = {
   stats: internalConfig.stats,
   entry: ["./src/examples/tutorials/add-camera-stream-to-gameplay/webcamera-stream.ts"],
   output: {
-    filename: "visualjs2-demo1.js",
+    filename: "visualjs2-demo2.js",
     path:  __dirname + "/../" +  rootBuildPath + appTutorialsDemo2,
   },
 
