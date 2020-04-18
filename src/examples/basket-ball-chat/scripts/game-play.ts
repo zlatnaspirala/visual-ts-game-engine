@@ -279,13 +279,15 @@ class GamePlay extends BasketBallChat implements IMultiplayer {
     Matter.Events.on(this.starter.getEngine(), "afterUpdate", function () {
 
       if (root.starter.getMouseConstraint().mouse.button === -1 &&
-         (root.player.position.x > 190 || root.player.position.y < 430)) {
-
+         (root.player.position.x > 190 && root.player.position.x < 230)) {
         // root.rock = Matter.Bodies.polygon(170, 450, 7, 20, root.rockOptions);
         // Matter.World.add(root.starter.getEngine().world, root.player);
-        // root.elastic.bodyB = root.player;
-
+        root.elastic.bodyB = root.player;
         console.log(" eLASTICK TEST");
+
+      } else {
+        root.rock = Matter.Bodies.polygon(170, 450, 7, 20, root.rockOptions);
+        root.elastic.bodyB = root.rock;
       }
 
     });
