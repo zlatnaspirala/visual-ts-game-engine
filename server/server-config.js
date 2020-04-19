@@ -8,7 +8,7 @@ class ServerConfig {
      */
 
      // enum : 'dev' or 'prod'
-    this.serverMode = "dev";
+    this.serverMode = "prod";
 
     this.networkDeepLogs = false;
     this.rtcServerPort = 12034;
@@ -20,9 +20,9 @@ class ServerConfig {
       prod: "maximumroulette.com"
     };
 
-    this.masterServerKey = "maximumroulette.server1";
-    this.protocol = "http";
-    this.isSecure = false;
+    this.masterServerKey = "multi-platformer-sever1.maximum";
+    this.protocol = "https";
+    this.isSecure = true;
 
     // localhost
     this.certPathSelf = {

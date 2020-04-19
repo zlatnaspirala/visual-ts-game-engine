@@ -11,6 +11,7 @@
     "jquery": "^3.5.0",
     "matter-attractors": "^0.1.6",
     "matter-js": "^0.14.1",
+    "mongodb": "^3.5.6",
     "popper.js": "^1.16.1",
     "script-ext-html-webpack-plugin": "^2.1.4",
     "socket.io-client": "^2.3.0",
@@ -19,6 +20,7 @@
     "websocket": "^1.0.31"
   },
   "devDependencies": {
+    "bufferutil": "^4.0.1",
     "clean-webpack-plugin": "^0.1.19",
     "copy-webpack-plugin": "^5.1.1",
     "css-loader": "^3.5.2",
@@ -33,6 +35,7 @@
     "typedoc": "^0.15.8",
     "typedoc-webpack-plugin": "^1.1.4",
     "typescript": "^3.8.3",
+    "utf-8-validate": "^5.0.2",
     "webpack": "^4.42.1",
     "webpack-cli": "^3.3.11"
   },
