@@ -1,6 +1,6 @@
 import * as Matter from "matter-js";
 import BotBehavior from "../../../libs/class/bot-behavior";
-import Broadcaster from "../../../../../libs/class/networking/broadcaster";
+import Broadcaster from "../../../libs/class/networking/broadcaster";
 import Network from "../../../libs/class/networking/network";
 import { byId } from "../../../libs/class/system";
 import SpriteTextureComponent from "../../../libs/class/visual-methods/sprite-animation";
@@ -153,6 +153,7 @@ class GamePlay extends Platformer implements IMultiplayer {
 
         // How to access netwoking
         myInstance.starter.ioc.get.Network.connector.startNewGame(myInstance.gameName);
+        myInstance.broadcaster.openOrJoinBtn.click();
         myInstance.load((e as any).detail.data.game);
         console.info("Player spawn. game-init .startNewGame");
       } catch (err) { console.error("Very bad #00001", err); }

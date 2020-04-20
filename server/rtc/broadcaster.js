@@ -26,27 +26,47 @@ class Broadcaster {
         var config = getValuesFromConfigJson(jsonPath);
         config = getBashParameters(config, BASH_COLORS_HELPER);
 
+        console.log("loading config"+ config);
+        console.log("loading config"+ config.isSecure);
+        console.log("loading config"+ config.isUseHTTPs);
+
         // if user didn't modifed "PORT" object
         if (PORT === 9001) {
             PORT = config.port;
         }
         if (isUseHTTPs == false) {
-            isUseHTTPs = config.isSecure;
+            isUseHTTPs = config.isUseHTTPs;
         }
 
         function serverHandler(request, response) {
+
+            console.log("++++++++++++++++serverHandler++++++++++++++++");
             // to make sure we always get valid info from json file
             // even if external codes are overriding it
             config = getValuesFromConfigJson(jsonPath);
             config = getBashParameters(config, BASH_COLORS_HELPER);
 
+            var headers = {};
+            headers['Access-Control-Allow-Origin'] = '*';
+            headers['Access-Control-Allow-Headers'] = 'Content-Type, Content-Length, Authorization, Accept, X-Requested-With';
+            headers['Access-Contrl-Allow-Methods'] = 'PUT, POST, GET, DELETE, OPTIONS';
+            headers["Access-Control-Max-Age"] = '86400';
+            res.writeHead(200, headers);
 
-            response.writeHead(200, {
-                'Content-Type': 'text/plain'
-            });
-            response.write('RTCMultiConnection Socket.io Server.\n\n' + 'https://github.com/muaz-khan/RTCMultiConnection-Server\n\n' + 'npm install RTCMultiConnection-Server');
-            response.end();
-
+            if ( request.method === 'OPTIONS' ) {
+                console.log('OPTIONS SUCCESS');
+                res.end();
+            }
+            else {
+              response.writeHead(200, {
+                'Content-Type': 'text/plain',
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,OPTIONS',
+                'Access-Control-Allow-Headers': '*'
+              });
+              response.write('RTCMultiConnection Socket.io Server.');
+              response.end();
+            }
 
         }
 
@@ -90,6 +110,7 @@ class Broadcaster {
                 };
             }
 
+            console.log("+++++++++++++ httpApp = httpServer.createServer(options, serverHandler);+++++++++++++++++++++");
             httpApp = httpServer.createServer(options, serverHandler);
         } else {
             httpServer = require('http');
