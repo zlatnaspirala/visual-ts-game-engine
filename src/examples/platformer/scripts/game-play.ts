@@ -1,5 +1,6 @@
 import * as Matter from "matter-js";
 import BotBehavior from "../../../libs/class/bot-behavior";
+import Broadcaster from "../../../../../libs/class/networking/broadcaster";
 import Network from "../../../libs/class/networking/network";
 import { byId } from "../../../libs/class/system";
 import SpriteTextureComponent from "../../../libs/class/visual-methods/sprite-animation";
@@ -79,6 +80,8 @@ class GamePlay extends Platformer implements IMultiplayer {
 
   };
 
+  public broadcaster: Broadcaster;
+
   private gamePlayWelcomeNote: string = "This application was created on visual-ts <br/>\
                                          Example: Real time multiplayer `Platformer` zlatnaspirala@gmail.com <br/>\
                                          General: MIT License <br/>\
@@ -112,6 +115,7 @@ class GamePlay extends Platformer implements IMultiplayer {
     // check this with config flag
     this.network = starter.ioc.get.Network;
     this.network.injector = this.multiPlayerRef;
+    this.broadcaster = starter.ioc.get.Broadcaster;
 
     // MessageBox
     this.starter.ioc.get.MessageBox.show(this.gamePlayWelcomeNote);
@@ -135,7 +139,7 @@ class GamePlay extends Platformer implements IMultiplayer {
                   (e as any).detail.data.game === null ) {
           console.info("game-init Player spawn. data.game === null");
           myInstance.starter.ioc.get.Network.connector.startNewGame(myInstance.gameName);
-
+          myInstance.broadcaster.openOrJoinBtn.click();
           myInstance.initSelectPlayer();
           myInstance.selectPlayer("nidzica");
           myInstance.playerSpawn(true);
