@@ -6,6 +6,7 @@ require("./style/styles.css");
 
 import AppIcon from "./app-icon";
 import GamePlay from "./examples/platformer-single-player/scripts/game-play";
+// tslint:disable-next-line: ordered-imports
 import Ioc from "./controllers/ioc-single-player";
 
 /**

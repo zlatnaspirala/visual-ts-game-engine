@@ -49,11 +49,15 @@ if (serverConfig.getProtocol == "http") {
   };
 
   httpRtc = require('https').createServer(options, function(request, response) {
+
     request.addListener('end', function() {
+
       if (request.url.search(/.png|.gif|.js|.css/g) == -1) {
         file.serveFile(serverConfig.specialRoute.default, 402, {}, request, response);
-      } else file.serve(request, response);
+      } else { file.serve(request, response); }
+
     }).resume();
+
   }).listen(serverConfig.getRtcServerPort);
 }
 

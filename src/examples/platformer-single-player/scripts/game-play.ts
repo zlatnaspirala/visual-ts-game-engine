@@ -1,15 +1,16 @@
+
 import * as Matter from "matter-js";
 import BotBehavior from "../../../libs/class/bot-behavior";
 import { byId } from "../../../libs/class/system";
 import SpriteTextureComponent from "../../../libs/class/visual-methods/sprite-animation";
 import TextComponent from "../../../libs/class/visual-methods/text";
 import TextureComponent from "../../../libs/class/visual-methods/texture";
+import { DEFAULT_GAMEPLAY_ROLES, DEFAULT_RENDER_BOUNDS } from "../../../libs/defaults";
 import Starter from "../../../libs/starter";
 import { worldElement } from "../../../libs/types/global";
 import GameMap from "./map";
-import Platformer from "./Platformer";
 import Level1 from "./packs/level1";
-import { DEFAULT_GAMEPLAY_ROLES, DEFAULT_RENDER_BOUNDS } from "../../../libs/defaults";
+import Platformer from "./Platformer";
 
 /**
  * @description Finally game start at here.
@@ -31,7 +32,7 @@ class GamePlay extends Platformer {
    * @description deadZoneForBottom Definition and Default value
    * - overrided from map or map2d(generated) by deadLines object
    * DeadLines object. In future Can be used for enemy static action;
-   * */
+   */
   private deadZoneForBottom: number  = DEFAULT_GAMEPLAY_ROLES.MAP_MARGIN_BOTTOM;
   private deadZoneForRight: number  = DEFAULT_GAMEPLAY_ROLES.MAP_MARGIN_RIGHT;
 
@@ -109,7 +110,7 @@ class GamePlay extends Platformer {
 
   private overrideOnKeyDown = () => {
 
-    var testRoot = this;
+    const testRoot = this;
 
     if (typeof testRoot.player === "undefined" || testRoot.player === null) { return; }
     const vc = testRoot.player.render.visualComponent;
@@ -124,9 +125,9 @@ class GamePlay extends Platformer {
 
   }
 
-  private overrideOnKeyUp= () => {
+  private overrideOnKeyUp = () => {
 
-    var testRoot = this;
+    const testRoot = this;
 
     if (typeof testRoot.player === "undefined" || testRoot.player === null) { return; }
     const vc = testRoot.player.render.visualComponent;
@@ -176,8 +177,9 @@ class GamePlay extends Platformer {
           y: root.player.position.y - root.starter.getRender().options.height / 1.5,
         });
 
-        if (root.player.velocity.x < 0.00001 && root.player.velocity.y == 0 &&
-          root.player.currentDir == "idle" ) {
+        if (root.player.velocity.x < 0.00001 && root.player.velocity.y === 0 &&
+          root.player.currentDir === "idle" ) {
+            // empty
         }
 
       }
@@ -395,7 +397,6 @@ class GamePlay extends Platformer {
     gameMap.getDeadLines().forEach((item) => {
 
       let enemySprite;
-
 
       root.deadZoneForBottom = item.y;
 

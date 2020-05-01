@@ -2,10 +2,10 @@
 import Matter = require("matter-js");
 import { byId, createAppEvent, htmlHeader } from "../../../libs/class/system";
 import SpriteTextureComponent from "../../../libs/class/visual-methods/sprite-animation";
+import { DEFAULT_GAMEPLAY_ROLES, DEFAULT_PLAYER_DATA } from "../../../libs/defaults";
 import { IGamePlayModel, IPoint, ISelectedPlayer } from "../../../libs/interface/global";
 import Starter from "../../../libs/starter";
-import { worldElement, UniVector } from "../../../libs/types/global";
-import { DEFAULT_GAMEPLAY_ROLES, DEFAULT_PLAYER_DATA } from "../../../libs/defaults";
+import { UniVector, worldElement } from "../../../libs/types/global";
 import Level1 from "../scripts/packs/BasketBallChat-level1";
 
 // Prepare audios
@@ -13,8 +13,8 @@ import Level1 from "../scripts/packs/BasketBallChat-level1";
 import "../audios/map-themes/mishief-stroll.mp4";
 
 import Network from "../../../libs/class/networking/network";
-import TextureStreamComponent from "../../../libs/class/visual-methods/texture-stream";
 import SpriteStreamComponent from "../../../libs/class/visual-methods/sprite-stream";
+import TextureStreamComponent from "../../../libs/class/visual-methods/texture-stream";
 // import { DEFAULT_PLAYER_DATA } from "../../../libs/defaults";
 
 /**
@@ -46,7 +46,7 @@ class BasketBallChat implements IGamePlayModel {
   public netBodies: UniVector = {};
 
   public selectedPlayer: ISelectedPlayer;
-  private selectPlayerArray: ISelectedPlayer[]= [];
+  private selectPlayerArray: ISelectedPlayer[] = [];
   private lives: number = DEFAULT_PLAYER_DATA.INITIAL_LIVES;
 
   // protected playerStream: worldElement;
@@ -60,7 +60,7 @@ class BasketBallChat implements IGamePlayModel {
 
   private levelMaps: any = {
     generatedMap: Level1,
-    Level1: Level1
+    Level1,
   };
 
   constructor(starter: Starter) {
@@ -79,19 +79,19 @@ class BasketBallChat implements IGamePlayModel {
    */
   public addNetPlayer = (myInstance, rtcEvent?) => {
 
-    let root = this;
+    const root = this;
 
     this.preventDoubleExecution = false;
 
-    let sptTexCom = new SpriteTextureComponent(
+    const sptTexCom = new SpriteTextureComponent(
       "playerImage",
       (this.selectedPlayer.resource as any),
-      ( { byX: 5, byY: 1 } as any)
+      ( { byX: 5, byY: 1 } as any),
     );
 
     console.log("New netPlayer: ", rtcEvent.extra.username);
     const playerRadius = 50;
-    let netPlayer: worldElement = Matter.Bodies.circle(
+    const netPlayer: worldElement = Matter.Bodies.circle(
       this.playerStartPositions[0].x,
       this.playerStartPositions[0].y,
       playerRadius, {
@@ -124,26 +124,27 @@ class BasketBallChat implements IGamePlayModel {
 
     const addToScene = true;
 
-      if (addToScene) {
-        // this.netPlayer.id = 2;
-        // Sometime networking make double join session receive signal
-        console.log("myInstance.netBodies[netObject_ + rtcEvent.userid]>>", myInstance.netBodies["netObject_" + rtcEvent.userid]);
-        if (myInstance.netBodies["netObject_" + rtcEvent.userid]) {
-          // console.log("ALREADY EXIST");
-          return;
-        }
-        this.starter.AddNewBodies(netPlayer as worldElement);
-        console.info("Net Player body created.");
-        myInstance.netBodies["netObject_" + rtcEvent.userid] = netPlayer;
+    if (addToScene) {
 
+      // this.netPlayer.id = 2;
+      // Sometime networking make double join session receive signal
+      console.log("myInstance.netBodies[netObject_ + rtcEvent.userid]>>", myInstance.netBodies["netObject_" + rtcEvent.userid]);
+      if (myInstance.netBodies["netObject_" + rtcEvent.userid]) {
+        // console.log("ALREADY EXIST");
+        return;
       }
+      this.starter.AddNewBodies(netPlayer as worldElement);
+      console.info("Net Player body created.");
+      myInstance.netBodies["netObject_" + rtcEvent.userid] = netPlayer;
 
-  };
+    }
+
+  }
 
   public initSelectPlayer() {
 
     // Create UI for basic select player features.
-    // Register
+    // Register Player
 
     this.selectPlayerArray.push({
       labelName: "nidzica",
@@ -152,17 +153,18 @@ class BasketBallChat implements IGamePlayModel {
         require("../imgs/players/nidzica/nidzica-running.png"),
         require("../imgs/explosion/explosion.png"),
         require("../imgs/players/nidzica/nidzica-idle.png"),
+        require("../imgs/players/nidzica/posterNidzica.png"),
       ],
       type: "sprite",
       spriteTile: {
                     run: { byX: 5, byY: 1 },
                     idle: { byX: 3, byY: 1 },
-                    stream: { byX: 1, byY: 1 }
+                    stream: { byX: 1, byY: 1 },
                   },
       spriteTileCurrent: "run",
-      setCurrentTile: function(key: string) {
+      setCurrentTile(key: string) {
         this.spriteTileCurrent = key;
-      }
+      },
     });
 
     this.selectPlayerArray.push({
@@ -174,35 +176,25 @@ class BasketBallChat implements IGamePlayModel {
         require("../imgs/players/smart-girl/smart-girl-idle.png"),
       ],
       type: "sprite",
-      spriteTile:{
+      spriteTile: {
         run: { byX: 5, byY: 1 },
         idle: { byX: 3, byY: 1 },
         stream: { byX: 1, byY: 1 }},
       spriteTileCurrent: "idle",
-      setCurrentTile: function(key: string) {
+      // tslint:disable-next-line: object-literal-shorthand
+      setCurrentTile: function (key: string) {
         this.spriteTileCurrent = key;
-      }
-    });
-
-  }
-
-  protected selectPlayer(labelName: string = "nidzica") {
-
-    const root = this;
-    this.selectPlayerArray.forEach((element) => {
-      if (element.labelName == labelName) {
-        root.selectedPlayer = element;
-      }
+      },
     });
 
   }
 
   public createPlayer(addToScene: boolean) {
 
-    let sptTexCom = new SpriteStreamComponent(
+    const sptTexCom = new SpriteStreamComponent(
       "playerImage",
       (this.selectedPlayer.resource as any),
-      ( { byX: 5, byY: 1 } as any)
+      ( { byX: 5, byY: 1 } as any),
     );
 
     this.preventDoubleExecution = false;
@@ -316,20 +308,20 @@ class BasketBallChat implements IGamePlayModel {
         myInstance.UIPlayerBoard.style.display = "block";
         myInstance.UIPlayAgainBtn = byId("playAgainBtn") as HTMLDivElement;
 
-        myInstance.UIPlayAgainBtn.addEventListener("click", function (){
+        myInstance.UIPlayAgainBtn.addEventListener("click", function () {
 
           const appStartGamePlay = createAppEvent("game-init",
           {
             mapName: "Level1",
-            game: myInstance.levelMaps.Level1
+            game: myInstance.levelMaps.Level1,
           });
 
           (window as any).dispatchEvent(appStartGamePlay);
 
-        myInstance.player.render.visualComponent.assets.SeqFrame.setNewValue(0);
-        myInstance.selectedPlayer.spriteTileCurrent = "run";
-        myInstance.player.render.visualComponent.setNewShema(myInstance.selectedPlayer);
-        myInstance.player.render.visualComponent.seqFrameX.setDelay(8);
+          myInstance.player.render.visualComponent.assets.SeqFrame.setNewValue(0);
+          myInstance.selectedPlayer.spriteTileCurrent = "run";
+          myInstance.player.render.visualComponent.setNewShema(myInstance.selectedPlayer);
+          myInstance.player.render.visualComponent.seqFrameX.setDelay(8);
 
         }, false);
       });
@@ -342,13 +334,13 @@ class BasketBallChat implements IGamePlayModel {
       return res.text();
     }).then(function (html) {
 
-      var popup = byId("popup") as HTMLDivElement;
+      const popup = byId("popup") as HTMLDivElement;
       popup.innerHTML = html;
       popup.style.display = "block";
 
-      myInstance.selectPlayerArray.forEach(function(itemPlayer) {
+      myInstance.selectPlayerArray.forEach(function (itemPlayer) {
 
-        var local = document.createElement("div");
+        const local = document.createElement("div");
         local.id = "" + itemPlayer.labelName;
         local.className = "bounceIn";
         local.setAttribute("style", "width:30%;display:inline-block;cursor:pointer;text-align:center;padding: 9px;");
@@ -358,7 +350,7 @@ class BasketBallChat implements IGamePlayModel {
           itemPlayer.poster +
           "' width='150px' height='150px' class='selectPlayerItemBox' />";
 
-        local.addEventListener("click", function() {
+        local.addEventListener("click", function () {
 
           myInstance.selectPlayer(itemPlayer.labelName);
           const appStartGamePlay = createAppEvent(
@@ -366,7 +358,7 @@ class BasketBallChat implements IGamePlayModel {
             {
               mapName: "Level1",
               game: myInstance.levelMaps.Level1,
-            }
+            },
           );
           (window as any).dispatchEvent(appStartGamePlay);
 
@@ -375,11 +367,27 @@ class BasketBallChat implements IGamePlayModel {
 
         }, false);
 
-        byId('listOfPlayers').appendChild(local);
+        byId("listOfPlayers").appendChild(local);
         // popup.appendChild(local);
 
       });
 
+    });
+
+  }
+
+  public setStreamTexture(texStream: HTMLVideoElement) {
+    (this.player as any).render.visualComponent.setStreamTexture(texStream);
+
+  }
+
+  protected selectPlayer(labelName: string = "nidzica") {
+
+    const root = this;
+    this.selectPlayerArray.forEach((element) => {
+      if (element.labelName === labelName) {
+        root.selectedPlayer = element;
+      }
     });
 
   }
@@ -391,8 +399,8 @@ class BasketBallChat implements IGamePlayModel {
       this.preventDoubleExecution = true;
       // Hard dead
       // this.starter.destroyBody(collectitem);
-      this.player.render.visualComponent.shema = { byX: 4, byY: 4 };
-      this.player.render.visualComponent.assets.SeqFrame.setNewValue(1);
+      // this.player.render.visualComponent.shema = { byX: 4, byY: 4 };
+      // this.player.render.visualComponent.assets.SeqFrame.setNewValue(1);
       this.lives = this.lives - 1;
 
       // (this.UIPlayerBoard.getElementsByClassName("UIPlayerLives")[0] as HTMLSpanElement).innerText = this.lives.toString();
@@ -421,16 +429,18 @@ class BasketBallChat implements IGamePlayModel {
 
           return;
       }
+
       setTimeout(function () {
-        root.player.render.visualComponent.assets.SeqFrame.setNewValue(0);
-        root.selectedPlayer.spriteTileCurrent = "run";
+        // root.player.render.visualComponent.assets.SeqFrame.setNewValue(0);
+        // root.selectedPlayer.spriteTileCurrent = "run";
         // create general method !
-        root.player.render.visualComponent.setNewShema(root.selectedPlayer);
+        // root.player.render.visualComponent.setNewShema(root.selectedPlayer);
         // Soft dead for now
         Matter.Body.setPosition(root.player, root.playerStartPositions[0]);
         root.playerSpawn(false);
         root.preventDoubleExecution = false;
       }, this.playerDeadPauseInterval);
+
     }
 
   }
@@ -446,7 +456,7 @@ class BasketBallChat implements IGamePlayModel {
 
   private attachUpdateLives = () => {
 
-    let root = this;
+    const root = this;
     window.addEventListener("update-lives", function (e) {
       root.lives = (e as any).detail.data.lives;
     });
@@ -482,20 +492,15 @@ class BasketBallChat implements IGamePlayModel {
       root.player.render.visualComponent.seqFrameX.setDelay(8);
       Matter.Body.setPosition(root.player, root.playerStartPositions[0]);
 
-      setTimeout(function() {
+      setTimeout(function () {
         const appStartGamePlay = createAppEvent("game-init", {
           mapName: data,
-          game: root.levelMaps[data]
+          game: root.levelMaps[data],
         });
         (window as any).dispatchEvent(appStartGamePlay);
-      }, DEFAULT_GAMEPLAY_ROLES.RESPAWN_INTERVAL)
+      }, DEFAULT_GAMEPLAY_ROLES.RESPAWN_INTERVAL);
 
     }
-
-  }
-
-  public setStreamTexture(texStream: HTMLVideoElement) {
-    (this.player as any).render.visualComponent.setStreamTexture(texStream);
 
   }
 

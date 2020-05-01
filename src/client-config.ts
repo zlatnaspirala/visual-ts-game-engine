@@ -10,19 +10,21 @@ import { IBroadcasterSession } from "./libs/interface/global";
  */
 class ClientConfig {
 
+  public showBroadcasterOnInt: boolean = true;
+
    /**
-   * Addson - Role is : "no dependencies scripts only"
-   * All addson are ansync loaded scripts.
-   *  - hackerTimer is for better performace also based on webWorkers. Load this script on top.
-   *  - Cache is based on webWorkers.
-   *  - dragging is script for dragging dom elements taken from stackoverflow.com.
-   *  - facebook addson is simple fb api implementation.
-   *  - adapter is powerfull media/communication fixer(Objective : working on all moder browsers).
-   */
+    * Addson - Role is : "no dependencies scripts only"
+    * All addson are ansync loaded scripts.
+    *  - hackerTimer is for better performace also based on webWorkers. Load this script on top.
+    *  - Cache is based on webWorkers.
+    *  - dragging is script for dragging dom elements taken from stackoverflow.com.
+    *  - facebook addson is simple fb api implementation.
+    *  - adapter is powerfull media/communication fixer(Objective : working on all moder browsers).
+    */
   private addson: Addson = [
     {
       name: "cache",
-      enabled: true,
+      enabled: false,
       scriptPath: "externals/cacheInit.ts",
     },
     {
@@ -42,9 +44,9 @@ class ClientConfig {
     },
     {
       name: "facebook",
-      enabled: true,
+      enabled: false,
       scriptPath: "externals/fb.js",
-    }
+    },
   ];
 
   /**
@@ -123,20 +125,18 @@ class ClientConfig {
    * broadcaster socket.io address.
    * Change it for production regime
    */
-  private broadcastSockRoute: string = "http://localhost:9001/";
+  private broadcastSockRoute: string = "https://maximumroulette.com:9001/";
 
   /**
    * broadcaster socket.io address.
    * Change it for production regime
    */
-  private broadcastAutoConnect: boolean = false;
+  private broadcastAutoConnect: boolean = true;
 
   /**
    * runBroadcasterOnInt load broadcaster
    */
   private runBroadcasterOnInt: boolean = true;
-
-  public showBroadcasterOnInt: boolean = true;
 
   /**
    * broadcaster rtc session init values.
@@ -146,13 +146,13 @@ class ClientConfig {
     sessionAudio: true,
     sessionVideo: true,
     sessionData: true,
-    enableFileSharing: true
+    enableFileSharing: true,
   };
 
   private stunList: string[] = [
     "stun:stun.l.google.com:19302",
     "stun:stun1.l.google.com:19302",
-    "stun:stun.l.google.com:19302?transport=udp"
+    "stun:stun.l.google.com:19302?transport=udp",
   ];
   /**
    * Possible variant by default :
@@ -178,7 +178,7 @@ class ClientConfig {
 
   }
 
-  public getRunBroadcasterOnInt() :boolean {
+  public getRunBroadcasterOnInt(): boolean {
     return this.runBroadcasterOnInt;
   }
 
