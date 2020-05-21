@@ -67,7 +67,7 @@ Output:
 
 <b> Navigate in browser /build/app.html to see client app in action </b>
 
-### New way of building multi entryes.
+### New way of building multi entries.
 
 Command is `npm run dev-all` . This is test for multi instancing webpack capabilities.
 Webpack in this case use `webpack.multicompile.config.js`.
