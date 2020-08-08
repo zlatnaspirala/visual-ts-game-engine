@@ -113,8 +113,43 @@ class Broadcaster {
             console.log("+++++++++++++ httpApp = httpServer.createServer(options, serverHandler);+++++++++++++++++++++");
             httpApp = httpServer.createServer(options, serverHandler);
         } else {
-            httpServer = require('http');
-            httpApp = httpServer.createServer(serverHandler);
+
+            httpServer = require('https');
+
+            var options = {
+                key: null,
+                cert: null,
+                ca: null
+            };
+
+            var pfx = false;
+
+
+
+            if (!fs.existsSync(config.sslKeyLocahost)) {
+                console.log(BASH_COLORS_HELPER.getRedFG(), 'sslKey:\t ' + config.sslKeyLocahost + ' does not exist.');
+            } else {
+                pfx = config.sslKeyLocahost.indexOf('.pfx') !== -1;
+                options.key = fs.readFileSync(config.sslKeyLocahost);
+            }
+
+            if (!fs.existsSync(config.sslCertLocahost)) {
+                console.log(BASH_COLORS_HELPER.getRedFG(), 'sslCert:\t ' + config.sslCertLocahost + ' does not exist.');
+            } else {
+                options.cert = fs.readFileSync(config.sslCertLocahost);
+            }
+
+            if (pfx === true) {
+                options = {
+                    pfx: sslKey
+                };
+            }
+
+            console.log("+++++++++++++ httpsApp but for Localhost +++++++++++++++++++++");
+            httpApp = httpServer.createServer(options, serverHandler);
+
+
+
         }
 
         RTCMultiConnectionServer.beforeHttpListen(httpApp, config);

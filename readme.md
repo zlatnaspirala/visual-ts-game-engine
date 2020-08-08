@@ -476,6 +476,11 @@ LICENSE
 |   ├── icon/ ...
 |   ├── examples/
 |   |   ├── platformer/
+|   |   ├── platformer-single-player/
+|   |   ├── basket-ball-chat/
+|   |   ├── tutorials/      (Most simple example of usage)
+|   |   |   ├── add-camera-stream-to-gameplay/
+|   |   |   ├── add-element/
 |   ├── html-components/
 |   |   ├── register.html
 |   |   ├── login.html
@@ -510,6 +515,9 @@ LICENSE
 ## Server part ##
 
 ### Installed database : mongodb@3.1.8 ###
+
+Updated to the last
+https://tecadmin.net/install-mongodb-on-centos/
 
 -No typescript here, we need keep state clear no.
 Node.js is best options.For email staff i choose :
