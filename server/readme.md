@@ -161,14 +161,17 @@ javascript
 use admin
  db.createUser({
    user: "userAdmin",
-   pwd: "*****",
+   pwd: "**********",
    roles: [ { role: "userAdminAnyDatabase", db: "admin"}, "readWriteAnyDatabase"]})
+
+   db.createUser({ user: "userAdmin", pwd: "*********", roles: [ { role: "userAdminAnyDatabase", db: "admin"}, "readWriteAnyDatabase"]})
 ```
 
-Restart mongod with :
+Stop/Restart mongod with :
 
-```
-mongod --auth --dbpath data --bind_ip maximumroulette.com
+```bash
+sudo service mongod stop
+mongod --auth --dbpath database/data --bind_ip maximumroulette.com
 ```
 
 Next attach will be :
@@ -177,6 +180,12 @@ Next attach will be :
  mongo --host maximumroulette.com --port 27017 -u "userAdmin" --authenticationDatabase "admin" -p
 ```
 
+Command for mongod from cmd :
+
+```
+ use <database-name>
+ db.<collection-name>.find()
+```
 
 Source :
 

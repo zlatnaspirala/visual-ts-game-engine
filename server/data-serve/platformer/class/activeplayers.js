@@ -6,7 +6,10 @@ class PlatformerActiveUsers  {
 
     this.config = config;
 
-    MongoClient.connect(config.getDatabaseRoot, { useNewUrlParser: true }, function(error, db) {
+    MongoClient.connect(config.getDatabaseRoot,  {
+                          useNewUrlParser: true,
+                          useUnifiedTopolog: true
+                        }, function(error, db) {
       if (error) {
         console.warn("MyDatabase activeplayers : err:" + error);
         return;
@@ -52,7 +55,10 @@ class PlatformerActiveUsers  {
     }
 
     const databaseName = callerInstance.config.databaseName;
-    MongoClient.connect(callerInstance.config.getDatabaseRoot, { useNewUrlParser: true }, function(error, db) {
+    MongoClient.connect(callerInstance.config.getDatabaseRoot,  {
+                          useNewUrlParser: true,
+                          useUnifiedTopolog: true
+                        }, function(error, db) {
       if (error) {
         console.warn("addActiveGamePlayer err:" + error);
         return;
@@ -131,7 +137,10 @@ class PlatformerActiveUsers  {
   removeActiveGamePlayer(user, callerInstance) {
 
     const databaseName = this.config.databaseName;
-    MongoClient.connect(this.config.getDatabaseRoot, { useNewUrlParser: true }, function(error, db) {
+    MongoClient.connect(this.config.getDatabaseRoot,  {
+                          useNewUrlParser: true,
+                          useUnifiedTopolog: true
+                        }, function(error, db) {
       if (error) {
         console.warn("ActiveGame.removeActiveGamePlayer err:" + error);
         return;
@@ -185,7 +194,10 @@ class PlatformerActiveUsers  {
   countPoints(user, callerInstance, pay) {
 
     const databaseName = callerInstance.config.databaseName;
-    MongoClient.connect(callerInstance.config.getDatabaseRoot, { useNewUrlParser: true }, function(error, db) {
+    MongoClient.connect(callerInstance.config.getDatabaseRoot,  {
+                          useNewUrlParser: true,
+                          useUnifiedTopolog: true
+                        }, function(error, db) {
       if (error) {
         console.warn("addActiveGamePlayer err:" + error);
         return;

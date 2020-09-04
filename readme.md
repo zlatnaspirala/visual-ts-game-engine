@@ -514,7 +514,7 @@ LICENSE
 
 ## Server part ##
 
-### Installed database : mongodb@3.1.8 ###
+### Installed database : MongoDB server version: 3.5.6 ###
 
 Updated to the last
 https://tecadmin.net/install-mongodb-on-centos/
@@ -540,6 +540,14 @@ Fix : "failed: address already in use" :
   netstat -ano | findstr :27017
 
   taskkill /PID typeyourPIDhere /F
+```
+
+Cent os:
+```
+ mongod
+ db.changeUserPassword(‘admin’,’<new_password>’)
+
+
 ```
 
 <b>Also important "Run Visual Studio Code as Administrator".</b>

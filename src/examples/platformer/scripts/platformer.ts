@@ -351,6 +351,11 @@ class Platformer implements IGamePlayModel {
         }, false);
       });
 
+  }
+
+  protected showSelectPlayerUI() {
+
+    const myInstance = this;
     // Select Player feature - Load UI
     fetch("./templates/ui/select-player.html", {
       headers: htmlHeader,
@@ -398,7 +403,6 @@ class Platformer implements IGamePlayModel {
       });
 
     });
-
   }
 
   protected playerDie(collectitem) {

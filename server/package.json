@@ -4,7 +4,7 @@
   "description": "This version 0.1 of visual-ts game engine server. Main file is server.ts , used MongoDB database , webSocket for networking.",
   "main": ".rtc/server.js",
   "dependencies": {
-    "@types/node": "^10.17.5",
+    "@types/node": "^10.17.29",
     "crypto": "^1.0.1",
     "eslint": "^4.19.1",
     "express": "^4.17.1",
@@ -12,8 +12,8 @@
     "mongodb": "^3.5.6",
     "node-static": "^0.7.11",
     "npm": "^6.13.4",
-    "rtcmulticonnection-server": "^1.3.1",
-    "websocket": "^1.0.30"
+    "rtcmulticonnection-server": "^1.3.2",
+    "websocket": "^1.0.32"
   },
   "devDependencies": {},
   "scripts": {
