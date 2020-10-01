@@ -45,7 +45,7 @@ module.exports = {
   formatUserKeyLiteral(userEmail) {
     let local = userEmail;
     local = local.replace("@", "_alpha_");
-    let encoded = new Buffer(local).toString('base64');
+    let encoded = new Buffer.from(local).toString('base64');
     encoded = encoded.replace(/=/g, "ab");
     return encoded;
   },
