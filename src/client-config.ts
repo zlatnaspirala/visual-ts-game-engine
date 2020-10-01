@@ -267,7 +267,7 @@ class ClientConfig {
   }
 
   public getRemoteServerAddressControlller() {
-    return ( (location.protocol === "https:" && location.host !== "localhost") ? "wss" : "ws") + "://" + document.domain + ":" + this.connectorPort + "/";
+    return ( (location.protocol === "https:") ? "wss" : "ws") + "://" + document.domain + ":" + this.connectorPort + "/";
   }
 
   public setNetworkDeepLog(newState: boolean) {

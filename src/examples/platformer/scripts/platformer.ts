@@ -304,6 +304,11 @@ class Platformer implements IGamePlayModel {
           this.playerDie(collectitem);
         }
 
+        if ( pair.bodyA.label === "player" && pair.bodyB.label === "collectItemPoint" ) {
+          const collectitem2 = pair.bodyB;
+          this.starter.destroyBody(collectitem2);
+        }
+
         pair.activeContacts.forEach((element) => {
           if (element.vertex.body.label === "player" &&
             element.vertex.index > 5 && element.vertex.index < 8 &&

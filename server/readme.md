@@ -32,20 +32,38 @@ npm run rtc
 
   For now broadcaster use 'server\broadcaster-config.json' for input data.
 
+#### For switching dev(localhost) / prod(public server) use => ####
+
+ localhost running:
+ ```
+     "isSecure": "false",
+ ```
+
+Production server running:
+ You need to implement your own certs files/paths.
 ```
-  {
-  "socketURL": "http://localhost:9001/",
-  "dirPath": "/",
-  "homePage": "",
+    "isSecure": "true",
+```
+
+Config file is json file.
+
+```
+{
+  "socketURL": "http://maximumroulette.com:9001/",
+  "dirPath": "",
+  "homePage": "https://maximumroulette.com/applications/visual-typescript-game-engine/basket-ball-chat/app.html",
   "socketMessageEvent": "RTCMultiConnection-Message",
   "socketCustomEvent": "RTCMultiConnection-Custom-Message",
   "port": "9001",
   "enableLogs": "false",
   "autoRebootServerOnFailure": "false",
-  "isUseHTTPs": "false",
+  "isUseHTTPs": "true",
+  "isSecure": "false",
   "sslKey": "/etc/httpd/conf/ssl/maximumroulette.com.key",
   "sslCert": "/etc/httpd/conf/ssl/maximumroulette_com.crt",
   "sslCabundle": "/etc/httpd/conf/ssl/maximumroulette.ca-bundle",
+  "sslKeyLocahost": "server/rtc/self-cert/privatekey.pem",
+  "sslCertLocahost": "server/rtc/self-cert/certificate.pem",
   "enableAdmin": "false",
   "adminUserName": "username",
   "adminPassword": "password"
@@ -56,11 +74,11 @@ npm run rtc
 
 For dev:
    - socketURL => http://localhost:9001/
-   - isUseHTTPs => false
+   - isSecure => false
 
 For prodc:
   - socketURL => http://YOUR_DOMAIN:9001/
-  - isUseHTTPs => false
+  - isSecure => true
 </pre>
 
 Features comes with broadcaster:
