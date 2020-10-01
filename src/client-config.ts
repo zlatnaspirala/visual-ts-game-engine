@@ -71,6 +71,7 @@ class ClientConfig {
    * like : 192.168.0.XXX if you wanna run ant test app with server.
    */
   private domain: string = "maximumroulette.com";
+  // private domain: string = "localhost";
 
   /**
    * @description Important note for this property: if you
@@ -131,7 +132,7 @@ class ClientConfig {
    * broadcaster socket.io address.
    * Change it for production regime
    */
-  private broadcastAutoConnect: boolean = true;
+  private broadcastAutoConnect: boolean = false;
 
   /**
    * runBroadcasterOnInt load broadcaster
@@ -266,7 +267,7 @@ class ClientConfig {
   }
 
   public getRemoteServerAddressControlller() {
-    return (location.protocol === "https:" ? "wss" : "ws") + "://" + document.domain + ":" + this.connectorPort + "/";
+    return ( (location.protocol === "https:") ? "wss" : "ws") + "://" + document.domain + ":" + this.connectorPort + "/";
   }
 
   public setNetworkDeepLog(newState: boolean) {

@@ -31,6 +31,8 @@ class ConnectorClient {
     this.webSocketController.onmessage = this.onMessage;
     this.webSocketController.onerror = this.onError;
 
+    console.info("Test 121212")
+
     if (config.getStartUpHtmlForm() === "register") {
       this.showRegisterForm();
     } else if (config.getStartUpHtmlForm() === "login") {

@@ -1,7 +1,7 @@
 
 class Broadcaster {
 
-    constructor () {
+    constructor (serverConfig) {
 
         const fs = require('fs');
         const path = require('path');
@@ -12,7 +12,6 @@ class Broadcaster {
 
         // Direct input flags.
         var PORT = 9001;
-        var isUseHTTPs = false;
 
         const jsonPath = {
             config: './server/broadcaster-config.json',
@@ -26,16 +25,11 @@ class Broadcaster {
         var config = getValuesFromConfigJson(jsonPath);
         config = getBashParameters(config, BASH_COLORS_HELPER);
 
-        console.log("loading config"+ config);
-        console.log("loading config"+ config.isSecure);
-        console.log("loading config"+ config.isUseHTTPs);
+        console.log("Broadcaster isSecure => "+ config.isSecure);
 
         // if user didn't modifed "PORT" object
         if (PORT === 9001) {
             PORT = config.port;
-        }
-        if (isUseHTTPs == false) {
-            isUseHTTPs = config.isUseHTTPs;
         }
 
         function serverHandler(request, response) {
@@ -51,11 +45,11 @@ class Broadcaster {
             headers['Access-Control-Allow-Headers'] = 'Content-Type, Content-Length, Authorization, Accept, X-Requested-With';
             headers['Access-Contrl-Allow-Methods'] = 'PUT, POST, GET, DELETE, OPTIONS';
             headers["Access-Control-Max-Age"] = '86400';
-            res.writeHead(200, headers);
+            response.writeHead(200, headers);
 
             if ( request.method === 'OPTIONS' ) {
                 console.log('OPTIONS SUCCESS');
-                res.end();
+                response.end();
             }
             else {
               response.writeHead(200, {
@@ -72,7 +66,7 @@ class Broadcaster {
 
         var httpApp;
 
-        if (isUseHTTPs) {
+        if (config.isSecure) {
             httpServer = require('https');
 
             var options = {
@@ -113,8 +107,60 @@ class Broadcaster {
             console.log("+++++++++++++ httpApp = httpServer.createServer(options, serverHandler);+++++++++++++++++++++");
             httpApp = httpServer.createServer(options, serverHandler);
         } else {
-            httpServer = require('http');
-            httpApp = httpServer.createServer(serverHandler);
+
+            httpServer = require('https');
+
+            var options = {
+                key: null,
+                cert: null,
+                ca: null
+            };
+
+            /**
+             * @description This block can be optimisex
+             * SSL on/off
+             */
+            if (serverConfig.serverMode === 'dev') {
+              options = {
+                key: fs.readFileSync(serverConfig.certPathSelf.pKeyPath),
+                cert: fs.readFileSync(serverConfig.certPathSelf.pCertPath),
+                ca: fs.readFileSync(serverConfig.certPathSelf.pCBPath),
+              };
+            } else if (serverConfig.serverMode === 'prod') {
+              options = {
+                key: fs.readFileSync(serverConfig.certPathProd.pKeyPath),
+                cert: fs.readFileSync(serverConfig.certPathProd.pCertPath),
+                ca: fs.readFileSync(serverConfig.certPathProd.pCBPath),
+              };
+            } else {
+              console.warn('Something wrong with serverConfig certPathProd/certPathSelf path.')
+            }
+
+            var pfx = false;
+
+            /* Disabled
+            if (!fs.existsSync(config.sslKeyLocahost)) {
+                console.log(BASH_COLORS_HELPER.getRedFG(), 'sslKey:\t ' + config.sslKeyLocahost + ' does not exist.');
+            } else {
+                pfx = config.sslKeyLocahost.indexOf('.pfx') !== -1;
+                options.key = fs.readFileSync(config.sslKeyLocahost);
+            }
+
+            if (!fs.existsSync(config.sslCertLocahost)) {
+                console.log(BASH_COLORS_HELPER.getRedFG(), 'sslCert:\t ' + config.sslCertLocahost + ' does not exist.');
+            } else {
+                options.cert = fs.readFileSync(config.sslCertLocahost);
+            }
+
+            if (pfx === true) {
+                options = {
+                    pfx: sslKey
+                };
+            }
+           */
+            console.info("Server runs `https` but for Localhost configured.");
+            httpApp = httpServer.createServer(options, serverHandler);
+
         }
 
         RTCMultiConnectionServer.beforeHttpListen(httpApp, config);
@@ -141,7 +187,7 @@ class Broadcaster {
 
         console.log("Broadcaster runned under:");
         console.log(config);
-        console.log("SSL protocol enabled:", isUseHTTPs)
+        console.log("Good luck.");
 
     }
 

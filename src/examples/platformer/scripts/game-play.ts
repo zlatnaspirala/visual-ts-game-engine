@@ -118,7 +118,7 @@ class GamePlay extends Platformer implements IMultiplayer {
     this.broadcaster = starter.ioc.get.Broadcaster;
 
     // MessageBox
-    this.starter.ioc.get.MessageBox.show(this.gamePlayWelcomeNote);
+    // this.starter.ioc.get.MessageBox.show(this.gamePlayWelcomeNote);
 
   }
 

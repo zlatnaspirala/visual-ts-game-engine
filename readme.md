@@ -476,6 +476,11 @@ LICENSE
 |   ├── icon/ ...
 |   ├── examples/
 |   |   ├── platformer/
+|   |   ├── platformer-single-player/
+|   |   ├── basket-ball-chat/
+|   |   ├── tutorials/      (Most simple example of usage)
+|   |   |   ├── add-camera-stream-to-gameplay/
+|   |   |   ├── add-element/
 |   ├── html-components/
 |   |   ├── register.html
 |   |   ├── login.html
@@ -509,7 +514,10 @@ LICENSE
 
 ## Server part ##
 
-### Installed database : mongodb@3.1.8 ###
+### Installed database : MongoDB server version: 3.5.6 ###
+
+Updated to the last
+https://tecadmin.net/install-mongodb-on-centos/
 
 -No typescript here, we need keep state clear no.
 Node.js is best options.For email staff i choose :
@@ -532,6 +540,14 @@ Fix : "failed: address already in use" :
   netstat -ano | findstr :27017
 
   taskkill /PID typeyourPIDhere /F
+```
+
+Cent os:
+```
+ mongod
+ db.changeUserPassword(‘admin’,’<new_password>’)
+
+
 ```
 
 <b>Also important "Run Visual Studio Code as Administrator".</b>

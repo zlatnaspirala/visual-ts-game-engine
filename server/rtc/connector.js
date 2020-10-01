@@ -42,11 +42,29 @@ class Connector {
 
     } else {
 
-      let options = {
-        key: fs.readFileSync(serverConfig.certPathProd.pKeyPath),
-        cert: fs.readFileSync(serverConfig.certPathProd.pCertPath),
-        ca: fs.readFileSync(serverConfig.certPathProd.pCBPath),
-      };
+      /**
+       * @description Because nature of webRTC in new version
+       * of modern browsers we also need `https` for localhost
+       * running configuration. Checker added besed on `serverMode`
+       * from server config.
+       */
+      let options = {};
+
+      if (serverConfig.serverMode === 'dev') {
+        options = {
+          key: fs.readFileSync(serverConfig.certPathSelf.pKeyPath),
+          cert: fs.readFileSync(serverConfig.certPathSelf.pCertPath),
+          ca: fs.readFileSync(serverConfig.certPathSelf.pCBPath),
+        };
+      } else if (serverConfig.serverMode === 'prod') {
+        options = {
+          key: fs.readFileSync(serverConfig.certPathProd.pKeyPath),
+          cert: fs.readFileSync(serverConfig.certPathProd.pCertPath),
+          ca: fs.readFileSync(serverConfig.certPathProd.pCBPath),
+        };
+      } else {
+        console.warn('Something wrong with serverConfig certPathProd/certPathSelf path.')
+      }
 
       this.http = require('https').createServer(options, function(request, response) {
 

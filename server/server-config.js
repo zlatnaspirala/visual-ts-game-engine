@@ -8,7 +8,7 @@ class ServerConfig {
      */
 
      // enum : 'dev' or 'prod'
-    this.serverMode = "prod";
+    this.serverMode = "dev";
 
     this.networkDeepLogs = false;
     this.rtcServerPort = 12034;
@@ -44,11 +44,11 @@ class ServerConfig {
 
     this.databaseRoot = {
       dev: "mongodb://localhost:27017" ,
-      prod: "mongodb://userAdmin:********@maximumroulette.com:27017/admin"
+      prod: "mongodb://userAdmin:*************@localhost:27017/admin"
     };
 
     this.specialRoute = {
-      "default": "/var/www/html/applications/visual-typescript-game-engine/build/app.html"
+      "default": "/var/www/html/applications/visual-typescript-game-engine/last-build/multiplayer"
     };
 
     // this.dataServeRoutes = ["../data-serve/platformer/class/activeplayers"];

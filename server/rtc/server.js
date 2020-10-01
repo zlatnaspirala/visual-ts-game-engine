@@ -17,7 +17,7 @@ let httpRtc = null;
 if (serverConfig.appUseBroadcaster) {
   var Broadcaster = null;
   Broadcaster = require("./broadcaster");
-  broadcaster = new Broadcaster();
+  broadcaster = new Broadcaster(serverConfig);
   console.log("Running broadcaster...");
 }
 
@@ -40,13 +40,24 @@ if (serverConfig.getProtocol == "http") {
 } else {
 
   /**
-   * SSL on
+   * @description This block can be optimisex
+   * SSL on/off
    */
-  let options = {
-    key: fs.readFileSync(serverConfig.certPathProd.pKeyPath),
-    cert: fs.readFileSync(serverConfig.certPathProd.pCertPath),
-    ca: fs.readFileSync(serverConfig.certPathProd.pCBPath),
-  };
+  if (serverConfig.serverMode === 'dev') {
+    options = {
+      key: fs.readFileSync(serverConfig.certPathSelf.pKeyPath),
+      cert: fs.readFileSync(serverConfig.certPathSelf.pCertPath),
+      ca: fs.readFileSync(serverConfig.certPathSelf.pCBPath),
+    };
+  } else if (serverConfig.serverMode === 'prod') {
+    options = {
+      key: fs.readFileSync(serverConfig.certPathProd.pKeyPath),
+      cert: fs.readFileSync(serverConfig.certPathProd.pCertPath),
+      ca: fs.readFileSync(serverConfig.certPathProd.pCBPath),
+    };
+  } else {
+    console.warn('Something wrong with serverConfig certPathProd/certPathSelf path.')
+  }
 
   httpRtc = require('https').createServer(options, function(request, response) {
 
