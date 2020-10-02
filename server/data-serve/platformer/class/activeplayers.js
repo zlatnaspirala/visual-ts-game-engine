@@ -8,7 +8,7 @@ class PlatformerActiveUsers  {
 
     MongoClient.connect(config.getDatabaseRoot,  {
                           useNewUrlParser: true,
-                          useUnifiedTopolog: true
+                          useUnifiedTopology: true
                         }, function(error, db) {
       if (error) {
         console.warn("MyDatabase activeplayers : err:" + error);
@@ -57,7 +57,7 @@ class PlatformerActiveUsers  {
     const databaseName = callerInstance.config.databaseName;
     MongoClient.connect(callerInstance.config.getDatabaseRoot,  {
                           useNewUrlParser: true,
-                          useUnifiedTopolog: true
+                          useUnifiedTopology: true
                         }, function(error, db) {
       if (error) {
         console.warn("addActiveGamePlayer err:" + error);
@@ -139,7 +139,7 @@ class PlatformerActiveUsers  {
     const databaseName = this.config.databaseName;
     MongoClient.connect(this.config.getDatabaseRoot,  {
                           useNewUrlParser: true,
-                          useUnifiedTopolog: true
+                          useUnifiedTopology: true
                         }, function(error, db) {
       if (error) {
         console.warn("ActiveGame.removeActiveGamePlayer err:" + error);
@@ -196,7 +196,7 @@ class PlatformerActiveUsers  {
     const databaseName = callerInstance.config.databaseName;
     MongoClient.connect(callerInstance.config.getDatabaseRoot,  {
                           useNewUrlParser: true,
-                          useUnifiedTopolog: true
+                          useUnifiedTopology: true
                         }, function(error, db) {
       if (error) {
         console.warn("addActiveGamePlayer err:" + error);

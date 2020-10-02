@@ -51,9 +51,11 @@ if (internalConfig.createDocumentation == true) {
 }
 
 module.exports = [
+  webPackModuleMultiPlayerSolution
+  /*
   webPackModuleSingleSimpleSolution,
-  webPackModuleMultiPlayerSolution,
   webPackModuleMultiChatBasketBall,
   webPackModuleTutorialsDemo1,
   webPackModuleTutorialsDemo2
+  */
 ];

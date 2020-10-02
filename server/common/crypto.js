@@ -1,4 +1,7 @@
 /*
+
+  Old class in future can be used for resolving database key reading.
+
 class CryptoHandler {
 
   constructor() {
@@ -35,9 +38,12 @@ class CryptoHandler {
 
 const crypto = require('crypto');
 const algorithm = 'aes-256-ctr';
-
-const ENCRYPTION_KEY = 'a password';
+//const ENCRYPTION_KEY = 'Iamtunderbuttheresnorainprodigy-';
 // or generate sample key Buffer.from('FoCKvdLslUuB4y3EZlKate7XGottHski1LmyqJHvUhs=', 'base64');
+// const ENCRYPTION_KEY = 'Put_Your_Password_Here';
+ // or generate sample key Buffer.from('FoCKvdLslUuB4y3EZlKate7XGottHski1LmyqJHvUhs=', 'base64');
+
+const ENCRYPTION_KEY = Buffer.from('FoCKvdLslUuB4y3EZlKate7XGottHski1LmyqJHvUhs=', 'base64');
 
 const IV_LENGTH = 16;
 

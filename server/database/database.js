@@ -54,7 +54,7 @@ class MyDatabase {
     */
     MongoClient.connect(this.config.getDatabaseRoot,  {
                           useNewUrlParser: true,
-                          useUnifiedTopolog: true
+                          useUnifiedTopology: true
                         }, function(error, db) {
       if (error) {
         console.warn("MyDatabase : err1:" + error);
@@ -115,7 +115,7 @@ class MyDatabase {
     const databaseName = this.config.databaseName;
     MongoClient.connect(this.config.getDatabaseRoot,  {
                           useNewUrlParser: true,
-                          useUnifiedTopolog: true
+                          useUnifiedTopology: true
                         }, function(error, db) {
       if (error) {
         console.warn("MyDatabase : err1:" + error);
@@ -162,7 +162,7 @@ class MyDatabase {
     const databaseName = this.config.databaseName;
     MongoClient.connect(this.config.getDatabaseRoot, {
                           useNewUrlParser: true,
-                          useUnifiedTopolog: true
+                          useUnifiedTopology: true
     }, function(error, db) {
       if (error) {
         console.warn("MyDatabase.login error:" + error);
@@ -224,7 +224,7 @@ class MyDatabase {
     MongoClient.connect(this.config.getDatabaseRoot,
                         {
                           useNewUrlParser: true,
-                          useUnifiedTopolog: true
+                          useUnifiedTopology: true
                         },
    function(error, db) {
       if (error) {
@@ -266,7 +266,7 @@ class MyDatabase {
     const databaseName = this.config.databaseName;
     MongoClient.connect(this.config.getDatabaseRoot,  {
                           useNewUrlParser: true,
-                          useUnifiedTopolog: true
+                          useUnifiedTopology: true
                         }, function(error, db) {
       if (error) {
         console.warn("MyDatabase.login :" + error);
@@ -313,7 +313,7 @@ class MyDatabase {
     const databaseName = this.config.databaseName;
     MongoClient.connect(this.config.getDatabaseRoot,  {
                           useNewUrlParser: true,
-                          useUnifiedTopolog: true
+                          useUnifiedTopology: true
                         }, function(error, db) {
       if (error) {
         console.warn("MyDatabase.login error:" + error);
@@ -366,7 +366,7 @@ class MyDatabase {
     const databaseName = this.config.databaseName;
     MongoClient.connect(this.config.getDatabaseRoot,  {
                           useNewUrlParser: true,
-                          useUnifiedTopolog: true
+                          useUnifiedTopology: true
                         }, function(error, db) {
       if (error) {
         console.warn("MyDatabase.login error:" + error);
