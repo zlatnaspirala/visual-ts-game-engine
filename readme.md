@@ -725,11 +725,11 @@ After setup run python app from cli with command:
 
 </br>
 
-### Public stage server / Tutorial demos
+## Public stage server / Tutorial demos
 
   #### Basic examples - How to create instance of engine. With minimum elements and features.
   - #### [Static object vs Free](https://maximumroulette.com/applications/visual-typescript-game-engine/last-build/demo1/app.html)
-  - #### [](https://maximumroulette.com/applications/visual-typescript-game-engine/last-build/demo2/app.html)
+  - #### [Webcam stream loaded as player skin](https://maximumroulette.com/applications/visual-typescript-game-engine/last-build/demo2/app.html)
 
   #### Platformer example without networking
   - #### [Single player platformer](https://maximumroulette.com/applications/visual-typescript-game-engine/last-build/singleplayer/app.html)
@@ -745,11 +745,11 @@ After setup run python app from cli with command:
 ## Licence ##
 
   Visual Typescript Game engine is under:
-  #### MIT License generaly ####
+  #### MIT License generaly
   except ./src/lib. Folder lib is under:
-  #### GNU LESSER GENERAL PUBLIC LICENSE Version 3 ####
+  #### GNU LESSER GENERAL PUBLIC LICENSE Version 3
 
-## External licence in this project : ##
+### External licence in this project:
 
  <b>- Networking based on :</b> <br/>
  Muaz Khan MIT License www.WebRTC-Experiment.com/licence <br/>
@@ -765,8 +765,9 @@ After setup run python app from cli with command:
  - https://www.gameart2d.com/
  - https://www.behance.net/JunikStudio
 
+</br>
 
-## Todo list for 2020 ##
+## Todo list for 2020
 
   <b>I'am still far a away from project objective :</b>
 
@@ -776,6 +777,7 @@ After setup run python app from cli with command:
   (table games, actions , platformers , basic demo trow the api doc etc.).
  - Implementing AR and webGL2.
 
+</br>
 
 ## Platformer single player solution ##
 ### version 0.3.4 ###
