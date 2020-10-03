@@ -10,8 +10,6 @@ import { IBroadcasterSession } from "./libs/interface/global";
  */
 class ClientConfig {
 
-  public showBroadcasterOnInt: boolean = true;
-
    /**
     * Addson - Role is : "no dependencies scripts only"
     * All addson are ansync loaded scripts.
@@ -122,11 +120,14 @@ class ClientConfig {
    */
   private broadcasterPort: number = 9001;
 
+  public showBroadcasterOnInt: boolean = true;
+
   /**
    * broadcaster socket.io address.
    * Change it for production regime
    */
-  private broadcastSockRoute: string = "https://maximumroulette.com:9001/";
+  // private broadcastSockRoute: string = "https://maximumroulette.com:9001/";
+  // private broadcastSockRoute: string = "https://localhost:9001/";
 
   /**
    * broadcaster socket.io address.
@@ -220,7 +221,7 @@ class ClientConfig {
   }
 
   public getBroadcastSockRoute(): string {
-    return this.broadcastSockRoute;
+    return this.getProtocolFromAddressBar() +  this.getDomain() + ":" + this.broadcasterPort + "/";
   }
 
   public getStartUpHtmlForm(): string {
