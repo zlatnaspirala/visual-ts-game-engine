@@ -728,17 +728,17 @@ After setup run python app from cli with command:
 ### Public stage server / Tutorial demos
 
   #### Basic examples - How to create instance of engine. With minimum elements and features.
-  - #### https://maximumroulette.com/applications/visual-typescript-game-engine/last-build/demo1/app.html
-  - #### https://maximumroulette.com/applications/visual-typescript-game-engine/last-build/demo2/app.html
+  - #### [Static object vs Free](https://maximumroulette.com/applications/visual-typescript-game-engine/last-build/demo1/app.html)
+  - #### [](https://maximumroulette.com/applications/visual-typescript-game-engine/last-build/demo2/app.html)
 
   #### Platformer example without networking
-  - #### https://maximumroulette.com/applications/visual-typescript-game-engine/last-build/singleplayer/app.html
+  - #### [Single player platformer](https://maximumroulette.com/applications/visual-typescript-game-engine/last-build/singleplayer/app.html)
 
   #### Multiplayer - With Account session
-  - #### https://maximumroulette.com/applications/visual-typescript-game-engine/last-build/basket-ball-chat/app.html
+  - #### [Multiplayer platformer](https://maximumroulette.com/applications/visual-typescript-game-engine/last-build/basket-ball-chat/app.html)
 
   #### Multiplayer/webCam inside gamePlay - With Account session
-  - #### https://maximumroulette.com/applications/visual-typescript-game-engine/last-build/multiplayer/app.html
+  - #### [Video chat platformer](https://maximumroulette.com/applications/visual-typescript-game-engine/last-build/multiplayer/app.html)
 
 </br>
 
