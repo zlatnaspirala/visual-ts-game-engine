@@ -723,23 +723,24 @@ After setup run python app from cli with command:
 
 ![Creator 2d map](https://github.com/zlatnaspirala/visual-ts-game-engine/blob/dev/nonproject-files/creator2dmap.png)
 
+</br>
 
-## Public stage server links =>
+### Public stage server / Tutorial demos
 
-  ### Basic examples - How to create instance of engine. With minimum elements and features.
-  - ### https://maximumroulette.com/applications/visual-typescript-game-engine/last-build/demo1/app.html
-  - ### https://maximumroulette.com/applications/visual-typescript-game-engine/last-build/demo2/app.html
+  #### Basic examples - How to create instance of engine. With minimum elements and features.
+  - #### https://maximumroulette.com/applications/visual-typescript-game-engine/last-build/demo1/app.html
+  - #### https://maximumroulette.com/applications/visual-typescript-game-engine/last-build/demo2/app.html
 
-  ### Platformer example without networking
-  - ### https://maximumroulette.com/applications/visual-typescript-game-engine/last-build/singleplayer/app.html
+  #### Platformer example without networking
+  - #### https://maximumroulette.com/applications/visual-typescript-game-engine/last-build/singleplayer/app.html
 
-  ### Multiplayer - With Account session
-  - ### https://maximumroulette.com/applications/visual-typescript-game-engine/last-build/basket-ball-chat/app.html
+  #### Multiplayer - With Account session
+  - #### https://maximumroulette.com/applications/visual-typescript-game-engine/last-build/basket-ball-chat/app.html
 
-  ### Multiplayer/webCam inside gamePlay - With Account session
-  - ### https://maximumroulette.com/applications/visual-typescript-game-engine/last-build/multiplayer/app.html
+  #### Multiplayer/webCam inside gamePlay - With Account session
+  - #### https://maximumroulette.com/applications/visual-typescript-game-engine/last-build/multiplayer/app.html
 
-
+</br>
 
 ## Licence ##
 

@@ -13,8 +13,7 @@
 
 ## Standard links / last update public stage server =>
 
-  #### - https://maximumroulette.com/applications/visual-typescript-game-engine/last-build/ ####
-
+  <b> - https://maximumroulette.com/applications/visual-typescript-game-engine/last-build/ </b>
 
 ### Prepare server for running: ###
 
