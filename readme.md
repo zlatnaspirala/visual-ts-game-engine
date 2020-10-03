@@ -1,7 +1,7 @@
-# Project : Visual ts game engine #
-## Version : `We can fight` - 2020 ##
+# Project : Visual ts game engine
+## Version : `We can fight` - 2020
 
-#### 2d canvas game engine based on Matter.js 2D physics engine for the web. ####
+#### 2d canvas game engine based on Matter.js 2D physics engine for the web.
 
   I use my own concept: `take lib for great benefits`. It means that i import only staff that i can't make
   in proper way in proper time, all other coming from head. For example `Physics` was imported
@@ -22,14 +22,16 @@
 
 ![visualTS](https://github.com/zlatnaspirala/visual-ts/blob/dev/nonproject-files/logo.png)
 
+   - This is freeware / opensource . There is no any limitation in this project.
+   You can use video stream as gamePlay objects , multiplayer feature is also free.
    - Please don't use fake email address to test public maximumroulette.com platformer example.
   Project even in dev stage is totally `production` approach. You can't pass registration with fake email.
   Just clone , install and run in local (client & server). You need to install and run also MongoDB on
   your system. Change flag in databased confimed to the `true` value to skip registration confirmation process.
 
-## Client part ##
+## Client part
 
-#### To make all dependency works in build proccess we need some plugins. ####
+#### To make all dependency works in build proccess we need some plugins.
 
 ```javascript
   npm install
@@ -64,7 +66,6 @@ Output:
 
 </pre>
 
-
 <b> Navigate in browser /build/app.html to see client app in action </b>
 
 ### New way of building multi entries.
@@ -73,11 +74,18 @@ Command is `npm run dev-all` . This is test for multi instancing webpack capabil
 Webpack in this case use `webpack.multicompile.config.js`.
 Thanks for common object definition:
 
+This is best place to manage status of your build action.
+Just comment or uncomment specific webpack object in this place =>
 
+`webpack.multicompile.config.js`
 ```javascript
-let config = {
-    module: {},
-};
+module.exports = [
+  webPackModuleMultiPlayerSolution,
+  webPackModuleSingleSimpleSolution,
+  webPackModuleMultiChatBasketBall,
+  webPackModuleTutorialsDemo1,
+  // webPackModuleTutorialsDemo2  DISABLE HERE WHOLE BUILD
+];
 ```
 
 Point of Multi entries is to make independent healthy builds end point
@@ -714,6 +722,23 @@ After setup run python app from cli with command:
 ```
 
 ![Creator 2d map](https://github.com/zlatnaspirala/visual-ts-game-engine/blob/dev/nonproject-files/creator2dmap.png)
+
+
+## Public stage server links =>
+
+  ### Basic examples - How to create instance of engine. With minimum elements and features.
+  - ### https://maximumroulette.com/applications/visual-typescript-game-engine/last-build/demo1/app.html
+  - ### https://maximumroulette.com/applications/visual-typescript-game-engine/last-build/demo2/app.html
+
+  ### Platformer example without networking
+  - ### https://maximumroulette.com/applications/visual-typescript-game-engine/last-build/singleplayer/app.html
+
+  ### Multiplayer - With Account session
+  - ### https://maximumroulette.com/applications/visual-typescript-game-engine/last-build/basket-ball-chat/app.html
+
+  ### Multiplayer/webCam inside gamePlay - With Account session
+  - ### https://maximumroulette.com/applications/visual-typescript-game-engine/last-build/multiplayer/app.html
+
 
 
 ## Licence ##

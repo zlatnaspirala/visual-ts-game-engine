@@ -1,25 +1,47 @@
 
+## Objective
+
+  - Intergrate with othe zlatnaspirala/ projects like embed or
+    root who embed other projects.
+  - Make shiled from `Hacker attacks`.
+    Recommended is to run mongo without remote access!
+    Make strong database password
+    Use permission by definited host be mac-address or ip
+
+    All this prevent job is minimum action to make your server
+    application `stay a live`.
+
+## Standard links / last update public stage server =>
+
+  #### - https://maximumroulette.com/applications/visual-typescript-game-engine/last-build/ ####
+
+
 ### Prepare server for running: ###
 
 javascript
 ```
-npm install
+  npm install
 ```
 
   Fix and report if something missing in dependency if there's a msg like
   'missinig module'.
 
+  When you have problem with npm modules ->
+   - Delete all node_modules folder
+   - Delete package-lock.json
+   - npm i
+
 ### Run data/media server based on MultiRTC2.2 vs socket.io : ###
 
 Run this command from root project folder:
-javascript
-```
+
+```javascript
 npm run rtc
 ```
 
- or use :
+ or use:
 
-```
+```javascript
   node ./server/rtc/server.js
 ```
 <pre>
@@ -30,12 +52,12 @@ npm run rtc
 
 ### Run data/media server based on MultiRTC3 PTP: ###
 
-  For now broadcaster use 'server\broadcaster-config.json' for input data.
+  For now broadcaster use `server\broadcaster-config.json` for input data.
 
 #### For switching dev(localhost) / prod(public server) use => ####
 
  localhost running:
- ```
+ ```javascript
      "isSecure": "false",
  ```
 
@@ -101,22 +123,18 @@ Features comes with broadcaster:
 then use next setup:
 
 For dev:
-javascript
-```
+```javascript
   this.databaseRoot = "mongodb://localhost:27017";
 ```
 
 For prod:
-javascript
-```
+```javascript
   this.databaseRoot = "mongodb://YOUR_DOMAIN:27017";
 ```
 
  Must be in samo folder or input full path to the data folder.
- Run :
-
-javascript
-```
+ Run:
+```javascript
   mongod --dbpath data
 ```
 
@@ -140,22 +158,24 @@ javascript
 
  or
 
-javascript
-```
+
+```javascript
   mongod --dbpath data --bind_ip <DOMAIN>
 ```
 
- After running database mongo service you can use :
+ After running database mongo service you can use:
 
-```
+```javascript
   mongo --host maximumroulette.com:27017
 ```
 
  to connect with mongo terminal.
 
-  Basic commands :
+### Basic commands for mongod cmd:
 
-```
+ List database's:
+```bash
+
    show dbs
 
    use <database_name>
@@ -164,18 +184,17 @@ javascript
 
 ```
 
- Adding password :
+ Attach mongo console:
 
- Start mongod normally.
-
- Attach mongo console :
-
-```
+```javascript
   mongo --host maximumroulette.com --port 27017
+  or
+  mongo --host localhost --port 27017
 ```
+
  Then exec this :
 
-```
+```javascript
 use admin
  db.createUser({
    user: "userAdmin",
@@ -185,17 +204,23 @@ use admin
    db.createUser({ user: "userAdmin", pwd: "*********", roles: [ { role: "userAdminAnyDatabase", db: "admin"}, "readWriteAnyDatabase"]})
 ```
 
-Stop/Restart mongod with :
+Stop/Restart mongod with:
 
-```bash
-sudo service mongod stop
-mongod --auth --dbpath database/data --bind_ip maximumroulette.com
+ [IMPORTANT NOTE]
+
+ It is better to run `mongod --auth --dbpath database/data --bind_ip localhost`
+
+```javascript
+  sudo service mongod stop
+  mongod --auth --dbpath database/data --bind_ip maximumroulette.com
 ```
 
-### Next attach will be :
+### Next attach will be:
 
 ```
  mongo --host maximumroulette.com --port 27017 -u "userAdmin" --authenticationDatabase "admin" -p
+
+ mongo --host localhost --port 27017 -u "userAdmin" --authenticationDatabase "admin" -p
 ```
 
 ### Command for mongod from cmd:
@@ -205,8 +230,6 @@ mongod --auth --dbpath database/data --bind_ip maximumroulette.com
   show dbs
 
   use <database-name>
-
-  // show collections
 
   db.getCollectionNames()
 
@@ -227,7 +250,7 @@ https://docs.mongodb.com/manual/tutorial/enable-authentication/
 
 Config file - server-config:
 
-```
+```typescript
 
 class ServerConfig {
 
@@ -362,4 +385,3 @@ class ServerConfig {
 module.exports = ServerConfig;
 
 ```
-
