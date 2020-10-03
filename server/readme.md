@@ -30,7 +30,7 @@ javascript
    - Delete package-lock.json
    - npm i
 
-### Run data/media server based on MultiRTC2.2 vs socket.io : ###
+### Run data/media server based on MultiRTC2.2 vs socket.io also MiltiRTC3 : ###
 
 Run this command from root project folder:
 
@@ -43,15 +43,27 @@ npm run rtc
 ```javascript
   node ./server/rtc/server.js
 ```
+
+ Broadcaster is integrated with `npm run rtc`
+ You can remove it from code manual.
+ And run
+ ```javascript
+  npm run broadcaster
+  ```
+  if you wanna only broadcaster feature for your application.
+  
+
+
 <pre>
   You can use this server also for video-chat it is already implemented but it is no recommended for latest version of modern browser's.For UTF networking it is ok.
   It is still better to use 'npm run broadcaster' for video chat. I use this server
   for data communication and session staff also any other use...
 </pre>
 
-### Run data/media server based on MultiRTC3 PTP: ###
+### Config data/media server for MultiRTC3:
 
   For now broadcaster use `server\broadcaster-config.json` for input data.
+
 
 #### For switching dev(localhost) / prod(public server) use => ####
 
@@ -109,10 +121,6 @@ Features comes with broadcaster:
  - Chat in real time, share files with minimum server usage.
  - Implemented dragable video containers with addons script.
 </pre>
-
-```javascript
-  npm run broadcaster
-```
 
 ### Install MongoDB follow link: ###
 
