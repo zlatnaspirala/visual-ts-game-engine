@@ -192,20 +192,35 @@ sudo service mongod stop
 mongod --auth --dbpath database/data --bind_ip maximumroulette.com
 ```
 
-Next attach will be :
+### Next attach will be :
 
 ```
  mongo --host maximumroulette.com --port 27017 -u "userAdmin" --authenticationDatabase "admin" -p
 ```
 
-Command for mongod from cmd :
+### Command for mongod from cmd:
+
+```js
+
+  show dbs
+
+  use <database-name>
+
+  // show collections
+
+  db.getCollectionNames()
+
+  db.<collection-name>.find()
+
+  db.getCollectionNames().forEach(function(x) {db[x].drop()})
+
+  db.platformer.find()
+
+  db.platformer.find().pretty()
 
 ```
- use <database-name>
- db.<collection-name>.find()
-```
 
-Source :
+### Source :
 
 https://docs.mongodb.com/manual/tutorial/enable-authentication/
 

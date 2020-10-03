@@ -6,6 +6,8 @@ class PlatformerActiveUsers  {
 
     this.config = config;
 
+    console.log(">>config.getDatabaseRoot>>", config.getDatabaseRoot)
+
     MongoClient.connect(config.getDatabaseRoot,  {
                           useNewUrlParser: true,
                           useUnifiedTopology: true
