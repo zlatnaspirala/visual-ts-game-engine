@@ -1,6 +1,6 @@
 
-# Tutorials
- All tutorials are already buildin project.
+# Tutorial 1 Basic - add elements
+Adding one statis and one no static element to scene.
 
 ### Objective
  Make proof of concept. Make it easy for understanding.
