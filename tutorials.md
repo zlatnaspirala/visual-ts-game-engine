@@ -1,4 +1,65 @@
 
+## TUTORIALS
+ All tutorials are already buildin project.
+
+### Objective
+ Make proof of concept. Make it easy for understanding.
+
+#### Tutorial 1
+ - Create single bottom static object and create one free fall ball.
+ See `src\examples\tutorials\add-element` folder =>
+
+Instancing game engine libraries.
+File: `add-element.ts`
+```typescript
+/**
+ * Import global css
+ */
+require("./../../../style/animations.css");
+require("./../../../style/styles.css");
+
+import AppIcon from "../../../app-icon";
+import GamePlayController from "../../../controllers/ioc-single-player";
+import Demo1 from "./demo";
+
+/**
+ * plarformerGameInfo
+ * This is strong connection.
+ * html-components are on the same level with app.ts
+ * Put any parameters here.
+ */
+const gameInfo = {
+  name: "Demo 1",
+  title: "Start game play and add new element.",
+};
+
+const gamesList: any[] = [
+  gameInfo,
+];
+
+const master = new GamePlayController(gamesList);
+const appIcon: AppIcon = new AppIcon(master.get.Browser);
+master.singlton(Demo1, master.get.Starter);
+console.log("Starter : ", master.get.Demo1);
+
+master.get.Demo1.attachAppEvents();
+
+/**
+ * Make it global for fast access in console testing.
+ * (window as any).platformer = master.get.GamePlay;
+ */
+(window as any).master = master;
+(window as any).demo1 = master.get.Demo1;
+```
+
+
+In demo.ts we work on our gamapley context
+ Class dont't implements IGamePlayModel because this is most simple
+ example we no need player object. From this point you can dev your
+ own player controller or what ever.
+File Demo.ts:
+```typescript
+
 import Matter = require("matter-js");
 import { IGamePlayModel, IPoint, ISelectedPlayer } from "../../../libs/interface/global";
 import Starter from "../../../libs/starter";
@@ -13,7 +74,7 @@ import { worldElement } from "../../../libs/types/global";
  * About resource we use require
  */
 
-class Demo1 /*implements IGamePlayModel*/ {
+class Demo1 {
 
   public gameName: string = "Demo 1 - Add new element";
   public version: number = 1.0;
@@ -108,3 +169,11 @@ class Demo1 /*implements IGamePlayModel*/ {
 
 }
 export default Demo1;
+
+```
+
+### Results must be:
+
+[Screenshot tutorial 1](![Platformer](https://github.com/zlatnaspirala/visual-ts/blob/master/nonproject-files/t1.png))
+
+
