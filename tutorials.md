@@ -53,10 +53,11 @@ master.get.Demo1.attachAppEvents();
 ```
 
 
-In demo.ts we work on our gamapley context
- Class dont't implements IGamePlayModel because this is most simple
- example we no need player object. From this point you can dev your
- own player controller or what ever.
+In demo.ts we work on our gamapley context.
+Class dont't implements IGamePlayModel because this is most simple
+example we no need player object. From this point you can dev your
+own player controller or what ever.
+
 File Demo.ts:
 ```typescript
 
@@ -110,15 +111,12 @@ class Demo1 {
             group: this.staticCategory,
           } as any,
           render: {
-            // visualComponent: new TextureComponent("imgGround",[require("./imgs/backgrounds/wall3.png")]),
             sprite: {
               olala: true,
             },
           } as any | Matter.IBodyRenderOptions,
         });
 
-      //  (newStaticElement.render as any).visualComponent.setVerticalTiles(2).
-      //    setHorizontalTiles(1);
        this.starter.AddNewBodies([newStaticElement] as worldElement);
 
   }
