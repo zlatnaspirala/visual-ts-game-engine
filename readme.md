@@ -784,7 +784,7 @@ After setup run python app from cli with command:
 #### Published on apps facebook ####
 http://apps.facebook.com/nidzica
 
-![Platformer](https://github.com/zlatnaspirala/visual-ts/blob/master/platformer-typescript.png)
+![Platformer](https://github.com/zlatnaspirala/visual-ts/blob/master/nonproject-files/platformer-typescript.png)
 
 ## [Live demo Platformer](https://codepen.io/zlatnaspirala/full/exxvQq) ##
 
