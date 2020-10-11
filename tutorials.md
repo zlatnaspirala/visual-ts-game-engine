@@ -1,5 +1,5 @@
 
-## TUTORIALS
+# Tutorials
  All tutorials are already buildin project.
 
 ### Objective
@@ -174,6 +174,5 @@ export default Demo1;
 
 ### Results must be:
 
-[Screenshot tutorial 1](![Platformer](https://github.com/zlatnaspirala/visual-ts/blob/master/nonproject-files/t1.png))
-
+![Platformer](https://github.com/zlatnaspirala/visual-ts/blob/master/nonproject-files/t1.png)
 
