@@ -1,5 +1,5 @@
 
-# Tutorial 1 Basic - Sprite animation
+# Tutorial Basic - Sprite animation (SpriteTextureComponent)
 
   Screenshot:
 
