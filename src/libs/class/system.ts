@@ -19,13 +19,13 @@ export let scriptManager = {
     };
     s.setAttribute("src", src);
 
-    s.onerror = function(err) {
+    s.onerror = function (err) {
       console.warn("Script loader faild to load: ", src);
     };
 
     try {
       document.body.appendChild(s);
-    } catch(err) {
+    } catch (err) {
       // no catch here.
     }
 

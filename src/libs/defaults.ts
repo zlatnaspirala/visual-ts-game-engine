@@ -14,5 +14,5 @@ export enum DEFAULT_GAMEPLAY_ROLES {
 
 export enum DEFAULT_RENDER_BOUNDS {
   WIDTH = 800,
-  HEIGHT = 600
+  HEIGHT = 600,
 }

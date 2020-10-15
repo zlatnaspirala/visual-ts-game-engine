@@ -1,5 +1,5 @@
-import { Addson } from "./libs/types/global";
 import { IBroadcasterSession } from "./libs/interface/global";
+import { Addson } from "./libs/types/global";
 
 /**
  * ClientConfig is config file for whole client part of application.
@@ -120,7 +120,7 @@ class ClientConfig {
    */
   private broadcasterPort: number = 9001;
 
-  public showBroadcasterOnInt: boolean = true;
+  private showBroadcasterOnInt: boolean = true;
 
   /**
    * broadcaster socket.io address.
@@ -178,6 +178,10 @@ class ClientConfig {
     // Interconnection Network.Connector vs app.ts
     this.gameList = gameList;
 
+  }
+
+  public getShowBroadcasterOnInt () {
+    return this.showBroadcasterOnInt;
   }
 
   public getRunBroadcasterOnInt(): boolean {

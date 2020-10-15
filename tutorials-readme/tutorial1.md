@@ -149,7 +149,6 @@ class Demo1 {
     } as Matter.IBodyDefinition);
     this.myFirstGamePlayObject.collisionFilter.group = -1;
 
-      // hardcode for now
     this.myFirstGamePlayObject.render.sprite.xScale = 0.2;
     this.myFirstGamePlayObject.render.sprite.yScale = 0.2;
 
@@ -172,5 +171,5 @@ export default Demo1;
 
 ### Results must be:
 
-![Platformer](https://github.com/zlatnaspirala/visual-ts/blob/master/nonproject-files/t1.png)
+![Platformer](https://github.com/zlatnaspirala/visual-ts/blob/master/nonproject-files/tutorial-resource/t1.png)
 

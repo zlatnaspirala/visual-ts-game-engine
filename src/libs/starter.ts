@@ -1,9 +1,9 @@
 import * as Matter from "matter-js";
-import ViewPort from "../libs/class/view-port";
 import Ioc from "../controllers/ioc";
+import ViewPort from "../libs/class/view-port";
+import { DEFAULT_GAMEPLAY_ROLES, DEFAULT_RENDER_BOUNDS } from "./defaults";
 import { IUniVector } from "./interface/global";
 import { worldElement } from "./types/global";
-import { DEFAULT_GAMEPLAY_ROLES, DEFAULT_RENDER_BOUNDS } from "./defaults";
 
 /**
  * Real begin of graphic canvas staff.
@@ -17,6 +17,10 @@ class Starter {
   public get: IUniVector = {};
   protected attach;
   protected view: ViewPort;
+  /**
+   * mouseConstraint is object extended from matter.js
+   */
+  protected mouseConstraint;
 
   /**
    * Map needs more space then our window screen.
@@ -44,11 +48,6 @@ class Starter {
    * runner is object extended from matter.js
    */
   private runner: any;
-
-  /**
-   * mouseConstraint is object extended from matter.js
-   */
-  protected mouseConstraint;
 
   public constructor(ioc: Ioc) {
 
@@ -85,7 +84,7 @@ class Starter {
       DEFAULT_GAMEPLAY_ROLES.MAP_MARGIN_LEFT,
       DEFAULT_GAMEPLAY_ROLES.MAP_MARGIN_TOP,
       DEFAULT_GAMEPLAY_ROLES.MAP_MARGIN_RIGHT,
-      DEFAULT_GAMEPLAY_ROLES.MAP_MARGIN_BOTTOM
+      DEFAULT_GAMEPLAY_ROLES.MAP_MARGIN_BOTTOM,
     );
 
     this.render.options.background = "black";
@@ -223,7 +222,7 @@ class Starter {
 
   public deattachMatterEvents(): void {
     Matter.Events.off(this.getEngine(), undefined, undefined);
-    console.info("Matter.Events.off")
+    console.info("Matter.Events.off");
   }
 
 }

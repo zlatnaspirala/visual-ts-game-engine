@@ -77,7 +77,8 @@ class Network {
   }
 
   private attachUIEvents() {
-    let leftBox = byId('display-network-panel');
+    // tslint:disable-next-line:prefer-const
+    let leftBox = byId("display-network-panel");
     leftBox.addEventListener("click", this.toggleDisplayNetworkPanel, false);
   }
 
@@ -86,7 +87,7 @@ class Network {
     const rRegime =  (e.currentTarget as HTMLElement).parentElement;
     // if (rRegime.getAttribute("renderRegime") == "normal")
 
-    if (rRegime.getAttribute("renderRegime") == "normal") {
+    if (rRegime.getAttribute("renderRegime") === "normal") {
       (e.currentTarget as HTMLElement).parentElement.classList.remove("network-panel-show-animation");
       (e.currentTarget as HTMLElement).parentElement.classList.add("network-panel-hide-animation");
       rRegime.setAttribute("renderRegime", "leftBottom");
@@ -109,7 +110,7 @@ class Network {
     };
 
     this.attachWebRtc();
-    setTimeout(function(){
+    setTimeout(function () {
       root.connectUI.click();
     }, 2300);
 
@@ -209,7 +210,7 @@ class Network {
 
         if (this.readyState !== 1) {
         //  return //setTimeout(function () {
-            try{
+            try {
               this.send(data);
               return;
             } catch (e) {
@@ -613,7 +614,7 @@ class Network {
         color: root.rtcMultiConnection.extra.color,
       });
 
-      console.log('test connection', root.rtcMultiConnection);
+      console.log("test connection", root.rtcMultiConnection);
       root.rtcMultiConnection.send(root.senderUI.value);
       (byId("sender") as HTMLButtonElement).value = "";
 

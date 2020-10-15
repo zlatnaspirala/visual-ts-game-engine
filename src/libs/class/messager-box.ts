@@ -1,4 +1,4 @@
-import { htmlHeader, byId } from "./system";
+import { byId, htmlHeader } from "./system";
 
 class MessageBox {
 
@@ -43,7 +43,7 @@ class MessageBox {
     messageBox.classList.remove("message-box-show-animation");
     messageBox.classList.add("message-box-hide-animation");
     // Must be sync with css duration value
-    setTimeout(function() {
+    setTimeout(function () {
       messageBox.style.display = "none";
     }, 1000);
 

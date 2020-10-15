@@ -1,8 +1,8 @@
-import Starter from "../starter";
-import { literalImageSrc, UniVector, imagesResource } from "../types/global";
 // import Resources from "../class/resources";
 import SpriteTextureComponent from "../class/visual-methods/sprite-animation";
 import TextureComponent from "../class/visual-methods/texture";
+import Starter from "../starter";
+import { imagesResource, literalImageSrc, UniVector } from "../types/global";
 
 export interface IPoint {
   x: number;
@@ -28,11 +28,11 @@ export interface ISelectedPlayer {
   labelName: string;
   poster: imagesResource;
   resource: imagesResource[];
-  type:string;
-  spriteTile?:{key: { byX: number, byY: number }} | any;
+  type: string;
+  spriteTile?: {key: { byX: number, byY: number }} | any;
   spriteTileCurrent: string;
-  setCurrentTile(index: string): void;
   texCom?: undefined | SpriteTextureComponent | TextureComponent;
+  setCurrentTile(index: string): void;
 }
 
 export interface IStaticItem {
@@ -108,8 +108,8 @@ export interface IMultiplayer {
 }
 
 export interface IBroadcasterSession {
-  sessionAudio: Boolean;
-  sessionVideo: Boolean;
-  sessionData: Boolean;
-  enableFileSharing: Boolean;
+  sessionAudio: boolean;
+  sessionVideo: boolean;
+  sessionData: boolean;
+  enableFileSharing: boolean;
 }

@@ -1,28 +1,17 @@
 
-# Tutorial 1 Basic - Sprite animation
+import Matter = require("matter-js");
+import SpriteTextureComponent from "../../../libs/class/visual-methods/sprite-animation";
+import TextureComponent from "../../../libs/class/visual-methods/texture";
+import Starter from "../../../libs/starter";
+import { worldElement } from "../../../libs/types/global";
 
-  Screenshot:
-
-![Sprite-Animation](https://github.com/zlatnaspirala/visual-ts/blob/master/nonproject-files/tutorial-resource/sprite-speed-tiles.gif)
-
- - SpriteTextureComponent class extends TextureComponent
- It means that we can easy use tiles on sprite animation.
-
- - Scales is also interest parameter.
-   Use if you want the textures to be larger/smaller
-   than the physical body.
-
-```js
-  sprite: {
-    xScale: 2, // or smaller 0.2
-    yScale: 2, // or smaller 0.2
-  },
-```
-
-Demo code:
-```typescript
 /**
- * @description
+ * @author Nikola Lukic
+ * @class Sprite Animation tutorial
+ * @param Starter
+ * @description This is game logic part
+ * we stil use class based methodology.
+ * About resource we use require
  * I use images from add-element folder.
  * This is demo but for real release this
  * is bad praticle.
@@ -34,9 +23,7 @@ class DemoSpriteAnimation {
   public version: number = 1.0;
   public playerCategory = 0x0002;
   public staticCategory = 0x0004;
-
   public starter: Starter;
-  public myFirstGamePlayObject: Matter.Body | any = undefined;
 
   constructor(starter: Starter) {
     this.starter = starter;
@@ -46,7 +33,7 @@ class DemoSpriteAnimation {
 
     const root = this;
 
-    console.log("App running ...");
+    console.log("attachAppEvents is good place to start operating with physics.");
 
     let spriteOptions = {
       delay: 1,
@@ -123,7 +110,6 @@ class DemoSpriteAnimation {
   public createMySprite(spriteOptions: any) {
 
     const playerRadius = 50;
-    // this.myFirstGamePlayObject
     // tslint:disable-next-line:prefer-const
     let myObject = Matter.Bodies.circle(
       spriteOptions.pos.x,
@@ -173,5 +159,3 @@ class DemoSpriteAnimation {
 
 }
 export default DemoSpriteAnimation;
-
-```

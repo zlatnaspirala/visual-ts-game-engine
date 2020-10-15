@@ -13,6 +13,7 @@ var webPackModuleSingleSimpleSolution = require("./individual-webpack-packages/s
 var webPackModuleTutorialsDemo1 = require("./individual-webpack-packages/add-element");
 var webPackModuleTutorialsDemo2 = require("./individual-webpack-packages/webcamera-stream-demo2");
 var webPackModuleMultiChatBasketBall = require("./individual-webpack-packages/angry-chat");
+var webPackModuleSpriteAnimationDemo = require("./individual-webpack-packages/sprite-animation");
 
 let config = {
   module: {},
@@ -55,5 +56,6 @@ module.exports = [
   webPackModuleSingleSimpleSolution,
   webPackModuleMultiChatBasketBall,
   webPackModuleTutorialsDemo1,
-  webPackModuleTutorialsDemo2
+  webPackModuleTutorialsDemo2,
+  webPackModuleSpriteAnimationDemo
 ];

@@ -2,8 +2,9 @@
 # Tutorials
  All tutorials are already buildin project.
 
-## Tutorial1.md ->
-## Tutorial2.md ->
+### Tutorial1.md -> [Static object vs nonStatic](https://github.com/zlatnaspirala/visual-ts/blob/master/tutorials-readme/tutorial1.md)
+### Tutorial2.md -> [Sprite Animation](https://github.com/zlatnaspirala/visual-ts/blob/master/tutorials-readme/tutorial1.md)
+
 
 ## Public stage server / Tutorial demos
 

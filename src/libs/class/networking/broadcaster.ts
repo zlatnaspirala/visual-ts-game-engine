@@ -314,6 +314,7 @@ class Broadcaster {
   private postAttach() {
 
     const root = this;
+    // tslint:disable-next-line:no-var-keyword
     var roomid = "";
     if (localStorage.getItem(root.connection.socketMessageEvent)) {
       roomid = localStorage.getItem(root.connection.socketMessageEvent);
@@ -331,11 +332,11 @@ class Broadcaster {
     };
 
     let hashString = location.hash.replace("#", "");
-    if (hashString.length && hashString.indexOf("comment-") == 0) {
+    if (hashString.length && hashString.indexOf("comment-") === 0) {
       hashString = "";
     }
 
-    let roomid: string = (window as any).params.roomid;
+    roomid = (window as any).params.roomid;
     if (!roomid && hashString.length) {
         roomid = hashString;
     }
@@ -424,6 +425,7 @@ class Broadcaster {
     };
 
     (root.inputChat as HTMLInputElement).onkeyup = function (e) {
+        // tslint:disable-next-line:triple-equals
         if (e.keyCode != 13) { return; }
 
         // removing trailing/leading whitespace
@@ -443,6 +445,7 @@ class Broadcaster {
         function d(s) {
           return decodeURIComponent(s.replace(/\+/g, " "));
         }
+        // tslint:disable-next-line:prefer-const
         let match, search = window.location.search;
         // tslint:disable-next-line: no-conditional-assignment
         while (match = r.exec(search.substring(1))) {
@@ -466,7 +469,7 @@ class Broadcaster {
         myInstance.popupUI = byId("media-rtc3-controls") as HTMLDivElement;
         myInstance.popupUI.innerHTML = html;
 
-        if (myInstance.engineConfig.showBroadcasterOnInt) {
+        if (myInstance.engineConfig.getShowBroadcasterOnInt()) {
           myInstance.popupUI.style.display = "block";
         } else {
           myInstance.popupUI.style.display = "none";

@@ -49,14 +49,14 @@ class SpriteTextureComponent extends TextureComponent {
     this.seqFrameX.onRepeat = this.nextRow;
 
     // Override right here to prepare for spritesheet scenario of image drawing.
-    (this.flipImage as any) = function(image, ctx, sx, sy, sw, sh, dx, dy, dw, dh, flipH, flipV) {
+    (this.flipImage as any) = function (image, ctx, sx, sy, sw, sh, dx, dy, dw, dh, flipH, flipV) {
       const scaleH = flipH ? -1 : 1, scaleV = flipV ? -1 : 1;
       ctx.save();
       ctx.scale(scaleH, scaleV);
       ctx.drawImage(
         this.assets.getImg(), sx, sy, sw, sh, dx, dy, dw, dh);
       ctx.restore();
-    }
+    };
 
   }
 

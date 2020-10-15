@@ -26,8 +26,12 @@ class GlobalEvent {
     // = () => make's reflecting for selectedPlayer , tiles etc.
     // Instance must be proveded sometimes.
     this.providers.injected = {};
-    this.providers.onkeydown = function() {};
-    this.providers.onkeyup = function() {};
+    this.providers.onkeydown = function () {
+      console.log("default providers.onkeydown");
+    };
+    this.providers.onkeyup = function () {
+      console.log("default providers.onkeyup");
+    };
 
   }
 
@@ -36,7 +40,7 @@ class GlobalEvent {
       console.warn("You already injected instance with this alias. Operation rejected.");
       return;
     }
-    this.providers.injected[alias] =anyInstance;
+    this.providers.injected[alias] = anyInstance;
   }
 
   public activateKeyDetection() {

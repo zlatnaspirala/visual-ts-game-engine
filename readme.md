@@ -786,7 +786,6 @@ http://apps.facebook.com/nidzica
 
 ![Platformer](https://github.com/zlatnaspirala/visual-ts/blob/master/nonproject-files/platformer-typescript.png)
 
-## [Live demo Platformer](https://codepen.io/zlatnaspirala/full/exxvQq) ##
 
 ## Donate this project ##
 

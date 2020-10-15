@@ -60,12 +60,12 @@ class Platformer implements IGamePlayModel {
 
   private levelMaps: any = {
     generatedMap: Level1,
-    Level1: Level1,
-    Level2: Level2,
-    Level3: Level3,
-    Level4: Level4,
-    Level5: Level5,
-    Level6: Level6,
+    Level1,
+    Level2,
+    Level3,
+    Level4,
+    Level5,
+    Level6,
   };
 
   constructor(starter: Starter) {
@@ -129,7 +129,7 @@ class Platformer implements IGamePlayModel {
 
     const addToScene = true;
 
-      if (addToScene) {
+    if (addToScene) {
         // this.netPlayer.id = 2;
         // Sometime networking make double join session receive signal
         console.log("myInstance.netBodies[netObject_ + rtcEvent.userid]>>", myInstance.netBodies["netObject_" + rtcEvent.userid]);
@@ -179,7 +179,7 @@ class Platformer implements IGamePlayModel {
       type: "sprite",
       spriteTile:{run: { byX: 5, byY: 1 }, idle: { byX: 3, byY: 1 }},
       spriteTileCurrent: "run",
-      setCurrentTile: function(key: string) {
+      setCurrentTile(key: string) {
         this.spriteTileCurrent = key;
       }
     });
@@ -195,19 +195,8 @@ class Platformer implements IGamePlayModel {
       type: "sprite",
       spriteTile:{run: { byX: 5, byY: 1 }, idle: { byX: 5, byY: 1 }},
       spriteTileCurrent: "idle",
-      setCurrentTile: function(key: string) {
+      setCurrentTile(key: string) {
         this.spriteTileCurrent = key;
-      }
-    });
-
-  }
-
-  protected selectPlayer(labelName: string = "nidzica") {
-
-    const root = this;
-    this.selectPlayerArray.forEach((element) => {
-      if (element.labelName == labelName) {
-        root.selectedPlayer = element;
       }
     });
 
@@ -338,7 +327,7 @@ class Platformer implements IGamePlayModel {
         myInstance.UIPlayerBoard.style.display = "block";
         myInstance.UIPlayAgainBtn = byId("playAgainBtn") as HTMLDivElement;
 
-        myInstance.UIPlayAgainBtn.addEventListener("click", function (){
+        myInstance.UIPlayAgainBtn.addEventListener("click", function () {
 
           const appStartGamePlay = createAppEvent("game-init",
           {
@@ -348,10 +337,10 @@ class Platformer implements IGamePlayModel {
 
           (window as any).dispatchEvent(appStartGamePlay);
 
-        myInstance.player.render.visualComponent.assets.SeqFrame.setNewValue(0);
-        myInstance.selectedPlayer.spriteTileCurrent = "run";
-        myInstance.player.render.visualComponent.setNewShema(myInstance.selectedPlayer);
-        myInstance.player.render.visualComponent.seqFrameX.setDelay(8);
+          myInstance.player.render.visualComponent.assets.SeqFrame.setNewValue(0);
+          myInstance.selectedPlayer.spriteTileCurrent = "run";
+          myInstance.player.render.visualComponent.setNewShema(myInstance.selectedPlayer);
+          myInstance.player.render.visualComponent.seqFrameX.setDelay(8);
 
         }, false);
       });
@@ -369,13 +358,13 @@ class Platformer implements IGamePlayModel {
       return res.text();
     }).then(function (html) {
 
-      var popup = byId("popup") as HTMLDivElement;
+      let popup = byId("popup") as HTMLDivElement;
       popup.innerHTML = html;
       popup.style.display = "block";
 
       myInstance.selectPlayerArray.forEach(function(itemPlayer) {
 
-        var local = document.createElement("div");
+        const local = document.createElement("div");
         local.id = "" + itemPlayer.labelName;
         local.className = "bounceIn";
         local.setAttribute("style", "width:30%;display:inline-block;cursor:pointer;text-align:center;padding: 9px;");
@@ -402,7 +391,7 @@ class Platformer implements IGamePlayModel {
 
         }, false);
 
-        byId('listOfPlayers').appendChild(local);
+        byId("listOfPlayers").appendChild(local);
         // popup.appendChild(local);
 
       });
@@ -469,9 +458,20 @@ class Platformer implements IGamePlayModel {
     this.labels = [];
   }
 
+  protected selectPlayer(labelName: string = "nidzica") {
+
+    const root = this;
+    this.selectPlayerArray.forEach((element) => {
+      if (element.labelName == labelName) {
+        root.selectedPlayer = element;
+      }
+    });
+
+  }
+
   private attachUpdateLives = () => {
 
-    let root = this;
+    const root = this;
     window.addEventListener("update-lives", function (e) {
       root.lives = (e as any).detail.data.lives;
     });
@@ -507,13 +507,13 @@ class Platformer implements IGamePlayModel {
       root.player.render.visualComponent.seqFrameX.setDelay(8);
       Matter.Body.setPosition(root.player, root.playerStartPositions[0]);
 
-      setTimeout(function() {
+      setTimeout(function () {
         const appStartGamePlay = createAppEvent("game-init", {
           mapName: data,
-          game: root.levelMaps[data]
+          game: root.levelMaps[data],
         });
         (window as any).dispatchEvent(appStartGamePlay);
-      }, DEFAULT_GAMEPLAY_ROLES.RESPAWN_INTERVAL)
+      }, DEFAULT_GAMEPLAY_ROLES.RESPAWN_INTERVAL);
 
     }
 

@@ -2,9 +2,10 @@ import { ISound } from "../interface/global";
 
 class Sound implements ISound {
 
+  public name: string = "audio-staff";
+
   private audioBox: {[key: string]: any} = {};
   private aContainer: HTMLElement;
-  public name: string = "audio-staff";
 
   constructor(name: string) {
 
@@ -23,7 +24,8 @@ class Sound implements ISound {
       return;
     }
 
-    var element = document.createElement("audio");
+    // tslint:disable-next-line:prefer-const
+    let element = document.createElement("audio");
 
     if (typeof autoplay === undefined) {
       autoplay = false;
@@ -43,14 +45,14 @@ class Sound implements ISound {
     this.audioBox[idCaller] = element;
     this.aContainer.appendChild(this.audioBox[idCaller]);
 
-    element.addEventListener('canplaythrough', function() {
+    element.addEventListener("canplaythrough", function () {
 
-      var testPlay = this.play();
+      const testPlay = this.play();
 
       if (testPlay !== undefined) {
-        testPlay.then(function() {
+        testPlay.then(function () {
           // Automatic playback started!
-        }).catch(function(error) {
+        }).catch(function (error) {
           console.warn("Audio with id can't play at the moment. Error: ", error);
         });
       }
@@ -61,13 +63,13 @@ class Sound implements ISound {
 
   public playById(id) {
 
-    var testPlay = this.audioBox[id].play();
+    const testPlay = this.audioBox[id].play();
 
     if (testPlay !== undefined) {
-      testPlay.then(function() {
+      testPlay.then(function () {
         // Automatic playback started!
-      }).catch(function(error) {
-        console.warn("Audio with id" + id + " can't play at the moment." )
+      }).catch(function (error) {
+        console.warn("Audio with id" + id + " can't play at the moment." );
       });
     }
 
