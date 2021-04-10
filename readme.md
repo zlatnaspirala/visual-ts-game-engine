@@ -1,5 +1,6 @@
 # Project : Visual ts game engine
 ## Version : `We can fight` - 2020
+## Current Version : `Out of space` - 2021
 
 #### 2d canvas game engine based on Matter.js 2D physics engine for the web.
 
@@ -28,6 +29,13 @@
   Project even in dev stage is totally `production` approach. You can't pass registration with fake email.
   Just clone , install and run in local (client & server). You need to install and run also MongoDB on
   your system. Change flag in databased confimed to the `true` value to skip registration confirmation process.
+
+
+## Current DEV BRANCH
+
+    - Implementing Mobile Controls and make full mobile support because 
+    this project supports html5 mobile from begin.
+    
 
 ## Client part
 
@@ -139,8 +147,6 @@ account sessions. The setup this on false in main client config class.
 Find configuration for client part at ./src/lib/client-config.ts
 
 ```javascript
-import { Addson } from "./libs/types/global";
-
 /**
  * ClientConfig is config file for whole client part of application.
  * It is a better to not mix with server config staff.
@@ -150,19 +156,19 @@ import { Addson } from "./libs/types/global";
  */
 class ClientConfig {
 
-  /**
-   * Addson - Role is : "no dependencies scripts only"
-   * All addson are ansync loaded scripts.
-   *  - hackerTimer is for better performace also based on webWorkers. Load this script on top.
-   *  - Cache is based on webWorkers.
-   *  - dragging is script for dragging dom elements taken from stackoverflow.com.
-   *  - facebook addson is simple fb api implementation.
-   *  - adapter is powerfull media/communication fixer(Objective : working on all moder browsers).
-   */
+   /**
+    * Addson - Role is : "no dependencies scripts only"
+    * All addson are ansync loaded scripts.
+    *  - hackerTimer is for better performace also based on webWorkers. Load this script on top.
+    *  - Cache is based on webWorkers.
+    *  - dragging is script for dragging dom elements taken from stackoverflow.com.
+    *  - facebook addson is simple fb api implementation.
+    *  - adapter is powerfull media/communication fixer(Objective : working on all moder browsers).
+    */
   private addson: Addson = [
     {
       name: "cache",
-      enabled: true,
+      enabled: false,
       scriptPath: "externals/cacheInit.ts",
     },
     {
@@ -182,9 +188,9 @@ class ClientConfig {
     },
     {
       name: "facebook",
-      enabled: true,
+      enabled: false,
       scriptPath: "externals/fb.js",
-    }
+    },
   ];
 
   /**
@@ -209,6 +215,7 @@ class ClientConfig {
    * like : 192.168.0.XXX if you wanna run ant test app with server.
    */
   private domain: string = "maximumroulette.com";
+  // private domain: string = "localhost";
 
   /**
    * @description Important note for this property: if you
@@ -242,36 +249,6 @@ class ClientConfig {
   private connectorPort: number = 1234;
 
   /**
-   * broadcasterPort Port used to connect multimedia server MultiRTC3.
-   * I will use it for explicit video chat multiplatform support.
-   * Default value is 9001
-   */
-  private broadcasterPort: number = 9001;
-
-  /**
-   * broadcaster socket.io address.
-   * Change it for production regime
-   */
-  private broadcastSockRoute: string = "http://localhost:9001/";
-
-  /**
-   * broadcaster socket.io address.
-   * Change it for production regime
-   */
-  private broadcastAutoConnect: boolean = true;
-
-  /**
-   * broadcaster rtc session init values.
-   * Change it for production regime
-   */
-  private broadcasterSessionDefaults: any = {
-    sessionAudio: false,
-    sessionVideo: false,
-    sessionData: true,
-    enableFileSharing: false
-  };
-
-  /**
    * appUseAccountsSystem If you don't want to use session
    * in your application just setup this variable to the false.
    */
@@ -282,18 +259,59 @@ class ClientConfig {
    * video chats.
    */
   private appUseBroadcaster: boolean = true;
+  /**
+   * broadcasterPort Port used to connect multimedia server MultiRTC3.
+   * I will use it for explicit video chat multiplatform support.
+   * Default value is 9001
+   */
+  private broadcasterPort: number = 9001;
+
+  private showBroadcasterOnInt: boolean = true;
+
+  /**
+   * broadcaster socket.io address.
+   * Change it for production regime
+   */
+  // private broadcastSockRoute: string = "https://maximumroulette.com:9001/";
+  // private broadcastSockRoute: string = "https://localhost:9001/";
+
+  /**
+   * broadcaster socket.io address.
+   * Change it for production regime
+   */
+  private broadcastAutoConnect: boolean = false;
+
+  /**
+   * runBroadcasterOnInt load broadcaster
+   */
+  private runBroadcasterOnInt: boolean = true;
+
+  /**
+   * broadcaster rtc session init values.
+   * Change it for production regime
+   */
+  private broadcasterSessionDefaults: IBroadcasterSession = {
+    sessionAudio: true,
+    sessionVideo: true,
+    sessionData: true,
+    enableFileSharing: true,
+  };
 
   private stunList: string[] = [
     "stun:stun.l.google.com:19302",
     "stun:stun1.l.google.com:19302",
-    "stun:stun2.l.google.com:19302",
-    "stun:stun.l.google.com:19302?transport=udp"
+    "stun:stun.l.google.com:19302?transport=udp",
   ];
   /**
    * Possible variant by default :
    * "register", "login"
    */
   private startUpHtmlForm: string = "register";
+
+  private controls: {} = {
+    platformerPlayerController: true,
+    enableMobileControlsOnDesktop: true
+  };
 
   private gameList: any[];
 
@@ -303,15 +321,6 @@ class ClientConfig {
   private defaultGamePlayLevelName: string = "public";
   private autoStartGamePlay: boolean = false;
 
-  /**
-   * constructor will save interest data for game platform
-   */
-  constructor(gameList: any[]) {
-
-    // Interconnection Network.Connector vs app.ts
-    this.gameList = gameList;
-
-  }
 
    ...
 
