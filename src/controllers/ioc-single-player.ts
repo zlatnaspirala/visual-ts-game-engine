@@ -8,10 +8,11 @@ import GlobalEvent from "../libs/events/global-event";
 import { IUniVector } from "../libs/interface/global";
 import Starter from "../libs/starter";
 import MessageBox from "../libs/class/messager-box";
+import mobileControls from "../libs/class/player-commands";
 import Sound from "../libs/class/sound";
 
 /**
- * Ioc is main dependency controller class.
+ * @description Ioc is main dependency controller class.
  * This class store all main instances
  * Property get is type of IUniVector (access by key)
  * Example of access : this.get.Browser
@@ -20,19 +21,28 @@ import Sound from "../libs/class/sound";
 class Ioc {
 
   /**
-   * get is store variable , We make instance of core classes
+   * @name get
+   * @description get is store variable , We make instance of core classes
    * just one time in whole app live circle.
    */
   public get: IUniVector = {};
 
   /**
+   * @description 
    * config is instance of ClientConfig class.
    */
   private config: ClientConfig;
 
   /**
+   * @description 
    * Constructor for ioc class is in samo time
    * register for application classes.
+   * After defined line 
+   *     this.singlton(mobileControls, undefined);
+   *     this.singlton(Browser, undefined);
+   * We can use it in next line
+   *     this.singlton(GlobalEvent, this.get.Browser, this.get.mobileControls);
+   * Synchro block code
    */
   constructor(gamesList: any[]) {
 
@@ -42,9 +52,11 @@ class Ioc {
 
     this.singlton(Sound, undefined);
     this.singlton(MessageBox, undefined);
+    this.singlton(mobileControls, undefined);
     this.singlton(Browser, undefined);
     this.singlton(ViewPort, this.config);
-    this.singlton(GlobalEvent, this.get.Browser);
+    this.singlton(GlobalEvent, [this.get.Browser,
+                                this.get.ViewPort]);
     this.singlton(VisualRender, undefined);
     this.singlton(Starter, this);
 
@@ -53,6 +65,8 @@ class Ioc {
   public reLoadNetworking () { /** no empty */ }
 
   /**
+   * @name singlton
+   * @description 
    * singlton is method for instancing.
    * @param Singlton This arg is type pf any becouse we can pass
    * any class with or without own args.
@@ -61,7 +75,11 @@ class Ioc {
    */
   public singlton(Singlton: any, args: undefined | any) {
     if (args !== undefined) {
-      this.get[Singlton.name] = new Singlton(args);
+      if (typeof args.length === "number") {
+        this.get[Singlton.name] = new Singlton(...args);
+      } else {
+        this.get[Singlton.name] = new Singlton(args);
+      }
     } else {
       this.get[Singlton.name] = new Singlton();
     }

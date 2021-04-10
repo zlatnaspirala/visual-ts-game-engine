@@ -162,6 +162,11 @@ class ClientConfig {
    */
   private startUpHtmlForm: string = "register";
 
+  private controls: {} = {
+    platformerPlayerController: true,
+    enableMobileControlsOnDesktop: true
+  };
+
   private gameList: any[];
 
   /**
@@ -178,6 +183,10 @@ class ClientConfig {
     // Interconnection Network.Connector vs app.ts
     this.gameList = gameList;
 
+  }
+
+  public getcontrols(): any {
+    return this.controls
   }
 
   public getShowBroadcasterOnInt () {

@@ -1,4 +1,5 @@
 import ClientConfig from "../../client-config";
+import { createAppEvent } from "./system";
 
 /**
  * @description This class contain canvas dom operation.
@@ -16,6 +17,8 @@ class ViewPort {
   private aspectRatio: number = 1.333;
 
   constructor(config: ClientConfig) {
+
+    console.log("CCCCCCCCCCCCCCCCCCCCCCCCCC")
 
     this.config = config;
     this.aspectRatio = this.config.getAspectRatio();
@@ -50,6 +53,30 @@ class ViewPort {
   public initCanvasDom() {
     // important, first canvas for now only
     this.canvasDom = document.getElementsByTagName("canvas")[0];
+
+    /**
+     * Old trick with 1 msec
+     * We need asyn call here
+     */
+    setTimeout( () => {
+      const canvasDomReady = createAppEvent(
+        "CANVAS_READY",
+        {
+          desc: "Good",
+        }
+      );
+      (window as any).dispatchEvent(canvasDomReady);
+    }, 1)
+
+  }
+
+  public getCanvasDom(): HTMLCanvasElement {
+
+    // important, first canvas for now only
+    // initCanvasDom Not in dep chain ! Fix later
+    this.canvasDom = document.getElementsByTagName("canvas")[0];
+
+    return this.canvasDom
   }
 
   public getWidth(percente: number): number {

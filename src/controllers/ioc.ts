@@ -43,7 +43,8 @@ class Ioc {
     this.singlton(MessageBox, undefined);
     this.singlton(Browser, undefined);
     this.singlton(ViewPort, this.config);
-    this.singlton(GlobalEvent, this.get.Browser);
+    this.singlton(GlobalEvent, [this.get.Browser,
+                                this.get.ViewPort]);
     this.singlton(VisualRender, undefined);
 
     if (this.config.didAppUseNetwork()) {
@@ -83,7 +84,11 @@ class Ioc {
    */
   public singlton(Singlton: any, args: undefined | any) {
     if (args !== undefined) {
-      this.get[Singlton.name] = new Singlton(args);
+      if (typeof args.length === "number") {
+        this.get[Singlton.name] = new Singlton(...args);
+      } else {
+        this.get[Singlton.name] = new Singlton(args);
+      }
     } else {
       this.get[Singlton.name] = new Singlton();
     }

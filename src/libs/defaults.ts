@@ -1,4 +1,10 @@
 
+export enum ARROW_KEYS {
+    LEFT =  37,
+    RIGHT = 39,
+    JUMP = 38
+}
+
 export enum DEFAULT_PLAYER_DATA {
   INITIAL_LIVES = 3,
   NEW_GAME_COST = 30,
