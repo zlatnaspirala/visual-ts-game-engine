@@ -3,8 +3,11 @@ import Browser from "../class/browser";
 import ViewPort from "../class/view-port";
 import { IUniVector } from "../interface/global";
 import { UniVector } from "../types/global";
-import ARROW_KEYS from "../defaults";
+import { ARROW_KEYS } from "../defaults";
+import MobileControls from "../class/player-commands";
+
 /**
+ * @name GlobalEvent
  * @description Global window based events,
  * - Keyboard event provider, with elegant
  *   key access and setup value.
@@ -12,7 +15,6 @@ import ARROW_KEYS from "../defaults";
  * - Help from browser to get client navigator data.
  * - Activate Player commander place
  */
-
 class GlobalEvent {
 
   public get: IUniVector = {};
@@ -20,23 +22,34 @@ class GlobalEvent {
   public providers: UniVector = {};
   private browser: Browser;
   private viewPort: ViewPort;
+  private mobileControl: MobileControls;
   private clientConfig: ClientConfig;
 
-  public constructor(browser: Browser, viewPort: ViewPort) {
+  public constructor(browser: Browser, viewPort: ViewPort, mobileControl: MobileControls) {
 
     this.browser = browser;
     this.clientConfig = viewPort.config;
-    console.info("Is mobile: ", this.browser.isMobile);
+    this.mobileControl = mobileControl;
 
     if (browser.isMobile === true) {
+
+      console.info("Mobile device detected: ", this.browser.isMobile);
+
       this.viewPort = viewPort;
 
       window.addEventListener('CANVAS_READY', () => {
-        console.log("canvas ready catch ")
+        console.log("Canvas ready.")
         this.activateMobilePlatformerControls();
       } , false)
       
+      this.providers.injected = {};
+      this.providers.onkeydown = function () {
+        console.log("default providers.onkeydown");
+      };
+      this.providers.onkeyup = function () {
+        console.log("default providers.onkeyup");
 
+      };
     } else {
 
       if (this.clientConfig.getcontrols().enableMobileControlsOnDesktop) {
@@ -73,7 +86,7 @@ class GlobalEvent {
     document.body.addEventListener("keyup", this.onKeyUpHandler, true);
   }
 
-  public deactivateKeyDetection() {
+  public deActivateKeyDetection() {
     document.body.removeEventListener("keydown", this.onKeyDownHandler, true);
     document.body.removeEventListener("keyup", this.onKeyUpHandler, true);
   }
@@ -86,52 +99,99 @@ class GlobalEvent {
     };
   }
 
-  // 37 left
-  // 39 
-  // 38 jump
-
   private onKeyDownHandler = (e) => {
     const root = this;
-    console.log(" SINTENTIC e.keyCode .... ", e.keyCode)
     root.activeKey[e.keyCode] = true;
     root.providers.onkeydown();
   }
 
   private onKeyUpHandler = (e) => {
     const root = this;
-    console.log(" SINTENTIC e.keyCode .... ", e.keyCode)
     root.activeKey[e.keyCode] = false;
     root.providers.onkeyup();
   }
 
   private synteticLeft = () => {
     const root = this;
-    console.log(" SINTENTIC e.keyCode .... ", e.keyCode)
     root.activeKey[ARROW_KEYS.LEFT] = true;
     root.providers.onkeydown();
   }
 
   private synteticRight = () => {
     const root = this;
-    console.log(" SINTENTIC e.keyCode .... ", e.keyCode)
+    root.activeKey[ARROW_KEYS.RIGHT] = true;
+    root.providers.onkeydown();
+  }
+
+  private synteticJump = () => {
+    const root = this;
+    root.activeKey[ARROW_KEYS.JUMP] = true;
+    root.providers.onkeydown();
+  }
+
+  private synteticLeftUp = () => {
+    const root = this;
+    root.activeKey[ARROW_KEYS.LEFT] = false;
+    root.providers.onkeyup();
+  }
+
+  private synteticRightUp = () => {
+    const root = this;
     root.activeKey[ARROW_KEYS.RIGHT] = false;
+    root.providers.onkeyup();
+  }
+
+  private synteticJumpUp = () => {
+    const root = this;
+    root.activeKey[ARROW_KEYS.JUMP] = false;
     root.providers.onkeyup();
   }
 
   private activateMobilePlatformerControls () {
 
-    console.log("COOthis.viewPortL", this.viewPort)
-    window.addEventListener("touchstart", (event) => {
-      
-      const posX = event.changedTouches[0].clientX | event.changedTouches[0].pageX
-      const posY = event.changedTouches[0].clientY | event.changedTouches[0].pageY
-      console.log("COOL x ", posX)
-      console.log("COOL y ", posY)
-
-    }, false)
+    window.addEventListener("touchstart", this.mEvent, false)
+    window.addEventListener("touchend", this.mEventUp, false)
 
   }
 
+  private deActivateMobilePlatformerControls () {
+
+    window.removeEventListener("touchstart", this.mEvent)
+    window.removeEventListener("touchend", this.mEventUp)
+
+  }
+
+  private mEvent = (event) => {
+
+    const posX = event.changedTouches[0].clientX | event.changedTouches[0].pageX
+    const posY = event.changedTouches[0].clientY | event.changedTouches[0].pageY
+    const r = this.mobileControl.detArea.commandRight;
+    const l = this.mobileControl.detArea.commandLeft;
+    const j = this.mobileControl.detArea.commandJump;
+    if (posX > j.left() && posX < (j.left() + j.width()) &&
+        posY > j.top() && posY < (j.top() + j.height())) {
+      this.synteticJump()
+    }
+
+    if (posX > l.left() && posX < (l.left() + l.width()) &&
+        posY > l.top() && posY < (l.top() + l.height())) {
+      this.synteticLeft()
+    } 
+    if (posX > r.left() && posX < (r.left() + r.width()) &&
+        posY > r.top() && posY < (r.top() + r.height())) {
+      this.synteticRight()
+    } 
+
+    // console.info("Touch position: ", posX, posY)
+  }
+
+  private mEventUp = (event) => {
+
+    this.synteticLeftUp()
+    this.synteticRightUp()
+    this.synteticJumpUp()
+    // console.info("Touch Up ")
+  }
 
 }
 export default GlobalEvent;

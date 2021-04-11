@@ -18,8 +18,6 @@ class ViewPort {
 
   constructor(config: ClientConfig) {
 
-    console.log("CCCCCCCCCCCCCCCCCCCCCCCCCC")
-
     this.config = config;
     this.aspectRatio = this.config.getAspectRatio();
     if (this.config.getDrawRefference() === "diametric-fullscreen") {

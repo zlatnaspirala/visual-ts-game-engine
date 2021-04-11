@@ -13,7 +13,11 @@ export let scriptManager = {
           (this as HTMLScriptElement).src.lastIndexOf("."));
         filename = filename.replace(".", "_");
         // tslint:disable-next-line:no-eval
-        eval("try{scriptManager.loaded._" + filename + "(s)}catch(e){}");
+        try {
+          scriptManager.loaded["_" + filename](s)
+        }catch(e) {
+          console.log(e)
+        };
       }
 
     };

@@ -14,12 +14,24 @@
   features inside. Also video chat is integrated based on signaling server.
   No video recording for now (next features).
 
+  ### Whats good in this project:
+
+   - No strange logs - No need for forums just follow stackoverflow.com
+     and wc3. 
+   - Fast console log access, tracking code
+   - no single eval ('popular' js frameworks usually are based on eval)
+   - Fast rebuild
+
+   ### Simple there is nothing between you and making the app.
+
+
  - Written in typescript current version 3.7.4.
  - Text editor used and recommended: Last version of Visual Studio Code.
    Luanch debugger configuration comes with this project (for server part).
  - Physics engine based on Matter.js - Matter.ts (npm project).
  - Multiplatform video chat (for all browsers) implemented. SocketIO used for session staff.
    MultiRTC2 used for data transfer also for video chat. MultiRTC3 alias 'broadcaster' used for video chat.
+ - Mobile controls / Tested on android
 
 ![visualTS](https://github.com/zlatnaspirala/visual-ts/blob/dev/nonproject-files/logo.png)
 
@@ -31,11 +43,6 @@
   your system. Change flag in databased confimed to the `true` value to skip registration confirmation process.
 
 
-## Current DEV BRANCH
-
-    - Implementing Mobile Controls and make full mobile support because 
-    this project supports html5 mobile from begin.
-    
 
 ## Client part
 

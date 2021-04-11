@@ -44,7 +44,8 @@ class Ioc {
     this.singlton(Browser, undefined);
     this.singlton(ViewPort, this.config);
     this.singlton(GlobalEvent, [this.get.Browser,
-                                this.get.ViewPort]);
+                                this.get.ViewPort,
+                                this.get.MobileControls]);
     this.singlton(VisualRender, undefined);
 
     if (this.config.didAppUseNetwork()) {

@@ -8,7 +8,7 @@ import GlobalEvent from "../libs/events/global-event";
 import { IUniVector } from "../libs/interface/global";
 import Starter from "../libs/starter";
 import MessageBox from "../libs/class/messager-box";
-import mobileControls from "../libs/class/player-commands";
+import MobileControls from "../libs/class/player-commands";
 import Sound from "../libs/class/sound";
 
 /**
@@ -34,14 +34,15 @@ class Ioc {
   private config: ClientConfig;
 
   /**
-   * @description 
+   * @description
    * Constructor for ioc class is in samo time
    * register for application classes.
+   * If class have no args pass `undefined`.
    * After defined line 
-   *     this.singlton(mobileControls, undefined);
+   *     this.singlton(MobileControls, undefined);
    *     this.singlton(Browser, undefined);
    * We can use it in next line
-   *     this.singlton(GlobalEvent, this.get.Browser, this.get.mobileControls);
+   *     this.singlton(GlobalEvent, this.get.Browser, this.get.MobileControls);
    * Synchro block code
    */
   constructor(gamesList: any[]) {
@@ -52,11 +53,12 @@ class Ioc {
 
     this.singlton(Sound, undefined);
     this.singlton(MessageBox, undefined);
-    this.singlton(mobileControls, undefined);
+    this.singlton(MobileControls, undefined);
     this.singlton(Browser, undefined);
     this.singlton(ViewPort, this.config);
     this.singlton(GlobalEvent, [this.get.Browser,
-                                this.get.ViewPort]);
+                                this.get.ViewPort,
+                                this.get.MobileControls]);
     this.singlton(VisualRender, undefined);
     this.singlton(Starter, this);
 
