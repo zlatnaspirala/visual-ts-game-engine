@@ -14,10 +14,10 @@ export let scriptManager = {
         filename = filename.replace(".", "_");
         // tslint:disable-next-line:no-eval
         try {
-          scriptManager.loaded["_" + filename](s)
-        }catch(e) {
-          console.log(e)
-        };
+          scriptManager.loaded["_" + filename](s);
+        } catch (e) {
+          console.log(e);
+        }
       }
 
     };

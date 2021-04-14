@@ -1,19 +1,19 @@
 import Matter = require("matter-js");
+import Network from "../../../libs/class/networking/network";
 import { byId, createAppEvent, htmlHeader } from "../../../libs/class/system";
 import SpriteTextureComponent from "../../../libs/class/visual-methods/sprite-animation";
+import { DEFAULT_GAMEPLAY_ROLES, DEFAULT_PLAYER_DATA } from "../../../libs/defaults";
 import { IGamePlayModel, IPoint, ISelectedPlayer } from "../../../libs/interface/global";
 import Starter from "../../../libs/starter";
-import { worldElement, UniVector } from "../../../libs/types/global";
-import { DEFAULT_GAMEPLAY_ROLES, DEFAULT_PLAYER_DATA } from "../../../libs/defaults";
+import { UniVector, worldElement } from "../../../libs/types/global";
+// Prepare audios require("../audios/map-themes/mishief-stroll.mp4");
+import "./audios/map-themes/mishief-stroll.mp4";
 import Level1 from "./packs/level1";
 import Level2 from "./packs/level2";
 import Level3 from "./packs/level3";
 import Level4 from "./packs/level4";
 import Level5 from "./packs/level5";
 import Level6 from "./packs/level6";
-// Prepare audios require("../audios/map-themes/mishief-stroll.mp4");
-import "./audios/map-themes/mishief-stroll.mp4";
-import Network from "../../../libs/class/networking/network";
 // import { DEFAULT_PLAYER_DATA } from "../../../libs/defaults";
 
 /**
@@ -48,7 +48,7 @@ class Platformer implements IGamePlayModel {
   public netBodies: UniVector = {};
 
   public selectedPlayer: ISelectedPlayer;
-  private selectPlayerArray: ISelectedPlayer[]= [];
+  private selectPlayerArray: ISelectedPlayer[] = [];
   private lives: number = DEFAULT_PLAYER_DATA.INITIAL_LIVES;
 
   private preventDoubleExecution: boolean = false;
@@ -84,19 +84,19 @@ class Platformer implements IGamePlayModel {
    */
   public addNetPlayer = (myInstance, rtcEvent?) => {
 
-    let root = this;
+    const root = this;
 
     this.preventDoubleExecution = false;
 
-    let sptTexCom = new SpriteTextureComponent(
+    const sptTexCom = new SpriteTextureComponent(
       "playerImage",
       (this.selectedPlayer.resource as any),
-      ( { byX: 5, byY: 1 } as any)
+      ( { byX: 5, byY: 1 } as any),
     );
 
     console.log("New netPlayer: ", rtcEvent.extra.username);
     const playerRadius = 50;
-    let netPlayer: worldElement = Matter.Bodies.circle(
+    const netPlayer: worldElement = Matter.Bodies.circle(
       this.playerStartPositions[0].x,
       this.playerStartPositions[0].y,
       playerRadius, {
@@ -143,7 +143,7 @@ class Platformer implements IGamePlayModel {
 
       }
 
-  };
+  }
 
   public initSelectPlayer() {
 
@@ -177,11 +177,11 @@ class Platformer implements IGamePlayModel {
         require("../imgs/players/nidzica/nidzica-idle.png"),
       ],
       type: "sprite",
-      spriteTile:{run: { byX: 5, byY: 1 }, idle: { byX: 3, byY: 1 }},
+      spriteTile: {run: { byX: 5, byY: 1 }, idle: { byX: 3, byY: 1 }},
       spriteTileCurrent: "run",
       setCurrentTile(key: string) {
         this.spriteTileCurrent = key;
-      }
+      },
     });
 
     this.selectPlayerArray.push({
@@ -193,21 +193,21 @@ class Platformer implements IGamePlayModel {
         require("../imgs/players/smart-girl/smart-girl-idle.png"),
       ],
       type: "sprite",
-      spriteTile:{run: { byX: 5, byY: 1 }, idle: { byX: 5, byY: 1 }},
+      spriteTile: {run: { byX: 5, byY: 1 }, idle: { byX: 5, byY: 1 }},
       spriteTileCurrent: "idle",
       setCurrentTile(key: string) {
         this.spriteTileCurrent = key;
-      }
+      },
     });
 
   }
 
   public createPlayer(addToScene: boolean) {
 
-    let sptTexCom = new SpriteTextureComponent(
+    const sptTexCom = new SpriteTextureComponent(
       "playerImage",
       (this.selectedPlayer.resource as any),
-      ( { byX: 5, byY: 1 } as any)
+      ( { byX: 5, byY: 1 } as any),
     );
 
     this.preventDoubleExecution = false;
@@ -332,7 +332,7 @@ class Platformer implements IGamePlayModel {
           const appStartGamePlay = createAppEvent("game-init",
           {
             mapName: "Level1",
-            game: myInstance.levelMaps.Level1
+            game: myInstance.levelMaps.Level1,
           });
 
           (window as any).dispatchEvent(appStartGamePlay);
@@ -358,11 +358,11 @@ class Platformer implements IGamePlayModel {
       return res.text();
     }).then(function (html) {
 
-      let popup = byId("popup") as HTMLDivElement;
+      const popup = byId("popup") as HTMLDivElement;
       popup.innerHTML = html;
       popup.style.display = "block";
 
-      myInstance.selectPlayerArray.forEach(function(itemPlayer) {
+      myInstance.selectPlayerArray.forEach(function (itemPlayer) {
 
         const local = document.createElement("div");
         local.id = "" + itemPlayer.labelName;
@@ -374,7 +374,7 @@ class Platformer implements IGamePlayModel {
           itemPlayer.poster +
           "' width='150px' height='150px' class='selectPlayerItemBox' />";
 
-        local.addEventListener("click", function() {
+        local.addEventListener("click", function () {
 
           myInstance.selectPlayer(itemPlayer.labelName);
           const appStartGamePlay = createAppEvent(
@@ -382,7 +382,7 @@ class Platformer implements IGamePlayModel {
             {
               mapName: "Level1",
               game: myInstance.levelMaps.Level1,
-            }
+            },
           );
           (window as any).dispatchEvent(appStartGamePlay);
 
@@ -462,7 +462,7 @@ class Platformer implements IGamePlayModel {
 
     const root = this;
     this.selectPlayerArray.forEach((element) => {
-      if (element.labelName == labelName) {
+      if (element.labelName === labelName) {
         root.selectedPlayer = element;
       }
     });

@@ -1,10 +1,10 @@
 import Matter = require("matter-js");
 import { byId, createAppEvent, htmlHeader } from "../../../libs/class/system";
 import SpriteTextureComponent from "../../../libs/class/visual-methods/sprite-animation";
+import { DEFAULT_GAMEPLAY_ROLES, DEFAULT_PLAYER_DATA } from "../../../libs/defaults";
 import { IGamePlayModel, IPoint, ISelectedPlayer } from "../../../libs/interface/global";
 import Starter from "../../../libs/starter";
 import { worldElement } from "../../../libs/types/global";
-import { DEFAULT_GAMEPLAY_ROLES, DEFAULT_PLAYER_DATA } from "../../../libs/defaults";
 import Level1 from "./packs/level1";
 import Level2 from "./packs/level2";
 import Level3 from "./packs/level3";
@@ -42,8 +42,8 @@ class Platformer implements IGamePlayModel {
   // move to maps 'labels text'
   public hudLives: Matter.Body | any = null;
 
-  public selectedPlayer : ISelectedPlayer;
-  private selectPlayerArray: ISelectedPlayer[]= [];
+  public selectedPlayer: ISelectedPlayer;
+  private selectPlayerArray: ISelectedPlayer[] = [];
   private lives: number = DEFAULT_PLAYER_DATA.INITIAL_LIVES;
   private preventDoubleExecution: boolean = false;
   private playerStartPositions: IPoint[] = [{x: 120, y: 200}];
@@ -54,12 +54,12 @@ class Platformer implements IGamePlayModel {
 
   private levelMaps: any = {
     generatedMap: Level1,
-    Level1: Level1,
-    Level2: Level2,
-    Level3: Level3,
-    Level4: Level4,
-    Level5: Level5,
-    Level6: Level6,
+    Level1,
+    Level2,
+    Level3,
+    Level4,
+    Level5,
+    Level6,
   };
 
   constructor(starter: Starter) {
@@ -74,7 +74,6 @@ class Platformer implements IGamePlayModel {
     // this.starter.ioc.get.Sound.audioBox['surfaceLevel'].play();
 
   }
-
 
   public initSelectPlayer() {
 
@@ -108,11 +107,11 @@ class Platformer implements IGamePlayModel {
         require("../imgs/players/nidzica/nidzica-idle.png"),
       ],
       type: "sprite",
-      spriteTile:{run: { byX: 5, byY: 1 }, idle: { byX: 3, byY: 1 }},
+      spriteTile: {run: { byX: 5, byY: 1 }, idle: { byX: 3, byY: 1 }},
       spriteTileCurrent: "run",
-      setCurrentTile: function(key: string) {
+      setCurrentTile(key: string) {
         this.spriteTileCurrent = key;
-      }
+      },
     });
 
     this.selectPlayerArray.push({
@@ -124,31 +123,21 @@ class Platformer implements IGamePlayModel {
         require("../imgs/players/smart-girl/smart-girl-idle.png"),
       ],
       type: "sprite",
-      spriteTile:{run: { byX: 5, byY: 1 }, idle: { byX: 5, byY: 1 }},
+      spriteTile: {run: { byX: 5, byY: 1 }, idle: { byX: 5, byY: 1 }},
       spriteTileCurrent: "idle",
-      setCurrentTile: function(key: string) {
+      setCurrentTile(key: string) {
         this.spriteTileCurrent = key;
-      }
-    });
-
-  }
-
-  protected selectPlayer(labelName: string = "nidzica") {
-
-    this.selectPlayerArray.forEach((element) => {
-      if (element.labelName == labelName) {
-        this.selectedPlayer = element;
-      }
+      },
     });
 
   }
 
   public createPlayer(addToScene: boolean) {
 
-    let sptTexCom = new SpriteTextureComponent(
+    const sptTexCom = new SpriteTextureComponent(
       "playerImage",
       (this.selectedPlayer.resource as any),
-      ( { byX: 5, byY: 1 } as any)
+      ( { byX: 5, byY: 1 } as any),
     );
 
     this.preventDoubleExecution = false;
@@ -273,22 +262,22 @@ class Platformer implements IGamePlayModel {
         // hard
          myInstance.destroyGamePlayPlatformer();
 
-        (this as any).disabled = true;
-        byId("UIPlayerLives").innerText = "3";
-        myInstance.lives = DEFAULT_PLAYER_DATA.INITIAL_LIVES;
+         (this as any).disabled = true;
+         byId("UIPlayerLives").innerText = "3";
+         myInstance.lives = DEFAULT_PLAYER_DATA.INITIAL_LIVES;
 
-        const appStartGamePlay = createAppEvent("game-init",
+         const appStartGamePlay = createAppEvent("game-init",
         {
           mapName: "Level1",
-          game: myInstance.levelMaps.Level1
+          game: myInstance.levelMaps.Level1,
         });
 
-        (window as any).dispatchEvent(appStartGamePlay);
+         (window as any).dispatchEvent(appStartGamePlay);
 
-        myInstance.player.render.visualComponent.assets.SeqFrame.setNewValue(0);
-        myInstance.selectedPlayer.spriteTileCurrent = "run";
-        myInstance.player.render.visualComponent.setNewShema(myInstance.selectedPlayer);
-        myInstance.player.render.visualComponent.seqFrameX.setDelay(8);
+         myInstance.player.render.visualComponent.assets.SeqFrame.setNewValue(0);
+         myInstance.selectedPlayer.spriteTileCurrent = "run";
+         myInstance.player.render.visualComponent.setNewShema(myInstance.selectedPlayer);
+         myInstance.player.render.visualComponent.seqFrameX.setDelay(8);
 
       }, false);
 
@@ -302,13 +291,13 @@ class Platformer implements IGamePlayModel {
       return res.text();
     }).then(function (html) {
 
-      var popup = byId("popup") as HTMLDivElement;
+      const popup = byId("popup") as HTMLDivElement;
       popup.innerHTML = html;
       popup.style.display = "block";
 
-      myInstance.selectPlayerArray.forEach(function(itemPlayer) {
+      myInstance.selectPlayerArray.forEach(function (itemPlayer) {
 
-        var local = document.createElement("div");
+        const local = document.createElement("div");
         local.id = "" + itemPlayer.labelName;
         local.className = "bounceIn";
         local.setAttribute("style", "width:30%;display:inline-block;cursor:pointer;text-align:center;padding: 9px;");
@@ -318,7 +307,7 @@ class Platformer implements IGamePlayModel {
           itemPlayer.poster +
           "' width='150px' height='150px' class='selectPlayerItemBox' />";
 
-        local.addEventListener("click", function() {
+        local.addEventListener("click", function () {
 
           myInstance.selectPlayer(itemPlayer.labelName);
           const appStartGamePlay = createAppEvent(
@@ -326,7 +315,7 @@ class Platformer implements IGamePlayModel {
             {
               mapName: "Level1",
               game: myInstance.levelMaps.Level1,
-            }
+            },
           );
           (window as any).dispatchEvent(appStartGamePlay);
 
@@ -335,14 +324,22 @@ class Platformer implements IGamePlayModel {
 
         }, false);
 
-        byId('listOfPlayers').appendChild(local);
+        byId("listOfPlayers").appendChild(local);
         // popup.appendChild(local);
 
       });
 
-
     });
 
+  }
+
+  protected selectPlayer(labelName: string = "nidzica") {
+
+    this.selectPlayerArray.forEach((element) => {
+      if (element.labelName === labelName) {
+        this.selectedPlayer = element;
+      }
+    });
 
   }
 
@@ -353,7 +350,7 @@ class Platformer implements IGamePlayModel {
       this.preventDoubleExecution = true;
       // Hard dead
       // this.starter.destroyBody(collectitem);
-      console.info("What is destroyed : ", collectitem)
+      console.info("What is destroyed : ", collectitem);
       this.player.render.visualComponent.shema = { byX: 4, byY: 4 };
       this.player.render.visualComponent.assets.SeqFrame.setNewValue(1);
       this.lives = this.lives - 1;
@@ -404,7 +401,7 @@ class Platformer implements IGamePlayModel {
 
   private attachUpdateLives = () => {
 
-    let root = this;
+    const root = this;
     window.addEventListener("update-lives", function (e) {
       root.lives = (e as any).detail.data.lives;
     });
@@ -440,13 +437,13 @@ class Platformer implements IGamePlayModel {
       root.player.render.visualComponent.seqFrameX.setDelay(8);
       Matter.Body.setPosition(root.player, root.playerStartPositions[0]);
 
-      setTimeout(function() {
+      setTimeout(function () {
         const appStartGamePlay = createAppEvent("game-init", {
           mapName: data,
-          game: root.levelMaps[data]
+          game: root.levelMaps[data],
         });
         (window as any).dispatchEvent(appStartGamePlay);
-      }, DEFAULT_GAMEPLAY_ROLES.RESPAWN_INTERVAL)
+      }, DEFAULT_GAMEPLAY_ROLES.RESPAWN_INTERVAL);
 
     }
 
@@ -454,4 +451,3 @@ class Platformer implements IGamePlayModel {
 
 }
 export default Platformer;
-

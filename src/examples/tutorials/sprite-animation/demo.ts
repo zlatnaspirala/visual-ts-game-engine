@@ -96,7 +96,7 @@ class DemoSpriteAnimation {
           } as any | Matter.IBodyRenderOptions,
         });
 
-       (newStaticElement.render as any).visualComponent.setVerticalTiles(4)
+       (newStaticElement.render as any).visualComponent.setVerticalTiles(4);
        // setHorizontalTiles(1);
        this.starter.AddNewBodies([newStaticElement] as worldElement);
 

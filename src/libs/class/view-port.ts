@@ -61,10 +61,10 @@ class ViewPort {
         "CANVAS_READY",
         {
           desc: "Good",
-        }
+        },
       );
       (window as any).dispatchEvent(canvasDomReady);
-    }, 1)
+    }, 1);
 
   }
 
@@ -74,7 +74,7 @@ class ViewPort {
     // initCanvasDom Not in dep chain ! Fix later
     this.canvasDom = document.getElementsByTagName("canvas")[0];
 
-    return this.canvasDom
+    return this.canvasDom;
   }
 
   public getWidth(percente: number): number {

@@ -164,7 +164,7 @@ class ClientConfig {
 
   private controls: {} = {
     platformerPlayerController: true,
-    enableMobileControlsOnDesktop: true
+    enableMobileControlsOnDesktop: true,
   };
 
   private gameList: any[];
@@ -186,7 +186,7 @@ class ClientConfig {
   }
 
   public getcontrols(): any {
-    return this.controls
+    return this.controls;
   }
 
   public getShowBroadcasterOnInt () {

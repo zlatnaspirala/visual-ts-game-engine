@@ -3,12 +3,6 @@ import { byId, htmlHeader } from "./system";
 
 class MobileControls {
 
-  constructor() {
-    console.info("Player controls class constructed." );
-    console.info("not abstract for now it is platformer controller." );
-    console.info("Percents used to determinate area dimensions." );
-  }
-
   public detArea = {
     commandLeft: {
       l: 0,
@@ -39,9 +33,14 @@ class MobileControls {
       top: () => window.innerHeight / 100 * this.detArea.commandJump.t,
       width: () => window.innerWidth / 100 * this.detArea.commandJump.w,
       height: () => window.innerHeight / 100 * this.detArea.commandJump.h,
-    }
-  }
+    },
+  };
 
+  constructor() {
+    console.info("Player controls class constructed." );
+    console.info("not abstract for now it is platformer controller." );
+    console.info("Percents used to determinate area dimensions." );
+  }
 
 }
 export default MobileControls;

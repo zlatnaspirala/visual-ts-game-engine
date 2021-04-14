@@ -1,3 +1,3 @@
-let BasketBallChatLevel1 = [];
+const BasketBallChatLevel1 = [];
 
 export default BasketBallChatLevel1;

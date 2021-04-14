@@ -58,7 +58,7 @@ class TextureComponent implements IVisualComponent {
             originW,
             originH,
             this.horizontalFlip,
-            this.verticalFlip
+            this.verticalFlip,
           );
 
         }
@@ -70,7 +70,7 @@ class TextureComponent implements IVisualComponent {
       this.assets.getImg().width * part.render.sprite.xScale,
       this.assets.getImg().height * part.render.sprite.yScale,
       this.horizontalFlip,
-      this.verticalFlip
+      this.verticalFlip,
     );
     }
 

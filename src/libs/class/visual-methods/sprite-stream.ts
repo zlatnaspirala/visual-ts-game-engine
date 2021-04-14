@@ -2,8 +2,8 @@ import { ISpriteShema } from "../../interface/global";
 import IVisualComponent from "../../interface/visual-component";
 import { Counter, getDistance } from "../math";
 import Resources from "../resources";
-import TextureComponent from "./texture";
 import SpriteTextureComponent from "./sprite-animation";
+import TextureComponent from "./texture";
 
 /**
  * @description Class SpriteTextureComponent extends TextureComponent and override
@@ -33,29 +33,20 @@ class SpriteStreamComponent extends SpriteTextureComponent {
 
     super(name, imgRes, shema);
 
-    if (typeof streamTex !== 'undefined') {
+    if (typeof streamTex !== "undefined") {
       this.streamTexture = streamTex;
     }
 
     // Override right here to prepare for spritesheet scenario of image drawing.
-    (this.flipImage as any) = function(image, ctx, sx, sy, sw, sh, dx, dy, dw, dh, flipH, flipV) {
+    (this.flipImage as any) = function (image, ctx, sx, sy, sw, sh, dx, dy, dw, dh, flipH, flipV) {
       const scaleH = flipH ? -1 : 1, scaleV = flipV ? -1 : 1;
       ctx.save();
       ctx.scale(scaleH, scaleV);
       ctx.drawImage(
         this.assets.getImg(), sx, sy, sw, sh, dx, dy, dw, dh);
       ctx.restore();
-    }
+    };
 
-  }
-
-  private flipStream (image, ctx, sx, sy, sw, sh, dx, dy, dw, dh, flipH, flipV) {
-    const scaleH = flipH ? -1 : 1, scaleV = flipV ? -1 : 1;
-    ctx.save();
-    ctx.scale(scaleH, scaleV);
-    ctx.drawImage(
-      image, sx, sy, sw, sh, dx, dy, dw, dh);
-    ctx.restore();
   }
 
   /**
@@ -97,7 +88,6 @@ class SpriteStreamComponent extends SpriteTextureComponent {
               this.horizontalFlip, this.verticalFlip);
           }
 
-
         }
 
       }
@@ -131,6 +121,15 @@ class SpriteStreamComponent extends SpriteTextureComponent {
 
   public setStreamTexture(streamTexture: HTMLVideoElement): void {
     this.streamTexture = streamTexture;
+  }
+
+  private flipStream (image, ctx, sx, sy, sw, sh, dx, dy, dw, dh, flipH, flipV) {
+    const scaleH = flipH ? -1 : 1, scaleV = flipV ? -1 : 1;
+    ctx.save();
+    ctx.scale(scaleH, scaleV);
+    ctx.drawImage(
+      image, sx, sy, sw, sh, dx, dy, dw, dh);
+    ctx.restore();
   }
 
 }

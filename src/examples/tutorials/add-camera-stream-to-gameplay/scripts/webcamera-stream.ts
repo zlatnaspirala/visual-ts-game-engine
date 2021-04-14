@@ -56,7 +56,7 @@ class WebCamStream implements IGamePlayModel {
 
   private levelMaps: any = {
     generatedMap: Level1,
-    Level1
+    Level1,
   };
 
   constructor(starter: Starter) {
@@ -330,13 +330,13 @@ class WebCamStream implements IGamePlayModel {
       return res.text();
     }).then(function (html) {
 
-      let popup = byId("popup") as HTMLDivElement;
+      const popup = byId("popup") as HTMLDivElement;
       popup.innerHTML = html;
       popup.style.display = "block";
 
       myInstance.selectPlayerArray.forEach(function (itemPlayer) {
 
-        let local = document.createElement("div");
+        const local = document.createElement("div");
         local.id = "" + itemPlayer.labelName;
         local.className = "bounceIn";
         local.setAttribute("style", "width:30%;display:inline-block;cursor:pointer;text-align:center;padding: 9px;");

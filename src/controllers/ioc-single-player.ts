@@ -1,15 +1,15 @@
 
-import Browser from "../libs/class/browser";
-import { scriptManager } from "../libs/class/system";
-import ViewPort from "../libs/class/view-port";
-import VisualRender from "../libs/class/visual-render";
 import ClientConfig from "../client-config";
-import GlobalEvent from "../libs/events/global-event";
-import { IUniVector } from "../libs/interface/global";
-import Starter from "../libs/starter";
+import Browser from "../libs/class/browser";
 import MessageBox from "../libs/class/messager-box";
 import MobileControls from "../libs/class/player-commands";
 import Sound from "../libs/class/sound";
+import { scriptManager } from "../libs/class/system";
+import ViewPort from "../libs/class/view-port";
+import VisualRender from "../libs/class/visual-render";
+import GlobalEvent from "../libs/events/global-event";
+import { IUniVector } from "../libs/interface/global";
+import Starter from "../libs/starter";
 
 /**
  * @description Ioc is main dependency controller class.
@@ -28,7 +28,7 @@ class Ioc {
   public get: IUniVector = {};
 
   /**
-   * @description 
+   * @description
    * config is instance of ClientConfig class.
    */
   private config: ClientConfig;
@@ -38,7 +38,7 @@ class Ioc {
    * Constructor for ioc class is in samo time
    * register for application classes.
    * If class have no args pass `undefined`.
-   * After defined line 
+   * After defined line
    *     this.singlton(MobileControls, undefined);
    *     this.singlton(Browser, undefined);
    * We can use it in next line
@@ -68,7 +68,7 @@ class Ioc {
 
   /**
    * @name singlton
-   * @description 
+   * @description
    * singlton is method for instancing.
    * @param Singlton This arg is type pf any becouse we can pass
    * any class with or without own args.

@@ -1,10 +1,10 @@
 import ClientConfig from "../../client-config";
 import Browser from "../class/browser";
+import MobileControls from "../class/player-commands";
 import ViewPort from "../class/view-port";
+import { ARROW_KEYS } from "../defaults";
 import { IUniVector } from "../interface/global";
 import { UniVector } from "../types/global";
-import { ARROW_KEYS } from "../defaults";
-import MobileControls from "../class/player-commands";
 
 /**
  * @name GlobalEvent
@@ -37,11 +37,11 @@ class GlobalEvent {
 
       this.viewPort = viewPort;
 
-      window.addEventListener('CANVAS_READY', () => {
-        console.log("Canvas ready.")
+      window.addEventListener("CANVAS_READY", () => {
+        console.log("Canvas ready.");
         this.activateMobilePlatformerControls();
-      } , false)
-      
+      } , false);
+
       this.providers.injected = {};
       this.providers.onkeydown = function () {
         console.log("default providers.onkeydown");
@@ -55,7 +55,7 @@ class GlobalEvent {
       if (this.clientConfig.getcontrols().enableMobileControlsOnDesktop) {
         // yest
       }
-      // Optimize 
+      // Optimize
       // We no need at all keyboard at mobile platform!
 
       // Register providers and dependency.
@@ -149,48 +149,48 @@ class GlobalEvent {
 
   private activateMobilePlatformerControls () {
 
-    window.addEventListener("touchstart", this.mEvent, false)
-    window.addEventListener("touchend", this.mEventUp, false)
+    window.addEventListener("touchstart", this.mEvent, false);
+    window.addEventListener("touchend", this.mEventUp, false);
 
   }
 
   private deActivateMobilePlatformerControls () {
 
-    window.removeEventListener("touchstart", this.mEvent)
-    window.removeEventListener("touchend", this.mEventUp)
+    window.removeEventListener("touchstart", this.mEvent);
+    window.removeEventListener("touchend", this.mEventUp);
 
   }
 
   private mEvent = (event) => {
 
-    const posX = event.changedTouches[0].clientX | event.changedTouches[0].pageX
-    const posY = event.changedTouches[0].clientY | event.changedTouches[0].pageY
+    const posX = event.changedTouches[0].clientX || event.changedTouches[0].pageX;
+    const posY = event.changedTouches[0].clientY || event.changedTouches[0].pageY;
     const r = this.mobileControl.detArea.commandRight;
     const l = this.mobileControl.detArea.commandLeft;
     const j = this.mobileControl.detArea.commandJump;
     if (posX > j.left() && posX < (j.left() + j.width()) &&
         posY > j.top() && posY < (j.top() + j.height())) {
-      this.synteticJump()
+      this.synteticJump();
     }
 
     if (posX > l.left() && posX < (l.left() + l.width()) &&
         posY > l.top() && posY < (l.top() + l.height())) {
-      this.synteticLeft()
-    } 
+      this.synteticLeft();
+    }
     if (posX > r.left() && posX < (r.left() + r.width()) &&
         posY > r.top() && posY < (r.top() + r.height())) {
-      this.synteticRight()
-    } 
+      this.synteticRight();
+    }
 
     // console.info("Touch position: ", posX, posY)
   }
 
-  private mEventUp = (event) => {
+  private mEventUp = (event: Event) => {
 
-    this.synteticLeftUp()
-    this.synteticRightUp()
-    this.synteticJumpUp()
-    // console.info("Touch Up ")
+    this.synteticLeftUp();
+    this.synteticRightUp();
+    this.synteticJumpUp();
+
   }
 
 }

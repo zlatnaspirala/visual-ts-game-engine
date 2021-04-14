@@ -1,9 +1,9 @@
 
+import EngineConfig from "../../../client-config";
 import { DEFAULT_PLAYER_DATA } from "../../defaults";
 import { IMessageReceived, IUserRegData } from "../../interface/global";
 import { NetMsg, UniClick } from "../../types/global";
 import { byId, createAppEvent, encodeString, htmlHeader, validateEmail, validatePassword } from "../system";
-import EngineConfig from "../../../client-config";
 import Memo from "./../local-storage";
 
 class ConnectorClient {
@@ -31,7 +31,7 @@ class ConnectorClient {
     this.webSocketController.onmessage = this.onMessage;
     this.webSocketController.onerror = this.onError;
 
-    console.info("Test 121212")
+    console.info("Test 121212");
 
     if (config.getStartUpHtmlForm() === "register") {
       this.showRegisterForm();
@@ -236,7 +236,7 @@ class ConnectorClient {
 
           // Means reConnect
           if (this.memo.load("activeGame") === "none") {
-            console.log("PREVENT ONLY JOIN - test only")
+            console.log("PREVENT ONLY JOIN - test only");
             // return;
           }
 
@@ -418,7 +418,7 @@ class ConnectorClient {
 
   private showGamesList = (e) => {
     console.log("showGamesList");
-    if (e) e.preventDefault();
+    if (e) { e.preventDefault(); }
 
     const myInstance = this;
     fetch("./templates/games-list.html", {

@@ -1,15 +1,15 @@
 
+import ClientConfig from "../client-config";
 import Browser from "../libs/class/browser";
+import MessageBox from "../libs/class/messager-box";
 import Broadcaster from "../libs/class/networking/broadcaster";
 import Network from "../libs/class/networking/network";
 import { scriptManager } from "../libs/class/system";
 import ViewPort from "../libs/class/view-port";
 import VisualRender from "../libs/class/visual-render";
-import ClientConfig from "../client-config";
 import GlobalEvent from "../libs/events/global-event";
 import { IUniVector } from "../libs/interface/global";
 import Starter from "../libs/starter";
-import MessageBox from "../libs/class/messager-box";
 
 /**
  * Ioc is main dependency controller class.
