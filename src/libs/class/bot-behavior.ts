@@ -1,4 +1,5 @@
-import Matter = require("matter-js");
+
+import * as Matter from "matter-js";
 import { IBotBehaviorOptions } from "../interface/global";
 import { worldElement } from "../types/global";
 

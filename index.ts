@@ -1,6 +1,6 @@
 'use strict'
 
-import { byId } from "./src/libs/class/system";
+export { byId } from "./src/libs/class/system";
 import SpriteTextureComponent from "./src/libs/class/visual-methods/sprite-animation";
 import * as Matter from "matter-js";
 import BotBehavior from "./src/libs/class/bot-behavior";
@@ -19,11 +19,3 @@ import { worldElement } from "./src/libs/types/global";
  * Test proper implementation with npm service
  * Test
  */
-const visualTs = {
-  Matter,
-  SpriteTextureComponent,
-  TextureComponent
-}
-
-export { visualTs }
-
