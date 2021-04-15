@@ -25,7 +25,7 @@ class MessageBox {
       this.messageBoxContentFlag = content;
       this.messageBox.classList.remove("message-box-hide-animation");
       this.messageBox.classList.add("message-box-show-animation");
-      this.messageBoxContent = byId("message-box-content");
+      this.messageBoxContent = byId("message-box-content") as HTMLElement;
       this.messageBoxContent.innerText = content;
       // Must be sync with css duration value
       this.messageBox.style.display = "block";
@@ -69,11 +69,12 @@ class MessageBox {
         }
         myInstance.popup.classList.add("message-box-show-animation");
         myInstance.messageBox.classList.remove("message-box-hide-animation");
-        myInstance.messageBoxContent = byId("message-box-content");
+        myInstance.messageBoxContent = byId("message-box-content") as HTMLElement;
         myInstance.messageBoxContent.innerHTML = myInstance.welcomeMessage;
-        // console.info("MessageBox is ready.");
-        byId("message-box-btn").addEventListener("click", myInstance.hide, false);
-
+        console.info("MessageBox is ready. Test");
+        if (byId("message-box-btn") !== undefined && byId("message-box-btn") !== null) {
+          byId("message-box-btn").addEventListener("click", myInstance.hide, false);
+        }
         if (myInstance.asynContentFlag) {
           myInstance.asynContentFlag = false;
           myInstance.messageBoxContent.innerHTML = myInstance.messageBoxContentFlag;
