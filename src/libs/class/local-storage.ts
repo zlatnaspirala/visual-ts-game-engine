@@ -37,12 +37,12 @@ class LocalStorageMemory {
    * @param {String} Name Name of localstorage key
    * @return {false | object} What ever we are stored intro localStorage.
    */
-  public load(name) {
+  public load(name: string) {
     if (localStorage.getItem(name) === "undefined" || localStorage.getItem(name) == null || localStorage.getItem(name) === "") {
       console.warn("LocalStorageMemory method load return's: ", localStorage.getItem(name));
       return false;
     } else {
-      return JSON.parse(localStorage.getItem(name));
+      return JSON.parse(localStorage.getItem(name) as string);
     }
   }
 

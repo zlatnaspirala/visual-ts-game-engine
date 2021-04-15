@@ -6,16 +6,16 @@ class MessageBox {
 
   private showOnInit: boolean = false;
   private welcomeMessage: string = "This application was created on visual-ts n\ Example: Real time multiplayer `Platformer` zlatnaspirala@gmail.com";
-  private messageBox: HTMLElement = byId("message-box");
+  private messageBox: HTMLElement | null = byId("message-box");
   private messageBoxContent: HTMLElement;
-  private messageBoxContentFlag: string;
+  private messageBoxContentFlag: string = "";
   private asynContentFlag: boolean = false;
 
   constructor() {
 
     this.popup = byId("message-box") as HTMLDivElement;
     this.init();
-    // console.info("MessageBox is constructed.");
+    console.info("MessageBox is constructed.");
 
   }
 
@@ -71,9 +71,8 @@ class MessageBox {
         myInstance.messageBox.classList.remove("message-box-hide-animation");
         myInstance.messageBoxContent = byId("message-box-content") as HTMLElement;
         myInstance.messageBoxContent.innerHTML = myInstance.welcomeMessage;
-        console.info("MessageBox is ready. Test");
-        if (byId("message-box-btn") !== undefined && byId("message-box-btn") !== null) {
-          byId("message-box-btn").addEventListener("click", myInstance.hide, false);
+        if (byId("message-box-btn")) {
+          (byId("message-box-btn") as HTMLDivElement).addEventListener("click", myInstance.hide, false);
         }
         if (myInstance.asynContentFlag) {
           myInstance.asynContentFlag = false;

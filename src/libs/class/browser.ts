@@ -1,4 +1,13 @@
 
+
+/**
+ * @description This is possible value's for property description:
+ * "mobile_firefox_android" "mobile_firefox_android_tablet" "opera_mobile_android"
+ * "opera_mobile_android_tablet" "safari_mobile_iphone" "mobile_safari_chrome_ipad"
+ * "android_native" "mobile_chrome_android_tablet" "mobile_chrome_android"
+ * "chrome_browser" "firefox_desktop" "opera_desktop" "firefox_desktop_linux"
+ * "chrome_desktop_linux" "opera_desktop_linux" 
+ */
 class Browser {
 
     public isMobile: boolean = false;
@@ -13,9 +22,9 @@ class Browser {
     private operatablet: RegExpMatchArray | boolean | any;
     private navIphone: RegExpMatchArray | boolean | any;
     private navFirefox: RegExpMatchArray | boolean | any;
-    private navChrome: RegExpMatchArray | boolean | any;
+    private navChrome: RegExpMatchArray | null;
     private navOpera: RegExpMatchArray | boolean | any;
-    private navSafari: RegExpMatchArray | boolean | any;
+    private navSafari: RegExpMatchArray | null;
     private navandroid: RegExpMatchArray | boolean | any;
     private mobile: RegExpMatchArray | boolean | any;
     private navMozilla: RegExpMatchArray | boolean | any;
@@ -24,24 +33,6 @@ class Browser {
 
     private windowsOS: RegExpMatchArray | null = null;
 
-    /**
-     * @description This is possible value's for property description:
-     * "mobile_firefox_android"
-     * "mobile_firefox_android_tablet"
-     * "opera_mobile_android"
-     * "opera_mobile_android_tablet"
-     * "safari_mobile_iphone"
-     * "mobile_safari_chrome_ipad"
-     * "android_native"
-     * "mobile_chrome_android_tablet"
-     * "mobile_chrome_android"
-     * "chrome_browser"
-     * "firefox_desktop"
-     * "opera_desktop"
-     * "firefox_desktop_linux"
-     * "chrome_desktop_linux"
-     * "opera_desktop_linux" .
-     */
     constructor() {
 
         this.navLinux = this.uAgent.match(/Linux/gi);

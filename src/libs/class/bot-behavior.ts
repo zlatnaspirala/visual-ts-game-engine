@@ -8,7 +8,7 @@ class BotBehavior implements IBotBehaviorOptions {
   public patrolType: string = "left-right";
   public patrolPeriod: number = 3000;
   public patrolLoop: boolean = true;
-  public patrol: () => void;
+  public patrol: () => void = () => {};
   public intesity: number = 20;
   private patrolDirection: number = 1;
   private enemy: Matter.Body | any;
@@ -25,9 +25,9 @@ class BotBehavior implements IBotBehaviorOptions {
       }
       this.patrolPeriod = options.patrolPeriod;
       this.patrolLoop = options.patrolLoop;
-      console.log("Bot options loaded.");
+      console.info("Enemy Bot options loaded.");
     } else {
-      // console.log("Bot default options loaded.");
+      console.info("Enemy Bot default options loaded.");
       this.patrol = this.patrolLeftRight;
     }
   }

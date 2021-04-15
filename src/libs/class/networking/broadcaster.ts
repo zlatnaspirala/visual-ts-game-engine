@@ -15,15 +15,15 @@ class Broadcaster {
 
   private connection: any;
   private engineConfig: ClientConfig;
-  private popupUI: HTMLDivElement = null;
-  private broadcasterUI: HTMLElement;
-  private titleStatus: HTMLElement;
-  private openRoomBtn: HTMLElement;
-  private joinRoomBtn: HTMLElement;
-  private leaveRoomBtn: HTMLElement;
-  private shareFileBtn: HTMLElement;
-  private inputChat: HTMLElement;
-  private inputRoomId: HTMLElement;
+  private popupUI: HTMLDivElement    | null = null;
+  private broadcasterUI: HTMLElement | null = null;
+  private titleStatus: HTMLElement   | null = null;
+  private openRoomBtn: HTMLElement   | null = null;
+  private joinRoomBtn: HTMLElement   | null = null;
+  private leaveRoomBtn: HTMLElement  | null = null;
+  private shareFileBtn: HTMLElement  | null = null;
+  private inputChat: HTMLElement     | null = null;
+  private inputRoomId: HTMLElement   | null = null;
 
   constructor(config: any) {
 
@@ -156,13 +156,13 @@ class Broadcaster {
               posY = evt.clientY,
               eWi = parseInt(divid.style.width, 10),
               eHe = parseInt(divid.style.height, 10),
-              cWi = parseInt(document.getElementById(container).style.width, 10),
-              cHe = parseInt(document.getElementById(container).style.height, 10);
+              cWi = parseInt((document.getElementById(container) as any).style.width, 10),
+              cHe = parseInt((document.getElementById(container) as any).style.height, 10);
 
             let divTop = divid.style.top,
               divLeft = divid.style.left;
 
-            document.getElementById(container).style.cursor = "move";
+            (document.getElementById(container) as any).style.cursor = "move";
             divTop = divTop.replace("px", "");
             divLeft = divLeft.replace("px", "");
             const diffX = posX - divLeft,
@@ -188,9 +188,9 @@ class Broadcaster {
           },
           stopMoving (container) {
             const a = document.createElement("script");
-            document.getElementById(container).style.cursor = "default";
+            (document.getElementById(container) as any).style.cursor = "default";
             // document.onmousemove = function () {};
-            document.onmousemove = undefined;
+            (document as any).onmousemove = undefined;
           },
         };
       }();
@@ -231,10 +231,10 @@ class Broadcaster {
       (root.inputChat as HTMLInputElement).disabled = false;
       (root.leaveRoomBtn as HTMLInputElement).disabled = false;
 
-      console.log( "!!!!!!!!You are connected with: " +
+      console.info( "You are connected with: " +
         root.connection.getAllParticipants().join(", "));
 
-      document.querySelector("#rtc3log").innerHTML = "You are connected with: " +
+        (document.querySelector("#rtc3log") as HTMLInputElement).innerHTML = "You are connected with: " +
         root.connection.getAllParticipants().join(", ");
     };
 
@@ -263,7 +263,7 @@ class Broadcaster {
 
       // don't display alert for moderator
       if (root.connection.userid === event.userid) { return; }
-      document.querySelector("#rtc3log").innerHTML = "Entire session has been closed by the moderator: " + event.userid;
+      (document.querySelector("#rtc3log") as HTMLInputElement).innerHTML = "Entire session has been closed by the moderator: " + event.userid;
     };
 
     this.connection.onUserIdAlreadyTaken = function (useridAlreadyTaken) {
@@ -286,12 +286,11 @@ class Broadcaster {
       html += 'QueryString URL: <a href="' + roomQueryStringURL + '" target="_blank">' + roomQueryStringURL + "</a>";
 
       const roomURLsDiv = document.getElementById("room-urls");
-      roomURLsDiv.innerHTML = html;
-
-      roomURLsDiv.style.display = "block";
+      (roomURLsDiv as HTMLDivElement).innerHTML = html;
+      (roomURLsDiv as HTMLDivElement).style.display = "block";
   }
 
-  private disableInputButtons = function () {
+  private disableInputButtons = () => {
 
     (this.openOrJoinBtn as HTMLInputElement).disabled = true;
     (this.openRoomBtn as HTMLInputElement).disabled = true;
@@ -304,11 +303,11 @@ class Broadcaster {
   private appendDIV = (event) => {
     const div = document.createElement("div");
     div.innerHTML = event.data || event;
-    const chatContainer = document.querySelector(".chat-output");
+    const chatContainer = document.querySelector(".chat-output") as HTMLDivElement;
     chatContainer.insertBefore(div, chatContainer.firstChild);
     div.tabIndex = 0;
     div.focus();
-    document.getElementById("input-text-chat").focus();
+    (document.getElementById("input-text-chat") as HTMLInputElement).focus();
   }
 
   private postAttach() {
@@ -317,7 +316,7 @@ class Broadcaster {
     // tslint:disable-next-line:no-var-keyword
     var roomid = "";
     if (localStorage.getItem(root.connection.socketMessageEvent)) {
-      roomid = localStorage.getItem(root.connection.socketMessageEvent);
+      roomid = localStorage.getItem(root.connection.socketMessageEvent as string);
     } else {
       roomid = root.connection.token();
     }
@@ -365,10 +364,8 @@ class Broadcaster {
 
     const root = this;
     (window as any).enableAdapter = true;
-    // UI Code
 
     // hide right box (broadcaster)
-    // root.broadcasterUI
     root.titleStatus.onclick = function () {
       if (root.broadcasterUI.classList.contains("network-panel-show-ver-animation")) {
       root.broadcasterUI.classList.remove("network-panel-show-ver-animation");
@@ -408,7 +405,7 @@ class Broadcaster {
             // use this method if you did NOT set "autoCloseEntireSession===true"
             // for more info: https://github.com/muaz-khan/RTCMultiConnection#closeentiresession
             root.connection.closeEntireSession(function () {
-                document.querySelector("#rtc3log").innerHTML = "Entire session has been closed.";
+                (document.querySelector("#rtc3log") as HTMLHeadingElement).innerHTML = "Entire session has been closed.";
             });
         } else {
             root.connection.leave();

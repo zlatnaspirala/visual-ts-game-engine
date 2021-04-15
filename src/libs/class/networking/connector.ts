@@ -20,8 +20,10 @@ class ConnectorClient {
     this.memo.save("online", false);
 
     this.gamesList = config.getGamesList();
+
     /**
-     * Popup element is main root for all classic html tags HUD view elements
+     * @description
+     * Popup element is main root for all classic html tags HUD view elements.
      */
     this.popupForm = byId("popup") as HTMLDivElement;
 
@@ -30,8 +32,6 @@ class ConnectorClient {
     this.webSocketController.onclose = this.onClose;
     this.webSocketController.onmessage = this.onMessage;
     this.webSocketController.onerror = this.onError;
-
-    console.info("Test 121212");
 
     if (config.getStartUpHtmlForm() === "register") {
       this.showRegisterForm();
@@ -52,8 +52,8 @@ class ConnectorClient {
       }).then(function (html) {
         // console.warn(html);
         myInstance.popupForm.innerHTML = html;
-        byId("reg-button").addEventListener("click", myInstance.registerUser, false);
-        byId("sing-in-tab").addEventListener("click", myInstance.showLoginForm, false);
+        (byId("reg-button") as HTMLButtonElement).addEventListener("click", myInstance.registerUser, false);
+        (byId("sing-in-tab") as HTMLLIElement).addEventListener("click", myInstance.showLoginForm, false);
       });
 
   }
@@ -68,10 +68,10 @@ class ConnectorClient {
         return res.text();
       }).then(function (html) {
         myInstance.popupForm.innerHTML = html;
-        byId("login-button").addEventListener("click", myInstance.loginUser, false);
-        byId("sing-up-tab").addEventListener("click", myInstance.showRegisterForm, false);
+        (byId("login-button") as HTMLButtonElement).addEventListener("click", myInstance.loginUser, false);
+        (byId("sing-up-tab") as HTMLLIElement).addEventListener("click", myInstance.showRegisterForm, false);
         if (data && data.data && data.data.test) {
-          byId("error-msg-login").innerHTML = data.data.text;
+          (byId("error-msg-reg") as HTMLSpanElement).innerHTML = data.data.text;
         }
       }).catch(function (err) {
         console.warn("Error in showLoginForm : ", err);
@@ -86,13 +86,13 @@ class ConnectorClient {
     const localPassword: string = (byId("reg-pass") as HTMLInputElement).value;
 
     if (validateEmail(localEmail) !== null) {
-      byId("error-msg-reg").style.display = "block";
-      byId("error-msg-reg").innerText = validateEmail(localEmail);
+      (byId("error-msg-reg") as HTMLSpanElement).style.display = "block";
+      (byId("error-msg-reg") as HTMLSpanElement).innerText = validateEmail(localEmail);
     }
 
     if (validatePassword(localPassword) === false) {
-      byId("error-msg-reg").style.display = "block";
-      byId("error-msg-reg").innerText = "Password is not valid! length!";
+      (byId("error-msg-reg") as HTMLSpanElement).style.display = "block";
+      (byId("error-msg-reg") as HTMLSpanElement).innerText = "Password is not valid! length!";
     }
 
     if (validateEmail(localEmail) === null && validatePassword(localPassword) === true) {
@@ -102,7 +102,7 @@ class ConnectorClient {
         password: localPassword,
       };
 
-      let localMsg = { action: "REGISTER", data: { userRegData: userData } };
+      let localMsg: any = { action: "REGISTER", data: { userRegData: userData } };
       this.sendObject(localMsg);
       localMsg = null;
 
@@ -118,13 +118,13 @@ class ConnectorClient {
     const localPassword: string = (byId("login-pass") as HTMLInputElement).value;
 
     if (validateEmail(localEmail) !== null) {
-      byId("error-msg-login").style.display = "block";
-      byId("error-msg-login").innerText = validateEmail(localEmail);
+      (byId("error-msg-login") as HTMLSpanElement).style.display = "block";
+      (byId("error-msg-login") as HTMLSpanElement).innerText = validateEmail(localEmail);
     }
 
     if (validatePassword(localPassword) === false) {
-      byId("error-msg-login").style.display = "block";
-      byId("error-msg-login").innerText += "Password is not valid! length!";
+      (byId("error-msg-login") as HTMLSpanElement).style.display = "block";
+      (byId("error-msg-login") as HTMLSpanElement).innerText += "Password is not valid! length!";
     }
 
     if (validateEmail(localEmail) === null && validatePassword(localPassword) === true) {
@@ -134,7 +134,7 @@ class ConnectorClient {
         password: localPassword,
       };
 
-      let localMsg = { action: "LOGIN", data: { userLoginData: userData } };
+      let localMsg: any = { action: "LOGIN", data: { userLoginData: userData } };
       this.sendObject(localMsg);
       localMsg = null;
 
@@ -291,13 +291,13 @@ class ConnectorClient {
 
   private onMsgCheckEmail = (dataReceive) => {
 
-    byId("reg-button").removeEventListener("click", this.registerUser);
-    byId("reg-button").addEventListener("click", this.verifyRegistration, false);
-    byId("reg-button").innerHTML = "VERIFY CODE";
-    byId("reg-pass-label").innerHTML = "Paste Verification code here";
+    (byId("reg-button") as HTMLButtonElement).removeEventListener("click", this.registerUser);
+    (byId("reg-button") as HTMLButtonElement).addEventListener("click", this.verifyRegistration, false);
+    (byId("reg-button") as HTMLButtonElement).innerHTML = "VERIFY CODE";
+    (byId("reg-pass-label") as HTMLLabelElement).innerHTML = "Paste Verification code here";
     (byId("reg-pass") as HTMLInputElement).value = "";
     (byId("reg-pass") as HTMLInputElement).placeholder = "Paste Verification code here";
-    console.log("TEST", dataReceive.data);
+    console.info("onMsgCheckEmail dataReceive.data => ", dataReceive.data);
     (byId("notify") as HTMLInputElement).innerHTML = dataReceive.data.text;
 
     this.memo.save("accessToken", dataReceive.data.accessToken);
@@ -307,9 +307,9 @@ class ConnectorClient {
 
     event.preventDefault();
     const accessToken = this.memo.load("accessToken");
-    let localPasswordToken: string = (byId("reg-pass") as HTMLInputElement).value;
-    let localEmail: string = (byId("reg-user") as HTMLInputElement).value;
-    let localMsg = {
+    let localPasswordToken: string | null = (byId("reg-pass") as HTMLInputElement).value;
+    let localEmail: string | null = (byId("reg-user") as HTMLInputElement).value;
+    let localMsg: any = {
       action: "REG_VALIDATE",
       data: {
         email: localEmail,
@@ -341,7 +341,8 @@ class ConnectorClient {
           myInstance.hideUserProfileBtn.classList.add("login-button");
           myInstance.hideUserProfileBtn.innerText = "User profile";
           document.getElementsByTagName("body")[0].appendChild(myInstance.hideUserProfileBtn);
-          byId("user-profile-btn-ok").addEventListener("click", myInstance.minimizeUIPanel, false);
+          (byId("user-profile-btn-ok") as HTMLDivElement).addEventListener("click", myInstance.minimizeUIPanel, false);
+          
         }
 
         (byId("user-points") as HTMLInputElement).value = dataReceive.data.user.points;
@@ -351,9 +352,9 @@ class ConnectorClient {
         byId("log-out").addEventListener("click", myInstance.logOutFromSession, false);
         // Disable for now.
         // byId("out-of-game").addEventListener("click", myInstance.exitCurrentGame, false);
-        byId("games-list").addEventListener("click", myInstance.showGamesList, false);
-        byId("store-form").addEventListener("click", myInstance.showStore, false);
-        byId("set-nickname-profile").addEventListener("click", myInstance.setNewNickName, false);
+        (byId("games-list") as HTMLLIElement).addEventListener("click", myInstance.showGamesList, false);
+        (byId("store-form") as HTMLLIElement).addEventListener("click", myInstance.showStore, false);
+        (byId("set-nickname-profile") as HTMLButtonElement).addEventListener("click", myInstance.setNewNickName, false);
 
         const localToken = encodeString(dataReceive.data.user.email);
         myInstance.memo.save("localUserDataE", localToken);
@@ -372,11 +373,12 @@ class ConnectorClient {
     e.preventDefault();
     this.popupForm.style.display = "none";
     if (byId("user-profile-form")) {
-      byId("user-profile-form").style.display = "none";
+      (byId("user-profile-form") as HTMLFormElement).style.display = "none";
     }
-    byId("user-profile-btn-ok").style.display = "block";
-    byId("user-profile-btn-ok").removeEventListener("click", this.minimizeUIPanel, false);
-    byId("user-profile-btn-ok").addEventListener("click", this.maximazeUIPanel, false);
+
+    (byId("user-profile-btn-ok") as HTMLDivElement).style.display = "block";
+    (byId("user-profile-btn-ok") as HTMLDivElement).removeEventListener("click", this.minimizeUIPanel, false);
+    (byId("user-profile-btn-ok") as HTMLDivElement).addEventListener("click", this.maximazeUIPanel, false);
 
   }
 
@@ -386,12 +388,12 @@ class ConnectorClient {
     (this.popupForm as any).style = "";
 
     if (byId("user-profile-form")) {
-      byId("user-profile-form").style.display = "block";
+      (byId("user-profile-form") as HTMLFormElement).style.display = "block";
     }
     // byId("user-profile-btn-ok").style.display = "none";
     this.popupForm.style.display = "block";
-    byId("user-profile-btn-ok").removeEventListener("click", this.maximazeUIPanel, false);
-    byId("user-profile-btn-ok").addEventListener("click", this.minimizeUIPanel, false);
+    (byId("user-profile-btn-ok") as HTMLDivElement).removeEventListener("click", this.maximazeUIPanel, false);
+    (byId("user-profile-btn-ok") as HTMLDivElement).addEventListener("click", this.minimizeUIPanel, false);
 
   }
 
@@ -408,9 +410,9 @@ class ConnectorClient {
 
         myInstance.popupForm.innerHTML = html;
         // byId("user-profile-btn-ok").addEventListener("click", myInstance.minimizeUIPanel, false);
-        byId("myProfile").addEventListener("click", myInstance.getUserData, false);
-        byId("games-list").addEventListener("click", myInstance.showGamesList, false);
-        byId("log-out").addEventListener("click", myInstance.logOutFromSession, false);
+        (byId("myProfile") as HTMLLIElement).addEventListener("click", myInstance.getUserData, false);
+        (byId("games-list") as HTMLLIElement).addEventListener("click", myInstance.showGamesList, false);
+        (byId("log-out") as HTMLLIElement).addEventListener("click", myInstance.logOutFromSession, false);
 
       });
 
@@ -429,9 +431,10 @@ class ConnectorClient {
       }).then(function (html) {
 
         myInstance.popupForm.innerHTML = html;
-        byId("store-form").addEventListener("click", myInstance.showStore, false);
-        byId("myProfile").addEventListener("click", myInstance.getUserData, false);
-        byId("log-out").addEventListener("click", myInstance.logOutFromSession, false);
+
+        if (byId("store-form")) (byId("store-form") as HTMLLIElement).addEventListener("click", myInstance.showStore, false);
+        if (byId("myProfile"))  (byId("myProfile") as HTMLLIElement).addEventListener("click", myInstance.getUserData, false);
+        if (byId("log-out"))    (byId("log-out") as HTMLLIElement).addEventListener("click", myInstance.logOutFromSession, false);
 
         myInstance.gamesList.forEach((item) => {
 
@@ -442,8 +445,11 @@ class ConnectorClient {
           btn.setAttribute("id", "openGamePlay");
           btn.setAttribute("class", "link login-button");
           btn.addEventListener("click", myInstance.openGamePlayFor, false);
-          byId("games-list-form").appendChild(btn);
-          console.log(item);
+          if (byId("games-list-form")) {
+            (byId("games-list-form") as HTMLFormElement).appendChild(btn);
+          }
+
+          console.info(item);
 
         });
 
@@ -460,13 +466,12 @@ class ConnectorClient {
 
   private openGamePlayFor = (e) => {
 
-    const myInstance = this;
+    // const myInstance = this;
     e.preventDefault();
 
     const appStartGamePlay = createAppEvent("game-init",
     {
-      mapName: "Level1",
-      // game: 'Level1'// myInstance.levelMaps.Level1
+      mapName: "Level1"
     });
 
     (window as any).dispatchEvent(appStartGamePlay);
@@ -479,7 +484,10 @@ class ConnectorClient {
       if (byId("openGamePlay")) {
         (byId("openGamePlay") as HTMLButtonElement).disabled = true;
       }
-      byId("user-profile-btn-ok").click();
+      if (byId("user-profile-btn-ok")) {
+        (byId("user-profile-btn-ok") as HTMLDivElement).click();
+      }
+
     }
 
   }

@@ -27,6 +27,7 @@ class GlobalEvent {
 
   public constructor(browser: Browser, viewPort: ViewPort, mobileControl: MobileControls) {
 
+    this.viewPort = viewPort;
     this.browser = browser;
     this.clientConfig = viewPort.config;
     this.mobileControl = mobileControl;
@@ -34,8 +35,6 @@ class GlobalEvent {
     if (browser.isMobile === true) {
 
       console.info("Mobile device detected: ", this.browser.isMobile);
-
-      this.viewPort = viewPort;
 
       window.addEventListener("CANVAS_READY", () => {
         console.log("Canvas ready.");

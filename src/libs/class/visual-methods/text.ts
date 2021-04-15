@@ -10,7 +10,7 @@ import Resources from "../resources";
 class TextComponent implements IVisualComponent {
 
   // Next step , image sprite alphabet
-  public assets: Resources; //  new Resources();
+  public assets: Resources | null = null;
 
   private options: any;
   private bufferText: string[] = [];

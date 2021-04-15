@@ -535,7 +535,6 @@ LICENSE
 
 </pre>
 
-
 ## Server part ##
 
 ### Installed database : MongoDB server version: 3.5.6 ###
@@ -683,13 +682,20 @@ Start application with:
 
 ## Documentation: ##
 
- Follow link for API:
+ Follow link for API: [WIP]
  [Application documentation](https://maximumroulette.com/applications/visual-typescript-game-engine/build/api-doc/globals.html)
 
  Possible to install from (It's good for instancing new clear base project):
 ```
-   npm visual-ts
+  npm i --save visual-ts
 ```
+
+  Take a look this repo (it is example for approach `npm i visual-ts`)
+  https://github.com/zlatnaspirala/visual-ts-module
+
+  Work with visualTs like package library will be full teste
+  in next commits.
+
 
  If you wanna generate doc you will need manual remove comment
  from plugin section in webpack.config.js. Restart 'npm run dev'
