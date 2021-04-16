@@ -95,6 +95,12 @@ export interface IGamePlayModel {
    player: any;
 }
 
+export interface IGamePlayModelNoPlayer {
+  gameName: string;
+  version: number;
+  starter: Starter;
+}
+
 export interface IGamePlayPlatformerMap {
   getStaticGrounds(): IStaticItem[];
   getStaticBackgrounds(): IStaticItem[];

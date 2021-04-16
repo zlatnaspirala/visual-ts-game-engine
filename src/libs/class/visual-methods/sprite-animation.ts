@@ -29,7 +29,6 @@ import TextureComponent from "./texture";
  */
 class SpriteTextureComponent extends TextureComponent {
 
-  // Override - TextureComponent
   public keepAspectRatio: boolean = true;
 
   protected shema: { byX: number, byY: number };
