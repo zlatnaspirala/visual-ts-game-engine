@@ -14,6 +14,16 @@
   features inside. Also video chat is integrated based on signaling server.
   No video recording for now (next features).
 
+  ### For npm users
+
+  ```
+  npm i visual-ts
+  Usage examples on:
+  https://github.com/zlatnaspirala/visual-ts-module/
+
+  [API Documentation](https://maximumroulette.com/apps/visual-ts/multiplayer/api-doc/)
+  ```
+
   ### Whats good in this project:
 
    - No strange logs - No need for forums just follow stackoverflow.com
@@ -683,7 +693,7 @@ Start application with:
 ## Documentation: ##
 
  Follow link for API: [WIP]
- [Application documentation](https://maximumroulette.com/applications/visual-typescript-game-engine/build/api-doc/globals.html)
+ [Application documentation](https://maximumroulette.com/apps/visual-ts/multiplayer/api-doc/)
 
  Possible to install from (It's good for instancing new clear base project):
 ```
