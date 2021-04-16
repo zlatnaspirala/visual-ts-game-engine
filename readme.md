@@ -18,11 +18,11 @@
 
   ```
   npm i visual-ts
+  ```
   Usage examples on:
   https://github.com/zlatnaspirala/visual-ts-module/
 
   [API Documentation](https://maximumroulette.com/apps/visual-ts/multiplayer/api-doc/)
-  ```
 
   ### Whats good in this project:
 
