@@ -106,7 +106,8 @@ class ViewPort {
   public setCanvasWidth(width: string) {
 
     let canvasCss;
-    canvasCss = this.canvasDom[0].style;
+    this.canvasDom = document.getElementsByTagName("canvas")[0];
+    canvasCss = this.canvasDom.style;
     canvasCss.width = width;
 
   }
@@ -114,7 +115,8 @@ class ViewPort {
   public setCanvasHeight(height: string) {
 
     let canvasCss;
-    canvasCss = this.canvasDom[0].style;
+    this.canvasDom = document.getElementsByTagName("canvas")[0];
+    canvasCss = this.canvasDom.style;
     canvasCss.height = height;
 
   }

@@ -44,10 +44,16 @@ class Ioc {
    * We can use it in next line
    *     this.singlton(GlobalEvent, this.get.Browser, this.get.MobileControls);
    * Synchro block code
+   * 
+   * injectedConfig?: ClientConfig is optimal arg
    */
-  constructor(gamesList: any[]) {
+  constructor(gamesList: any[], injectedConfig?: ClientConfig) {
 
-    this.config = new ClientConfig(gamesList);
+    if (injectedConfig) {
+      this.config = injectedConfig;
+    } else {
+      this.config = new ClientConfig(gamesList);
+    }
 
     this.loadAddson();
 
