@@ -1,6 +1,6 @@
 {
   "name": "visual-ts",
-  "version": "0.5.4",
+  "version": "0.5.5",
   "description": "New feature in 0.5.0 : First working point for `npm i visual-ts`, npm update, mobile controls implemented. Fixed links in about.",
   "main": ".src/app.ts",
   "dependencies": {
