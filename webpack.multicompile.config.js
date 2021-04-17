@@ -28,7 +28,7 @@ let documentationPlugin = new TypedocWebpackPlugin({
   out: './api-doc',
   module: 'amd',
   target: 'es5',
-  exclude: '**/node_modules/**/*.*',
+  exclude: ['**/node_modules/**/*.*', '**/level*.ts'],
   experimentalDecorators: true,
   excludeExternals: true,
   name: 'sn-theme',
@@ -48,7 +48,7 @@ let documentationPlugin = new TypedocWebpackPlugin({
   */
 
 if (internalConfig.createDocumentation == true) {
-  webPackModule.plugins.push(documentationPlugin);
+  webPackModuleMultiPlayerSolution.plugins.push(documentationPlugin);
 }
 
 module.exports = [

@@ -7,7 +7,7 @@ const TypedocWebpackPlugin = require('typedoc-webpack-plugin');
 const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
 
 let internalConfig = {
-  createDocumentation: false,
+  createDocumentation: true,
   stats: "errors-warnings"
 };
 
@@ -15,7 +15,7 @@ let documentationPlugin = new TypedocWebpackPlugin({
   out: './api-doc',
   module: 'amd',
   target: 'es5',
-  exclude: '**/node_modules/**/*.*',
+  exclude: ['**/node_modules/**/*.*', '**/packs/**/*.*'],
   experimentalDecorators: true,
   excludeExternals: true,
   name: 'sn-theme',
