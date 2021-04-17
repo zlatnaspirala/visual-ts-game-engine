@@ -3637,7 +3637,7 @@ function initHark(args) {
     });
 }
 
-attachEventListener = function(video, type, listener, useCapture) {
+var attachEventListener = function(video, type, listener, useCapture) {
     video.addEventListener(type, listener, useCapture);
 };
 
