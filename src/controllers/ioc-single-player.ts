@@ -8,7 +8,7 @@ import { scriptManager } from "../libs/class/system";
 import ViewPort from "../libs/class/view-port";
 import VisualRender from "../libs/class/visual-render";
 import GlobalEvent from "../libs/events/global-event";
-import { IUniVector } from "../libs/interface/global";
+import { IClientConfig, IUniVector } from "../libs/interface/global";
 import Starter from "../libs/starter";
 
 /**
@@ -31,7 +31,7 @@ class Ioc {
    * @description
    * config is instance of ClientConfig class.
    */
-  private config: ClientConfig;
+  private config: ClientConfig | IClientConfig;
 
   /**
    * @description
@@ -47,7 +47,7 @@ class Ioc {
    * 
    * injectedConfig?: ClientConfig is optimal arg
    */
-  constructor(gamesList?: any[], injectedConfig?: ClientConfig) {
+  constructor(gamesList?: any[], injectedConfig?: IClientConfig) {
 
     if (injectedConfig) {
       this.config = injectedConfig;

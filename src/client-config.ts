@@ -77,7 +77,7 @@ class ClientConfig {
    * network. Use 'false' if you wanna make single player game.
    * In other way keep it 'true'.
    */
-  private appUseNetwork = true;
+  private appUseNetwork:boolean = true;
 
   /**
    * networkDeepLogs control of dev logs for webRTC context only.

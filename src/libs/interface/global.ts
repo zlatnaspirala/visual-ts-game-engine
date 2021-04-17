@@ -3,6 +3,7 @@ import SpriteTextureComponent from "../class/visual-methods/sprite-animation";
 import TextureComponent from "../class/visual-methods/texture";
 import Starter from "../starter";
 import { imagesResource, literalImageSrc, UniVector } from "../types/global";
+import { Addson } from "../types/global";
 
 export interface IPoint {
   x: number;
@@ -118,4 +119,48 @@ export interface IBroadcasterSession {
   sessionVideo: boolean;
   sessionData: boolean;
   enableFileSharing: boolean;
+}
+
+/**
+ * ClientConfig is config file for whole client part of application.
+ * It is a better to not mix with server config staff.
+ * All data is defined like default property values.
+ * Use mmethod class to get proper.
+ * Class don't have any args passed.
+ */
+export interface IClientConfig {
+
+  /**
+   * Implement default gamePlay variable's
+   */
+  defaultGamePlayLevelName: string;
+  autoStartGamePlay: boolean;
+  getcontrols(): any;
+  getShowBroadcasterOnInt (): boolean;
+  getRunBroadcasterOnInt(): boolean;
+  getBroadcastAutoConnect(): boolean;
+  getAddson(): Addson;
+  getAutoStartGamePlay(): boolean;
+  getGamesList(): any;
+  getDefaultGamePlayLevelName(): string;
+  didAppUseNetwork(): boolean;
+  didAppUseAccountsSystem(): boolean;
+  didAppUseBroadcast(): boolean;
+  getStunList(): string[];
+  getBroadcastSockRoute(): string;
+  getStartUpHtmlForm(): string;
+  getDomain():any;
+  getBroadcasterPort(): number;
+  getBroadcasterSessionDefaults(): IBroadcasterSession;
+  getConnectorPort(): number;
+  getDrawRefference(): string;
+  getAspectRatio(): number;
+  setAspectRatio(newAspectRatio: number): number;
+  getProtocolFromAddressBar(): string;
+  getRemoteServerAddress(): string;
+  getRemoteServerAddressControlller(): string;
+  setNetworkDeepLog(newState: boolean): boolean;
+  getNetworkDeepLog(): boolean;
+  getMasterServerKey(): string;
+
 }
