@@ -47,7 +47,7 @@ class Ioc {
    * 
    * injectedConfig?: ClientConfig is optimal arg
    */
-  constructor(gamesList: any[], injectedConfig?: ClientConfig) {
+  constructor(gamesList?: any[], injectedConfig?: ClientConfig) {
 
     if (injectedConfig) {
       this.config = injectedConfig;
