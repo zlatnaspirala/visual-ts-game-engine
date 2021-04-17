@@ -150,7 +150,7 @@ export interface IClientConfig {
   getConnectorPort(): number;
   getDrawRefference(): string;
   getAspectRatio(): number;
-  setAspectRatio(newAspectRatio: number): number;
+  setAspectRatio(newAspectRatio: number): void;
   getProtocolFromAddressBar(): string;
   getRemoteServerAddress(): string;
   getRemoteServerAddressControlller(): string;
