@@ -35,9 +35,13 @@ class Ioc {
    * Constructor for ioc class is in samo time
    * register for application classes.
    */
-  constructor(gamesList: any[]) {
+   constructor(gamesList?: any[], injectedConfig?: ClientConfig) {
 
-    this.config = new ClientConfig(gamesList);
+    if (injectedConfig) {
+      this.config = injectedConfig;
+    } else {
+      this.config = new ClientConfig(gamesList);
+    }
 
     this.loadAddson();
     this.singlton(MessageBox, undefined);
