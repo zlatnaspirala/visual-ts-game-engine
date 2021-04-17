@@ -154,7 +154,7 @@ export interface IClientConfig {
   getProtocolFromAddressBar(): string;
   getRemoteServerAddress(): string;
   getRemoteServerAddressControlller(): string;
-  setNetworkDeepLog(newState: boolean): boolean;
+  setNetworkDeepLog(newState: boolean): void;
   getNetworkDeepLog(): boolean;
   getMasterServerKey(): string;
 
