@@ -1,6 +1,6 @@
 {
   "name": "visual-ts",
-  "version": "0.5.7",
+  "version": "0.5.9",
   "description": "New feature in 0.5.6 : Config inject optimal arg ... First working point for `npm i visual-ts`, npm update, mobile controls implemented. Fixed links in about.",
   "main": ".src/app.ts",
   "dependencies": {

@@ -130,11 +130,6 @@ export interface IBroadcasterSession {
  */
 export interface IClientConfig {
 
-  /**
-   * Implement default gamePlay variable's
-   */
-  defaultGamePlayLevelName: string;
-  autoStartGamePlay: boolean;
   getcontrols(): any;
   getShowBroadcasterOnInt (): boolean;
   getRunBroadcasterOnInt(): boolean;
