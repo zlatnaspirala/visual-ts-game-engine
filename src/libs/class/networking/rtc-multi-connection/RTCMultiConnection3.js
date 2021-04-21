@@ -167,17 +167,18 @@ var RTCMultiConnection3 = function(roomid, forceOptions) {
 
         if (connection.enableLogs) {
             if (connection.socketURL == '/') {
-                console.info('socket.io url is: ', location.origin + '/');
                 connection.socketURL = "http://localhost:9001/";
-            } else {
-                console.info('socket.io url is: ', connection.socketURL);
             }
         }
 
+        console.info('socket.io url is: ', connection.socketURL);
+
         try {
-            connection.socket = io(connection.socketURL + parameters);
+            connection.socket = io(connection.socketURL + parameters, {
+                withCredentials: true });
         } catch (e) {
-            connection.socket = io.connect(connection.socketURL + parameters, connection.socketOptions);
+            connection.socket = io.connect(connection.socketURL + parameters, connection.socketOptions, {
+                withCredentials: true });
         }
 
         var mPeer = connection.multiPeersHandler;

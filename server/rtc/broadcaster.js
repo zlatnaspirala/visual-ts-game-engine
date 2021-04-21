@@ -169,7 +169,14 @@ class Broadcaster {
         });
 
         // socket.io codes goes below
-        ioServer(httpApp).on('connection', function(socket) {
+        ioServer(httpApp, {
+          cors: {
+            origin: "https://localhost",
+            methods: ["GET", "POST", "OPTION", "OPTIONS"],
+            allowedHeaders: ["*"],
+            credentials: true
+          }
+        }).on('connection', function(socket) {
 
             console.log("MultiRTC3: new client.");
             RTCMultiConnectionServer.addSocket(socket, config);
