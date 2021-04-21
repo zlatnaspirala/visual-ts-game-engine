@@ -6,7 +6,7 @@ import SpriteTextureComponent from "../../../libs/class/visual-methods/sprite-an
 import TextComponent from "../../../libs/class/visual-methods/text";
 import TextureComponent from "../../../libs/class/visual-methods/texture";
 import { DEFAULT_GAMEPLAY_ROLES, DEFAULT_RENDER_BOUNDS } from "../../../libs/defaults";
-import { IMultiplayer } from "../../../libs/interface/global";
+import { IMultiplayer, IStaticItem } from "../../../libs/interface/global";
 import Starter from "../../../libs/starter";
 import { worldElement } from "../../../libs/types/global";
 import Level1 from "../scripts/packs/BasketBallChat-level1";
@@ -406,7 +406,7 @@ class GamePlay extends BasketBallChat implements IMultiplayer {
       root.deadZoneForRight,
       root.deadZoneForBottom);
 
-    this.starter.setRenderView( 1200,  600);
+    this.starter.setRenderView(1200, 600);
 
     this.starter.getRender().controller.lookAt(this.starter.getRender(), {
       min: {

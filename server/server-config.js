@@ -8,12 +8,12 @@ class ServerConfig {
      */
 
      // enum : 'dev' or 'prod'
-    this.serverMode = "prod";
+    this.serverMode = "dev";
 
     this.networkDeepLogs = false;
     this.rtcServerPort = 12034;
     this.rtc3ServerPort = 9001;
-    this.connectorPort = 1234;
+    this.connectorPort = 9010;
 
     this.domain = {
       dev: "localhost",
@@ -25,12 +25,19 @@ class ServerConfig {
     this.isSecure = true;
 
     // localhost
-    this.certPathSelf = {
+    this.certPathSelfOrigin = {
       pKeyPath: "./server/rtc/self-cert/privatekey.pem",
       pCertPath: "./server/rtc/self-cert/certificate.pem",
       pCBPath: "./server/rtc/self-cert/certificate.pem",
     };
 
+    // Apache test fix
+    this.certPathSelf = {
+      pKeyPath: "./server/rtc/apache-local-cert/server.key",
+      pCertPath: "./server/rtc/apache-local-cert/server.crt",
+      pCBPath: "./server/rtc/apache-local-cert/server.csr",
+    };
+    
     // production
     this.certPathProd = {
       pKeyPath: "/etc/httpd/conf/ssl/maximumroulette.com.key",

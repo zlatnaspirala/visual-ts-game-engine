@@ -6,6 +6,7 @@ import { IUniVector } from "./interface/global";
 import { worldElement } from "./types/global";
 
 /**
+ * @description
  * Real begin of graphic canvas staff.
  * This is startup also storage for graphic orientend
  * objects. Matter.js/ts also imported here.

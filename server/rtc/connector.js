@@ -54,7 +54,7 @@ class Connector {
         options = {
           key: fs.readFileSync(serverConfig.certPathSelf.pKeyPath),
           cert: fs.readFileSync(serverConfig.certPathSelf.pCertPath),
-          ca: fs.readFileSync(serverConfig.certPathSelf.pCBPath),
+          // ca: fs.readFileSync(serverConfig.certPathSelf.pCBPath),
         };
       } else if (serverConfig.serverMode === 'prod') {
         options = {

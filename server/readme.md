@@ -44,6 +44,16 @@ npm run rtc
   node ./server/rtc/server.js
 ```
 
+To kill all node tasks:
+```
+taskkill /im node.exe
+```
+
+```
+netsh int ipv4 show dynamicport tcp
+```
+
+
  Broadcaster is integrated with `npm run rtc`
  You can remove it from code manual.
  And run

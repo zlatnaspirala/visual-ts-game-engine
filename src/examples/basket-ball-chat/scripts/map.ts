@@ -1,42 +1,35 @@
-import { ICollectionEnemies, ICollectionItem, IGamePlayPlatformerMap, IStaticItem, IStaticLabel } from "../../../libs/interface/global";
+
+import MapLoader from "../../../libs/class/map-loader";
+import { 
+  ICollectionEnemies,
+  ICollectionItem,
+  IGamePlayPlatformerMap,
+  IStaticItem,
+  IStaticLabel } from "../../../libs/interface/global";
 
 /**
- * Static body elements, backgrounds, enemys returns
- * Prepared for next level, 'loading from generated content'
- * Path for images `../imgs/`
- * Inject or predefine here
+ * @descripiton
+ * Static body elements, backgrounds, enemys returns objects.
+ * 'loading from generated content' Done.
+ *  Path for images `../imgs/`
+ *  Inject or predefine world element here.
  */
-
-class GameMap implements IGamePlayPlatformerMap {
-
-  private options: any = {};
-  private staticGrounds: IStaticItem [] = [];
-  private collectItems: ICollectionItem [] = [];
-  private collectEnemies: ICollectionEnemies [] = [];
-  private collectLabels: IStaticLabel [] = [];
+class GameMap extends MapLoader implements IGamePlayPlatformerMap {
 
   constructor(options?: any) {
-
-    // Options
-    if (typeof options !== "undefined") {
-
-      this.options.mapPack = options;
-      this.loadGeneratedMap(this.options.mapPack);
-
-    }
-
+    super(options)
   }
 
   public getStaticGrounds(): IStaticItem[] {
 
+    // Add bonus objects then return all
     const LocalWidth = 650;
     const imgRes = [require("../imgs/grounds/elementGlass019.png")];
-    const imgResTest = [require("../imgs/grounds/floor2.png")];
     const tileXLocal = 10;
 
-    // Simple manual input
     this.staticGrounds.push(
       { x: 100, y: 600, w: LocalWidth, h: 60, tex: imgRes, tiles: { tilesX: tileXLocal, tilesY: 1 } });
+
     return this.staticGrounds as IStaticItem[];
 
   }
@@ -75,17 +68,16 @@ class GameMap implements IGamePlayPlatformerMap {
   }
 
   public getCollectItems(): ICollectionItem[] {
-    const LocalWidth = 60;
-    const tileXLocal = 1;
-    const deltaYLocal = -200;
-    const imgRes = [require("../imgs/collect-items/bitcoin.png")];
-
     /**
      * @Description manual map data input
      * clear push array if you wanna only
      * game object from generated map.
      */
     /*
+    const LocalWidth = 60;
+    const tileXLocal = 1;
+    const deltaYLocal = -200;
+    const imgRes = [require("../imgs/collect-items/bitcoin.png")];
     this.collectItems.push(
       { x: 0, y: 0, w: 50, h: 60, tex: imgRes, tiles: { tilesX: 2, tilesY: 2 }, colectionLabel: "collectItemPoint", points: 2 },
       { x: 100, y: 0 + deltaYLocal, w: LocalWidth, h: 60, tex: imgRes, tiles: { tilesX: tileXLocal, tilesY: 1 }, colectionLabel: "collectItemPoint", points: 2 },
@@ -95,21 +87,24 @@ class GameMap implements IGamePlayPlatformerMap {
     return this.collectItems as ICollectionItem[];
   }
 
+  /**
+   *@description
+   * In origin with out special overload
+   * get functions just returns already loaded 
+   * items from map.
+   */
   public getEnemys(): ICollectionEnemies[] {
-
-    const imgCrap = [require("../imgs/enemies/crapmunch.png")];
-    const imgCooper = [require("../imgs/enemies/chopper.png")];
-
-    const deltaYLocal = 100;
-    const enemyWidth = 100;
-    const enemyHeight = 100;
-
     /*
-    this.collectEnemies.push(
-      {
-        x: 0, y: -100 + deltaYLocal, w: enemyWidth, h: enemyHeight,
-        tex: imgCrap, tiles: { tilesX: 1, tilesY: 1 }, enemyLabel: "crapmunch", enemyOptions: ""},
-    );
+      const imgCrap = [require("../imgs/enemies/crapmunch.png")];
+      const imgCooper = [require("../imgs/enemies/chopper.png")];
+      const deltaYLocal = 100;
+      const enemyWidth = 100;
+      const enemyHeight = 100;
+      this.collectEnemies.push(
+        {
+          x: 0, y: -100 + deltaYLocal, w: enemyWidth, h: enemyHeight,
+          tex: imgCrap, tiles: { tilesX: 1, tilesY: 1 }, enemyLabel: "crapmunch", enemyOptions: ""},
+      );
     */
     return this.collectEnemies;
   }
@@ -121,6 +116,7 @@ class GameMap implements IGamePlayPlatformerMap {
     return [
       { x: 0, y: 2500, w: 9000, h: 50, tex: img, tiles:   { tilesX: 3, tilesY: 3 }, enemyLabel: "deadline", enemyOptions: "" },
     ] as ICollectionEnemies[];
+
   }
 
   public getStaticBanners(): IStaticLabel[] {
@@ -153,30 +149,6 @@ class GameMap implements IGamePlayPlatformerMap {
     );
 
     return this.collectLabels as  IStaticLabel[];
-  }
-
-  /**
-   * Important method, we call only if object
-   * `generatedMap` is imported. I append generatedMap and object
-   * `from code` created in same array.
-   */
-  private loadGeneratedMap(gMap) {
-
-    const root = this;
-    gMap.forEach(function (item) {
-
-      if (typeof (item  as any | ICollectionItem).colectionLabel !== "undefined") {
-        root.collectItems.push(item  as any | ICollectionItem);
-      } else if (typeof (item  as any | ICollectionEnemies).enemyLabel !== "undefined") {
-        root.collectEnemies.push(item  as any | ICollectionEnemies);
-      } else if (typeof (item as any | IStaticLabel).text !== "undefined") {
-        root.collectLabels.push((item as any));
-      } else {
-        root.staticGrounds.push((item  as any));
-      }
-
-    });
-
   }
 
 }

@@ -8,12 +8,6 @@
   {
     "type": "node",
     "request": "launch",
-    "name": "Launch broadcaster",
-    "program": "${workspaceFolder}//server\\rtc\\broadcaster.js"
-  },
-  {
-    "type": "node",
-    "request": "launch",
     "name": "Launch server",
     "program": "${workspaceFolder}//server\\rtc\\server.js"
   },

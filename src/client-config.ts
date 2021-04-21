@@ -64,16 +64,17 @@ class ClientConfig {
   private aspectRatio: number = 1.333;
 
   /**
-   * domain is simple url address,
+   * @description
+   * Default setup is `dev`.
    * recommendent to use for local propose LAN ip
    * like : 192.168.0.XXX if you wanna run ant test app with server.
    */
-  private domain: string = "maximumroulette.com";
-  // private domain: string = "localhost";
+  // private domain: string = "maximumroulette.com";
+  private domain: string = "localhost";
 
   /**
    * @description Important note for this property: if you
-   * disable (false) you cant use Account system or any other
+   * disable (false) you can't use Account system or any other
    * network. Use 'false' if you wanna make single player game.
    * In other way keep it 'true'.
    */
@@ -99,8 +100,11 @@ class ClientConfig {
   /**
    * connectorPort is access port used to connect
    * session web socket.
+   * Take high number for port to avoid
+   * `code: 'EACCES', errno: -4092, syscall: 'listen'
+   * for localhost usage.
    */
-  private connectorPort: number = 1234;
+  private connectorPort: number = 9010;
 
   /**
    * appUseAccountsSystem If you don't want to use session
