@@ -10,7 +10,7 @@ class Broadcaster {
         const RTCMultiConnectionServer = require('rtcmulticonnection-server');
         var httpServer = null;
 
-        // Direct input flags.
+        // Direct input flags
         var PORT = 9001;
 
         const jsonPath = {
@@ -24,8 +24,6 @@ class Broadcaster {
 
         var config = getValuesFromConfigJson(jsonPath);
         config = getBashParameters(config, BASH_COLORS_HELPER);
-
-        console.log("Broadcaster isSecure => "+ config.isSecure);
 
         // if user didn't modifed "PORT" object
         if (PORT === 9001) {
@@ -104,7 +102,7 @@ class Broadcaster {
                 };
             }
 
-            console.log("+++++++++++++ httpApp = httpServer.createServer(options, serverHandler);+++++++++++++++++++++");
+            console.log("is secure");
             httpApp = httpServer.createServer(options, serverHandler);
         } else {
 
@@ -168,13 +166,21 @@ class Broadcaster {
             RTCMultiConnectionServer.afterHttpListen(httpApp, config);
         });
 
-        // socket.io codes goes below
+        var collectCorsDomain = "https://localhost"
+        if (serverConfig.serverMode == "dev") {
+            console.log("-rtc cors dev: ", serverConfig.domain.dev);
+          } else if (serverConfig.serverMode == "prod") {
+            console.log("-rtc cors prod: ", serverConfig.domain.prod);
+            collectCorsDomain = serverConfig.protocol + "://" + serverConfig.domain.prod
+          }
+
+        console.log("Cors Domain: ", collectCorsDomain);
         ioServer(httpApp, {
           cors: {
-            origin: "https://localhost",
-            methods: ["GET", "POST", "OPTION", "OPTIONS"],
+            origin: collectCorsDomain,
+            methods: ["GET", "POST", "OPTIONS"],
             allowedHeaders: ["*"],
-            credentials: true
+            credentials: false
           }
         }).on('connection', function(socket) {
 

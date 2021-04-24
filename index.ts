@@ -1,7 +1,7 @@
 'use strict'
 
 /**
- * @description This is classes part of importing.
+ * @description This is part of importing class references.
  * Base classes:
  * Matter.js ,MIT LICENCE
  * https://github.com/liabru/matter-js/blob/master/LICENSE

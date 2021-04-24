@@ -1,7 +1,7 @@
 {
   "name": "visua-ts-server",
-  "version": "0.0.4",
-  "description": "This version 0.1 of visual-ts game engine server. Main file is server.ts , used MongoDB database , webSocket for networking.",
+  "version": "0.1.0",
+  "description": "Package updated. Preparing for next stage 0.2.0 -  proper porting for npm service. This version 0.1.0 of visual-ts game engine server. Main file is server.js , used MongoDB database, webSocket for signaling/networking also own hosting option added with vhost options etc.",
   "main": ".rtc/server.js",
   "dependencies": {
     "@types/node": "^10.17.29",
@@ -10,15 +10,16 @@
     "gmail-send": "^1.8.10",
     "mongodb": "^3.5.6",
     "node-static": "^0.7.11",
-    "websocket": "^1.0.30",
-    "rtcmulticonnection-server": "^1.3.2"
+    "rtcmulticonnection-server": "^1.3.2",
+    "vhost": "^3.0.2",
+    "websocket": "^1.0.30"
   },
   "devDependencies": {
     "eslint": "^4.19.1",
     "npm": "^7.10.0"
   },
   "scripts": {
-    "rtc": "node ./rtc/server.js",
+    "rtc": "node ./rtc/server.js --ssl",
     "broadcaster": "node ./rtc/broadcaster.js",
     "datadebug": "node --inspect=27017 ./database/base.js",
     "dataserver": "mongod --dbpath ./database/data",

@@ -9,7 +9,7 @@ class ServerConfig {
 
      // enum : 'dev' or 'prod'
     this.serverMode = "dev";
-
+    this.ownHosting = true;
     this.networkDeepLogs = false;
     this.rtcServerPort = 12034;
     this.rtc3ServerPort = 9001;

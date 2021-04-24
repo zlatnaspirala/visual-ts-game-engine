@@ -1,3 +1,4 @@
+import MapLoader from "../../../libs/class/map-loader";
 import { ICollectionEnemies, ICollectionItem, IGamePlayPlatformerMap, IStaticItem, IStaticLabel } from "../../../libs/interface/global";
 
 /**
@@ -7,24 +8,9 @@ import { ICollectionEnemies, ICollectionItem, IGamePlayPlatformerMap, IStaticIte
  * Inject or predefine here
  */
 
-class GameMap implements IGamePlayPlatformerMap {
-
-  private options: any = {};
-  private staticGrounds: IStaticItem [] = [];
-  private collectItems: ICollectionItem [] = [];
-  private collectEnemies: ICollectionEnemies [] = [];
-  private collectLabels: IStaticLabel [] = [];
-
+ class GameMap extends MapLoader implements IGamePlayPlatformerMap {
   constructor(options?: any) {
-
-    // Options
-    if (typeof options !== "undefined") {
-
-      this.options.mapPack = options;
-      this.loadGeneratedMap(this.options.mapPack);
-
-    }
-
+    super(options);
   }
 
   public getStaticGrounds(): IStaticItem[] {
@@ -153,30 +139,6 @@ class GameMap implements IGamePlayPlatformerMap {
     );
 
     return this.collectLabels as  IStaticLabel[];
-  }
-
-  /**
-   * Important method, we call only if object
-   * `generatedMap` is imported. I append generatedMap and object
-   * `from code` created in same array.
-   */
-  private loadGeneratedMap(gMap) {
-
-    const root = this;
-    gMap.forEach(function (item) {
-
-      if (typeof (item  as any | ICollectionItem).colectionLabel !== "undefined") {
-        root.collectItems.push(item  as any | ICollectionItem);
-      } else if (typeof (item  as any | ICollectionEnemies).enemyLabel !== "undefined") {
-        root.collectEnemies.push(item  as any | ICollectionEnemies);
-      } else if (typeof (item as any | IStaticLabel).text !== "undefined") {
-        root.collectLabels.push((item as any));
-      } else {
-        root.staticGrounds.push((item  as any));
-      }
-
-    });
-
   }
 
 }
