@@ -16,11 +16,8 @@
 
   ### For npm users
 
-  ```
-  npm i visual-ts
-  ```
-  Usage examples on:
-  https://github.com/zlatnaspirala/visual-ts-module/
+  Usage project examples on:
+  https://github.com/zlatnaspirala/visual-ts-examples
 
   [API Documentation](https://maximumroulette.com/apps/visual-ts/multiplayer/api-doc/)
 
