@@ -16,8 +16,9 @@
 
   ### For npm users
 
-  Usage project examples on:
+  Take a look project examples on:
   https://github.com/zlatnaspirala/visual-ts-examples
+  It is nice starter project.
 
   [API Documentation](https://maximumroulette.com/apps/visual-ts/multiplayer/api-doc/)
 
