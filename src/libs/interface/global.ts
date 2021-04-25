@@ -122,6 +122,7 @@ export interface IBroadcasterSession {
 }
 
 /**
+ * @description
  * ClientConfig is config file for whole client part of application.
  * It is a better to not mix with server config staff.
  * All data is defined like default property values.
@@ -155,7 +156,20 @@ export interface IClientConfig {
   getRemoteServerAddress(): string;
   getRemoteServerAddressControlller(): string;
   setNetworkDeepLog(newState: boolean): void;
+
+  /**
+   * @description
+   * Syntetic for now.
+   * for future importing log system from old visualjs.
+   * With nice color chema.
+   */
   getNetworkDeepLog(): boolean;
+
+  /**
+   * @description
+   * getMasterServerKey is initially uniq options for
+   * our channel name of broadcasting.
+   */
   getMasterServerKey(): string;
 
 }

@@ -77,6 +77,10 @@ module.exports = webPackModuleMultiPlayerSolution = {
       template: 'src/html-components/broadcaster.html'
     }),
     new HtmlWebpackPlugin({
+      filename: 'templates/coordinator.html',
+      template: './src/html-components/coordinator.html'
+    }),
+    new HtmlWebpackPlugin({
       filename: 'templates/message-box.html',
       template: 'src/html-components/message-box.html'
     }),

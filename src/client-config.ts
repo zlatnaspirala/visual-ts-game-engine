@@ -98,6 +98,18 @@ class ClientConfig {
   private rtcServerPort: number = 12034;
 
   /**
+   * @description
+   * Coordinator rtc3 session init values.
+   * Downgrade to data only.
+   */
+     private coordinatorSessionDefaults: IBroadcasterSession = {
+      sessionAudio: false,
+      sessionVideo: false,
+      sessionData: true,
+      enableFileSharing: false,
+    };
+
+  /**
    * connectorPort is access port used to connect
    * session web socket.
    * Take high number for port to avoid
