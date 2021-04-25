@@ -7,7 +7,7 @@ const fs = require("fs");
 const shared = require("./../common/shared");
 const static = require('node-static');
 const CryptoHandler = require("../common/crypto");
-var file = new (static.Server)('/var/www/html/applications/visual-typescript-game-engine/build/');
+var file = new (static.Server)('/var/www/html/apps/visual-ts/basket-ball-chat/');
 
 class Connector {
 
@@ -47,6 +47,7 @@ class Connector {
        * of modern browsers we also need `https` for localhost
        * running configuration. Checker added besed on `serverMode`
        * from server config.
+       * `ca` will be disabled for localhost.
        */
       let options = {};
 
@@ -67,7 +68,10 @@ class Connector {
       }
 
       this.http = require('https').createServer(options, function(request, response) {
-
+        //response.setHeader('Access-Control-Allow-Origin', '*');
+        //response.setHeader('Access-Control-Request-Method', '*');
+        //response.setHeader('Access-Control-Allow-Methods', 'OPTIONS, GET, PUT');
+        //response.setHeader('Access-Control-Allow-Headers', '*');
         request.addListener('end', function() {
           if (request.url.search(/.png|.gif|.js|.css/g) == -1) {
             response.statusCode = 200;
@@ -75,16 +79,7 @@ class Connector {
             return response.end();
           } else file.serve(request, response);
         }).resume();
-
-        /* request.addListener('end', function() {
-          if (request.url.search(/.png|.gif|.js|.css/g) == -1) {
-            file.serveFile("app.html" , 404, {}, request, response);
-          } else file.serve(request, response);
-        }).resume();
-        */
-
       }).listen(serverConfig.getConnectorPort);
-
     }
 
     /**

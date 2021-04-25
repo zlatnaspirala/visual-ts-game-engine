@@ -117,7 +117,9 @@ class ClientConfig {
    * video chats.
    */
   private appUseBroadcaster: boolean = true;
+
   /**
+   * @description
    * broadcasterPort Port used to connect multimedia server MultiRTC3.
    * I will use it for explicit video chat multiplatform support.
    * Default value is 9001
@@ -127,24 +129,20 @@ class ClientConfig {
   private showBroadcasterOnInt: boolean = true;
 
   /**
-   * broadcaster socket.io address.
-   * Change it for production regime
-   */
-  // private broadcastSockRoute: string = "https://maximumroulette.com:9001/";
-  // private broadcastSockRoute: string = "https://localhost:9001/";
-
-  /**
+   * @description
    * broadcaster socket.io address.
    * Change it for production regime
    */
   private broadcastAutoConnect: boolean = false;
 
   /**
+   * @description
    * runBroadcasterOnInt load broadcaster
    */
   private runBroadcasterOnInt: boolean = true;
 
   /**
+   * @description
    * broadcaster rtc session init values.
    * Change it for production regime
    */
@@ -155,13 +153,21 @@ class ClientConfig {
     enableFileSharing: true,
   };
 
+  /**
+   * @description
+   * Optimal for dev stage.
+   * read more about webRtc protocols.
+   * Recommended: coturn open source project.
+   */
   private stunList: string[] = [
     "stun:stun.l.google.com:19302",
     "stun:stun1.l.google.com:19302",
     "stun:stun.l.google.com:19302?transport=udp",
   ];
+
   /**
-   * Possible variant by default :
+   * @description
+   * Possible variant by default:
    * "register", "login"
    */
   private startUpHtmlForm: string = "register";
@@ -174,13 +180,17 @@ class ClientConfig {
   private gameList: any[];
 
   /**
+   * @description
    * Implement default gamePlay variable's
    */
   private defaultGamePlayLevelName: string = "public";
   private autoStartGamePlay: boolean = false;
 
   /**
+   * @description
    * constructor will save interest data for game platform
+   * For now it is just name of the game. I use it in
+   * pre gameplay UI game selector.
    */
   constructor(gameList: any[]) {
 
@@ -193,7 +203,7 @@ class ClientConfig {
     return this.controls;
   }
 
-  public getShowBroadcasterOnInt () {
+  public getShowBroadcasterOnInt ():boolean {
     return this.showBroadcasterOnInt;
   }
 
@@ -209,7 +219,7 @@ class ClientConfig {
     return this.addson;
   }
 
-  public getAutoStartGamePlay() {
+  public getAutoStartGamePlay(): boolean {
     return this.autoStartGamePlay;
   }
 

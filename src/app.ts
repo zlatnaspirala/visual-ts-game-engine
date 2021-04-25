@@ -1,4 +1,5 @@
 /**
+ * @description
  * Import global css
  */
 require("./style/animations.css");
@@ -9,6 +10,7 @@ import Ioc from "./controllers/ioc";
 import GamePlay from "./examples/platformer/scripts/game-play";
 
 /**
+ * @description
  * plarformerGameInfo
  * This is strong connection.
  * html-components are on the same level with app.ts

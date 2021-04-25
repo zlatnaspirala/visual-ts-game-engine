@@ -1,7 +1,7 @@
 {
   "name": "visual-ts",
-  "version": "0.5.12",
-  "description": "New feature in 0.5.6 : Config inject optimal arg ... First working point for `npm i visual-ts`, npm update, mobile controls implemented. Fixed links in about.",
+  "version": "0.5.13",
+  "description": "New feature in 0.5.13: simplified map loading procces, self hosted server part 0.1.0 synhronised. New feature in 0.5.6 : Config inject optimal arg ... First working point for `npm i visual-ts`, npm update, mobile controls implemented. Fixed links in about.",
   "main": ".src/app.ts",
   "dependencies": {
     "@types/matter-js": "^0.10.9",
