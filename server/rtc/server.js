@@ -59,17 +59,29 @@ if (serverConfig.getProtocol == "http") {
     console.warn('Something wrong with serverConfig certPathProd/certPathSelf path.')
   }
 
-  httpRtc = require('https').createServer(options, function(request, response) {
+  httpRtc = require("https")
+    .createServer(options, function (request, response) {
+      request.setHeader('Access-Control-Allow-Origin', '*');
+      request.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+      request.setHeader('Access-Control-Allow-Headers', '*');
 
-    request.addListener('end', function() {
-
-      if (request.url.search(/.png|.gif|.js|.css/g) == -1) {
-        file.serveFile(serverConfig.specialRoute.default, 402, {}, request, response);
-      } else { file.serve(request, response); }
-
-    }).resume();
-
-  }).listen(serverConfig.getRtcServerPort);
+      request
+        .addListener("end", function () {
+          if (request.url.search(/.png|.gif|.js|.css/g) == -1) {
+            file.serveFile(
+              serverConfig.specialRoute.default,
+              402,
+              {},
+              request,
+              response
+            );
+          } else {
+            file.serve(request, response);
+          }
+        })
+        .resume();
+    })
+    .listen(serverConfig.getRtcServerPort);
 }
 
 new WebSocketServer({

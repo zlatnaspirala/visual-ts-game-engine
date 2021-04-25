@@ -13,3 +13,4 @@
 tools/
 tools/creator-2dmap
 package-lock.json
+*.prod
