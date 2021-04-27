@@ -5,7 +5,11 @@ class ServerConfig {
 
     /**
      * Define backend staff
+     * 
+     * @version 0.2.0 WIP
+     * Implementing multiRTC3 for data streaming operation
      */
+    this.version = "0.2.0";
 
      // enum : 'dev' or 'prod'
     this.serverMode = "dev";

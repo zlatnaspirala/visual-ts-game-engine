@@ -13,8 +13,6 @@ class Connector {
 
   constructor(serverConfig) {
 
-    var root = this;
-
     this.userSockCollection = {};
     this.config = serverConfig;
     this.http = null;
@@ -29,13 +27,11 @@ class Connector {
       };
 
       this.http = require(this.config.getProtocol).createServer(options, function(request, response) {
-        // Prevent with end here...
         request.addListener('end', function() {
           if (request.url.search(/.png|.gif|.js|.css/g) == -1) {
             response.statusCode = 200;
-            response.write('no no');
+            response.write('Please use https protocol for local or production.');
             return response.end();
-            // file.serveFile(root.config.specialRoute.default, 402, {}, request, response);
           } else file.serve(request, response);
         }).resume();
       }).listen(serverConfig.getConnectorPort);
@@ -55,7 +51,7 @@ class Connector {
         options = {
           key: fs.readFileSync(serverConfig.certPathSelf.pKeyPath),
           cert: fs.readFileSync(serverConfig.certPathSelf.pCertPath),
-          // ca: fs.readFileSync(serverConfig.certPathSelf.pCBPath),
+          ca: fs.readFileSync(serverConfig.certPathSelf.pCBPath),
         };
       } else if (serverConfig.serverMode === 'prod') {
         options = {
@@ -68,14 +64,25 @@ class Connector {
       }
 
       this.http = require('https').createServer(options, function(request, response) {
-        //response.setHeader('Access-Control-Allow-Origin', '*');
-        //response.setHeader('Access-Control-Request-Method', '*');
-        //response.setHeader('Access-Control-Allow-Methods', 'OPTIONS, GET, PUT');
-        //response.setHeader('Access-Control-Allow-Headers', '*');
+
+        /**
+         * @interest
+         * This work on chrome in https://localhost
+         * but not in firefox. Need fix
+         */
+        response.setHeader('Access-Control-Allow-Origin', '*');
+        response.setHeader('Access-Control-Request-Method', '*');
+        response.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS, GET, PUT');
+        response.setHeader('Access-Control-Allow-Headers', '*');
+
         request.addListener('end', function() {
           if (request.url.search(/.png|.gif|.js|.css/g) == -1) {
             response.statusCode = 200;
-            response.write('No access on this way man.');
+            let msgForHttpCheck = '**********************************************************' + ' \n' +
+                                  '* VisualTS Game Engine Server composition, version: ' + serverConfig.version + '* \n' + 
+                                  '* Type of network - CONNECTOR                            *' + ' \n' +
+                                  '**********************************************************';
+            response.write(msgForHttpCheck);
             return response.end();
           } else file.serve(request, response);
         }).resume();

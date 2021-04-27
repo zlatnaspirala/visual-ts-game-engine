@@ -54,7 +54,11 @@ class Broadcaster {
           "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,OPTIONS",
           "Access-Control-Allow-Headers": "*",
         });
-        response.write("RTCMultiConnection Socket.io Server.");
+        let msgForHttpCheck = '**********************************************************' + ' \n' +
+                              '* VisualTS Game Engine Server composition, version: ' + serverConfig.version + '* \n' + 
+                              '* Type of network - BROADCASTER                          *' + ' \n' +
+                              '**********************************************************';
+        response.write(msgForHttpCheck);
         response.end();
       }
     }

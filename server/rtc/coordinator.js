@@ -50,7 +50,11 @@ class Coordinator {
           "Access-Control-Allow-Methods": "GET,POST,OPTIONS",
           "Access-Control-Allow-Headers": "*",
         });
-        response.write("The wourld is mine.");
+        let msgForHttpCheck = '**********************************************************' + ' \n' +
+                              '* VisualTS Game Engine Server composition, version: ' + serverConfig.version + '* \n' + 
+                              '* Type of network - COORDINATOR                          *' + ' \n' +
+                              '**********************************************************';
+        response.write(msgForHttpCheck);
         response.end();
       }
     }
