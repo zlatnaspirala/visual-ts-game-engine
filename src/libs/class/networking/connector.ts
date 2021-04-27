@@ -254,12 +254,20 @@ class ConnectorClient {
           if ((byId("UIPlayerLives") as HTMLSpanElement) !== null) {
             (byId("UIPlayerLives") as HTMLSpanElement).innerText = DEFAULT_PLAYER_DATA.INITIAL_LIVES.toString();
           }
-          (byId("your-name") as HTMLInputElement).value = this.memo.load("nickname");
+
+          // DEPLACE multiRTC2
+          if ((byId("open-or-join-room-data") as HTMLInputElement) !== null) {
+            (byId("open-or-join-room-data") as HTMLButtonElement).click();
+          }
+
           if ((byId("out-of-game") as HTMLButtonElement) !== null) {
             (byId("out-of-game") as HTMLButtonElement).disabled = false;
           }
-          (byId("continue") as HTMLButtonElement).disabled = false;
-          (byId("continue") as HTMLButtonElement).click();
+
+          // DEPLACE multiRTC2
+          // (byId("continue") as HTMLButtonElement).disabled = false;
+          // (byId("continue") as HTMLButtonElement).click();
+
           console.log(" (byId continue as HTMLButtonElement).click(); ");
           break;
         }

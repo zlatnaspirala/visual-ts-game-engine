@@ -405,7 +405,7 @@ class WebCamStream implements IGamePlayModel {
           this.starter.destroyBody(collectitem);
           this.player = null;
 
-          this.network.rtcMultiConnection.send({
+          this.network.rtcMultiConnection.connection.send({
             noMoreLives: true,
           });
 

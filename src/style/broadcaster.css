@@ -10,6 +10,13 @@
   margin: 0 auto;
 }
 
+.coordinator {
+  position: absolute;
+  height: 100%;
+  width: 35%;
+  left: 0;
+}
+
 .video-container {
   display: block;
   position: absolute;

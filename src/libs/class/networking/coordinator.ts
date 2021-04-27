@@ -1,7 +1,4 @@
 
-// import * as io from "./rtc-multi-connection/socket.io";
-// import * as io from "https://rtcmulticonnection.herokuapp.com/socket.io/socket.io.js";
-
 import ClientConfig from "../../../client-config.js";
 import { byId, createAppEvent, htmlHeader } from "../system";
 import "./rtc-multi-connection/FileBufferReader.js";
@@ -9,7 +6,9 @@ import { getHTMLMediaElement } from "./rtc-multi-connection/getHTMLMediaElement"
 import * as RTCMultiConnection3 from "./rtc-multi-connection/RTCMultiConnection3";
 import * as io from "./rtc-multi-connection/socket.io";
 
-class Broadcaster {
+class Coordinator {
+
+  public injector: any;
 
   public openOrJoinBtn: HTMLElement;
 
@@ -24,6 +23,7 @@ class Broadcaster {
   private shareFileBtn: HTMLElement  | null = null;
   private inputChat: HTMLElement     | null = null;
   private inputRoomId: HTMLElement   | null = null;
+  openDataSession: () => void;
 
   constructor(config: any) {
 
@@ -35,6 +35,7 @@ class Broadcaster {
       this.runBroadcaster();
     }
 
+    return this;
   }
 
   public closeAllPeers(): void {
@@ -44,24 +45,24 @@ class Broadcaster {
   public openRoomBtnVisible = (visible: boolean) => {
 
     if (visible === true) {
-      byId("open-room").classList.remove("hide");
+      byId("open-room-data").classList.remove("hide");
     } else {
-      byId("open-room").classList.add("hide");
+      byId("open-room-data").classList.add("hide");
     }
 
   }
 
   private initDOM() {
 
-    this.broadcasterUI = byId("media-rtc3-controls");
-    this.titleStatus = byId("rtc3log");
-    this.openRoomBtn = byId("open-room");
-    this.joinRoomBtn = byId("join-room");
-    this.openOrJoinBtn = byId("open-or-join-room");
-    this.leaveRoomBtn = byId("btn-leave-room");
-    this.shareFileBtn = byId("share-file");
-    this.inputChat = byId("input-text-chat");
-    this.inputRoomId = byId("room-id");
+    this.broadcasterUI = byId("data-rtc3-controls");
+    this.titleStatus = byId("rtc3log-data");
+    this.openRoomBtn = byId("open-room-data");
+    this.joinRoomBtn = byId("join-room-data");
+    this.openOrJoinBtn = byId("open-or-join-room-data");
+    this.leaveRoomBtn = byId("btn-leave-room-data");
+    this.shareFileBtn = byId("share-file-data");
+    this.inputChat = byId("input-text-chat-data");
+    this.inputRoomId = byId("room-id-data");
 
     this.openRoomBtnVisible(true);
 
@@ -82,7 +83,7 @@ class Broadcaster {
     const root = this;
 
     this.connection = new (RTCMultiConnection3 as any)();
-    this.connection.socketURL = root.engineConfig.getBroadcastSockRoute();
+    this.connection.socketURL = root.engineConfig.getCoordinatorSockRoute();
     this.connection.socketMessageEvent = "audio-video-file-chat-demo";
 
     if (typeof options !== "undefined") {
@@ -97,12 +98,12 @@ class Broadcaster {
 
     } else {
 
-    this.connection.enableFileSharing = root.engineConfig.getBroadcasterSessionDefaults().enableFileSharing;
+    this.connection.enableFileSharing = root.engineConfig.getCoordinatorConfig().enableFileSharing;
 
     this.connection.session = {
-        audio: root.engineConfig.getBroadcasterSessionDefaults().sessionAudio,
-        video: root.engineConfig.getBroadcasterSessionDefaults().sessionVideo,
-        data: root.engineConfig.getBroadcasterSessionDefaults().sessionData,
+        audio: root.engineConfig.getCoordinatorConfig().sessionAudio,
+        video: root.engineConfig.getCoordinatorConfig().sessionVideo,
+        data: root.engineConfig.getCoordinatorConfig().sessionData,
       };
 
     }
@@ -116,7 +117,7 @@ class Broadcaster {
       urls: root.engineConfig.getStunList(),
     }];
 
-    this.connection.videosContainer = document.getElementById("videos-container") as HTMLDivElement;
+    this.connection.videosContainer = document.getElementById("videos-container-data") as HTMLDivElement;
 
     this.connection.videosContainer.setAttribute("style", "position:absolute;left:0;top:0;width:400px;height:300px;");
 
@@ -223,18 +224,23 @@ class Broadcaster {
     };
 
     this.connection.onmessage = root.appendDIV;
-    this.connection.filesContainer = document.getElementById("file-container");
 
-    this.connection.onopen = function () {
+    this.connection.filesContainer = document.getElementById("file-container-data");
+
+    this.connection.onopen = function (e) {
 
       (root.shareFileBtn as HTMLInputElement).disabled = false;
       (root.inputChat as HTMLInputElement).disabled = false;
       (root.leaveRoomBtn as HTMLInputElement).disabled = false;
 
+      if (root.injector) {
+        root.injector.init(e);
+      }
+
       console.info( "You are connected with: " +
         root.connection.getAllParticipants().join(", "));
 
-        (document.querySelector("#rtc3log") as HTMLInputElement).innerHTML = "You are connected with: " +
+        (document.querySelector("#rtc3log-data") as HTMLInputElement).innerHTML = "You are connected with: " +
         root.connection.getAllParticipants().join(", ");
     };
 
@@ -285,7 +291,7 @@ class Broadcaster {
       html += "<br>";
       html += 'QueryString URL: <a href="' + roomQueryStringURL + '" target="_blank">' + roomQueryStringURL + "</a>";
 
-      const roomURLsDiv = document.getElementById("room-urls");
+      const roomURLsDiv = document.getElementById("room-urls-data");
       (roomURLsDiv as HTMLDivElement).innerHTML = html;
       (roomURLsDiv as HTMLDivElement).style.display = "block";
   }
@@ -301,13 +307,22 @@ class Broadcaster {
   };
 
   private appendDIV = (event) => {
+
+
+    if (event.data.netPos) {
+      console.log("--------handle-------", event)
+      this.injector.update(event);
+      return;
+    }
+
     const div = document.createElement("div");
     div.innerHTML = event.data || event;
     const chatContainer = document.querySelector(".chat-output") as HTMLDivElement;
     chatContainer.insertBefore(div, chatContainer.firstChild);
     div.tabIndex = 0;
     div.focus();
-    (document.getElementById("input-text-chat") as HTMLInputElement).focus();
+    (document.getElementById("input-text-chat-data") as HTMLInputElement).focus();
+
   }
 
   private postAttach() {
@@ -322,7 +337,7 @@ class Broadcaster {
     }
 
     if (root.engineConfig.getMasterServerKey()) {
-      roomid = root.engineConfig.getMasterServerKey();
+      roomid = root.engineConfig.getMasterServerKey() + "-data-channel";
     }
 
     (root.inputRoomId as HTMLInputElement).value = roomid;
@@ -388,15 +403,17 @@ class Broadcaster {
         root.connection.join((root.inputRoomId as HTMLInputElement).value);
     };
 
-    root.openOrJoinBtn.onclick = function () {
-        root.disableInputButtons();
-        root.connection.openOrJoin((root.inputRoomId as HTMLInputElement).value,
-          function (isRoomExists, roomid) {
-            if (!isRoomExists) {
-              root.showRoomURL(roomid);
-            }
-          });
+    root.openDataSession = function () {
+      root.disableInputButtons();
+      root.connection.openOrJoin((root.inputRoomId as HTMLInputElement).value,
+        function (isRoomExists, roomid) {
+          if (!isRoomExists) {
+            root.showRoomURL(roomid);
+          }
+        });
     };
+
+    root.openOrJoinBtn.onclick = root.openDataSession;
 
     (root.leaveRoomBtn as HTMLButtonElement).onclick = function () {
         (this as HTMLButtonElement).disabled = true;
@@ -456,14 +473,14 @@ class Broadcaster {
   private runBroadcaster = () => {
 
     const myInstance = this;
-    fetch("./templates/broadcaster.html", {
+    fetch("./templates/coordinator.html", {
       headers: htmlHeader,
     }).
       then(function (res) {
         return res.text();
       }).then(function (html) {
         // console.warn(html);
-        myInstance.popupUI = byId("media-rtc3-controls") as HTMLDivElement;
+        myInstance.popupUI = byId("data-rtc3-controls") as HTMLDivElement;
         myInstance.popupUI.innerHTML = html;
 
         if (myInstance.engineConfig.getShowBroadcasterOnInt()) {
@@ -477,10 +494,18 @@ class Broadcaster {
         myInstance.initWebRtc();
         myInstance.inputRoomId.nodeValue = myInstance.engineConfig.getMasterServerKey();
 
+        /**
+         * @description
+         * If you want activation gameplay on user action
+         * than use `BroadcastAutoConnect = false`
+         * If you wanna direct opening gameplay then use `true`
+         */
         if (myInstance.engineConfig.getBroadcastAutoConnect()) {
 
           // myInstance.inputRoomId.nodeValue = myInstance.engineConfig.getMasterServerKey();
-          myInstance.openOrJoinBtn.click();
+          // myInstance.openOrJoinBtn.click();
+          myInstance.openDataSession();
+
         }
 
       });
@@ -488,4 +513,4 @@ class Broadcaster {
   }
 
 }
-export default Broadcaster;
+export default Coordinator;

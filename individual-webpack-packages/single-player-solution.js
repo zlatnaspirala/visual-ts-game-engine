@@ -46,17 +46,13 @@ module.exports = webPackModuleSingleSimpleSolution = {
       filename: 'app.html',
       template: 'src/index.html'
     }),
-    new HtmlWebpackPlugin({
-      filename: 'templates/message-box.html',
-      template: 'src/html-components/message-box.html'
-    }),
     new ScriptExtHtmlWebpackPlugin({
       defaultAttribute: 'defer'
     }),
     new ExtractTextPlugin("src/style/styles.css"),
     new CopyWebpackPlugin([
       { from: './src/libs/addons/hacker-timer/hack-timer.js', to: 'externals/hack-timer.js'},
-      { from: './src/libs/addons/drag/drag.ts', to: 'externals/drag.ts' },
+      // { from: './src/libs/addons/drag/drag.ts', to: 'externals/drag.ts' },
       { from: './src/libs/addons/hacker-timer/hack-timer-worker.js', to: 'externals/hack-timer-worker.js' },
       { from: './src/manifest.web', to: 'manifest.web' },
       { from: './src/libs/addons/cache/cacheInit.ts', to: 'externals/cacheInit.ts' },
@@ -64,6 +60,7 @@ module.exports = webPackModuleSingleSimpleSolution = {
       { from: './src/libs/addons/cache/offline.html', to: 'offline.html' },
       { from: "./src/examples/platformer-single-player/ui/select-player.html", to: "templates/ui/select-player.html"},
       { from: "./src/examples/platformer-single-player/ui/player-board.html", to: "templates/ui/single-player-board.html"},
+      { from: "./src/html-components/message-box.html", to: "templates/message-box.html" },
     ], { debug: 'warn' })
     // { debug: 'info' } make trace
 

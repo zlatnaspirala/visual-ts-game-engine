@@ -1,10 +1,10 @@
 {
-  "socketURL": "https://localhost:9001/",
+  "socketURL": "https://localhost:12034/",
   "dirPath": "/",
-  "homePage": "https://localhost/multiplayer/app.html",
+  "homePage": "https://localhost",
   "socketMessageEvent": "RTCMultiConnection-Message",
   "socketCustomEvent": "RTCMultiConnection-Custom-Message",
-  "port": "9001",
+  "port": "12034",
   "enableLogs": "false",
   "autoRebootServerOnFailure": "false",
   "isUseHTTPs": "true",

@@ -107,6 +107,9 @@ class GlobalEvent {
   private onKeyUpHandler = (e) => {
     const root = this;
     root.activeKey[e.keyCode] = false;
+
+    root.activeKey[ARROW_KEYS.RIGHT] = false;
+
     root.providers.onkeyup();
   }
 

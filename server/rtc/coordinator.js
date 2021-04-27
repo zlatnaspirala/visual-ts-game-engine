@@ -1,4 +1,4 @@
-class Broadcaster {
+class Coordinator {
   constructor(serverConfig) {
     const fs = require("fs");
     const path = require("path");
@@ -11,7 +11,7 @@ class Broadcaster {
     var PORT = 9001;
 
     const jsonPath = {
-      config: "./server/broadcaster-config.json",
+      config: "./server/coordinator-config.json",
       logs: "logs.json",
     };
 
@@ -29,9 +29,7 @@ class Broadcaster {
     }
 
     function serverHandler(request, response) {
-      console.log("++++++++++++++++serverHandler++++++++++++++++");
-      // to make sure we always get valid info from json file
-      // even if external codes are overriding it
+
       config = getValuesFromConfigJson(jsonPath);
       config = getBashParameters(config, BASH_COLORS_HELPER);
 
@@ -39,22 +37,20 @@ class Broadcaster {
       headers["Access-Control-Allow-Origin"] = "*";
       headers["Access-Control-Allow-Headers"] =
         "Content-Type, Content-Length, Authorization, Accept, X-Requested-With";
-      headers["Access-Contrl-Allow-Methods"] =
-        "PUT, POST, GET, DELETE, OPTIONS";
+      headers["Access-Contrl-Allow-Methods"] = "POST, GET, OPTIONS";
       headers["Access-Control-Max-Age"] = "86400";
       response.writeHead(200, headers);
 
       if (request.method === "OPTIONS") {
-        console.log("OPTIONS SUCCESS");
         response.end();
       } else {
         response.writeHead(200, {
           "Content-Type": "text/plain",
           "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,OPTIONS",
+          "Access-Control-Allow-Methods": "GET,POST,OPTIONS",
           "Access-Control-Allow-Headers": "*",
         });
-        response.write("RTCMultiConnection Socket.io Server.");
+        response.write("The wourld is mine.");
         response.end();
       }
     }
@@ -69,7 +65,10 @@ class Broadcaster {
     };
 
     /**
-     * @description This block can be optimisex
+     * @description
+     * For `dev` mode program will use local self sign cert.
+     * For production we load special certPathProd prepared data.
+     * No need to switch manual - system adaptation.
      * SSL on/off
      */
     if (serverConfig.serverMode === "dev") {
@@ -90,9 +89,10 @@ class Broadcaster {
       );
     }
 
-    var pfx = false;
-    console.info("Server runs `https` protocol.");
-
+    /**
+     * @description
+     * Prepare host serve for io
+     */
     httpApp = httpServer.createServer(options, serverHandler);
 
     RTCMultiConnectionServer.beforeHttpListen(httpApp, config);
@@ -106,10 +106,11 @@ class Broadcaster {
 
     var collectCorsDomain = "https://localhost";
     if (serverConfig.serverMode == "dev") {
-      console.log("-rtc cors dev: ", serverConfig.domain.dev);
+      console.log("Cors dev: ", serverConfig.domain.dev);
     } else if (serverConfig.serverMode == "prod") {
-      console.log("-rtc cors prod: ", serverConfig.domain.prod);
-      collectCorsDomain = serverConfig.protocol + "://" + serverConfig.domain.prod;
+      console.log("Cors prod: ", serverConfig.domain.prod);
+      collectCorsDomain =
+        serverConfig.protocol + "://" + serverConfig.domain.prod;
     }
 
     console.log("Cors Domain: ", collectCorsDomain);
@@ -135,9 +136,9 @@ class Broadcaster {
       });
     });
 
-    console.log("Broadcaster runned under:");
+    console.log("Coordinator runned under:");
     console.log(config);
-    console.log("Good luck.");
+
   }
 }
-module.exports = Broadcaster;
+module.exports = Coordinator;

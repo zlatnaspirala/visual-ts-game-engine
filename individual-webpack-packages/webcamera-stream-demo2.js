@@ -74,42 +74,6 @@ module.exports = {
       filename: 'app.html',
       template: './src/index.html'
     }),
-    new HtmlWebpackPlugin({
-      filename: 'templates/register.html',
-      template: './src/html-components/register.html'
-    }),
-    new HtmlWebpackPlugin({
-      filename: 'templates/login.html',
-      template: './src/html-components/login.html'
-    }),
-    new HtmlWebpackPlugin({
-      filename: 'templates/user-profile.html',
-      template: './src/html-components/user-profile.html'
-    }),
-    new HtmlWebpackPlugin({
-      filename: 'templates/store.html',
-      template: './src/html-components/store.html'
-    }),
-    new HtmlWebpackPlugin({
-      filename: 'templates/games-list.html',
-      template: './src/html-components/games-list.html'
-    }),
-    new HtmlWebpackPlugin({
-      filename: 'templates/video-conference.html',
-      template: './src/html-components/video-conference.html'
-    }),
-    new HtmlWebpackPlugin({
-      filename: 'templates/broadcaster.html',
-      template: './src/html-components/broadcaster.html'
-    }),
-    new HtmlWebpackPlugin({
-      filename: 'templates/coordinator.html',
-      template: './src/html-components/coordinator.html'
-    }),
-    new HtmlWebpackPlugin({
-      filename: 'templates/message-box.html',
-      template: './src/html-components/message-box.html'
-    }),
     new ScriptExtHtmlWebpackPlugin({
       defaultAttribute: 'defer'
     }),
@@ -118,7 +82,7 @@ module.exports = {
       { from: './src/style/broadcaster.css', to: 'styles/broadcaster.css' },
       { from: './src/style/getHTMLMediaElement.css', to: 'styles/getHTMLMediaElement.css' },
       { from: './src/libs/addons/hacker-timer/hack-timer.js', to: 'externals/hack-timer.js'},
-      { from: './src/libs/addons/drag/drag.ts', to: 'externals/drag.ts' },
+      // { from: './src/libs/addons/drag/drag.ts', to: 'externals/drag.ts' },
       { from: './src/libs/addons/hacker-timer/hack-timer-worker.js', to: 'externals/hack-timer-worker.js' },
       { from: './src/manifest.web', to: 'manifest.web' },
       { from: './src/libs/addons/cache/cacheInit.ts', to: 'externals/cacheInit.ts' },
@@ -126,7 +90,16 @@ module.exports = {
       { from: './src/libs/addons/cache/offline.html', to: 'offline.html' },
       { from: './src/libs/addons/webrtc-adapter/adapter.js', to: 'externals/adapter.js' },
       { from: "./src/examples/platformer/ui/player-board.html", to: "templates/ui/player-board.html"},
-      { from: "./src/examples/platformer/ui/select-player.html", to: "templates/ui/select-player.html"}
+      { from: "./src/examples/platformer/ui/select-player.html", to: "templates/ui/select-player.html"},
+      { from: 'src/html-components/register.html', to: 'templates/register.html' },
+      { from: 'src/html-components/login.html', to: 'templates/login.html' },
+      { from: 'src/html-components/user-profile.html', to: 'templates/user-profile.html' },
+      { from: './src/html-components/store.html', to: 'templates/store.html' },
+      { from: './src/html-components/games-list.html', to: 'templates/games-list.html' },
+      { from: './src/html-components/video-conference.html',  to: 'templates/video-conference.html' },
+      { from: './src/html-components/broadcaster.html', to: 'templates/broadcaster.html' },
+      { from: "./src/html-components/message-box.html", to: "templates/message-box.html" },
+      { from: "./src/html-components/coordinator.html", to: "templates/coordinator.html" },
     ], { debug: 'warn' }),
     // { debug: 'info' } make trace
 

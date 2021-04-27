@@ -32,7 +32,7 @@ class ClientConfig {
     },
     {
       name: "dragging",
-      enabled: true,
+      enabled: false,
       scriptPath: "externals/drag.ts",
     },
     {
@@ -102,12 +102,12 @@ class ClientConfig {
    * Coordinator rtc3 session init values.
    * Downgrade to data only.
    */
-     private coordinatorSessionDefaults: IBroadcasterSession = {
-      sessionAudio: false,
-      sessionVideo: false,
-      sessionData: true,
-      enableFileSharing: false,
-    };
+  private coordinatorSessionDefaults: IBroadcasterSession = {
+    sessionAudio: false,
+    sessionVideo: false,
+    sessionData: true,
+    enableFileSharing: false,
+  };
 
   /**
    * connectorPort is access port used to connect
@@ -211,6 +211,10 @@ class ClientConfig {
 
   }
 
+  public getCoordinatorConfig() {
+    return this.coordinatorSessionDefaults
+  }
+
   public getcontrols(): any {
     return this.controls;
   }
@@ -261,6 +265,10 @@ class ClientConfig {
 
   public getBroadcastSockRoute(): string {
     return this.getProtocolFromAddressBar() +  this.getDomain() + ":" + this.broadcasterPort + "/";
+  }
+
+  public getCoordinatorSockRoute(): string {
+    return this.getProtocolFromAddressBar() +  this.getDomain() + ":" + this.rtcServerPort + "/";
   }
 
   public getStartUpHtmlForm(): string {

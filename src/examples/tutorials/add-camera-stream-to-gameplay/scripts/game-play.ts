@@ -185,8 +185,8 @@ class GamePlay extends WebCamStream implements IMultiplayer {
             myInstance.starter.ioc.get.Network.connectUI.disabled = (this as any).disabled = false;
             myInstance.deattachMatterEvents();
             // Leave
-            myInstance.starter.ioc.get.Network.rtcMultiConnection.leave();
-            myInstance.starter.ioc.get.Network.rtcMultiConnection.disconnect();
+            myInstance.starter.ioc.get.network.rtcMultiConnection.connection.leave();
+            myInstance.starter.ioc.get.network.rtcMultiConnection.connection.disconnect();
             myInstance.netBodies = {};
             console.info("game-end global event. Destroying game play. DISCONNECT");
 
@@ -304,8 +304,8 @@ class GamePlay extends WebCamStream implements IMultiplayer {
           root.player.currentDir === "idle" ) {
             // empty
         } else {
-          // console.log(" root.network.rtcMultiConnection.send({  ", root.network.rtcMultiConnection.send );
-          root.network.rtcMultiConnection.send({
+          // console.log(" root.network.rtcMultiConnection.connection.send({  ", root.network.rtcMultiConnection.connection.send );
+          root.network.rtcMultiConnection.connection.send({
             netPos: root.player.position,
             netDir: root.player.currentDir,
           });

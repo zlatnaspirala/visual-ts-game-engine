@@ -9,29 +9,67 @@ class ServerConfig {
 
      // enum : 'dev' or 'prod'
     this.serverMode = "dev";
+
     this.ownHosting = true;
+    this.ownHttpHostPort = 443;
+    this.ownHostingVirtualHostsEnabled = false;
+    this.ownHostingVirtualHosts = [
+      {
+        dir: "/var/www/html/apps/ultimate-roulette/",
+        name: "roulette.maximumroulette.com"
+      },
+      {
+        dir: "/var/www/html/apps/barbarian-road-mashines/beta/",
+        name: "rocketcraft.maximumroulette.com"
+      }
+    ];
+
     this.networkDeepLogs = false;
     this.rtcServerPort = 12034;
     this.rtc3ServerPort = 9001;
     this.connectorPort = 9010;
 
+    /**
+     * @description
+     * Represent prop for many handling in aspect of 
+     * what is actual ServerMode.
+     * It's simple and nice solution, we never n
+     */
     this.domain = {
       dev: "localhost",
       prod: "maximumroulette.com"
     };
 
+    /**
+     * @description
+     * Represent Public Channel, webrtc session name.
+     * Interest prop for manipulation.
+     * This can be upgraded to the Object type.
+     */
     this.masterServerKey = "multi-platformer-sever1.maximum";
+
+    /**
+     * @description
+     * Strongly recommended https for local also for production
+     */
     this.protocol = "https";
+
     this.isSecure = true;
 
-    // localhost
+    /**
+     * @description
+     * Just for help if needed.
+     */
     this.certPathSelfOrigin = {
       pKeyPath: "./server/rtc/self-cert/privatekey.pem",
       pCertPath: "./server/rtc/self-cert/certificate.pem",
       pCBPath: "./server/rtc/self-cert/certificate.pem",
     };
 
-    // Apache test fix
+    /**
+     * @description
+     * Just for help if needed.
+     */
     this.certPathSelf = {
       pKeyPath: "./server/rtc/apache-local-cert/server.key",
       pCertPath: "./server/rtc/apache-local-cert/server.crt",

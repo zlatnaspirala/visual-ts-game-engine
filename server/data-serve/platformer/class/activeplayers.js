@@ -211,7 +211,7 @@ class PlatformerActiveUsers  {
         { $inc: { points: -pay } },
         (err, doc, raw) => {
           /*Do something here*/
-          console.log(" findOneAndUpdate err: ", err);
+          console.log(" findOneAndUpdate err: ", doc);
         }
       );
 

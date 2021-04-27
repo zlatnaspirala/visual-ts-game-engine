@@ -113,6 +113,18 @@ canvas {
   animation-duration: 2s;
 }
 
+.log-data {
+  position: absolute;
+  z-index: 150;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  -webkit-animation-name: autohide; /* Safari 4.0 - 8.0 */
+  -webkit-animation-duration: 2s; /* Safari 4.0 - 8.0 */
+  animation-name: autohide;
+  animation-duration: 2s;
+}
+
 .network-panel-hide-animation {
   -webkit-animation-fill-mode: forwards;
   -webkit-animation-name: rightmove;
