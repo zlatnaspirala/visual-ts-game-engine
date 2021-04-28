@@ -1,14 +1,28 @@
+
+/**
+ * @description
+ * Coordinator is extends Broadcaster but it is
+ * indipendent reference. With some little difference.
+ * Comes with  own confid json file because i don't
+ * wanna disrelation with native multiRTC server part.
+ * In that way every future updates whos come with 
+ * node module dep will be easy handled.
+ * @Note Must be optimizes network data flow and make
+ * it possible on large scale.
+ * @Port 12034
+ */
 class Coordinator {
+
   constructor(serverConfig) {
+
     const fs = require("fs");
-    const path = require("path");
-    const url = require("url");
+    // const path = require("path");
+    // const url = require("url");
     const ioServer = require("socket.io");
     const RTCMultiConnectionServer = require("rtcmulticonnection-server");
     var httpServer = null;
 
-    // Direct input flags
-    var PORT = 9001;
+    var PORT = 12034;
 
     const jsonPath = {
       config: "./server/coordinator-config.json",
@@ -23,8 +37,7 @@ class Coordinator {
     var config = getValuesFromConfigJson(jsonPath);
     config = getBashParameters(config, BASH_COLORS_HELPER);
 
-    // if user didn't modifed "PORT" object
-    if (PORT === 9001) {
+    if (PORT === 12034) {
       PORT = config.port;
     }
 

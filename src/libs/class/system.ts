@@ -4,33 +4,20 @@ export let scriptManager = {
   loaded: {},
   load: function addScript(src: string) {
     const s = document.createElement("script");
-    s.onload = function () {
-
+    s.onload = function (e) {
+      console.info("Loaded ", e)
       scriptManager.scriptManager_ID++;
-      // console.log("Async script id loaded: " + (this as any).src);
-      if (typeof (this as HTMLScriptElement).src !== "undefined") {
-        let filename = (this as HTMLScriptElement).src.substring((this as HTMLScriptElement).src.lastIndexOf("/") + 1,
-          (this as HTMLScriptElement).src.lastIndexOf("."));
-        filename = filename.replace(".", "_");
-        // tslint:disable-next-line:no-eval
-        try {
-          scriptManager.loaded["_" + filename](s);
-        } catch (e) {
-          console.log(e);
-        }
-      }
-
     };
     s.setAttribute("src", src);
 
     s.onerror = function (err) {
-      console.warn("Script loader faild to load: ", src);
+      console.warn("Script loader faild to load: ", err);
     };
 
     try {
       document.body.appendChild(s);
     } catch (err) {
-      // no catch here.
+      console.error("Something wrong with loading async javascript code. `document.body` undefined.")
     }
 
   },

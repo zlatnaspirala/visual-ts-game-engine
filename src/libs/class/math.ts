@@ -1,4 +1,4 @@
-interface IPoint { x: number; y: number; }
+import { IPoint } from "../interface/global";
 
 export class Counter {
 
@@ -102,17 +102,27 @@ export class Counter {
 
 }
 
-export function getDistance(pointA: IPoint, pointB: IPoint): number {
+export function getDistance (pointA: IPoint, pointB: IPoint): number {
   const a = pointA.x - pointB.x;
   const b = pointA.y - pointB.y;
   return Math.sqrt(a * a + b * b);
 }
 
-export function rotateVector(vector, angle) {
+export function rotateVector (vector, angle) {
   return {
     x: vector.x * Math.cos(angle) - vector.y * Math.sin(angle),
     y: vector.x * Math.sin(angle) + vector.y * Math.cos(angle),
   };
+}
+
+export function netPosOpt (pos): IPoint {
+  pos.x = parseFloat(pos.x.toFixed(2))
+  pos.y = parseFloat(pos.y.toFixed(2))
+  return pos;
+}
+
+export function numberOpt (x): number {
+  return parseFloat(x.toFixed(2));
 }
 
 export function someRandomNumber() { return (Math.random() * 1000).toString().replace(".", ""); }

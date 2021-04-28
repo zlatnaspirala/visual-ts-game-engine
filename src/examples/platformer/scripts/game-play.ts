@@ -1,7 +1,8 @@
 import * as Matter from "matter-js";
 import BotBehavior from "../../../libs/class/bot-behavior";
+import { netPosOpt, numberOpt } from "../../../libs/class/math";
 import Broadcaster from "../../../libs/class/networking/broadcaster";
-import Network from "../../../libs/class/networking/network";
+import Coordinator from "../../../libs/class/networking/coordinator";
 import { byId } from "../../../libs/class/system";
 import SpriteTextureComponent from "../../../libs/class/visual-methods/sprite-animation";
 import TextComponent from "../../../libs/class/visual-methods/text";
@@ -43,9 +44,9 @@ class GamePlay extends Platformer implements IMultiplayer {
 
         if (multiplayer.data.netDir) {
           if (multiplayer.data.netDir === "left") {
-            this.root.netBodies["netObject_" + multiplayer.userid].render.visualComponent.setHorizontalFlip(false);
-          } else if (multiplayer.data.netDir === "right") {
             this.root.netBodies["netObject_" + multiplayer.userid].render.visualComponent.setHorizontalFlip(true);
+          } else if (multiplayer.data.netDir === "right") {
+            this.root.netBodies["netObject_" + multiplayer.userid].render.visualComponent.setHorizontalFlip(false);
           }
         }
 
@@ -82,6 +83,9 @@ class GamePlay extends Platformer implements IMultiplayer {
 
   public broadcaster: Broadcaster;
 
+  // test
+  public coordinator: Coordinator;
+
   private gamePlayWelcomeNote: string = "This application was created on visual-ts <br/>\
                                          Example: Real time multiplayer `Platformer` zlatnaspirala@gmail.com <br/>\
                                          General: MIT License <br/>\
@@ -114,11 +118,10 @@ class GamePlay extends Platformer implements IMultiplayer {
 
     // check this with config flag
     this.network = starter.ioc.get.Network;
-    this.network.rtcMultiConnection.injector = this.multiPlayerRef;
-
-    console.log("SETUP OF INJECTOR");
 
     this.broadcaster = starter.ioc.get.Broadcaster;
+    this.broadcaster.injector = this.multiPlayerRef;
+    // this.coordinator = starter.ioc.get.Network.rtcMultiConnection;
 
     // MessageBox
     // this.starter.ioc.get.MessageBox.show(this.gamePlayWelcomeNote);
@@ -140,13 +143,14 @@ class GamePlay extends Platformer implements IMultiplayer {
 
         } else if ((e as any).detail &&
                   (e as any).detail.data.game === null ) {
+
           console.info("game-init Player spawn. data.game === null");
           myInstance.starter.ioc.get.Network.connector.startNewGame(myInstance.gameName);
-          myInstance.broadcaster.openOrJoinBtn.click();
+          myInstance.broadcaster.openDataSession();
+          
           myInstance.initSelectPlayer();
           myInstance.selectPlayer("nidzica");
           myInstance.playerSpawn(true);
-
           return;
 
         }
@@ -157,8 +161,14 @@ class GamePlay extends Platformer implements IMultiplayer {
         // How to access netwoking
         myInstance.starter.ioc.get.Network.connector.startNewGame(myInstance.gameName);
         myInstance.broadcaster.openOrJoinBtn.click();
+
         myInstance.load((e as any).detail.data.game);
         console.info("Player spawn. game-init .startNewGame");
+
+        setTimeout(() => {
+          myInstance.coordinator.openDataSession();
+        }, 250)
+
       } catch (err) { console.error("Very bad #00001", err); }
 
     });
@@ -263,12 +273,13 @@ class GamePlay extends Platformer implements IMultiplayer {
           y: root.player.position.y - root.starter.getRender().options.height / 1.5,
         });
 
-        if (root.player.velocity.x < 0.00001 && root.player.velocity.y === 0 &&
+        if (root.player.velocity.x < 0.1 && numberOpt(root.player.velocity.y) === 0 &&
           root.player.currentDir === "idle" ) {
             // empty
+            // console.info("IDLE STOPS", root.player.currentDir)
         } else {
           root.network.rtcMultiConnection.connection.send({
-            netPos: root.player.position,
+            netPos: netPosOpt(root.player.position),
             netDir: root.player.currentDir,
           });
         }
@@ -299,7 +310,7 @@ class GamePlay extends Platformer implements IMultiplayer {
       // jump
       if (globalEvent.activeKey[38] && root.player.ground) {
 
-        const s = (root.player.circleRadius * playerSpeed);
+        const s = (root.player.jumpAmp * playerSpeed);
         root.player.ground = false;
         root.player.force = {
           x: 0,
@@ -310,7 +321,7 @@ class GamePlay extends Platformer implements IMultiplayer {
 
       } else if (globalEvent.activeKey[37] && root.player.angularVelocity > -limit) {
 
-        root.player.render.visualComponent.setHorizontalFlip(false);
+        root.player.render.visualComponent.setHorizontalFlip(true);
         root.player.force = {
           x: -playerSpeed,
           y: 0,
@@ -320,7 +331,7 @@ class GamePlay extends Platformer implements IMultiplayer {
 
       } else if (globalEvent.activeKey[39] && root.player.angularVelocity < limit) {
 
-        root.player.render.visualComponent.setHorizontalFlip(true);
+        root.player.render.visualComponent.setHorizontalFlip(false);
         root.player.force = {
           x: playerSpeed,
           y: 0,

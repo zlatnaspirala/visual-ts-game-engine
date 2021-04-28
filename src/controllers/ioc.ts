@@ -12,6 +12,7 @@ import { IUniVector } from "../libs/interface/global";
 import Starter from "../libs/starter";
 
 /**
+ * @description
  * Ioc is main dependency controller class.
  * This class store all main instances
  * Property get is type of IUniVector (access by key)
@@ -21,19 +22,23 @@ import Starter from "../libs/starter";
 class Ioc {
 
   /**
-   * get is store variable , We make instance of core classes
+   * @description `get` is store variable , We make instance of core classes
    * just one time in whole app live circle.
    */
   public get: IUniVector = {};
 
   /**
+   * @description
    * config is instance of ClientConfig class.
    */
   private config: ClientConfig;
 
   /**
-   * Constructor for ioc class is in samo time
+   * @Constructor
+   * Constructor for ioc class is in same time
    * register for application classes.
+   * You need to make flow composition from base to
+   * complex obj instance construction.
    */
    constructor(gamesList?: any[], injectedConfig?: ClientConfig) {
 
@@ -54,10 +59,11 @@ class Ioc {
 
     if (this.config.didAppUseNetwork()) {
 
-      this.singlton(Network, this.config);
-
       if (this.config.didAppUseBroadcast()) {
         this.singlton(Broadcaster, this.config);
+        this.singlton(Network, this.config);
+        // Test drive
+        // this.get.Network.rtcMultiConnection = this.get.Broadcaster;
       }
 
     }
@@ -70,10 +76,9 @@ class Ioc {
 
     if (this.config.didAppUseNetwork()) {
 
-      this.singlton(Network, this.config);
-
       if (this.config.didAppUseBroadcast()) {
         this.singlton(Broadcaster, this.config);
+        this.singlton(Network, this.config);
       }
 
     }

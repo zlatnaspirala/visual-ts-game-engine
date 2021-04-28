@@ -213,11 +213,13 @@ class Platformer implements IGamePlayModel {
     this.preventDoubleExecution = false;
 
     const playerRadius = 50;
+    const playerJumpAmp = 10;
     this.player = Matter.Bodies.circle(
       this.playerStartPositions[0].x,
       this.playerStartPositions[0].y,
       playerRadius, {
         label: "player",
+        jumpAmp: 30,
         density: 0.0005,
         friction: 0.01,
         frictionAir: 0.06,

@@ -117,8 +117,8 @@ class Coordinator {
       urls: root.engineConfig.getStunList(),
     }];
 
-    this.connection.videosContainer = document.getElementById("videos-container-data") as HTMLDivElement;
-
+    this.connection.videosContainer = byId("videos-container-data") as HTMLDivElement;
+    this.connection.videosContainer.style.display = "none";
     this.connection.videosContainer.setAttribute("style", "position:absolute;left:0;top:0;width:400px;height:300px;");
 
     this.connection.onstream = function (event) {
@@ -225,7 +225,7 @@ class Coordinator {
 
     this.connection.onmessage = root.appendDIV;
 
-    this.connection.filesContainer = document.getElementById("file-container-data");
+    this.connection.filesContainer =   byId("file-container-data");
 
     this.connection.onopen = function (e) {
 
@@ -237,14 +237,23 @@ class Coordinator {
         root.injector.init(e);
       }
 
-      console.info( "You are connected with: " +
+      console.info( "COORDINATOR You are connected with: " +
         root.connection.getAllParticipants().join(", "));
 
         (document.querySelector("#rtc3log-data") as HTMLInputElement).innerHTML = "You are connected with: " +
         root.connection.getAllParticipants().join(", ");
     };
 
-    this.connection.onclose = function () {
+    // No override ask stackoverflow community
+    this.connection.onerror = function(error) {
+      if (!!this.enableLogs) {
+          console.error(error.userid, '<err>', error);
+      }
+    };
+
+    this.connection.onclose = function (dataStreamEvent) {
+      console.log(' onClose ->>>>>>>>>>>>>>> dataStreamEvent ', dataStreamEvent)
+      root.injector.leaveGamePlay(dataStreamEvent);
       if (root.connection.getAllParticipants().length) {
         (document.querySelector("#rtc3log") as HTMLInputElement).value = "You are still connected with:" +
           root.connection.getAllParticipants().join(", ");
@@ -308,16 +317,14 @@ class Coordinator {
 
   private appendDIV = (event) => {
 
-
-    if (event.data.netPos) {
-      console.log("--------handle-------", event)
+    if (event.data && event.data.netPos) {
       this.injector.update(event);
       return;
     }
 
     const div = document.createElement("div");
     div.innerHTML = event.data || event;
-    const chatContainer = document.querySelector(".chat-output") as HTMLDivElement;
+    const chatContainer = document.querySelector(".chat-output-data") as HTMLDivElement;
     chatContainer.insertBefore(div, chatContainer.firstChild);
     div.tabIndex = 0;
     div.focus();
@@ -501,11 +508,8 @@ class Coordinator {
          * If you wanna direct opening gameplay then use `true`
          */
         if (myInstance.engineConfig.getBroadcastAutoConnect()) {
-
-          // myInstance.inputRoomId.nodeValue = myInstance.engineConfig.getMasterServerKey();
-          // myInstance.openOrJoinBtn.click();
+          console.log("myInstance.openDataSession(); from COORDINATOR getBroadcastAutoConnect ")
           myInstance.openDataSession();
-
         }
 
       });

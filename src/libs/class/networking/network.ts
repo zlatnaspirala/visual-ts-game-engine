@@ -42,8 +42,9 @@ class Network {
     (window as any).io = io;
 
     // nooption for no loading
-    this.rtcMultiConnection = new Coordinator(this.engineConfig);
-    (window as any).rtcMultiConnection = this.rtcMultiConnection;
+    // this.rtcMultiConnection = new Coordinator(this.engineConfig);
+
+    // (window as any).rtcMultiConnection = this.rtcMultiConnection;
     require("../../../icon/permission/share-files.png");
 
   }

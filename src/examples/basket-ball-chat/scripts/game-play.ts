@@ -144,7 +144,6 @@ class GamePlay extends BasketBallChat implements IMultiplayer {
           console.info("game-init Player spawn. data.game === null");
           myInstance.starter.ioc.get.Network.connector.startNewGame(myInstance.gameName);
           myInstance.broadcaster.openOrJoinBtn.click();
-
           myInstance.initSelectPlayer();
           myInstance.selectPlayer("nidzica");
           myInstance.playerSpawn(true);

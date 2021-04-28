@@ -1,14 +1,23 @@
-/**
- * @description Session controller
- * based on native webSocket server/client.
- * Supported with mongoDB database platform.
- */
+
 const fs = require("fs");
 const shared = require("./../common/shared");
 const static = require('node-static');
 const CryptoHandler = require("../common/crypto");
 var file = new (static.Server)('/var/www/html/apps/visual-ts/basket-ball-chat/');
 
+/**
+ * @description Because nature of webRTC in new version
+ * of modern browsers we also need `https` for localhost
+ * running configuration(because broadcaster and coordinator).
+ * Nature of Connector is `WebSocketServer` context.
+ * This is little different between Broadcaster and Conector.
+ * Checker added besed on `serverMode` from server config.
+ * @name Connector
+ * Session Controller
+ * Based on native webSocket server/client.
+ * Supported with mongoDB database platform.
+ * @Note `ca` will be disabled for localhost.
+ */
 class Connector {
 
   constructor(serverConfig) {
@@ -30,7 +39,7 @@ class Connector {
         request.addListener('end', function() {
           if (request.url.search(/.png|.gif|.js|.css/g) == -1) {
             response.statusCode = 200;
-            response.write('Please use https protocol for local or production.');
+            response.write('Please use https protocol for local also for production.');
             return response.end();
           } else file.serve(request, response);
         }).resume();
@@ -38,13 +47,6 @@ class Connector {
 
     } else {
 
-      /**
-       * @description Because nature of webRTC in new version
-       * of modern browsers we also need `https` for localhost
-       * running configuration. Checker added besed on `serverMode`
-       * from server config.
-       * `ca` will be disabled for localhost.
-       */
       let options = {};
 
       if (serverConfig.serverMode === 'dev') {
@@ -68,7 +70,7 @@ class Connector {
         /**
          * @interest
          * This work on chrome in https://localhost
-         * but not in firefox. Need fix
+         * but not in firefox. Need fix min > SHA-1 cert policy.
          */
         response.setHeader('Access-Control-Allow-Origin', '*');
         response.setHeader('Access-Control-Request-Method', '*');

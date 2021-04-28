@@ -11,6 +11,7 @@ import * as io from "./rtc-multi-connection/socket.io";
 
 class Broadcaster {
 
+  public injector: any;
   public openOrJoinBtn: HTMLElement;
 
   private connection: any;
@@ -24,6 +25,7 @@ class Broadcaster {
   private shareFileBtn: HTMLElement  | null = null;
   private inputChat: HTMLElement     | null = null;
   private inputRoomId: HTMLElement   | null = null;
+  openDataSession: () => void;
 
   constructor(config: any) {
 
@@ -225,11 +227,15 @@ class Broadcaster {
     this.connection.onmessage = root.appendDIV;
     this.connection.filesContainer = document.getElementById("file-container");
 
-    this.connection.onopen = function () {
+    this.connection.onopen = function (event) {
 
       (root.shareFileBtn as HTMLInputElement).disabled = false;
       (root.inputChat as HTMLInputElement).disabled = false;
       (root.leaveRoomBtn as HTMLInputElement).disabled = false;
+
+      if (root.injector) {
+        root.injector.init(event);
+      }
 
       console.info( "You are connected with: " +
         root.connection.getAllParticipants().join(", "));
@@ -238,7 +244,10 @@ class Broadcaster {
         root.connection.getAllParticipants().join(", ");
     };
 
-    this.connection.onclose = function () {
+    this.connection.onclose = function (dataStreamEvent) {
+
+      root.injector.leaveGamePlay(dataStreamEvent);
+
       if (root.connection.getAllParticipants().length) {
         (document.querySelector("#rtc3log") as HTMLInputElement).value = "You are still connected with:" +
           root.connection.getAllParticipants().join(", ");
@@ -301,6 +310,12 @@ class Broadcaster {
   };
 
   private appendDIV = (event) => {
+
+    if (event.data && event.data.netPos) {
+      this.injector.update(event);
+      return;
+    }
+
     const div = document.createElement("div");
     div.innerHTML = event.data || event;
     const chatContainer = document.querySelector(".chat-output") as HTMLDivElement;
@@ -388,15 +403,17 @@ class Broadcaster {
         root.connection.join((root.inputRoomId as HTMLInputElement).value);
     };
 
-    root.openOrJoinBtn.onclick = function () {
-        root.disableInputButtons();
-        root.connection.openOrJoin((root.inputRoomId as HTMLInputElement).value,
-          function (isRoomExists, roomid) {
-            if (!isRoomExists) {
-              root.showRoomURL(roomid);
-            }
-          });
+    root.openDataSession = function () {
+      root.disableInputButtons();
+      root.connection.openOrJoin((root.inputRoomId as HTMLInputElement).value,
+        function (isRoomExists, roomid) {
+          if (!isRoomExists) {
+            root.showRoomURL(roomid);
+          }
+        });
     };
+
+    root.openOrJoinBtn.onclick = root.openDataSession;
 
     (root.leaveRoomBtn as HTMLButtonElement).onclick = function () {
         (this as HTMLButtonElement).disabled = true;

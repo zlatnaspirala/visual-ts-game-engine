@@ -201,7 +201,11 @@ class Starter {
   }
 
   public destroyBody(destroyBody) {
+    try {
     Matter.Composite.remove(this.world, destroyBody);
+    } catch(err) {
+      console.log(err)
+    }
   }
 
   public setRenderView(renderWidth, renderHeight): void {
