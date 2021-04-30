@@ -4,6 +4,7 @@ import TextureComponent from "../class/visual-methods/texture";
 import Starter from "../starter";
 import { imagesResource, literalImageSrc, UniVector } from "../types/global";
 import { Addson } from "../types/global";
+import { BaseMultiPlayer, IBroadcasterSession } from "./networking";
 
 export interface IPoint {
   x: number;
@@ -107,18 +108,6 @@ export interface IGamePlayPlatformerMap {
   getStaticBackgrounds(): IStaticItem[];
   getCollectItems(): ICollectionItem[];
   getEnemys(): ICollectionEnemies[];
-}
-
-export interface IMultiplayer {
-  multiPlayerRef: any;
-  netBodies: any;
-}
-
-export interface IBroadcasterSession {
-  sessionAudio: boolean;
-  sessionVideo: boolean;
-  sessionData: boolean;
-  enableFileSharing: boolean;
 }
 
 /**

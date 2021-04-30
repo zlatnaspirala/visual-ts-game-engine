@@ -15,6 +15,7 @@ import "../audios/map-themes/mishief-stroll.mp4";
 import Network from "../../../libs/class/networking/network";
 import SpriteStreamComponent from "../../../libs/class/visual-methods/sprite-stream";
 import TextureStreamComponent from "../../../libs/class/visual-methods/texture-stream";
+import Broadcaster from "../../../libs/class/networking/broadcaster";
 // import { DEFAULT_PLAYER_DATA } from "../../../libs/defaults";
 
 /**
@@ -42,8 +43,10 @@ class BasketBallChat implements IGamePlayModel {
 
   public player: Matter.Body | any = undefined;
   public hudLives: Matter.Body | any = null;
+
   public network: Network;
   public netBodies: UniVector = {};
+  public broadcaster: Broadcaster;
 
   public selectedPlayer: ISelectedPlayer;
   private selectPlayerArray: ISelectedPlayer[] = [];
@@ -72,6 +75,8 @@ class BasketBallChat implements IGamePlayModel {
     // this.showPlayerBoardUI();
     this.attachUpdateLives();
 
+    this.broadcaster = starter.ioc.get.Broadcaster;
+
   }
 
   /**
@@ -83,13 +88,13 @@ class BasketBallChat implements IGamePlayModel {
 
     this.preventDoubleExecution = false;
 
-    const sptTexCom = new SpriteTextureComponent(
+    const sptTexCom = new SpriteStreamComponent(
       "playerImage",
       (this.selectedPlayer.resource as any),
       ( { byX: 5, byY: 1 } as any),
     );
 
-    console.log("New netPlayer: ", rtcEvent.extra.username);
+    console.log("New netPlayer rtcEvent : ", rtcEvent);
     const playerRadius = 50;
     const netPlayer: worldElement = Matter.Bodies.circle(
       this.playerStartPositions[0].x,
@@ -118,6 +123,7 @@ class BasketBallChat implements IGamePlayModel {
       } as Matter.IBodyDefinition);
 
     netPlayer.collisionFilter.group = -1;
+
     (netPlayer.render as any).visualComponent.assets.SeqFrame.setNewSeqFrameRegimeType("CONST");
     (netPlayer.render as any).visualComponent.keepAspectRatio = true;
     (netPlayer.render as any).visualComponent.setHorizontalFlip(true);
@@ -125,17 +131,17 @@ class BasketBallChat implements IGamePlayModel {
     const addToScene = true;
 
     if (addToScene) {
-
-      // this.netPlayer.id = 2;
-      // Sometime networking make double join session receive signal
+      console.info("rtcEvent.userid]>> >>>>>>>>>>>>>>>>",  rtcEvent.userid);
+      netPlayer.id = rtcEvent.userid;
       console.log("myInstance.netBodies[netObject_ + rtcEvent.userid]>>", myInstance.netBodies["netObject_" + rtcEvent.userid]);
       if (myInstance.netBodies["netObject_" + rtcEvent.userid]) {
-        // console.log("ALREADY EXIST");
+        console.warn("GamePlay : Player already exist!");
         return;
       }
       this.starter.AddNewBodies(netPlayer as worldElement);
-      console.info("Net Player body created.");
+      
       myInstance.netBodies["netObject_" + rtcEvent.userid] = netPlayer;
+      console.info("Net Player body created." , myInstance.netBodies["netObject_" + rtcEvent.userid] );
 
     }
 
@@ -210,6 +216,7 @@ class BasketBallChat implements IGamePlayModel {
         frictionAir: 0.06,
         restitution: 0.3,
         ground: true,
+        jumpAmp: 40,
         jumpCD: 0,
         portal: -1,
         collisionFilter: {
@@ -378,7 +385,6 @@ class BasketBallChat implements IGamePlayModel {
 
   public setStreamTexture(texStream: HTMLVideoElement) {
     (this.player as any).render.visualComponent.setStreamTexture(texStream);
-
   }
 
   protected selectPlayer(labelName: string = "nidzica") {
@@ -410,7 +416,7 @@ class BasketBallChat implements IGamePlayModel {
           this.starter.destroyBody(collectitem);
           this.player = null;
 
-          this.network.rtcMultiConnection.connection.send({
+          this.broadcaster.connection.send({
             noMoreLives: true,
           });
 

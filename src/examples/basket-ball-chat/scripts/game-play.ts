@@ -1,12 +1,14 @@
 import * as Matter from "matter-js";
 import BotBehavior from "../../../libs/class/bot-behavior";
 import Broadcaster from "../../../libs/class/networking/broadcaster";
+import Coordinator from "../../../libs/class/networking/coordinator";
 import { byId } from "../../../libs/class/system";
 import SpriteTextureComponent from "../../../libs/class/visual-methods/sprite-animation";
 import TextComponent from "../../../libs/class/visual-methods/text";
 import TextureComponent from "../../../libs/class/visual-methods/texture";
-import { DEFAULT_GAMEPLAY_ROLES, DEFAULT_RENDER_BOUNDS } from "../../../libs/defaults";
-import { IMultiplayer, IStaticItem } from "../../../libs/interface/global";
+import { DEFAULT_GAMEPLAY_ROLES, DEFAULT_PLAYER_DATA, DEFAULT_RENDER_BOUNDS } from "../../../libs/defaults";
+import { IStaticItem } from "../../../libs/interface/global";
+import { BaseMultiPlayer, IMultiplayer } from "../../../libs/interface/networking";
 import Starter from "../../../libs/starter";
 import { worldElement } from "../../../libs/types/global";
 import Level1 from "../scripts/packs/BasketBallChat-level1";
@@ -20,7 +22,7 @@ import GameMap from "./map";
  */
 class GamePlay extends BasketBallChat implements IMultiplayer {
 
-  public multiPlayerRef: any = {
+  public multiPlayerRef: BaseMultiPlayer = {
     root: this,
     init (rtcEvent) {
 
@@ -79,7 +81,7 @@ class GamePlay extends BasketBallChat implements IMultiplayer {
 
   };
 
-  public broadcaster: Broadcaster;
+  public coordinator: Coordinator;
 
   /**
    * @description deadZoneForBottom Definition and Default value
@@ -117,8 +119,6 @@ class GamePlay extends BasketBallChat implements IMultiplayer {
 
     // check this with config flag
     this.network = starter.ioc.get.Network;
-    this.network.injector = this.multiPlayerRef;
-    this.broadcaster = starter.ioc.get.Broadcaster;
 
     // MessageBox
     // this.starter.ioc.get.MessageBox.show(this.gamePlayWelcomeNote);
@@ -143,7 +143,12 @@ class GamePlay extends BasketBallChat implements IMultiplayer {
 
           console.info("game-init Player spawn. data.game === null");
           myInstance.starter.ioc.get.Network.connector.startNewGame(myInstance.gameName);
-          myInstance.broadcaster.openOrJoinBtn.click();
+          /**
+           * @description
+           * Very important - You can activate also coordinator like supre extra multiPeer
+           * Connections in the same time but it is not stable in 100%.
+           */
+          myInstance.broadcaster.activateDataStream(myInstance.multiPlayerRef);
           myInstance.initSelectPlayer();
           myInstance.selectPlayer("nidzica");
           myInstance.playerSpawn(true);
@@ -157,7 +162,13 @@ class GamePlay extends BasketBallChat implements IMultiplayer {
 
         // How to access netwoking
         myInstance.starter.ioc.get.Network.connector.startNewGame(myInstance.gameName);
-        myInstance.broadcaster.openOrJoinBtn.click();
+
+        /**
+         * @description
+         * Very important - You can activate also coordinator like supre extra multiPeer
+         * Connections in the same time but it is not stable in 100%.
+         */
+         myInstance.broadcaster.activateDataStream(myInstance.multiPlayerRef);
 
         myInstance.load((e as any).detail.data.game);
         console.info("Player spawn. game-init .startNewGame");
@@ -183,8 +194,8 @@ class GamePlay extends BasketBallChat implements IMultiplayer {
             myInstance.starter.ioc.get.Network.connectUI.disabled = (this as any).disabled = false;
             myInstance.deattachMatterEvents();
             // Leave
-            myInstance.starter.ioc.get.network.rtcMultiConnection.connection.leave();
-            myInstance.starter.ioc.get.network.rtcMultiConnection.connection.disconnect();
+            myInstance.starter.ioc.get.Broadcaster.connection.leave();
+            myInstance.starter.ioc.get.Broadcaster.connection.disconnect();
             myInstance.netBodies = {};
             console.info("game-end global event. Destroying game play. DISCONNECT");
 
@@ -193,25 +204,42 @@ class GamePlay extends BasketBallChat implements IMultiplayer {
 
     });
 
-    window.addEventListener("stream-loaded", function (e) {
+    window.addEventListener("stream-loaded", function (e: CustomEvent) {
 
       try {
 
-        let mediaDom = byId((e as CustomEvent).detail.data.streamId);
+        let mediaDom = byId(e.detail.data.streamId);
         mediaDom = mediaDom.getElementsByTagName("video")[0];
-
-        console.info("Loaded stream: ", byId((e as CustomEvent).detail.data.streamId));
+        console.info("Loaded stream: ", byId(e.detail.data.streamId));
         console.info("Loaded stream: ", mediaDom);
 
-        (myInstance as any).selectedPlayer.setCurrentTile("stream");
-        (myInstance.player as any).render.visualComponent.setNewShema((myInstance as any).selectedPlayer);
-        (myInstance.player as any).render.visualComponent.assets.SeqFrame.setNewSeqFrameRegimeType("CONST");
-        (myInstance.player as any).render.visualComponent.seqFrameX.regimeType = "CONST";
-        (myInstance.player as any).render.visualComponent.seqFrameY.regimeType = "CONST";
-        (myInstance.player as any).render.visualComponent.assets.SeqFrame.value = 3;
-
-        (myInstance.player as any).render.visualComponent.setStreamTexture(mediaDom);
-        console.log("Stream added.");
+        /**
+         * @description
+         * Determinate local or not
+         */
+        if (myInstance.broadcaster.connection.userid === e.detail.data.userId) {
+          // OWN
+          console.info("Loaded stream: OWN ");
+          (myInstance as any).selectedPlayer.setCurrentTile("stream");
+          (myInstance.player as any).render.visualComponent.setNewShema((myInstance as any).selectedPlayer);
+          (myInstance.player as any).render.visualComponent.assets.SeqFrame.setNewSeqFrameRegimeType("CONST");
+          (myInstance.player as any).render.visualComponent.seqFrameX.regimeType = "CONST";
+          (myInstance.player as any).render.visualComponent.seqFrameY.regimeType = "CONST";
+          (myInstance.player as any).render.visualComponent.assets.SeqFrame.value = 3;
+  
+          (myInstance.player as any).render.visualComponent.setStreamTexture(mediaDom);
+          console.log("Stream added.");
+        } else {
+          // console.info("Loaded stream: NET myInstance.netBodies ", myInstance.netBodies);
+          let myNetPlayer = myInstance.netBodies["netObject_" + e.detail.data.userId]
+          myNetPlayer.render.visualComponent.setNewShema((myInstance as any).selectedPlayer);
+          myNetPlayer.render.visualComponent.assets.SeqFrame.setNewSeqFrameRegimeType("CONST");
+          myNetPlayer.render.visualComponent.seqFrameX.regimeType = "CONST";
+          myNetPlayer.render.visualComponent.seqFrameY.regimeType = "CONST";
+          myNetPlayer.render.visualComponent.assets.SeqFrame.value = 3;
+          myNetPlayer.render.visualComponent.setStreamTexture(mediaDom);
+          console.log("Stream added.");
+        }
 
       } catch (err) { console.error("Very bad #00004", err); }
 
@@ -266,7 +294,7 @@ class GamePlay extends BasketBallChat implements IMultiplayer {
     const globalEvent = this.starter.ioc.get.GlobalEvent;
     globalEvent.providers.onkeydown = this.overrideOnKeyDown;
     globalEvent.providers.onkeyup = this.overrideOnKeyUp;
-    const playerSpeed = 0.005;
+    const playerSpeed = DEFAULT_PLAYER_DATA.SPEED_AMP;
 
     root.starter.setRenderView(DEFAULT_RENDER_BOUNDS.WIDTH, DEFAULT_RENDER_BOUNDS.HEIGHT);
 
@@ -315,7 +343,7 @@ class GamePlay extends BasketBallChat implements IMultiplayer {
             // empty
         } else {
           // console.log(" root.network.rtcMultiConnection.connection.send({  ", root.network.rtcMultiConnection.connection.send );
-          root.network.rtcMultiConnection.connection.send({
+          root.broadcaster.connection.send({
             netPos: root.player.position,
             netDir: root.player.currentDir,
           });
@@ -347,7 +375,7 @@ class GamePlay extends BasketBallChat implements IMultiplayer {
       // jump
       if (globalEvent.activeKey[38] && root.player.ground) {
 
-        const s = (root.player.circleRadius * playerSpeed);
+        const s = (root.player.jumpAmp * playerSpeed);
         root.player.ground = false;
         root.player.force = {
           x: 0,

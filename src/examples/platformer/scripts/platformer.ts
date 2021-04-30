@@ -1,4 +1,5 @@
 import Matter = require("matter-js");
+import Broadcaster from "../../../libs/class/networking/broadcaster";
 import Network from "../../../libs/class/networking/network";
 import { byId, createAppEvent, htmlHeader } from "../../../libs/class/system";
 import SpriteTextureComponent from "../../../libs/class/visual-methods/sprite-animation";
@@ -46,6 +47,7 @@ class Platformer implements IGamePlayModel {
 
   public network: Network;
   public netBodies: UniVector = {};
+  public broadcaster: Broadcaster;
 
   public selectedPlayer: ISelectedPlayer;
   private selectPlayerArray: ISelectedPlayer[] = [];
@@ -71,6 +73,8 @@ class Platformer implements IGamePlayModel {
   constructor(starter: Starter) {
 
     this.starter = starter;
+
+    this.broadcaster = this.starter.ioc.get.Broadcaster;
     // this.starter.getEngine().enableSleeping = true;
     this.initSelectPlayer();
     this.addUIPlayerBoard();
@@ -213,13 +217,12 @@ class Platformer implements IGamePlayModel {
     this.preventDoubleExecution = false;
 
     const playerRadius = 50;
-    const playerJumpAmp = 10;
     this.player = Matter.Bodies.circle(
       this.playerStartPositions[0].x,
       this.playerStartPositions[0].y,
       playerRadius, {
         label: "player",
-        jumpAmp: 30,
+        jumpAmp: 40,
         density: 0.0005,
         friction: 0.01,
         frictionAir: 0.06,
@@ -418,7 +421,7 @@ class Platformer implements IGamePlayModel {
           this.starter.destroyBody(collectitem);
           this.player = null;
 
-          this.network.rtcMultiConnection.connection.send({
+          this.broadcaster.connection.send({
             noMoreLives: true,
           });
 

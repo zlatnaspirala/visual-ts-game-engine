@@ -1,5 +1,5 @@
 
-interface IControlsArea {
+export interface IControlsArea {
   l: number;
   t: number;
   w: number;
@@ -9,5 +9,3 @@ interface IControlsArea {
   width: () => number;
   height: () => number;
 }
-
-export default IControlsArea;

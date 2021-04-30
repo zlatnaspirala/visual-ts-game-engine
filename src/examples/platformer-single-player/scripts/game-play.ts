@@ -5,7 +5,7 @@ import { byId } from "../../../libs/class/system";
 import SpriteTextureComponent from "../../../libs/class/visual-methods/sprite-animation";
 import TextComponent from "../../../libs/class/visual-methods/text";
 import TextureComponent from "../../../libs/class/visual-methods/texture";
-import { DEFAULT_GAMEPLAY_ROLES, DEFAULT_RENDER_BOUNDS } from "../../../libs/defaults";
+import { DEFAULT_GAMEPLAY_ROLES, DEFAULT_PLAYER_DATA, DEFAULT_RENDER_BOUNDS } from "../../../libs/defaults";
 import Starter from "../../../libs/starter";
 import { worldElement } from "../../../libs/types/global";
 import GameMap from "./map";
@@ -151,7 +151,7 @@ class GamePlay extends Platformer {
 
     root.starter.setRenderView(DEFAULT_RENDER_BOUNDS.WIDTH, DEFAULT_RENDER_BOUNDS.HEIGHT);
 
-    const playerSpeed = 0.005;
+    const playerSpeed = DEFAULT_PLAYER_DATA.SPEED_AMP;
 
     this.enemys.forEach(function (item) {
       const test = new BotBehavior(item);

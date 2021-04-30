@@ -1,5 +1,7 @@
 
-import ClientConfig from "../../../client-config.js";
+import ClientConfig from "../../../client-config";
+import { DEFAULT_NETWORK_PARAMS } from "../../defaults";
+import { BaseMultiPlayer } from "../../interface/networking";
 import { byId, createAppEvent, htmlHeader } from "../system";
 import "./rtc-multi-connection/FileBufferReader.js";
 import { getHTMLMediaElement } from "./rtc-multi-connection/getHTMLMediaElement";
@@ -8,11 +10,10 @@ import * as io from "./rtc-multi-connection/socket.io";
 
 class Coordinator {
 
-  public injector: any;
-
+  public injector: BaseMultiPlayer;
   public openOrJoinBtn: HTMLElement;
+  public connection: any;
 
-  private connection: any;
   private engineConfig: ClientConfig;
   private popupUI: HTMLDivElement    | null = null;
   private broadcasterUI: HTMLElement | null = null;
@@ -52,6 +53,13 @@ class Coordinator {
 
   }
 
+  public activateDataStream (multiPlayerRef: BaseMultiPlayer) {
+    setTimeout(() => {
+      this.injector = multiPlayerRef;
+      this.openOrJoinBtn.click();
+    }, DEFAULT_NETWORK_PARAMS.SYNTETIC_ASYNC_DELAY_INTERVAL );
+  }
+  
   private initDOM() {
 
     this.broadcasterUI = byId("data-rtc3-controls");
@@ -291,20 +299,30 @@ class Coordinator {
   }
 
   private showRoomURL(roomid) {
-      const roomHashURL = "#" + roomid;
-      const roomQueryStringURL = "?roomid=" + roomid;
+    console.info('entering in room...', roomid);
+    return;
+    /*
+    const roomHashURL = "#" + roomid;
+    const roomQueryStringURL = "?roomid=" + roomid;
 
-      let html = "<h2>Unique URL for your room:</h2><br>";
+    let html = "<h2>Unique URL for your room:</h2><br>";
 
-      html += 'Hash URL: <a href="' + roomHashURL + '" target="_blank">' + roomHashURL + "</a>";
-      html += "<br>";
-      html += 'QueryString URL: <a href="' + roomQueryStringURL + '" target="_blank">' + roomQueryStringURL + "</a>";
+    html +=
+      '<a href="' + roomHashURL + '" target="_blank">' + roomHashURL + "</a>";
+    html += "<br>";
+    html +=
+      '<a href="' +
+      roomQueryStringURL +
+      '" target="_blank">' +
+      roomQueryStringURL +
+      "</a>";
 
-      const roomURLsDiv = document.getElementById("room-urls-data");
-      (roomURLsDiv as HTMLDivElement).innerHTML = html;
-      (roomURLsDiv as HTMLDivElement).style.display = "block";
+    const roomURLsDiv = document.getElementById("room-urls");
+    (roomURLsDiv as HTMLDivElement).innerHTML = html;
+    (roomURLsDiv as HTMLDivElement).style.display = "block";
+    */
   }
-
+  
   private disableInputButtons = () => {
 
     (this.openOrJoinBtn as HTMLInputElement).disabled = true;

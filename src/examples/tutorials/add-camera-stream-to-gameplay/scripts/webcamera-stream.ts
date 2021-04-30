@@ -1,6 +1,6 @@
 
 import Matter = require("matter-js");
-// Prepare audios require("../audios/map-themes/mishief-stroll.mp4");
+import Broadcaster from "../../../../libs/class/networking/broadcaster";
 import Network from "../../../../libs/class/networking/network";
 import { byId, createAppEvent, htmlHeader } from "../../../../libs/class/system";
 import SpriteTextureComponent from "../../../../libs/class/visual-methods/sprite-animation";
@@ -10,12 +10,11 @@ import { IGamePlayModel, IPoint, ISelectedPlayer } from "../../../../libs/interf
 import Starter from "../../../../libs/starter";
 import { UniVector, worldElement } from "../../../../libs/types/global";
 import Level1 from "./packs/BasketBallChat-level1";
-// import TextureStreamComponent from "../../../../libs/class/visual-methods/texture-stream";
-// import { DEFAULT_PLAYER_DATA } from "../../../libs/defaults";
+// Prepare audios require("../audios/map-themes/mishief-stroll.mp4");
 
 /**
  * @author Nikola Lukic
- * @class Webcamera basic stream example.
+ * @class Web Camera basic stream example.
  * @param Starter
  * @description This is game logic part
  * we stil use class based methodology.
@@ -39,12 +38,12 @@ class WebCamStream implements IGamePlayModel {
   public player: Matter.Body | any = undefined;
   public hudLives: Matter.Body | any = null;
   public network: Network;
+  public broadcaster: Broadcaster;
   public netBodies: UniVector = {};
 
   public selectedPlayer: ISelectedPlayer;
   private selectPlayerArray: ISelectedPlayer[] = [];
   private lives: number = DEFAULT_PLAYER_DATA.INITIAL_LIVES;
-
   // protected playerStream: worldElement;
 
   private preventDoubleExecution: boolean = false;
@@ -68,6 +67,7 @@ class WebCamStream implements IGamePlayModel {
     // this.showPlayerBoardUI();
     this.attachUpdateLives();
 
+    this.broadcaster = starter.ioc.get.Broadcaster;
   }
 
   /**
@@ -79,7 +79,7 @@ class WebCamStream implements IGamePlayModel {
 
     this.preventDoubleExecution = false;
 
-    const sptTexCom = new SpriteTextureComponent(
+    const sptTexCom = new SpriteStreamComponent(
       "playerImage",
       (this.selectedPlayer.resource as any),
       ( { byX: 5, byY: 1 } as any),
@@ -405,7 +405,7 @@ class WebCamStream implements IGamePlayModel {
           this.starter.destroyBody(collectitem);
           this.player = null;
 
-          this.network.rtcMultiConnection.connection.send({
+          this.broadcaster.connection.send({
             noMoreLives: true,
           });
 

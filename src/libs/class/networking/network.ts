@@ -18,7 +18,7 @@ class Network {
    * No type definition for now.
    * @type RTCMultiConnection3
    */
-  public rtcMultiConnection: any;
+  public coordinator: any;
   private engineConfig: any;
   private connector: ConnectorClient;
 
@@ -41,7 +41,9 @@ class Network {
     // this.roomUI = this.engineConfig.getMasterServerKey();
     (window as any).io = io;
 
-    // nooption for no loading
+    if (this.engineConfig.didAppUseCoordinator()) {
+      this.coordinator = new Coordinator(this.engineConfig);
+    }
     // this.rtcMultiConnection = new Coordinator(this.engineConfig);
 
     // (window as any).rtcMultiConnection = this.rtcMultiConnection;

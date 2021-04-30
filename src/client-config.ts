@@ -1,4 +1,4 @@
-import { IBroadcasterSession } from "./libs/interface/global";
+import { IBroadcasterSession } from "./libs/interface/networking";
 import { Addson } from "./libs/types/global";
 
 /**
@@ -96,6 +96,12 @@ class ClientConfig {
    * Default value is 12034
    */
   private rtcServerPort: number = 12034;
+
+  /**
+   * @description
+   * Enable Disable coordinator flag
+   */
+  private appUseCoordinator: boolean = false;
 
   /**
    * @description
@@ -209,6 +215,13 @@ class ClientConfig {
     // Interconnection Network.Connector vs app.ts
     this.gameList = gameList;
 
+  }
+
+  public didAppUseCoordinator() {
+    if (this.appUseBroadcaster === true) {
+      console.warn("App already use broadcaster stream. Running double multiPeer connections is extreme situation.");
+    }
+    return this.appUseCoordinator;
   }
 
   public getCoordinatorConfig() {

@@ -62,8 +62,7 @@ class Ioc {
       if (this.config.didAppUseBroadcast()) {
         this.singlton(Broadcaster, this.config);
         this.singlton(Network, this.config);
-        // Test drive
-        // this.get.Network.rtcMultiConnection = this.get.Broadcaster;
+
       }
 
     }

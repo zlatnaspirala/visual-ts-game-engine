@@ -1,14 +1,13 @@
 import * as Matter from "matter-js";
 import BotBehavior from "../../../libs/class/bot-behavior";
 import { netPosOpt, numberOpt } from "../../../libs/class/math";
-import Broadcaster from "../../../libs/class/networking/broadcaster";
 import Coordinator from "../../../libs/class/networking/coordinator";
 import { byId } from "../../../libs/class/system";
 import SpriteTextureComponent from "../../../libs/class/visual-methods/sprite-animation";
 import TextComponent from "../../../libs/class/visual-methods/text";
 import TextureComponent from "../../../libs/class/visual-methods/texture";
-import { DEFAULT_GAMEPLAY_ROLES, DEFAULT_RENDER_BOUNDS } from "../../../libs/defaults";
-import { IMultiplayer } from "../../../libs/interface/global";
+import { DEFAULT_GAMEPLAY_ROLES, DEFAULT_PLAYER_DATA, DEFAULT_RENDER_BOUNDS } from "../../../libs/defaults";
+import { IMultiplayer, BaseMultiPlayer } from "../../../libs/interface/networking";
 import Starter from "../../../libs/starter";
 import { worldElement } from "../../../libs/types/global";
 import GameMap from "./map";
@@ -22,7 +21,7 @@ import Platformer from "./Platformer";
  */
 class GamePlay extends Platformer implements IMultiplayer {
 
-  public multiPlayerRef: any = {
+  public multiPlayerRef: BaseMultiPlayer = {
     root: this,
     init (rtcEvent) {
 
@@ -81,11 +80,6 @@ class GamePlay extends Platformer implements IMultiplayer {
 
   };
 
-  public broadcaster: Broadcaster;
-
-  // test
-  public coordinator: Coordinator;
-
   private gamePlayWelcomeNote: string = "This application was created on visual-ts <br/>\
                                          Example: Real time multiplayer `Platformer` zlatnaspirala@gmail.com <br/>\
                                          General: MIT License <br/>\
@@ -118,10 +112,8 @@ class GamePlay extends Platformer implements IMultiplayer {
 
     // check this with config flag
     this.network = starter.ioc.get.Network;
-
-    this.broadcaster = starter.ioc.get.Broadcaster;
-    this.broadcaster.injector = this.multiPlayerRef;
-    // this.coordinator = starter.ioc.get.Network.rtcMultiConnection;
+    // this.broadcaster = starter.ioc.get.Broadcaster;
+    // this.coordinator = starter.ioc.get.Network.coordinator;
 
     // MessageBox
     // this.starter.ioc.get.MessageBox.show(this.gamePlayWelcomeNote);
@@ -138,7 +130,7 @@ class GamePlay extends Platformer implements IMultiplayer {
         if ((e as any).detail &&
            ((e as any).detail.data.game === "undefined")) {
 
-            console.warn("Bad game-init attempt. No data.game param.");
+            console.warn("Bad game-init attempt.");
             return;
 
         } else if ((e as any).detail &&
@@ -146,13 +138,11 @@ class GamePlay extends Platformer implements IMultiplayer {
 
           console.info("game-init Player spawn. data.game === null");
           myInstance.starter.ioc.get.Network.connector.startNewGame(myInstance.gameName);
-          myInstance.broadcaster.openDataSession();
-          
           myInstance.initSelectPlayer();
           myInstance.selectPlayer("nidzica");
           myInstance.playerSpawn(true);
+          myInstance.broadcaster.activateDataStream(myInstance.multiPlayerRef);
           return;
-
         }
 
         myInstance.initSelectPlayer();
@@ -160,14 +150,15 @@ class GamePlay extends Platformer implements IMultiplayer {
 
         // How to access netwoking
         myInstance.starter.ioc.get.Network.connector.startNewGame(myInstance.gameName);
-        myInstance.broadcaster.openOrJoinBtn.click();
-
         myInstance.load((e as any).detail.data.game);
-        console.info("Player spawn. game-init .startNewGame");
 
-        setTimeout(() => {
-          myInstance.coordinator.openDataSession();
-        }, 250)
+        /**
+         * @description
+         * Very important - You can activate also coordinator like supre extra multiPeer
+         * Connections in the same time but it is not stable in 100%.
+         */
+        myInstance.broadcaster.activateDataStream(myInstance.multiPlayerRef);
+        console.info("Player spawn. game-init .startNewGame");
 
       } catch (err) { console.error("Very bad #00001", err); }
 
@@ -246,7 +237,7 @@ class GamePlay extends Platformer implements IMultiplayer {
     const globalEvent = this.starter.ioc.get.GlobalEvent;
     globalEvent.providers.onkeydown = this.overrideOnKeyDown;
     globalEvent.providers.onkeyup = this.overrideOnKeyUp;
-    const playerSpeed = 0.005;
+    const playerSpeed = DEFAULT_PLAYER_DATA.SPEED_AMP;
 
     root.starter.setRenderView(DEFAULT_RENDER_BOUNDS.WIDTH, DEFAULT_RENDER_BOUNDS.HEIGHT);
 
@@ -278,7 +269,7 @@ class GamePlay extends Platformer implements IMultiplayer {
             // empty
             // console.info("IDLE STOPS", root.player.currentDir)
         } else {
-          root.network.rtcMultiConnection.connection.send({
+          root.broadcaster.connection.send({
             netPos: netPosOpt(root.player.position),
             netDir: root.player.currentDir,
           });

@@ -1,11 +1,11 @@
+
 # Project : Visual ts game engine
-## Version : `We can fight` - 2020
+Old Version : `We can fight` - 2020
 ## Current Version : `Out of space` - 2021
 
 #### 2d canvas game engine based on Matter.js 2D physics engine for the web.
 
-  I use my own concept: `take lib for great benefits`. It means that i import only staff that i can't make
-  in proper way in proper time, all other coming from head. For example `Physics` was imported
+  I use my own concept: `take lib for the great benefits`. It means that i import only staff that i can't make in proper way in proper time, all other coming from head. For example `Physics` was imported
   in role of npm package for typescript matter.js variant and i keep dependency healthy. In
   networking aspect i use full-duplex connection under web-rtc protocol. Pretty nice working
   combination of physics and realtime-multiplayer connetions. PeerToPeer used for game-play
@@ -32,13 +32,13 @@
 
    ### Simple there is nothing between you and making the app.
 
-
- - Written in typescript current version 3.7.4.
+ - Written in typescript current version 3.7.4 .
+ - Package tool used webpack 4.46.0 .
  - Text editor used and recommended: Last version of Visual Studio Code.
    Luanch debugger configuration comes with this project (for server part).
  - Physics engine based on Matter.js - Matter.ts (npm project).
  - Multiplatform video chat (for all browsers) implemented. SocketIO used for session staff.
-   MultiRTC2 used for data transfer also for video chat. MultiRTC3 alias 'broadcaster' used for video chat.
+   MultiRTC3 alias 'broadcaster' used for video chat also for data transfer.
  - Mobile controls / Tested on android
 
 ![visualTS](https://github.com/zlatnaspirala/visual-ts/blob/dev/nonproject-files/logo.png)
@@ -51,9 +51,7 @@
   your system. Change flag in databased confimed to the `true` value to skip registration confirmation process.
 
 
-
 ## Client part
-
 #### To make all dependency works in build proccess we need some plugins.
 
 ```javascript
@@ -63,17 +61,14 @@
 Command (current: single player solution build):
 ```javascript
   npm run dev
-```
-
-Command
-  current: single player solution build,
-           multiplayer platformer
-           basketBall chat (dev) :
-```javascript
   npm run dev-all
 ```
 
-Output:
+
+```javascript
+  npm run dev
+```
+Output for (npm run dev):
 <pre>
 
 ├── build/  (This is auto generated)
@@ -107,7 +102,7 @@ module.exports = [
   webPackModuleSingleSimpleSolution,
   webPackModuleMultiChatBasketBall,
   webPackModuleTutorialsDemo1,
-  // webPackModuleTutorialsDemo2  DISABLE HERE WHOLE BUILD
+  // webPackModuleTutorialsDemo2  DISABLE HERE WHOLE SUB BUILD
 ];
 ```
 
@@ -119,13 +114,15 @@ Command:
 ```javascript
   npm run dev-all
 ```
-
-Output:
+Output (npm run dev-all):
 <pre>
 
 ├── build/  (This is auto generated)
 |   ├── multiplayer/
 |   ├── singleplaye/
+|   ├── demo1/
+|   ├── demo2/
+|   ├── sprite-animation/
 |   ├── basket-ball-chat/ [WIP]
 
 </pre>
@@ -136,16 +133,19 @@ Output:
  Networking is based on  webSocket full-duplex communication only. This is good cross for old
  fasion native programmers not for web server REST oriented skills. No `mix` in communication usage.
  You must be conform with classic socket connection methodology and your own idea about connections.
- -webRTC can be used for any proporsion.
+ webRTC can be used for many proporsion.
+
    Already implemented:
-   -video chat webRTC (SIP) chat and data communication.
-     -multiRTC2 for old version of brosers (UDP/TCP)
-     -multiRTC3 for all modern browser's and hybryd implementation
-      (android, ios etc.) (UDP/TCP)
-   -Simple facebook api script (addson).
+   - video chat webRTC (SIP) chat and data communication.
+     based on multiRTC3 for all modern browser's and hybryd implementation
+     (android, ios etc.) (UDP/TCP). Running on socket.
+   - Bonus connections options - Coordinator another brodcaster.
+     Parallel multiRTC connections. Coordinator is disabled by default
+     but can be used in same way just like broadcaster.
+   - Simple facebook api script (addson).
 
  -Class 'Connector' (native webSocket) used for user session staff.
-  For main account session staff like login, register etc.
+   - For main account session staff like login, register etc.
 
 ### Client config ###
 
@@ -162,7 +162,7 @@ account sessions. The setup this on false in main client config class.
 Find configuration for client part at ./src/lib/client-config.ts
 
 ```javascript
-/**
+ /**
  * ClientConfig is config file for whole client part of application.
  * It is a better to not mix with server config staff.
  * All data is defined like default private property values.
@@ -171,15 +171,15 @@ Find configuration for client part at ./src/lib/client-config.ts
  */
 class ClientConfig {
 
-   /**
-    * Addson - Role is : "no dependencies scripts only"
-    * All addson are ansync loaded scripts.
-    *  - hackerTimer is for better performace also based on webWorkers. Load this script on top.
-    *  - Cache is based on webWorkers.
-    *  - dragging is script for dragging dom elements taken from stackoverflow.com.
-    *  - facebook addson is simple fb api implementation.
-    *  - adapter is powerfull media/communication fixer(Objective : working on all moder browsers).
-    */
+  /**
+  * Addson - Role is : "no dependencies scripts only"
+  * All addson are ansync loaded scripts.
+  *  - hackerTimer is for better performace also based on webWorkers. Load this script on top.
+  *  - Cache is based on webWorkers.
+  *  - dragging is script for dragging dom elements taken from stackoverflow.com.
+  *  - facebook addson is simple fb api implementation.
+  *  - adapter is powerfull media/communication fixer(Objective : working on all moder browsers).
+  */
   private addson: Addson = [
     {
       name: "cache",
@@ -193,7 +193,7 @@ class ClientConfig {
     },
     {
       name: "dragging",
-      enabled: true,
+      enabled: false,
       scriptPath: "externals/drag.ts",
     },
     {
@@ -225,20 +225,21 @@ class ClientConfig {
   private aspectRatio: number = 1.333;
 
   /**
-   * domain is simple url address,
+   * @description
+   * Default setup is `dev`.
    * recommendent to use for local propose LAN ip
    * like : 192.168.0.XXX if you wanna run ant test app with server.
    */
-  private domain: string = "maximumroulette.com";
-  // private domain: string = "localhost";
+  // private domain: string = "maximumroulette.com";
+  private domain: string = "localhost";
 
   /**
    * @description Important note for this property: if you
-   * disable (false) you cant use Account system or any other
+   * disable (false) you can't use Account system or any other
    * network. Use 'false' if you wanna make single player game.
    * In other way keep it 'true'.
    */
-  private appUseNetwork = true;
+  private appUseNetwork:boolean = true;
 
   /**
    * networkDeepLogs control of dev logs for webRTC context only.
@@ -247,7 +248,7 @@ class ClientConfig {
 
   /**
    * masterServerKey is channel access id used to connect
-   * multimedia server channel.Both multiRTC2/3
+   * multimedia server channel.Both multiRTC3
    */
   private masterServerKey: string = "maximumroulette.server1";
 
@@ -258,10 +259,31 @@ class ClientConfig {
   private rtcServerPort: number = 12034;
 
   /**
+   * @description
+   * Enable Disable coordinator flag
+   */
+  private appUseCoordinator: boolean = false;
+
+  /**
+   * @description
+   * Coordinator rtc3 session init values.
+   * Downgrade to data only.
+   */
+  private coordinatorSessionDefaults: IBroadcasterSession = {
+    sessionAudio: false,
+    sessionVideo: false,
+    sessionData: true,
+    enableFileSharing: false,
+  };
+
+  /**
    * connectorPort is access port used to connect
    * session web socket.
+   * Take high number for port to avoid
+   * `code: 'EACCES', errno: -4092, syscall: 'listen'
+   * for localhost usage.
    */
-  private connectorPort: number = 1234;
+  private connectorPort: number = 9010;
 
   /**
    * appUseAccountsSystem If you don't want to use session
@@ -274,7 +296,9 @@ class ClientConfig {
    * video chats.
    */
   private appUseBroadcaster: boolean = true;
+
   /**
+   * @description
    * broadcasterPort Port used to connect multimedia server MultiRTC3.
    * I will use it for explicit video chat multiplatform support.
    * Default value is 9001
@@ -284,24 +308,20 @@ class ClientConfig {
   private showBroadcasterOnInt: boolean = true;
 
   /**
-   * broadcaster socket.io address.
-   * Change it for production regime
-   */
-  // private broadcastSockRoute: string = "https://maximumroulette.com:9001/";
-  // private broadcastSockRoute: string = "https://localhost:9001/";
-
-  /**
+   * @description
    * broadcaster socket.io address.
    * Change it for production regime
    */
   private broadcastAutoConnect: boolean = false;
 
   /**
+   * @description
    * runBroadcasterOnInt load broadcaster
    */
   private runBroadcasterOnInt: boolean = true;
 
   /**
+   * @description
    * broadcaster rtc session init values.
    * Change it for production regime
    */
@@ -312,41 +332,59 @@ class ClientConfig {
     enableFileSharing: true,
   };
 
+  /**
+   * @description
+   * Optimal for dev stage.
+   * read more about webRtc protocols.
+   * Recommended: coturn open source project.
+   */
   private stunList: string[] = [
     "stun:stun.l.google.com:19302",
     "stun:stun1.l.google.com:19302",
     "stun:stun.l.google.com:19302?transport=udp",
   ];
+
   /**
-   * Possible variant by default :
+   * @description
+   * Possible variant by default:
    * "register", "login"
    */
   private startUpHtmlForm: string = "register";
 
   private controls: {} = {
     platformerPlayerController: true,
-    enableMobileControlsOnDesktop: true
+    enableMobileControlsOnDesktop: true,
   };
 
   private gameList: any[];
 
   /**
+   * @description
    * Implement default gamePlay variable's
    */
   private defaultGamePlayLevelName: string = "public";
   private autoStartGamePlay: boolean = false;
 
+  /**
+   * @description
+   * constructor will save interest data for game platform
+   * For now it is just name of the game. I use it in
+   * pre gameplay UI game selector.
+   */
+  constructor(gameList: any[]) {
 
-   ...
+    // Interconnection Network.Connector vs app.ts
+    this.gameList = gameList;
 
+  }
 
 ```
 
 ### Start dependency system from app.ts ###
 
- - Fisrt game template is Platformer.
+ - First game template is Platformer.
      This is high level programming in this software. Class Platformer run
-     with procedural (method) level1. Class Starter is base class for my canvas part
+     with . Class Starter is base class for my canvas part
      (matter.js/ts).
      It is injected to the Platformer to make full operated work.
  - gamesList args for ioc constructor is for now just simbolic for now. (WIP)
@@ -477,6 +515,7 @@ LICENSE
 |   |   |   |   |   ├── getHTMLMediaElement.js
 |   |   |   |   |   ├── socket.io.js
 |   |   |   |   ├── broadcaster.ts
+|   |   |   |   ├── coordinator.ts
 |   |   |   |   ├── connector.ts
 |   |   |   |   ├── network.ts
 |   |   |   ├── visual-methods/
@@ -493,9 +532,11 @@ LICENSE
 |   |   |   ├── view-port.ts
 |   |   |   ├── visual-render.ts
 |   |   ├── interface/
+|   |   |   ├── controls.ts
 |   |   |   ├── drawI.ts
 |   |   |   ├── global.ts
 |   |   |   ├── visual-components.ts
+|   |   |   ├── networking.ts
 |   |   ├── multiplatform/
 |   |   |   ├── mobile/
 |   |   |   |   ├── player-controls.ts

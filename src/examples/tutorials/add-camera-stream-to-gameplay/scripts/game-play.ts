@@ -1,13 +1,12 @@
 
 import Matter = require("matter-js");
 import BotBehavior from "../../../../libs/class/bot-behavior";
-import Broadcaster from "../../../../libs/class/networking/broadcaster";
 import { byId } from "../../../../libs/class/system";
 import SpriteTextureComponent from "../../../../libs/class/visual-methods/sprite-animation";
 import TextComponent from "../../../../libs/class/visual-methods/text";
 import TextureComponent from "../../../../libs/class/visual-methods/texture";
-import { DEFAULT_GAMEPLAY_ROLES, DEFAULT_RENDER_BOUNDS } from "../../../../libs/defaults";
-import { IMultiplayer } from "../../../../libs/interface/global";
+import { DEFAULT_GAMEPLAY_ROLES, DEFAULT_PLAYER_DATA, DEFAULT_RENDER_BOUNDS } from "../../../../libs/defaults";
+import { IMultiplayer, BaseMultiPlayer } from "../../../../libs/interface/networking";
 import Starter from "../../../../libs/starter";
 import { worldElement } from "../../../../libs/types/global";
 import GameMap from "./map";
@@ -21,21 +20,17 @@ import WebCamStream from "./webcamera-stream";
  */
 class GamePlay extends WebCamStream implements IMultiplayer {
 
-  public multiPlayerRef: any = {
+  public multiPlayerRef: BaseMultiPlayer = {
     root: this,
     init (rtcEvent) {
-
       console.log("rtcEvent addNewPlayer: ", rtcEvent);
       this.root.addNetPlayer(this.root, rtcEvent);
-
     },
 
     update (multiplayer) {
-
       if (multiplayer.data.netPos) {
-
-        Matter.Body.setPosition(this.root.netBodies["netObject_" + multiplayer.userid], { x: multiplayer.data.netPos.x, y: multiplayer.data.netPos.y });
-
+        Matter.Body.setPosition(this.root.netBodies["netObject_" + multiplayer.userid],
+          { x: multiplayer.data.netPos.x, y: multiplayer.data.netPos.y });
         Matter.Body.setAngle(
           this.root.netBodies["netObject_" + multiplayer.userid],
           -Math.PI * 0,
@@ -50,37 +45,32 @@ class GamePlay extends WebCamStream implements IMultiplayer {
         }
 
       } else if (multiplayer.data.noMoreLives === true) {
+
         // What to do with gameplay ?!
         // Just hide or hard variand
         // server database politic make clear player is out of game
         // bis logic - Initator must have credibility
-
         // Not tested Soft
         this.root.netBodies["netObject_" + multiplayer.userid].render.visible = false;
-        console.log(" VISIBLE FALSE FOR ET OBJECT");
-        // Hard make exit if netPlayer is initator
-        // Hard - exit game - if game logic
+        console.log("Soft kill");
 
       }
 
     },
 
     /**
+     * @description
      * If someone leaves all client actions is here
      * - remove from scene
      * - clear object from netObject_x
      */
     leaveGamePlay (rtcEvent) {
-
-      console.info("rtcEvent LEAVE GAME: ", rtcEvent.userid);
+      console.info("rtcEvent <LEAVE_GAME>: ", rtcEvent.userid);
       this.root.starter.destroyBody(this.root.netBodies["netObject_" + rtcEvent.userid]);
       delete this.root.netBodies["netObject_" + rtcEvent.userid];
-
     },
 
   };
-
-  public broadcaster: Broadcaster;
 
   /**
    * @description deadZoneForBottom Definition and Default value
@@ -118,8 +108,6 @@ class GamePlay extends WebCamStream implements IMultiplayer {
 
     // check this with config flag
     this.network = starter.ioc.get.Network;
-    this.network.injector = this.multiPlayerRef;
-    this.broadcaster = starter.ioc.get.Broadcaster;
 
     // MessageBox
     // this.starter.ioc.get.MessageBox.show(this.gamePlayWelcomeNote);
@@ -144,7 +132,7 @@ class GamePlay extends WebCamStream implements IMultiplayer {
 
           console.info("game-init Player spawn. data.game === null");
           myInstance.starter.ioc.get.Network.connector.startNewGame(myInstance.gameName);
-          myInstance.broadcaster.openOrJoinBtn.click();
+          myInstance.broadcaster.activateDataStream(myInstance.multiPlayerRef);
 
           myInstance.initSelectPlayer();
           myInstance.selectPlayer("nidzica");
@@ -159,7 +147,7 @@ class GamePlay extends WebCamStream implements IMultiplayer {
 
         // How to access netwoking
         myInstance.starter.ioc.get.Network.connector.startNewGame(myInstance.gameName);
-        myInstance.broadcaster.openOrJoinBtn.click();
+        myInstance.broadcaster.activateDataStream(myInstance.multiPlayerRef);
 
         myInstance.load((e as any).detail.data.game);
         console.info("Player spawn. game-init .startNewGame");
@@ -195,27 +183,47 @@ class GamePlay extends WebCamStream implements IMultiplayer {
 
     });
 
-    window.addEventListener("stream-loaded", function (e) {
+    window.addEventListener("stream-loaded", function (e: CustomEvent) {
 
       try {
 
-        let mediaDom = byId((e as CustomEvent).detail.data.streamId);
+        
+        let mediaDom = byId(e.detail.data.streamId);
         mediaDom = mediaDom.getElementsByTagName("video")[0];
-
-        console.info("Loaded stream: ", byId((e as CustomEvent).detail.data.streamId));
+        console.info("Loaded stream: ", byId(e.detail.data.streamId));
         console.info("Loaded stream: ", mediaDom);
 
-        (myInstance as any).selectedPlayer.setCurrentTile("stream");
-        (myInstance.player as any).render.visualComponent.setNewShema((myInstance as any).selectedPlayer);
-        (myInstance.player as any).render.visualComponent.assets.SeqFrame.setNewSeqFrameRegimeType("CONST");
-        (myInstance.player as any).render.visualComponent.seqFrameX.regimeType = "CONST";
-        (myInstance.player as any).render.visualComponent.seqFrameY.regimeType = "CONST";
-        (myInstance.player as any).render.visualComponent.assets.SeqFrame.value = 3;
+        /**
+         * @description
+         * Determinate local or not
+         */
+        if (myInstance.broadcaster.connection.userid === e.detail.data.userId) {
+          // OWN
+          console.info("Loaded stream: OWN ");
+          (myInstance as any).selectedPlayer.setCurrentTile("stream");
+          (myInstance.player as any).render.visualComponent.setNewShema((myInstance as any).selectedPlayer);
+          (myInstance.player as any).render.visualComponent.assets.SeqFrame.setNewSeqFrameRegimeType("CONST");
+          (myInstance.player as any).render.visualComponent.seqFrameX.regimeType = "CONST";
+          (myInstance.player as any).render.visualComponent.seqFrameY.regimeType = "CONST";
+          (myInstance.player as any).render.visualComponent.assets.SeqFrame.value = 3;
+  
+          (myInstance.player as any).render.visualComponent.setStreamTexture(mediaDom);
+          console.log("Stream added.");
+        } else {
+          console.info("Loaded stream: NET myInstance.netBodies ", myInstance.netBodies);
+          let myNetPlayer = myInstance.netBodies["netObject_" + e.detail.data.userId]
 
-        (myInstance.player as any).render.visualComponent.setStreamTexture(mediaDom);
+          console.log("xxxxxxxxxxxxxxxxxx", myNetPlayer);
+          myNetPlayer.render.visualComponent.setNewShema((myInstance as any).selectedPlayer);
+          myNetPlayer.render.visualComponent.assets.SeqFrame.setNewSeqFrameRegimeType("CONST");
+          myNetPlayer.render.visualComponent.seqFrameX.regimeType = "CONST";
+          myNetPlayer.render.visualComponent.seqFrameY.regimeType = "CONST";
+          myNetPlayer.render.visualComponent.assets.SeqFrame.value = 3;
+          myNetPlayer.render.visualComponent.setStreamTexture(mediaDom);
+          
         console.log("Stream added.");
 
-      } catch (err) { console.error("Very bad #00004", err); }
+      } } catch (err) { console.error("Very bad", err); }
 
     });
 
@@ -268,7 +276,7 @@ class GamePlay extends WebCamStream implements IMultiplayer {
     const globalEvent = this.starter.ioc.get.GlobalEvent;
     globalEvent.providers.onkeydown = this.overrideOnKeyDown;
     globalEvent.providers.onkeyup = this.overrideOnKeyUp;
-    const playerSpeed = 0.005;
+    const playerSpeed = DEFAULT_PLAYER_DATA.SPEED_AMP;
 
     root.starter.setRenderView(DEFAULT_RENDER_BOUNDS.WIDTH, DEFAULT_RENDER_BOUNDS.HEIGHT);
 
@@ -305,7 +313,7 @@ class GamePlay extends WebCamStream implements IMultiplayer {
             // empty
         } else {
           // console.log(" root.network.rtcMultiConnection.connection.send({  ", root.network.rtcMultiConnection.connection.send );
-          root.network.rtcMultiConnection.connection.send({
+          root.broadcaster.connection.send({
             netPos: root.player.position,
             netDir: root.player.currentDir,
           });

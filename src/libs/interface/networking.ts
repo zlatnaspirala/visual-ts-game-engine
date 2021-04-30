@@ -2,8 +2,27 @@
 /**
  * @description
  * webRTC catch real object.
- * Make clear situation.
+ * Make clear situation arround networking.
  */
+
+export interface IMultiplayer {
+  multiPlayerRef: BaseMultiPlayer;
+  netBodies: any;
+}
+
+export interface IBroadcasterSession {
+  sessionAudio: boolean;
+  sessionVideo: boolean;
+  sessionData: boolean;
+  enableFileSharing: boolean;
+}
+
+export interface BaseMultiPlayer {
+  root: any;
+  init(rtcEvent): void;
+  update(multiplayer): void;
+  leaveGamePlay(rtcEvent): void;
+}
 
 export interface RTCDataChannel {}
 
