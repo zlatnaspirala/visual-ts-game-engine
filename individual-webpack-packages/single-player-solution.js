@@ -55,6 +55,7 @@ module.exports = webPackModuleSingleSimpleSolution = {
       // { from: './src/libs/addons/drag/drag.ts', to: 'externals/drag.ts' },
       { from: './src/libs/addons/hacker-timer/hack-timer-worker.js', to: 'externals/hack-timer-worker.js' },
       { from: './src/manifest.web', to: 'manifest.web' },
+      { from: './src/libs/addons/webrtc-adapter/adapter.js', to: 'externals/adapter.js' },
       { from: './src/libs/addons/cache/cacheInit.ts', to: 'externals/cacheInit.ts' },
       { from: './src/libs/addons/cache/worker.js', to: 'worker.js' },
       { from: './src/libs/addons/cache/offline.html', to: 'offline.html' },

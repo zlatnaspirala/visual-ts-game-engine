@@ -9,9 +9,11 @@ import Browser from "./libs/class/browser";
  */
 class AppIcon {
 
+  private icons: any[] = [];
   constructor(browser: Browser, iconsAsset?: string[]) {
+    const root = this;
     iconsAsset.forEach((icon)=>{
-      require(icon);
+      root.icons.push(icon);
     });
   }
 
