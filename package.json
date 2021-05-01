@@ -1,6 +1,6 @@
 {
   "name": "visual-ts",
-  "version": "0.6.1",
+  "version": "0.6.2",
   "description": "New feature in 0.6.0 : Deplaced multiRTC2 with multiRTC3, simplified map loading procces, self hosted server ver 0.2.0. Mobile controls implemented.",
   "main": ".src/app.ts",
   "dependencies": {
