@@ -20,6 +20,7 @@ import * as Interface from "./src/libs/interface/global";
 import * as EngineDefaults from "./src/libs/defaults";
 import * as System from "./src/libs/class/system";
 import Starter from "./src/libs/starter";
+import AppIcon from "./src/app-icon";
 
 // import GameMap from "./map";
 
@@ -39,4 +40,5 @@ export { Matter,
          TextureComponent,
          BotBehavior,
          SpriteTextureComponent,
-         TextComponent }
+         TextComponent,
+         AppIcon }

@@ -9,16 +9,10 @@ import Browser from "./libs/class/browser";
  */
 class AppIcon {
 
-  constructor(browser: Browser) {
-
-    require("./icon/favicon.ico");
-    require("./icon/favicon-96x96.png");
-    require("./icon/android-icon.png");
-    require("./icon/apple-icon.png");
-    require("./icon/permission/warning.png");
-    require("./icon/permission/webcam.png");
-    require("./icon/permission/gcheckmark.png");
-
+  constructor(browser: Browser, iconsAsset?: string[]) {
+    iconsAsset.forEach((icon)=>{
+      require(icon);
+    });
   }
 
 }

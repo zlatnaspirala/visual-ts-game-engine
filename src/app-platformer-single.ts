@@ -25,7 +25,16 @@ const gamesList: any[] = [
 ];
 
 const master = new Ioc(gamesList);
-const appIcon: AppIcon = new AppIcon(master.get.Browser);
+
+const appIcons = [
+  "./icon/favicon.ico",
+  "./icon/favicon-96x96.png",
+  "./icon/android-icon.png",
+  "./icon/apple-icon.png",
+  "./icon/permission/warning.png",
+  "./icon/permission/gcheckmark.png"];
+
+const appIcon: AppIcon = new AppIcon(master.get.Browser, appIcons);
 master.singlton(GamePlay, master.get.Starter);
 console.log("Platformer single player: ", master.get.GamePlay);
 
