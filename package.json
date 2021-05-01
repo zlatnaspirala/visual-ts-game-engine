@@ -1,8 +1,8 @@
 {
   "name": "visual-ts",
-  "version": "0.6.2",
-  "description": "New feature in 0.6.0 : Deplaced multiRTC2 with multiRTC3, simplified map loading procces, self hosted server ver 0.2.0. Mobile controls implemented.",
-  "main": ".src/app.ts",
+  "version": "0.6.4",
+  "description": "export clientConfig class ref, Test for codepen npm integration (remove main entry from package). New feature in 0.6.0 : Deplaced multiRTC2 with multiRTC3, simplified map loading procces, self hosted server ver 0.2.0. Mobile controls implemented.",
+  "main": "",
   "dependencies": {
     "@types/matter-js": "^0.10.9",
     "@types/node": "^12.20.10",

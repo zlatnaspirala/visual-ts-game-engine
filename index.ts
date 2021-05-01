@@ -21,7 +21,7 @@ import * as EngineDefaults from "./src/libs/defaults";
 import * as System from "./src/libs/class/system";
 import Starter from "./src/libs/starter";
 import AppIcon from "./src/app-icon";
-
+import ClientConfig from "./src/client-config";
 // import GameMap from "./map";
 
 /**
@@ -29,7 +29,8 @@ import AppIcon from "./src/app-icon";
  * Module namespace export reference list.
  */
 
-export { Matter,
+export { ClientConfig,
+         Matter,
          IocSinglePlayerMode,
          IocMultiPlayerMode,
          System,
