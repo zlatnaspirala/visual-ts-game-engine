@@ -1,8 +1,11 @@
-import { IConnectorMsg } from "../interface/global";
+import { IPoint, IDimensions, IConnectorMsg } from "../interface/global";
 
 /**
- * Make all clear here
+ * @description
+ * Make all clear here.
  */
+
+export type worldElementParams = IPoint & IDimensions;
 
 // This is possible type of world element (bodies)
 export type worldElement = Matter.MouseConstraint |

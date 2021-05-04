@@ -26,12 +26,11 @@ const gamesList: any[] = [
 const master = new GamePlayController(gamesList);
 
 const appIcons = [
-  require("./icon/favicon.ico"),
-  require("./icon/favicon-96x96.png"),
-  require("./icon/android-icon.png"),
-  require("./icon/apple-icon.png"),
+  require("../../../icon/favicon.ico"),
+  require("../../../icon/favicon-96x96.png"),
+  require("../../../icon/android-icon.png"),
+  require("../../../icon/apple-icon.png"),
 ];
-
 const appIcon: AppIcon = new AppIcon(master.get.Browser, appIcons);
 
 master.singlton(DemoSpriteAnimation, master.get.Starter);

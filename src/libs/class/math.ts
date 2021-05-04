@@ -1,5 +1,10 @@
+
 import { IPoint } from "../interface/global";
 
+/**
+ * @description
+ * Counter is math Oscilator.
+ */
 export class Counter {
 
   private step: number = 1;
@@ -97,8 +102,11 @@ export class Counter {
     return 0;
   }
 
+  // For overriding
   // tslint:disable-next-line:no-empty
-  public onRepeat = () => { };
+  public onRepeat() {
+    // console.log('on repeat default log', pass)
+  };
 
 }
 
@@ -125,4 +133,15 @@ export function numberOpt (x): number {
   return parseFloat(x.toFixed(2));
 }
 
-export function someRandomNumber() { return (Math.random() * 1000).toString().replace(".", ""); }
+export function someRandomNumber(): number
+ { return parseFloat((Math.random() * 1000).toString().replace(".", "")) }
+
+export function getRandomArbitrary(min, max): number {
+  return Math.random() * (max - min) + min;
+}
+
+export function getRandomIntFromTo(min, max): number {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}

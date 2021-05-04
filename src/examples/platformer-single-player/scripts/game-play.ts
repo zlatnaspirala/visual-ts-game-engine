@@ -151,7 +151,7 @@ class GamePlay extends Platformer {
 
     root.starter.setRenderView(DEFAULT_RENDER_BOUNDS.WIDTH, DEFAULT_RENDER_BOUNDS.HEIGHT);
 
-    const playerSpeed = DEFAULT_PLAYER_DATA.SPEED_AMP;
+    const playerSpeed = DEFAULT_PLAYER_DATA.SPEED_AMP * 2.5;
 
     this.enemys.forEach(function (item) {
       const test = new BotBehavior(item);

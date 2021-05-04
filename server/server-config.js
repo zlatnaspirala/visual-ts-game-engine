@@ -14,7 +14,7 @@ class ServerConfig {
      // enum : 'dev' or 'prod'
     this.serverMode = "dev";
 
-    this.ownHosting = true;
+    this.ownHosting = false;
     this.ownHttpHostPort = 443;
     this.ownHostingVirtualHostsEnabled = false;
     this.ownHostingVirtualHosts = [

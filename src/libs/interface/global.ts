@@ -1,19 +1,39 @@
 // import Resources from "../class/resources";
+import { Counter } from "../class/math";
 import SpriteTextureComponent from "../class/visual-methods/sprite-animation";
 import TextureComponent from "../class/visual-methods/texture";
 import Starter from "../starter";
-import { imagesResource, literalImageSrc, UniVector } from "../types/global";
+import { imagesResource, literalImageSrc, UniVector, worldElement, worldElementParams } from "../types/global";
 import { Addson } from "../types/global";
-import { BaseMultiPlayer, IBroadcasterSession } from "./networking";
+import { IBroadcasterSession } from "./networking";
 
 export interface IPoint {
   x: number;
   y: number;
 }
 
+export interface IDimensions {
+  w: number;
+  h: number;
+}
+
 export interface ISound {
   name: string;
   createAudio: (path, idCaller, loop?, autoplay?) => void;
+}
+
+export enum worldElementType {
+  RECT = "rect",
+  CIRCLE = "circle"
+}
+
+export interface GeneratorOptions {
+  genType: worldElementType,
+  emit: number[],
+  counter: Counter,
+  newParamsElement: worldElementParams,
+  starter: Starter,
+  destroyAfter: number,
 }
 
 export interface ICollisionFilter {

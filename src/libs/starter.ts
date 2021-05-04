@@ -196,13 +196,13 @@ class Starter {
     return this.view;
   }
 
-  public AddNewBodies(elements: worldElement) {
+  public AddNewBodies = (elements: worldElement) => {
     Matter.World.add(this.getWorld(), elements as worldElement);
   }
 
-  public destroyBody(destroyBody) {
+  public destroyBody = (destroyBody) => {
     try {
-    Matter.Composite.remove(this.world, destroyBody);
+    Matter.Composite.remove(this.getWorld(), destroyBody);
     } catch(err) {
       console.log(err)
     }
