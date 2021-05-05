@@ -647,13 +647,30 @@ class GamePlay extends Platformer implements IMultiplayer {
       },
     };
 
+    // Force initial 
+
     this.generatorOfCollecions = new Generator({
       genType: worldElementType.RECT,
-      emit: [1, 1, 1],
+      emit: [
+        { force: { x: 0.02 , y: -0.01 }},
+        { force: { x: -0.02 , y: -0.01 }},
+        { force: { x: 0.02 , y: -0.01 }},
+        { force: { x: -0.01 , y: -0.02 }},
+        { force: { x: 0.01 , y: -0.02 }},
+        { force: { x: -0.01 , y: -0.02 }}
+      ],
+      delayForce: [
+        { delta: 500, force: { x: -0.02 , y: -0.01 }},
+        { delta: 1500, force: { x: 0.02 , y: -0.02 }},
+        { delta: 2000, force: { x: -0.02 , y: -0.01 }},
+        { delta: 500, force: { x: -0.03 , y: -0.01 }},
+        { delta: 1500, force: { x: 0.03 , y: -0.02 }},
+        { delta: 2000, force: { x: -0.03 , y: -0.01 }}
+      ],
       counter: new Counter(0, 1, 1, "REPEAT"),
       newParamsElement: newParamsElement,
       starter: this.starter,
-      destroyAfter: 2000,
+      destroyAfter: 3000
     });
 
     this.attachMatterEvents();

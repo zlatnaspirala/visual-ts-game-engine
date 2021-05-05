@@ -19,15 +19,22 @@ class Generator {
   private newParamsElement: any = {};
   private starter: Starter;
   private destroyAfter: number = 2000;
-  private emit: number[] = [5];
+  private emit: any[] = [];
+  private delayForce = [];
 
   public logic () {
 
     var root = this;
     let newStaticElements = [];
 
+
     if (this.genType === worldElementType.RECT ) {
-      this.emit.forEach(() => {
+      this.emit.forEach((opt, index) => {
+
+        if (opt.force !== undefined) {
+          this.newParamsElement.arg2.force = opt.force;
+        }
+
         let localElement = Matter.Bodies.rectangle(
           this.newParamsElement.x,
           this.newParamsElement.y,
@@ -36,7 +43,14 @@ class Generator {
           this.newParamsElement.arg2);
         newStaticElements.push(localElement)
         this.starter.AddNewBodies(localElement)
-      });
+
+        if (this.delayForce[index] !== undefined) {
+          setTimeout(() => {
+            const clone = { ...this.delayForce[index].force };
+            newStaticElements[newStaticElements.length - 1].force = clone;
+          }, this.delayForce[index].delta);
+        }
+      })
     } else if (this.genType ===  worldElementType.CIRCLE) {
       this.emit.forEach(() => {
         let localElement = Matter.Bodies.circle(
@@ -74,6 +88,14 @@ class Generator {
       this.emit = [1,1,1];
     } else {
       this.emit = options.emit;
+    }
+
+    if (options.destroyAfter !== undefined) {
+      this.destroyAfter = options.destroyAfter;
+    }
+
+    if (options.delayForce !== undefined) {
+      this.delayForce = options.delayForce;
     }
 
     this.counter = this.options.counter;
