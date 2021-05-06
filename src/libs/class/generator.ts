@@ -27,7 +27,7 @@ class Generator {
     var root = this;
     let newStaticElements = [];
 
-    if (this.genType === worldElementType.RECT ) {
+
 
       this.emit.forEach((opt, index) => {
         if (opt.force !== undefined) {
@@ -39,12 +39,20 @@ class Generator {
             if (opt.force !== undefined) {
               this.newParamsElement.arg2.force = opt.force;
             }
+            if (this.genType === worldElementType.RECT ) {
             localElement = Matter.Bodies.rectangle(
               this.newParamsElement.x,
               this.newParamsElement.y,
               this.newParamsElement.w,
               this.newParamsElement.h,
               this.newParamsElement.arg2);
+            } else if (this.genType ===  worldElementType.CIRCLE) {
+              localElement = Matter.Bodies.circle(
+                this.newParamsElement.x,
+                this.newParamsElement.y,
+                this.newParamsElement.playerRadius,
+                this.newParamsElement.arg2);
+            }
             newStaticElements.push(localElement)
             this.starter.AddNewBodies(localElement)
             if (this.delayForce[index] !== undefined) {
@@ -57,12 +65,20 @@ class Generator {
 
         } else {
 
+          if (this.genType === worldElementType.RECT ) {
           localElement = Matter.Bodies.rectangle(
             this.newParamsElement.x,
             this.newParamsElement.y,
             this.newParamsElement.w,
             this.newParamsElement.h,
             this.newParamsElement.arg2);
+          } else if (this.genType ===  worldElementType.CIRCLE) {
+            localElement = Matter.Bodies.circle(
+              this.newParamsElement.x,
+              this.newParamsElement.y,
+              this.newParamsElement.playerRadius,
+              this.newParamsElement.arg2);
+          }
           newStaticElements.push(localElement)
           this.starter.AddNewBodies(localElement)
 
@@ -74,18 +90,7 @@ class Generator {
           }
         }
       })
-    } else if (this.genType ===  worldElementType.CIRCLE) {
-      this.emit.forEach(() => {
-        let localElement = Matter.Bodies.circle(
-          this.newParamsElement.x,
-          this.newParamsElement.y,
-          this.newParamsElement.playerRadius,
-          this.newParamsElement.arg2);
-          newStaticElements.push(localElement)
-        this.starter.AddNewBodies(localElement);
-        }
-      );
-    }
+  
     // interest idea sequence destry also sequence add
     setTimeout(() => {
       root.starter.destroyBody(newStaticElements)

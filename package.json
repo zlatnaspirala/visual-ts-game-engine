@@ -1,7 +1,7 @@
 {
   "name": "visual-ts",
-  "version": "0.6.6",
-  "description": "0.6.6 -> UPDATE Generator - auto generator for new world objects.",
+  "version": "0.6.7",
+  "description": "0.6.7 -> UPDATE Generator - auto generator for new world objects.",
   "main": "",
   "dependencies": {
     "@types/matter-js": "^0.10.9",
