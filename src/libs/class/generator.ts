@@ -27,28 +27,51 @@ class Generator {
     var root = this;
     let newStaticElements = [];
 
-
     if (this.genType === worldElementType.RECT ) {
-      this.emit.forEach((opt, index) => {
 
+      this.emit.forEach((opt, index) => {
         if (opt.force !== undefined) {
           this.newParamsElement.arg2.force = opt.force;
         }
-
-        let localElement = Matter.Bodies.rectangle(
-          this.newParamsElement.x,
-          this.newParamsElement.y,
-          this.newParamsElement.w,
-          this.newParamsElement.h,
-          this.newParamsElement.arg2);
-        newStaticElements.push(localElement)
-        this.starter.AddNewBodies(localElement)
-
-        if (this.delayForce[index] !== undefined) {
+        let localElement: Matter.Body;
+        if (opt.initDelay !== undefined) {
           setTimeout(() => {
-            const clone = { ...this.delayForce[index].force };
-            newStaticElements[newStaticElements.length - 1].force = clone;
-          }, this.delayForce[index].delta);
+            if (opt.force !== undefined) {
+              this.newParamsElement.arg2.force = opt.force;
+            }
+            localElement = Matter.Bodies.rectangle(
+              this.newParamsElement.x,
+              this.newParamsElement.y,
+              this.newParamsElement.w,
+              this.newParamsElement.h,
+              this.newParamsElement.arg2);
+            newStaticElements.push(localElement)
+            this.starter.AddNewBodies(localElement)
+            if (this.delayForce[index] !== undefined) {
+              const clone = { ...this.delayForce[index].force };
+              setTimeout(() => {
+                localElement.force = clone;
+              }, this.delayForce[index].delta);
+            }
+          }, opt.initDelay);
+
+        } else {
+
+          localElement = Matter.Bodies.rectangle(
+            this.newParamsElement.x,
+            this.newParamsElement.y,
+            this.newParamsElement.w,
+            this.newParamsElement.h,
+            this.newParamsElement.arg2);
+          newStaticElements.push(localElement)
+          this.starter.AddNewBodies(localElement)
+
+          if (this.delayForce[index] !== undefined) {
+            setTimeout(() => {
+              const clone = { ...this.delayForce[index].force };
+              newStaticElements[newStaticElements.length - 1].force = clone;
+            }, this.delayForce[index].delta);
+          }
         }
       })
     } else if (this.genType ===  worldElementType.CIRCLE) {
@@ -85,7 +108,7 @@ class Generator {
     }
 
     if (options.emit === undefined) {
-      this.emit = [1,1,1];
+      this.emit = [1];
     } else {
       this.emit = options.emit;
     }
@@ -103,7 +126,7 @@ class Generator {
     this.starter = options.starter;
     this.counter.onRepeat = this.logic.bind(this);
     this.counter.setDelay(20);
-    console.log("Generator constructed.");
+    // console.log("Generator constructed. default-> counter.setDelay(20); ");
   }
 
 }
