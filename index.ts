@@ -7,11 +7,14 @@
  * https://github.com/liabru/matter-js/blob/master/LICENSE
  * Other classes are part of Visual TS Game Engine LICENCE.
  */
-import SpriteTextureComponent from "./src/libs/class/visual-methods/sprite-animation";
+
 import * as Matter from "matter-js";
 import BotBehavior from "./src/libs/class/bot-behavior";
 import TextComponent from "./src/libs/class/visual-methods/text";
 import TextureComponent from "./src/libs/class/visual-methods/texture";
+import SpriteTextureComponent from "./src/libs/class/visual-methods/sprite-animation";
+import SpriteStreamComponent from "./src/libs/class/visual-methods/sprite-stream";
+import TextureStreamComponent from "./src/libs/class/visual-methods/texture-stream";
 import IocSinglePlayerMode from "./src/controllers/ioc-single-player"
 import IocMultiPlayerMode from "./src/controllers/ioc";
 import Generator from "./src/libs/class/generator";
@@ -28,8 +31,26 @@ import ClientConfig from "./src/client-config";
 /**
  * @description
  * Module namespace export reference list.
+ * Represent lib coming from `npm i visula-ts`
+ * @params ClientConfig,
+ *          Matter,
+ *          IocSinglePlayerMode,
+ *          IocMultiPlayerMode,
+ *          System,
+ *          Interface,
+ *          Type,
+ *          EngineDefaults,
+ *          NMath,
+ *          Starter,
+ *          BotBehavior,
+ *          TextureComponent,
+ *          TextureStreamComponent,
+ *          SpriteTextureComponent,
+ *          SpriteStreamComponent,
+ *          TextComponent,
+ *          Generator,
+ *          AppIcon
  */
-
 export { ClientConfig,
          Matter,
          IocSinglePlayerMode,
@@ -40,9 +61,11 @@ export { ClientConfig,
          EngineDefaults,
          NMath,
          Starter,
-         TextureComponent,
          BotBehavior,
+         TextureComponent,
+         TextureStreamComponent,
          SpriteTextureComponent,
+         SpriteStreamComponent,
          TextComponent,
          Generator,
          AppIcon }
