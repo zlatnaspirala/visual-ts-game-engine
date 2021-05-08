@@ -18,6 +18,11 @@ import TextureStreamComponent from "./src/libs/class/visual-methods/texture-stre
 import IocSinglePlayerMode from "./src/controllers/ioc-single-player"
 import IocMultiPlayerMode from "./src/controllers/ioc";
 import Generator from "./src/libs/class/generator";
+import Broadcaster from "./src/libs/class/networking/broadcaster";
+import Connector from "./src/libs/class/networking/connector";
+import Coordinator from "./src/libs/class/networking/coordinator";
+import Network from "./src/libs/class/networking/network";
+import MobileControls from "./src/libs/class/player-commands";
 import * as Type from "./src/libs/types/global";
 import * as Interface from "./src/libs/interface/global";
 import * as EngineDefaults from "./src/libs/defaults";
@@ -34,38 +39,37 @@ import ClientConfig from "./src/client-config";
  * Represent lib coming from `npm i visula-ts`
  * @params ClientConfig,
  *          Matter,
- *          IocSinglePlayerMode,
- *          IocMultiPlayerMode,
- *          System,
- *          Interface,
- *          Type,
- *          EngineDefaults,
- *          NMath,
- *          Starter,
- *          BotBehavior,
- *          TextureComponent,
- *          TextureStreamComponent,
- *          SpriteTextureComponent,
- *          SpriteStreamComponent,
- *          TextComponent,
- *          Generator,
- *          AppIcon
+ *          IocSinglePlayerMode, IocMultiPlayerMode,
+ *          System, Interface, Type, EngineDefaults,
+ *          NMath, Starter, BotBehavior,
+ *          TextureComponent, TextureStreamComponent,
+ *          SpriteTextureComponent, SpriteStreamComponent,
+ *          TextComponent, Generator,
+ *          AppIcon, Broadcaster, Connector,
+ *          Coordinator, Network, MobileControls
  */
-export { ClientConfig,
-         Matter,
-         IocSinglePlayerMode,
-         IocMultiPlayerMode,
-         System,
-         Interface,
-         Type,
-         EngineDefaults,
-         NMath,
-         Starter,
-         BotBehavior,
-         TextureComponent,
-         TextureStreamComponent,
-         SpriteTextureComponent,
-         SpriteStreamComponent,
-         TextComponent,
-         Generator,
-         AppIcon }
+export {
+  ClientConfig,
+  Matter,
+  IocSinglePlayerMode,
+  IocMultiPlayerMode,
+  System,
+  Interface,
+  Type,
+  EngineDefaults,
+  NMath,
+  Starter,
+  BotBehavior,
+  TextureComponent,
+  TextureStreamComponent,
+  SpriteTextureComponent,
+  SpriteStreamComponent,
+  TextComponent,
+  Generator,
+  AppIcon,
+  Broadcaster,
+  Connector,
+  Coordinator,
+  Network,
+  MobileControls
+}

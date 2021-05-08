@@ -1,5 +1,3 @@
-// import * as io from "./rtc-multi-connection/socket.io";
-// import * as io from "https://rtcmulticonnection.herokuapp.com/socket.io/socket.io.js";
 
 import ClientConfig from "../../../client-config.js";
 import {DEFAULT_NETWORK_PARAMS} from "../../defaults";
@@ -82,7 +80,12 @@ class Broadcaster {
   private initWebRtc = (options?) => {
     const root = this;
 
-    this.connection = new (RTCMultiConnection3 as any)();
+    try {
+      this.connection = new (RTCMultiConnection3 as any)();
+    } catch (err) {
+      this.connection = new (RTCMultiConnection3 as any).default();
+    }
+
     this.connection.socketURL = root.engineConfig.getBroadcastSockRoute();
     this.connection.socketMessageEvent = "audio-video-file-chat-demo";
 
@@ -122,7 +125,7 @@ class Broadcaster {
 
     this.connection.videosContainer.setAttribute(
       "style",
-      "position:absolute;left:0;top:0;width:400px;height:300px;"
+      "position:absolute;left:0;top:-1000px;width:400px;height:300px;"
     );
 
     this.connection.onstream = function (event) {
@@ -147,86 +150,11 @@ class Broadcaster {
 
       root.connection.videosContainer.appendChild(mediaElement);
 
-      const dragging = (function () {
-        return {
-          move(divid, xpos, ypos) {
-            divid.style.left = xpos + "px";
-            divid.style.top = ypos + "px";
-          },
-          startMoving(divid, container, evt?) {
-            evt = evt || window.event;
-            const posX = evt.clientX,
-              posY = evt.clientY,
-              eWi = parseInt(divid.style.width, 10),
-              eHe = parseInt(divid.style.height, 10),
-              cWi = parseInt(
-                (document.getElementById(container) as any).style.width,
-                10
-              ),
-              cHe = parseInt(
-                (document.getElementById(container) as any).style.height,
-                10
-              );
-
-            let divTop = divid.style.top,
-              divLeft = divid.style.left;
-
-            (document.getElementById(container) as any).style.cursor = "move";
-            divTop = divTop.replace("px", "");
-            divLeft = divLeft.replace("px", "");
-            const diffX = posX - divLeft,
-              diffY = posY - divTop;
-
-            // tslint:disable-next-line: no-shadowed-variable
-            document.onmousemove = function (event) {
-              const e = event || window.event;
-              let aX, aY;
-              try {
-                (aX = event.clientX - diffX), (aY = event.clientY - diffY);
-              } catch (err) {
-                console.log(err);
-              }
-              if (aX < 0) {
-                aX = 0;
-              }
-              if (aY < 0) {
-                aY = 0;
-              }
-              if (aX + eWi > cWi) {
-                aX = cWi - eWi;
-              }
-              if (aY + eHe > cHe) {
-                aY = cHe - eHe;
-              }
-              dragging.move(divid, aX, aY);
-            };
-          },
-          stopMoving(container) {
-            const a = document.createElement("script");
-            (document.getElementById(container) as any).style.cursor =
-              "default";
-            // document.onmousemove = function () {};
-            (document as any).onmousemove = undefined;
-          },
-        };
-      })();
-
-      // tslint:disable-next-line: no-shadowed-variable
-      mediaElement.onmousedown = function (event) {
-        dragging.startMoving(this, "videos-container", event);
-      };
-
-      // tslint:disable-next-line: no-shadowed-variable
-      mediaElement.onmouseup = function (event) {
-        dragging.stopMoving("videos-container");
-      };
-
       setTimeout(function () {
         (mediaElement as any).media.play();
-      }, 4000);
+      }, 2000);
 
       mediaElement.id = event.streamid;
-
       root.streamLoaded(event.userid, event.streamid);
     };
 
@@ -307,28 +235,8 @@ class Broadcaster {
   };
 
   private showRoomURL(roomid) {
-    console.info('entering in room...', roomid);
+    console.info('B Entering in room: ', roomid);
     return;
-    /*
-    const roomHashURL = "#" + roomid;
-    const roomQueryStringURL = "?roomid=" + roomid;
-
-    let html = "<h2>Unique URL for your room:</h2><br>";
-
-    html +=
-      '<a href="' + roomHashURL + '" target="_blank">' + roomHashURL + "</a>";
-    html += "<br>";
-    html +=
-      '<a href="' +
-      roomQueryStringURL +
-      '" target="_blank">' +
-      roomQueryStringURL +
-      "</a>";
-
-    const roomURLsDiv = document.getElementById("room-urls");
-    (roomURLsDiv as HTMLDivElement).innerHTML = html;
-    (roomURLsDiv as HTMLDivElement).style.display = "block";
-    */
   }
 
   private disableInputButtons = () => {
@@ -522,6 +430,7 @@ class Broadcaster {
 
   private runBroadcaster = () => {
     const myInstance = this;
+
     fetch("./templates/broadcaster.html", {
       headers: htmlHeader,
     })
@@ -529,7 +438,6 @@ class Broadcaster {
         return res.text();
       })
       .then(function (html) {
-        // console.warn(html);
         myInstance.popupUI = byId("media-rtc3-controls") as HTMLDivElement;
         myInstance.popupUI.innerHTML = html;
 
@@ -545,10 +453,10 @@ class Broadcaster {
         myInstance.inputRoomId.nodeValue = myInstance.engineConfig.getMasterServerKey();
 
         if (myInstance.engineConfig.getBroadcastAutoConnect()) {
-          // myInstance.inputRoomId.nodeValue = myInstance.engineConfig.getMasterServerKey();
-          console.log("Auto connect broadcaster!");
+          console.log("Try auto connect for broadcaster.");
           myInstance.openOrJoinBtn.click();
         }
+
       });
   };
 }
