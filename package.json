@@ -1,7 +1,7 @@
 {
   "name": "visual-ts",
-  "version": "0.6.10",
-  "description": "0.6.10 -> UPDATE Broadcaster ",
+  "version": "0.6.15",
+  "description": "0.6.15 -> UPDATE Broadcaster , added webcam access local without networking hot fix . Added local-stream-loaded dispatch event trigger.",
   "main": "",
   "dependencies": {
     "@types/matter-js": "^0.10.9",

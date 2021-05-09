@@ -4,6 +4,7 @@ import ViewPort from "../libs/class/view-port";
 import { DEFAULT_GAMEPLAY_ROLES, DEFAULT_RENDER_BOUNDS } from "./defaults";
 import { IUniVector } from "./interface/global";
 import { worldElement } from "./types/global";
+import LocalDevice from "./class/local-devices";
 
 /**
  * @description
@@ -16,8 +17,11 @@ class Starter {
 
   public ioc: Ioc;
   public get: IUniVector = {};
+  public localDevice: LocalDevice = new LocalDevice();
+
   protected attach;
   protected view: ViewPort;
+
   /**
    * mouseConstraint is object extended from matter.js
    */
