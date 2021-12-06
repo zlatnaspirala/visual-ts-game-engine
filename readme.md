@@ -49,7 +49,7 @@ Old Version : `We can fight` - 2020
    MultiRTC3 alias 'broadcaster' used for video chat also for data transfer.
  - Mobile controls / Tested on android
 
-![visualTS](https://github.com/zlatnaspirala/visual-ts/blob/dev/nonproject-files/logo.png)
+![visualTS](https://github.com/zlatnaspirala/visual-ts/blob/master/nonproject-files/logo.png)
 
    - Also use VisualTsGameEngine tool 2dMapCreator made in python:
    ![Creator 2d map](https://github.com/zlatnaspirala/creator-2dmap/blob/master/creator-2d-map.image.png)
