@@ -626,6 +626,10 @@ After setup run python app from cli with command:
  - https://www.gameart2d.com/
  - https://www.behance.net/JunikStudio
 
+ <b>In Dreams by Scott Buckley | www.scottbuckley.com.au</b>
+  Music promoted by https://www.chosic.com/free-music/all/
+  Attribution 4.0 International (CC BY 4.0)
+  https://creativecommons.org/licenses/by/4.0/
 </br>
 
 ## Todo list for 2020
@@ -648,7 +652,4 @@ http://apps.facebook.com/nidzica
 ![Platformer](https://github.com/zlatnaspirala/visual-ts/blob/master/nonproject-files/platformer-typescript.png)
 
 
-## Donate this project ##
-
-<b>Donate with any crypto value</b>
-<a href="https://coingate.com/pay/visual-ts-game-engine" rel="noopener noreferrer nofollow" target="_blank"><img alt="CoinGate Payment Button" src="https://static.coingate.com/images/buttons/4.png" /></a>
+## Please join this project

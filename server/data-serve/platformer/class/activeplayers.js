@@ -1,6 +1,6 @@
 let MongoClient = require("mongodb").MongoClient;
 
-class PlatformerActiveUsers  {
+class PlatformerActiveUsers {
 
   constructor(config) {
 

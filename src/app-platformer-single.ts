@@ -17,7 +17,7 @@ import Ioc from "./controllers/ioc-single-player";
  */
 const plarformerGameInfo = {
   name: "Platformer Single Player",
-  title: "Start Single Platformer game",
+  title: "Start Platformer game",
 };
 
 const gamesList: any[] = [

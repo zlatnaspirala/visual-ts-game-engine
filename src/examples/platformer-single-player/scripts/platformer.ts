@@ -71,7 +71,7 @@ class Platformer implements IGamePlayModel {
     this.showPlayerBoardUI();
     this.attachUpdateLives();
 
-    // this.starter.ioc.get.Sound.audioBox['surfaceLevel'].play();
+   // this.starter.ioc.get.Sound.audioBox['surfaceLevel'].play();
 
   }
 
@@ -154,6 +154,7 @@ class Platformer implements IGamePlayModel {
         restitution: 0.3,
         ground: true,
         jumpCD: 0,
+        jumpAmp: 0.35,
         portal: -1,
         collisionFilter: {
           category: this.playerCategory,
@@ -218,6 +219,7 @@ class Platformer implements IGamePlayModel {
         if (pair.bodyA.label === "player" && pair.bodyB.label === "collectItemPoint") {
           const collectitem = pair.bodyB;
           this.starter.destroyBody(collectitem);
+          this.starter.ioc.get.Sound.audioBox.collectItem.play();
         }
 
         if (pair.bodyA.label === "player" && pair.bodyB.label === "crapmunch") {
@@ -322,6 +324,11 @@ class Platformer implements IGamePlayModel {
           popup.innerHTML = "";
           document.body.removeChild(popup);
 
+          // Play music in background
+          myInstance.starter.ioc.get.Sound.createAudio("./audios/sb_indreams.mp3", "bgMusic");
+          myInstance.starter.ioc.get.Sound.createAudio("./audios/collect-item.mp3", "collectItem");
+          // Correct bg Music 
+          myInstance.starter.ioc.get.Sound.audioBox.bgMusic.volume = 0.3;
         }, false);
 
         byId("listOfPlayers").appendChild(local);

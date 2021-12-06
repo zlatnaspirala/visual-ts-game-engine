@@ -151,7 +151,7 @@ class GamePlay extends Platformer {
 
     root.starter.setRenderView(DEFAULT_RENDER_BOUNDS.WIDTH, DEFAULT_RENDER_BOUNDS.HEIGHT);
 
-    const playerSpeed = DEFAULT_PLAYER_DATA.SPEED_AMP * 2.5;
+    const playerSpeed = DEFAULT_PLAYER_DATA.SPEED_AMP;
 
     this.enemys.forEach(function (item) {
       const test = new BotBehavior(item);
@@ -208,7 +208,7 @@ class GamePlay extends Platformer {
       // jump
       if (globalEvent.activeKey[38] && root.player.ground) {
 
-        const s = (root.player.circleRadius * playerSpeed);
+        const s = (root.player.jumpAmp);
         root.player.ground = false;
         root.player.force = {
           x: 0,
