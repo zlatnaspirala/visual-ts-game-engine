@@ -65,7 +65,8 @@ module.exports = webPackModuleSingleSimpleSolution = {
       // Audios
       { from: "./src/examples/platformer-single-player/audios/map-themes/sb_indreams.mp3", to: "audios/sb_indreams.mp3"},
       { from: "./src/examples/platformer-single-player/audios/player/jump.mp3", to: "audios/jump.mp3"},
-      { from: "./src/examples/platformer-single-player/audios/player/collect-item.mp3", to: "audios/collect-item.mp3"}
+      { from: "./src/examples/platformer-single-player/audios/player/collect-item.mp3", to: "audios/collect-item.mp3"},
+      { from: "./src/examples/platformer-single-player/audios/player/dead.mp3", to: "audios/dead.mp3"}
     ], { debug: 'warn' })
     // { debug: 'info' } make trace
 

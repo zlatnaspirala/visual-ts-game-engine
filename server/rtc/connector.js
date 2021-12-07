@@ -27,7 +27,7 @@ class Connector {
     this.http = null;
     this.crypto = new CryptoHandler();
 
-    if (!serverConfig.isSecure) {
+    if (!serverConfig.isSecure || this.serverMode === "mongodb.net") {
 
       let options = {
         key: fs.readFileSync(serverConfig.certPathSelf.pKeyPath),

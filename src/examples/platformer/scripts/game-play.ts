@@ -647,8 +647,7 @@ class GamePlay extends Platformer implements IMultiplayer {
       },
     };
 
-    // Force initial 
-
+    // Force initial
     this.generatorOfCollecions = new Generator({
       genType: worldElementType.RECT,
       emit: [

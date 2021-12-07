@@ -332,6 +332,9 @@ class Platformer implements IGamePlayModel {
         myInstance.UIPlayerBoard.style.display = "block";
         myInstance.UIPlayAgainBtn = byId("playAgainBtn") as HTMLDivElement;
 
+        /**
+         * @description Running game-play right here
+         */
         myInstance.UIPlayAgainBtn.addEventListener("click", function () {
 
           const appStartGamePlay = createAppEvent("game-init",
@@ -346,6 +349,11 @@ class Platformer implements IGamePlayModel {
           myInstance.selectedPlayer.spriteTileCurrent = "run";
           myInstance.player.render.visualComponent.setNewShema(myInstance.selectedPlayer);
           myInstance.player.render.visualComponent.seqFrameX.setDelay(8);
+
+          // Play music in background
+          myInstance.starter.ioc.get.Sound.createAudio("./audios/sb_indreams.mp3", "bgMusic");
+          myInstance.starter.ioc.get.Sound.createAudio("./audios/collect-item.mp3", "collectItem");
+          myInstance.starter.ioc.get.Sound.createAudio("./audios/dead.mp3", "dead");
 
         }, false);
       });

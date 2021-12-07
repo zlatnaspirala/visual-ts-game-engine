@@ -327,7 +327,8 @@ class Platformer implements IGamePlayModel {
           // Play music in background
           myInstance.starter.ioc.get.Sound.createAudio("./audios/sb_indreams.mp3", "bgMusic");
           myInstance.starter.ioc.get.Sound.createAudio("./audios/collect-item.mp3", "collectItem");
-          // Correct bg Music 
+          myInstance.starter.ioc.get.Sound.createAudio("./audios/dead.mp3", "dead");
+          // Correct bg Music
           myInstance.starter.ioc.get.Sound.audioBox.bgMusic.volume = 0.3;
         }, false);
 
@@ -371,14 +372,14 @@ class Platformer implements IGamePlayModel {
           if ((byId("playAgainBtn") as HTMLButtonElement)) {
             (byId("playAgainBtn") as HTMLButtonElement).disabled = false;
           }
+
+          this.starter.ioc.get.Sound.audioBox.dead.play();
           /*
              Re born from hard dead
              hard dead - body removed from scene
-
               setTimeout(function () {
                 root.playerSpawn();
               }, this.playerDeadPauseInterval);
-
           */
 
           return;
@@ -388,10 +389,15 @@ class Platformer implements IGamePlayModel {
         root.selectedPlayer.spriteTileCurrent = "run";
         // create general method !
         root.player.render.visualComponent.setNewShema(root.selectedPlayer);
+        root.starter.ioc.get.Sound.audioBox.dead.play();
+
+        setTimeout(function () {
         // Soft dead for now
         Matter.Body.setPosition(root.player, root.playerStartPositions[0]);
         root.playerSpawn(false);
         root.preventDoubleExecution = false;
+      }, this.playerDeadPauseInterval * 10);
+
       }, this.playerDeadPauseInterval);
     }
 
