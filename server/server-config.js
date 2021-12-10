@@ -58,11 +58,12 @@ class ServerConfig {
      */
     this.protocol = "https";
 
-    this.isSecure = false;
+    this.isSecure = true;
 
     /**
      * @description
-     * Just for help if needed.
+     * Just for help if needed if you wanna use pem.
+     * No pem currently used at the moment.
      */
     this.certPathSelfOrigin = {
       pKeyPath: "./server/rtc/self-cert/privatekey.pem",
@@ -77,7 +78,7 @@ class ServerConfig {
     this.certPathSelf = {
       pKeyPath: "./server/rtc/apache-local-cert/server.key",
       pCertPath: "./server/rtc/apache-local-cert/server.crt",
-      pCBPath: "./server/rtc/apache-local-cert/server.csr",
+      pCBPath: "./server/rtc/apache-local-cert/server.crt",
     };
     
     // production
@@ -93,8 +94,8 @@ class ServerConfig {
 
     this.databaseRoot = {
       dev: "mongodb://localhost:27017" ,
-      prod: "mongodb://userAdmin:*************@localhost:27017/admin",
-      freeService: "mongodb+srv://userAdmin:***********@cluster0.piqav.mongodb.net/masterdatabase?retryWrites=true&w=majority"
+      prod: "mongodb://userAdmin:PUT_YOU_PASSWORD@localhost:27017/admin",
+      freeService: "mongodb+srv://userAdmin:PUT_YOU_PASSWORD@cluster0.piqav.mongodb.net/masterdatabase?retryWrites=true&w=majority"
     };
 
     this.specialRoute = {
