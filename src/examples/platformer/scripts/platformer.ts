@@ -350,11 +350,6 @@ class Platformer implements IGamePlayModel {
           myInstance.player.render.visualComponent.setNewShema(myInstance.selectedPlayer);
           myInstance.player.render.visualComponent.seqFrameX.setDelay(8);
 
-          // Play music in background
-          myInstance.starter.ioc.get.Sound.createAudio("./audios/sb_indreams.mp3", "bgMusic");
-          myInstance.starter.ioc.get.Sound.createAudio("./audios/collect-item.mp3", "collectItem");
-          myInstance.starter.ioc.get.Sound.createAudio("./audios/dead.mp3", "dead");
-
         }, false);
       });
 
@@ -423,6 +418,8 @@ class Platformer implements IGamePlayModel {
       this.player.render.visualComponent.assets.SeqFrame.setNewValue(1);
       this.lives = this.lives - 1;
       (this.UIPlayerBoard.getElementsByClassName("UIPlayerLives")[0] as HTMLSpanElement).innerText = this.lives.toString();
+
+      this.starter.ioc.get.Sound.audioBox.dead.play();
 
       if (this.lives === 0 || this.lives < 0) {
 

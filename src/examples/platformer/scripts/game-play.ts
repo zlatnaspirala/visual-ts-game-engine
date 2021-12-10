@@ -166,6 +166,12 @@ class GamePlay extends Platformer implements IMultiplayer {
          */
         myInstance.broadcaster.activateDataStream(myInstance.multiPlayerRef);
         console.info("Player spawn. game-init .startNewGame");
+
+        // Play music in background
+        myInstance.starter.ioc.get.Sound.createAudio("./audios/sb_indreams.mp3", "bgMusic");
+        myInstance.starter.ioc.get.Sound.createAudio("./audios/collect-item.mp3", "collectItem");
+        myInstance.starter.ioc.get.Sound.createAudio("./audios/dead.mp3", "dead");
+        
       } catch (err) {
         console.error("Very bad #00001", err);
       }
