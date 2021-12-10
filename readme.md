@@ -496,15 +496,16 @@ Cent os:
 ```
 
 <b> - Running server is easy : </b>
+From root folder (not from server folder).
+If you wanna use node.js debugger you need to fix path for the certs.
 
 ```javascript
   npm run rtc
 ```
 
-With this cmd : <i>npm run rtc</i> we run server.js and connector.ts websocket.
-Connector is our account session used for login , register etc.
-Implemented video chat based on webRTC protocol.Running rtc3 server is integrated.
-
+With this cmd : <i>npm run rtc</i> we run server.js `hosting` and connector.ts websocket `session` and webrtc `broadcaster.ts`.
+Connector is our account session used for login, register etc.
+Implemented video chat based on webRTC protocol. Running rtc3 server is integrated.
 If you wanna disable session-database-rtc2 features and run only `broadcaster`:
 
 Features comes with broadcaster:
