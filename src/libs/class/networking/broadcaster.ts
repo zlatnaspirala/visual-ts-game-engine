@@ -322,6 +322,10 @@ class Broadcaster {
     const root = this;
     (window as any).enableAdapter = true;
 
+    // Hide on start
+    root.broadcasterUI.classList.remove("network-panel-show-ver-animation");
+    root.broadcasterUI.classList.add("network-panel-hide-ver-animation");
+    
     // hide right box (broadcaster)
     root.titleStatus.onclick = function () {
       if (

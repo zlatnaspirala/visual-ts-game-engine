@@ -32,7 +32,7 @@ if (serverConfig.ownHosting == true) {
   var https = require("https");
   var hostingHTTP = express();
 
-  if (serverConfig.serverMode === "dev") {
+  if (serverConfig.serverMode === "dev" || serverConfig.serverMode === "mongodb.net") {
     options = {
       key: fs.readFileSync(serverConfig.certPathSelf.pKeyPath),
       cert: fs.readFileSync(serverConfig.certPathSelf.pCertPath),

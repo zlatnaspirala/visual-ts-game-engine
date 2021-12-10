@@ -2,11 +2,11 @@
 # Project : Visual ts game engine
 Old Version : `We can fight` - 2020
 ## Current Version : `Out of space` - 2021
-
+ 
 #### 2d canvas game engine based on Matter.js 2D physics engine for the web.
 
   I use my own concept: `take lib for the great benefits`. It means that i import only staff that i can't make in proper way in proper time, all other coming from head. For example `Physics` was imported
-  in role of npm package for typescript matter.js variant and i keep dependency healthy. In
+  in role of npm package for typescript matter.js/ts variant and i keep dependency healthy. In
   networking aspect i use full-duplex connection under web-rtc protocol. Pretty nice working
   combination of physics and realtime-multiplayer connetions. PeerToPeer used for game-play
   and classic websocket(socketio) for session staff. HTMLRequest used only for loading html
@@ -25,28 +25,32 @@ Old Version : `We can fight` - 2020
 
   ### Whats good in this project:
 
-   - No strange logs - No need for forums just follow stackoverflow.com
-     and wc3. 
+   - visual-ts correspondent with mongoDB [Its not only for games you have basic session staff
+    you can use it for your standalone application].
+   - Fast `full-duplex` connections based on webRTC/socket.io/websocket [node.js]
+   - Multiplatform/Realtime Multiplayer features.
+   - Video chat comes with visual-ts [standalone].
+   - No strange logs - No need for forums just follow stackoverflow.com and wc3.
    - Fast console log access, tracking code
-   - no single eval ('popular' js frameworks usually are based on eval)
-   - Fast rebuild
-   - Luanch/Attacher debugger options implemented
-   - Lib is not to much `inself` closed . Every intervention or used 
+   - No escape with eval
+   - Fast rebuild - Build single endpoint, Rebuild all
+   - Luanch/Attacher debugger options implemented [for visual code]
+   - Lib is not to much `inself` closed. Every intervention or used 
    feature is exposed in high level in that way you can make very fast 
    implementation of your own logic what ever will be.
-   - You are not forced to use TS you can alway downgrade to JS this comes 
+   - You are not forced to use typescript you can always downgrade to javascript this comes 
    with typescript inself.
-
+   - Example multiplayer
 
    ### Simple there is nothing between you and making the app.
 
  - Written in typescript current version 4.2.4.
- - Package tool used webpack 4.46.0 .
- - Text editor used and recommended: Last version of Visual Studio Code.
+ - Package tool used webpack 4.46.0.
+ - Text editor used and recommended: Last version of `Visual Studio Code`.
    Luanch debugger configuration comes with this project (for server part).
- - Physics engine based on Matter.js - Matter.ts (npm project).
+ - Physics engine based on `Matter.js - Matter.ts` (npm project).
  - Multiplatform video chat (for all browsers) implemented. SocketIO used for session staff.
-   MultiRTC3 alias 'broadcaster' used for video chat also for data transfer.
+   MultiRTC3 alias `broadcaster` used for video chat also for data transfer.
  - Mobile controls / Tested on android
 
 ![visualTS](https://github.com/zlatnaspirala/visual-ts/blob/master/nonproject-files/logo.png)

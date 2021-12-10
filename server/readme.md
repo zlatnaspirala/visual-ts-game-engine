@@ -44,6 +44,21 @@ npm run rtc
   node ./server/rtc/server.js
 ```
 
+ List all connections
+```
+netstat -ano -p tcp
+```
+
+Find the PID of using port :
+```
+netstat -ano -p tcp |find "9001"
+```
+
+Kill by PID:
+```
+taskkill /F /PID pid_number
+```
+
 To kill all node tasks:
 ```
 taskkill /im node.exe
@@ -260,13 +275,47 @@ Stop/Restart mongod with:
 
 ```
 
-### Source :
-
+### Source:
 https://docs.mongodb.com/manual/tutorial/enable-authentication/
 
 
-Config file - server-config:
 
+### Prepare simple self signed certificcation
+ We need this because video-data transfer can be done only for `https` protocol.
+
+Use on windows (Run -> mmc) from windows start btn.
+You can also use openSSL but you need to download it (install it).
+
+If you already use XAMPP than just find `makecert.bat` :
+```
+@echo off
+set OPENSSL_CONF=./conf/openssl.cnf
+
+if not exist .\conf\ssl.crt mkdir .\conf\ssl.crt
+if not exist .\conf\ssl.key mkdir .\conf\ssl.key
+
+bin\openssl req -new -out server.csr
+bin\openssl rsa -in privkey.pem -out server.key
+bin\openssl x509 -in server.csr -out server.crt -req -signkey server.key -days 365
+
+set OPENSSL_CONF=
+del .rnd
+del privkey.pem
+del server.csr
+
+move /y server.crt .\conf\ssl.crt
+move /y server.key .\conf\ssl.key
+
+echo.
+echo -----
+echo The certificate was provided.
+echo.
+pause
+```
+
+Also interest info at : https://www.sslshopper.com/article-most-common-openssl-commands.html
+
+#### Config file - server-config:
 ```typescript
 
 class ServerConfig {
@@ -291,7 +340,7 @@ class ServerConfig {
     };
 
     this.masterServerKey = "maximumroulette.server1";
-    this.protocol = "http";
+    this.protocol = "https";
     this.isSecure = false;
 
     // localhost
@@ -400,5 +449,7 @@ class ServerConfig {
 
 }
 module.exports = ServerConfig;
-
 ```
+
+
+Thanks for using visual-ts-game-engine !

@@ -8,12 +8,14 @@ import {
 } from "../../../libs/interface/global";
 
 /**
+ * @description GameMap JUST RETURNS gameObjects datas.
+ * This is nice place to make some hardcoded gameObjects,
+ * you can still load map and add extra objects.
  * Static body elements, backgrounds, enemys returns
  * Prepared for next level, 'loading from generated content'
  * Path for images `../imgs/`
  * Inject or predefine here
  */
-
 class GameMap extends MapLoader implements IGamePlayPlatformerMap {
   constructor(options?: any) {
     super(options);
@@ -146,7 +148,7 @@ class GameMap extends MapLoader implements IGamePlayPlatformerMap {
       y: 200,
       w: 400,
       h: 150,
-      text: " `Platformer` single player mod ",
+      text: " `Platformer` MultiPlayer mod!!!",
       options: {
         color: "black",
         size: 20,
