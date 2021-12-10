@@ -429,11 +429,21 @@ Cent os:
 ```
 
 
-### Networking multimedia communication : WebSocketServer running on Node.js ###
+## Networking multimedia communication : WebSocketServer running on Node.js
 
  Text-based protocol SIP (Session Initiation Protocol) used for signaling and controlling multimedia sessions.
 
- #### General networking config: ####
+### General networking config:
+
+#### About generating localhost certs
+
+ [Read more about cert](https://github.com/zlatnaspirala/visual-ts-game-engine/blob/dev/server/rtc/apache-local-cert/help.md)
+ serverMode `dev` od `prod` use `https` protocol to make full works on both regime (If you using multiplayer example).
+
+ Connector (websocket) no need to be wss. If you wanna use just session communication.
+ You need to install cert, in browser:
+
+![](https://github.com/zlatnaspirala/visual-ts-game-engine/blob/dev/nonproject-files/browser-selfsign-allow.png)
 
  Config property defined in constructor from ServerConfig class
  in interest way. With two defined flags dev & prod it is easy resolved
