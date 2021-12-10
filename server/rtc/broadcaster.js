@@ -76,7 +76,7 @@ class Broadcaster {
      * @description This block can be optimisex
      * SSL on/off
      */
-    if (serverConfig.serverMode === "dev") {
+    if (serverConfig.serverMode === "dev" || serverConfig.serverMode === "mongodb.net") {
       options = {
         key: fs.readFileSync(serverConfig.certPathSelf.pKeyPath),
         cert: fs.readFileSync(serverConfig.certPathSelf.pCertPath),

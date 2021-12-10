@@ -1,10 +1,63 @@
+Certificate Request:
+    Data:
+        Version: 1 (0x0)
+        Subject: C = RS, ST = Serbia, L = Nis, O = Nikola Lukic, OU = zlatnaspirala, CN = zlatnaspirala, emailAddress = zlatnaspirala@gmail.com
+        Subject Public Key Info:
+            Public Key Algorithm: rsaEncryption
+                RSA Public-Key: (2048 bit)
+                Modulus:
+                    00:dd:5c:81:c8:b1:41:6d:25:6f:e8:95:f1:f2:98:
+                    fa:79:cc:dd:ed:30:8c:88:92:88:05:d4:17:0f:3d:
+                    be:e7:6a:60:57:18:d3:1c:ba:27:22:34:ca:97:e1:
+                    5b:fc:bb:d6:93:95:ab:8c:46:b1:ff:9c:f3:ba:29:
+                    95:4f:6d:44:65:c5:fb:af:97:5f:18:90:2f:40:c0:
+                    2a:1a:db:27:40:48:77:3c:6d:07:e3:c5:f0:14:38:
+                    2d:ec:7e:af:f9:45:f2:69:b8:dc:2b:89:c4:ea:5d:
+                    2d:54:2a:e8:3c:02:4d:46:57:bc:3b:01:90:4a:c8:
+                    e8:74:c8:85:60:cf:3b:7d:6d:55:d5:9a:19:c2:c8:
+                    7b:48:6f:2e:16:e6:50:15:26:c4:0f:8f:aa:2e:66:
+                    e1:f5:58:08:88:50:65:86:56:91:82:47:4e:66:ec:
+                    2e:9c:f3:ed:b5:98:70:bf:85:ad:ac:40:b0:46:6f:
+                    9a:6b:85:32:c3:4c:22:4b:84:26:3c:62:be:1d:1c:
+                    aa:39:35:24:31:36:45:5d:99:04:75:06:57:6a:f3:
+                    01:61:f8:e8:d3:38:5e:02:c9:e2:63:4b:a2:95:c6:
+                    ff:0a:90:28:f7:42:06:cb:d1:f8:ae:e1:07:b2:ad:
+                    57:e5:92:3c:7e:ce:1b:96:9b:05:93:d3:4d:63:4f:
+                    95:1b
+                Exponent: 65537 (0x10001)
+        Attributes:
+            a0:00
+    Signature Algorithm: sha256WithRSAEncryption
+         5d:0c:07:67:69:fa:0f:e7:4e:17:53:5b:46:99:c8:01:30:21:
+         05:c8:da:68:30:ca:8e:6a:ee:86:d0:00:88:c3:c9:18:5f:d6:
+         c3:34:53:8b:fc:2e:56:f8:bd:43:1b:77:b9:8c:15:52:c8:fa:
+         f6:fc:de:67:e1:7e:07:f8:c3:da:61:e6:a2:46:58:38:a8:4c:
+         b3:0e:6d:22:b8:0a:bb:54:3a:04:98:bf:78:a0:8a:d2:13:ee:
+         21:69:9c:9a:2e:c2:85:e7:6d:90:aa:1a:31:dd:aa:e7:06:78:
+         2e:85:e7:76:6c:dd:6b:bc:30:82:fe:a5:52:8b:7a:55:b3:eb:
+         40:91:e6:2a:a5:bd:fc:68:38:70:db:99:b3:49:52:75:c1:1d:
+         4e:43:a4:f6:5f:18:8e:30:ee:a6:26:67:89:d7:8b:96:a5:88:
+         f1:1e:c9:65:fa:49:0a:4b:23:5e:a7:05:45:fd:be:8f:5f:8b:
+         d5:3e:de:17:1e:5e:1d:5a:79:e3:44:fd:c8:fe:a2:9f:8b:84:
+         12:89:82:47:9a:de:78:84:50:52:b4:fc:b5:b0:ff:06:26:96:
+         5b:36:5c:d1:6e:00:b6:55:c6:c2:a2:30:bd:da:0e:6f:bd:c8:
+         e2:07:b2:ef:7f:4d:d2:65:cd:cc:1d:e6:67:9f:eb:bd:43:92:
+         ab:f1:eb:0c
 -----BEGIN CERTIFICATE REQUEST-----
-MIIBcjCB3AIBADAUMRIwEAYDVQQDEwlsb2NhbGhvc3QwgZ8wDQYJKoZIhvcNAQEB
-BQADgY0AMIGJAoGBAMEl0yfj7K0Ng2pt51+adRAj4pCdoGOVjx1BmljVnGOMW3OG
-kHnMw9ajibh1vB6UfHxu463oJ1wLxgxq+Q8y/rPEehAjBCspKNSq+bMvZhD4p8HN
-YMRrKFfjZzv3ns1IItw46kgTgDpAl1cMRzVGPXFimu5TnWMOZ3ooyaQ0/xntAgMB
-AAGgHzAdBgkqhkiG9w0BCQcxEBMOQXBhY2hlIEZyaWVuZHMwDQYJKoZIhvcNAQEF
-BQADgYEAIX0oF/i847DbQDiVQ81+Uay7RZpzmDYGVgvUoVyvY9USB2Su3WbK9vxU
-UQyyfLgsMUQXq1VcokC9njymv4dePVdjbxjNeYIpgCGhLYO4KkVdVejbqTfixqt6
-ZWu6DN5CnCw7e/gjri8kifn4TQcSOTV+0kZpYYZlPbTkwFH25nI=
+MIIC4TCCAckCAQAwgZsxCzAJBgNVBAYTAlJTMQ8wDQYDVQQIDAZTZXJiaWExDDAK
+BgNVBAcMA05pczEVMBMGA1UECgwMTmlrb2xhIEx1a2ljMRYwFAYDVQQLDA16bGF0
+bmFzcGlyYWxhMRYwFAYDVQQDDA16bGF0bmFzcGlyYWxhMSYwJAYJKoZIhvcNAQkB
+Fhd6bGF0bmFzcGlyYWxhQGdtYWlsLmNvbTCCASIwDQYJKoZIhvcNAQEBBQADggEP
+ADCCAQoCggEBAN1cgcixQW0lb+iV8fKY+nnM3e0wjIiSiAXUFw89vudqYFcY0xy6
+JyI0ypfhW/y71pOVq4xGsf+c87oplU9tRGXF+6+XXxiQL0DAKhrbJ0BIdzxtB+PF
+8BQ4Lex+r/lF8mm43CuJxOpdLVQq6DwCTUZXvDsBkErI6HTIhWDPO31tVdWaGcLI
+e0hvLhbmUBUmxA+Pqi5m4fVYCIhQZYZWkYJHTmbsLpzz7bWYcL+FraxAsEZvmmuF
+MsNMIkuEJjxivh0cqjk1JDE2RV2ZBHUGV2rzAWH46NM4XgLJ4mNLopXG/wqQKPdC
+BsvR+K7hB7KtV+WSPH7OG5abBZPTTWNPlRsCAwEAAaAAMA0GCSqGSIb3DQEBCwUA
+A4IBAQBdDAdnafoP504XU1tGmcgBMCEFyNpoMMqOau6G0ACIw8kYX9bDNFOL/C5W
++L1DG3e5jBVSyPr2/N5n4X4H+MPaYeaiRlg4qEyzDm0iuAq7VDoEmL94oIrSE+4h
+aZyaLsKF522Qqhox3arnBnguhed2bN1rvDCC/qVSi3pVs+tAkeYqpb38aDhw25mz
+SVJ1wR1OQ6T2XxiOMO6mJmeJ14uWpYjxHsll+kkKSyNepwVF/b6PX4vVPt4XHl4d
+WnnjRP3I/qKfi4QSiYJHmt54hFBStPy1sP8GJpZbNlzRbgC2VcbCojC92g5vvcji
+B7Lvf03SZc3MHeZnn+u9Q5Kr8esM
 -----END CERTIFICATE REQUEST-----

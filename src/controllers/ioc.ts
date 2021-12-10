@@ -4,6 +4,7 @@ import Browser from "../libs/class/browser";
 import MessageBox from "../libs/class/messager-box";
 import Broadcaster from "../libs/class/networking/broadcaster";
 import Network from "../libs/class/networking/network";
+import Sound from "../libs/class/sound";
 import { scriptManager } from "../libs/class/system";
 import ViewPort from "../libs/class/view-port";
 import VisualRender from "../libs/class/visual-render";
@@ -49,6 +50,8 @@ class Ioc {
     }
 
     this.loadAddson();
+
+    this.singlton(Sound, undefined);
     this.singlton(MessageBox, undefined);
     this.singlton(Browser, undefined);
     this.singlton(ViewPort, this.config);
