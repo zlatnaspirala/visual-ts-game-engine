@@ -51,6 +51,7 @@ class Platformer implements IGamePlayModel {
 
   private UIPlayerBoard: HTMLDivElement;
   private UIPlayAgainBtn: HTMLDivElement;
+  private UISoundOptionDom: HTMLDivElement;
 
   private levelMaps: any = {
     generatedMap: Level1,
@@ -219,7 +220,7 @@ class Platformer implements IGamePlayModel {
         if (pair.bodyA.label === "player" && pair.bodyB.label === "collectItemPoint") {
           const collectitem = pair.bodyB;
           this.starter.destroyBody(collectitem);
-          this.starter.ioc.get.Sound.audioBox.collectItem.play();
+          this.starter.ioc.get.Sound.playById('collectItem');
         }
 
         if (pair.bodyA.label === "player" && pair.bodyB.label === "crapmunch") {
@@ -258,6 +259,23 @@ class Platformer implements IGamePlayModel {
       myInstance.UIPlayerBoard.innerHTML = html;
       myInstance.UIPlayerBoard.style.display = "block";
       myInstance.UIPlayAgainBtn = byId("playAgainBtn") as HTMLDivElement;
+      myInstance.UISoundOptionDom = byId("soundOptionDom") as HTMLDivElement;
+
+      /**
+       * @description In gameplay Enable od disable sounds.
+       * New aproach `()=>` next migration.
+       */
+      myInstance.UISoundOptionDom.addEventListener("click", function(e) {
+      if ((e.currentTarget as HTMLElement).innerHTML == "Sound:Off") {
+        myInstance.starter.ioc.get.Sound.audioBox.bgMusic.pause();
+        myInstance.starter.ioc.get.Sound.audioBox.noSound = true;
+        (e.currentTarget as HTMLElement).innerText = "Sound:On";
+      } else {
+        myInstance.starter.ioc.get.Sound.audioBox.noSound = false;
+        myInstance.starter.ioc.get.Sound.playById('bgMusic');
+        (e.currentTarget as HTMLElement).innerText = "Sound:Off";
+      }
+      });
 
       myInstance.UIPlayAgainBtn.addEventListener("click", function () {
 
@@ -373,7 +391,7 @@ class Platformer implements IGamePlayModel {
             (byId("playAgainBtn") as HTMLButtonElement).disabled = false;
           }
 
-          this.starter.ioc.get.Sound.audioBox.dead.play();
+          this.starter.ioc.get.Sound.playById('dead');
           /*
              Re born from hard dead
              hard dead - body removed from scene
@@ -389,7 +407,7 @@ class Platformer implements IGamePlayModel {
         root.selectedPlayer.spriteTileCurrent = "run";
         // create general method !
         root.player.render.visualComponent.setNewShema(root.selectedPlayer);
-        root.starter.ioc.get.Sound.audioBox.dead.play();
+        root.starter.ioc.get.Sound.playById('dead');
 
         setTimeout(function () {
         // Soft dead for now

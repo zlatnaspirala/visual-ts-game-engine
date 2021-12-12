@@ -19,7 +19,7 @@ Old Version : `We can fight` - 2020
   Take a look project examples on:
   https://github.com/zlatnaspirala/visual-ts-examples
 
-  It is nice starter project.
+  It is nice starter project. Fixed all deps to make `npm i visual-ts` usable.
 
   [API Documentation](https://maximumroulette.com/apps/visual-ts/multiplayer/api-doc/)
 
@@ -178,7 +178,7 @@ Find configuration for client part at ./src/lib/client-config.ts
 Please read [About Client Configuration](https://github.com/zlatnaspirala/visual-ts-game-engine/blob/master/client-config-readme.md)
 
 
-### Start dependency system from app.ts ###
+### Start dependency system from app.ts
 
  - First game template is Platformer.
      This is high level programming in this software. Class Platformer run
@@ -199,7 +199,7 @@ Please read [About Client Configuration](https://github.com/zlatnaspirala/visual
   best way is still use one ioc.ts for per web page. In that way i use refresh
   or redirect moment to load optimised script bundle for current page.
 
-#### Main dependency file ####
+#### Main dependency file
 
  - Current version:
 ```typescript
@@ -382,9 +382,9 @@ LICENSE
 
 </pre>
 
-## Server part ##
+## Server part
 
-### Installed database : MongoDB server version: 3.5.6 ###
+### Installed database : MongoDB server version: 3.5.6
 
 Updated to the last
 https://tecadmin.net/install-mongodb-on-centos/
@@ -420,9 +420,7 @@ Cent os:
 
 ```
 
-<b>Also important "Run Visual Studio Code as Administrator".</b>
-
- -Command for kill all node.js procces for window users :
+ - Command for kill all node.js procces for window users :
 
 ```node
   taskkill /im node.exe /F
@@ -439,18 +437,46 @@ Cent os:
 
  [Read more about cert](https://github.com/zlatnaspirala/visual-ts-game-engine/blob/dev/server/rtc/apache-local-cert/help.md)
  serverMode `dev` od `prod` use `https` protocol to make full works on both regime (If you using multiplayer example).
-
- Connector (websocket) no need to be wss. If you wanna use just session communication.
- You need to install cert, in browser:
+ You need to install cert (mmc.exe) (for User or local Mashine), also in browser:
 
 ![](https://github.com/zlatnaspirala/visual-ts-game-engine/blob/dev/nonproject-files/browser-selfsign-allow.png)
 
+Note:
+- Connector (websocket) no need to be wss. If you wanna use just session communication.
+
+
+#### About production running (last version of centos will be nice).
+
+  - This is only for localhost test running. On your public server (VPS) you will need to have SSL certification 
+    (take a look for free SSL on great https://letsencrypt.org/). Then change in `server-config.js` parameter
+     serverMode to `prod` or `mongodb.net`.
+
+   - If you setup with `prod` it means that you have runned mongodb on public mashine.
+   - If you setup with `mongodb.net` it means that you regiter free plan on mongodb.net services and you need to setup 
+     freeService in databaseRoot:
+    ```this.databaseRoot = {
+          dev: "mongodb://localhost:27017" ,
+          prod: "mongodb://userAdmin:PUT_YOU_PASSWORD@localhost:27017/admin",
+          freeService: "mongodb+srv://userAdmin:PUT_YOU_PASSWORD@cluster0.piqav.mongodb.net/masterdatabase?retryWrites=true&w=majority"
+        };
+    ```
+  .
+
+  - Cert setup on production (certPathProd):
+  this.certPathProd = {
+    pKeyPath: "/etc/letsencrypt/live/maximumroulette.com/privkey.pem",
+    pCertPath: "/etc/letsencrypt/live/maximumroulette.com/cert.pem",
+    pCBPath: "/etc/letsencrypt/live/maximumroulette.com/fullchain.pem"
+  };
+
+### about server-config
+
  Config property defined in constructor from ServerConfig class
  in interest way. With two defined flags dev & prod it is easy resolved
- boring problem with migration localhost - public server :
+ boring problem with migration localhost - public server:
 
 ```javascript
-    // enum : 'dev' or 'prod'
+    // enum : 'dev', 'mongodb.net' or 'prod'
     this.serverMode = "dev";
 
     this.networkDeepLogs = false;
@@ -506,14 +532,14 @@ If you wanna use node.js debugger you need to fix path for the certs.
 With this cmd : <i>npm run rtc</i> we run server.js `hosting` and connector.ts websocket `session` and webrtc `broadcaster.ts`.
 Connector is our account session used for login, register etc.
 Implemented video chat based on webRTC protocol. Running rtc3 server is integrated.
-If you wanna disable session-database-rtc2 features and run only `broadcaster`:
+If you wanna disable session-database-rtc3 features and run only `broadcaster`:
 
 Features comes with broadcaster:
  - Multiplatform video chat works with other hybrid frameworks
    or custom implementation throw the native mobile application
    web control (Chrome implementation usually).
 
-### GUI Tools ###
+### GUI Tools
 
 To get GUI tools first download python3 for your OS.
 `creator2dmap` is python3 canvas oriented application.
@@ -538,7 +564,7 @@ Start application with:
   ./python3 tool.py (macos)
 ```
 
-## Documentation: ##
+## Documentation:
 
  Follow link for API: [WIP]
  [Application documentation](https://maximumroulette.com/apps/visual-ts/multiplayer/api-doc/)
@@ -622,7 +648,7 @@ After setup run python app from cli with command:
 
 </br>
 
-## Licence ##
+## Licence
 
   Visual Typescript Game engine is under:
   #### MIT License generaly
@@ -671,4 +697,8 @@ http://apps.facebook.com/nidzica
 ![Platformer](https://github.com/zlatnaspirala/visual-ts/blob/master/nonproject-files/platformer-typescript.png)
 
 
-## Please join this project
+## Donate my work
+### https://buy.stripe.com/test_7sIcQ13nz0pq8zS8ww
+
+
+## Please join this project and make collaboration

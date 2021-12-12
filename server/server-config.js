@@ -80,12 +80,12 @@ class ServerConfig {
       pCertPath: "./server/rtc/apache-local-cert/server.crt",
       pCBPath: "./server/rtc/apache-local-cert/server.crt",
     };
-    
+
     // production
     this.certPathProd = {
-      pKeyPath: "/etc/httpd/conf/ssl/maximumroulette.com.key",
-      pCertPath: "/etc/httpd/conf/ssl/maximumroulette_com.crt",
-      pCBPath: "/etc/httpd/conf/ssl/maximumroulette.ca-bundle"
+      pKeyPath: "/etc/letsencrypt/live/maximumroulette.com/privkey.pem",
+      pCertPath: "/etc/letsencrypt/live/maximumroulette.com/cert.pem",
+      pCBPath: "/etc/letsencrypt/live/maximumroulette.com/fullchain.pem"
     };
 
     this.appUseAccountsSystem = true;
@@ -94,8 +94,8 @@ class ServerConfig {
 
     this.databaseRoot = {
       dev: "mongodb://localhost:27017" ,
-      prod: "mongodb://userAdmin:PUT_YOU_PASSWORD@localhost:27017/admin",
-      freeService: "mongodb+srv://userAdmin:PUT_YOU_PASSWORD@cluster0.piqav.mongodb.net/masterdatabase?retryWrites=true&w=majority"
+      prod: "mongodb://userAdmin:PUT_YOUR_PASSWORD@localhost:27017/admin",
+      freeService: "mongodb+srv://userAdmin:PUT_YOUR_PASSWORD@cluster0.piqav.mongodb.net/masterdatabase?retryWrites=true&w=majority"
     };
 
     this.specialRoute = {

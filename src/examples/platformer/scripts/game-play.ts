@@ -187,6 +187,7 @@ class GamePlay extends Platformer implements IMultiplayer {
         ) {
           myInstance.destroyGamePlayPlatformer();
           (byId("playAgainBtn") as HTMLButtonElement).disabled = true;
+          (byId("soundOptionDom") as HTMLButtonElement).disabled = true;
           (byId("openGamePlay") as HTMLButtonElement).disabled = false;
           (byId("out-of-game") as HTMLButtonElement).disabled = true;
 

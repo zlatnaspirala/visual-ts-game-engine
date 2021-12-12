@@ -59,6 +59,7 @@ class Platformer implements IGamePlayModel {
 
   private UIPlayerBoard: HTMLDivElement;
   private UIPlayAgainBtn: HTMLDivElement;
+  private UISoundOptionDom: HTMLDivElement;
 
   private levelMaps: any = {
     generatedMap: Level1,
@@ -222,7 +223,7 @@ class Platformer implements IGamePlayModel {
       this.playerStartPositions[0].y,
       playerRadius, {
         label: "player",
-        jumpAmp: 40,
+        jumpAmp: 80,
         density: 0.0005,
         friction: 0.01,
         frictionAir: 0.06,
@@ -331,7 +332,24 @@ class Platformer implements IGamePlayModel {
         myInstance.UIPlayerBoard.innerHTML = html;
         myInstance.UIPlayerBoard.style.display = "block";
         myInstance.UIPlayAgainBtn = byId("playAgainBtn") as HTMLDivElement;
+        myInstance.UISoundOptionDom = byId("soundOptionDom") as HTMLDivElement;
 
+        /**
+         * @description In gameplay Enable od disable sounds.
+         * New aproach `()=>` next migration.
+         */
+         myInstance.UISoundOptionDom.addEventListener("click", function(e) {
+
+          if ((e.currentTarget as HTMLElement).innerHTML == "Sound:Off") {
+            myInstance.starter.ioc.get.Sound.audioBox.bgMusic.pause();
+            myInstance.starter.ioc.get.Sound.audioBox.noSound = true;
+            (e.currentTarget as HTMLElement).innerText = "Sound:On";
+          } else {
+            myInstance.starter.ioc.get.Sound.audioBox.noSound = false;
+            myInstance.starter.ioc.get.Sound.playById('bgMusic');
+            (e.currentTarget as HTMLElement).innerText = "Sound:Off";
+          }
+         });
         /**
          * @description Running game-play right here
          */
@@ -419,7 +437,7 @@ class Platformer implements IGamePlayModel {
       this.lives = this.lives - 1;
       (this.UIPlayerBoard.getElementsByClassName("UIPlayerLives")[0] as HTMLSpanElement).innerText = this.lives.toString();
 
-      this.starter.ioc.get.Sound.audioBox.dead.play();
+      this.starter.ioc.get.Sound.audioBox.playById('dead');
 
       if (this.lives === 0 || this.lives < 0) {
 
