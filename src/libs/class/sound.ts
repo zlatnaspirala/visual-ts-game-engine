@@ -3,6 +3,7 @@ import { ISound } from "../interface/global";
 class Sound implements ISound {
 
   public name: string = "audio-staff";
+  public noSound: boolean = false;
 
   private audioBox: {[key: string]: any} = {};
   private aContainer: HTMLElement;
@@ -39,7 +40,7 @@ class Sound implements ISound {
     if (element.canPlayType("audio/mpeg")) {
       element.setAttribute("src", path);
     } else {
-      element.setAttribute("src",  path);
+      element.setAttribute("src", path);
     }
 
     this.audioBox[idCaller] = element;
@@ -62,6 +63,8 @@ class Sound implements ISound {
   }
 
   public playById(id) {
+
+    if (this.noSound) return;
 
     const testPlay = this.audioBox[id].play();
 
