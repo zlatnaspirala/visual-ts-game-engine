@@ -94,8 +94,8 @@ class ServerConfig {
 
     this.databaseRoot = {
       dev: "mongodb://localhost:27017" ,
-      prod: "mongodb://userAdmin:PUT_YOUR_PASSWORD@localhost:27017/admin",
-      freeService: "mongodb+srv://userAdmin:PUT_YOUR_PASSWORD@cluster0.piqav.mongodb.net/masterdatabase?retryWrites=true&w=majority"
+      prod: "mongodb://userAdmin:*************@localhost:27017/admin",
+      freeService: "mongodb+srv://userAdmin:*******@cluster0.piqav.mongodb.net/masterdatabase?retryWrites=true&w=majority"
     };
 
     this.specialRoute = {
@@ -132,8 +132,9 @@ class ServerConfig {
   };
 
   get getProtocol() {
-
     if (this.isSecure) {
+      this.protocol = "https";
+    } else if (this.serverMode === "mongodb.net") {
       this.protocol = "https";
     } else {
       this.protocol = "http";
