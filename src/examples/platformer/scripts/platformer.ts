@@ -437,7 +437,7 @@ class Platformer implements IGamePlayModel {
       this.lives = this.lives - 1;
       (this.UIPlayerBoard.getElementsByClassName("UIPlayerLives")[0] as HTMLSpanElement).innerText = this.lives.toString();
 
-      this.starter.ioc.get.Sound.audioBox.playById('dead');
+      this.starter.ioc.get.Sound.playById('dead');
 
       if (this.lives === 0 || this.lives < 0) {
 

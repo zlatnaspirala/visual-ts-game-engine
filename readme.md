@@ -633,6 +633,8 @@ After setup run python app from cli with command:
 
 ## Public stage server / Tutorial demos
 
+  ACTUALLY SERVER IS RUNNING - You need to register.
+  
   #### Basic examples - How to create instance of engine. With minimum elements and features.
   - #### [Static object vs Free](https://maximumroulette.com/apps/visual-ts/demo1/app.html)
   - #### [Webcam stream loaded as player skin](https://maximumroulette.com/apps/visual-ts/demo2/app.html)

@@ -76,13 +76,13 @@ class Broadcaster {
      * @description This block can be optimisex
      * SSL on/off
      */
-    if (serverConfig.serverMode === "dev" || serverConfig.serverMode === "mongodb.net") {
+    if (serverConfig.serverMode === "dev" ) {
       options = {
         key: fs.readFileSync(serverConfig.certPathSelf.pKeyPath),
         cert: fs.readFileSync(serverConfig.certPathSelf.pCertPath),
         ca: fs.readFileSync(serverConfig.certPathSelf.pCBPath),
       };
-    } else if (serverConfig.serverMode === "prod") {
+    } else if (serverConfig.serverMode === "prod" || serverConfig.serverMode === "mongodb.net") {
       options = {
         key: fs.readFileSync(serverConfig.certPathProd.pKeyPath),
         cert: fs.readFileSync(serverConfig.certPathProd.pCertPath),
@@ -108,10 +108,10 @@ class Broadcaster {
       }
     );
 
-    var collectCorsDomain = "https://localhost";
+    var collectCorsDomain = "https://maximumroulette.com";
     if (serverConfig.serverMode == "dev") {
       console.log("-rtc cors dev: ", serverConfig.domain.dev);
-    } else if (serverConfig.serverMode == "prod") {
+    } else if (serverConfig.serverMode == "prod" || serverConfig.serverMode == "mongodb.net") {
       console.log("-rtc cors prod: ", serverConfig.domain.prod);
       collectCorsDomain = serverConfig.protocol + "://" + serverConfig.domain.prod;
     }
