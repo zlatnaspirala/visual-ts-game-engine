@@ -48,6 +48,29 @@ class ClientConfig {
   ];
 
   /**
+   * @description This is main canvas dom
+   * id. Program will handle missing this params.
+   * It is nice to have id for main canvas dom element
+   * to avoid coallision woth other possible programs
+   * who use also canvas element.
+   * IMPLEMENTATION [WIP]
+   * @property canvasId
+   * @type  string
+   */
+  public canvasId: string = "vtsge";
+
+  // will be replace in ioc
+  // document.getElementsByTagName("canvas")[0];
+  public recordCanvasOption: any = {
+    injectCanvas: "canvas",
+    frameRequestRate: 30,
+    videoDuration: 20,
+    outputFilename: "record-gameplay.mp4",
+    mineType: "video/mp4",
+    resolutions: '800x600'
+  }
+
+  /**
    * @description This is main coordinary types of positions
    * Can be "diametric-fullscreen" or "frame".
    *  - diametric-fullscreen is simple fullscreen canvas element.
@@ -215,6 +238,10 @@ class ClientConfig {
     // Interconnection Network.Connector vs app.ts
     this.gameList = gameList;
 
+  }
+
+  public getRecordCanvasOptions(): string {
+    return this.recordCanvasOption;
   }
 
   public didAppUseCoordinator() {

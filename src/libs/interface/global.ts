@@ -140,6 +140,7 @@ export interface IGamePlayPlatformerMap {
  */
 export interface IClientConfig {
 
+  recordCanvasOption: object;
   getcontrols(): any;
   getShowBroadcasterOnInt (): boolean;
   getRunBroadcasterOnInt(): boolean;
@@ -181,4 +182,8 @@ export interface IClientConfig {
    */
   getMasterServerKey(): string;
 
+}
+
+export interface IRecordCanvasModule {
+  recordCanvas: any;
 }

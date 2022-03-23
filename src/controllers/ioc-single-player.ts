@@ -3,6 +3,7 @@ import ClientConfig from "../client-config";
 import Browser from "../libs/class/browser";
 import MessageBox from "../libs/class/messager-box";
 import MobileControls from "../libs/class/player-commands";
+import RecordGamePlay from "../libs/class/record-canvas";
 import Sound from "../libs/class/sound";
 import { scriptManager } from "../libs/class/system";
 import ViewPort from "../libs/class/view-port";
@@ -57,6 +58,7 @@ class Ioc {
 
     this.loadAddson();
 
+    // this.singlton(RecordGamePlay, undefined);
     this.singlton(Sound, undefined);
     this.singlton(MessageBox, undefined);
     this.singlton(MobileControls, undefined);
@@ -67,6 +69,12 @@ class Ioc {
                                 this.get.MobileControls]);
     this.singlton(VisualRender, undefined);
     this.singlton(Starter, this);
+
+    if (this.config.recordCanvasOption) {
+      // Must be from config at the end to replace all document.getElementsByTagName("canvas")[0]
+      this.config.recordCanvasOption.injectCanvas = document.getElementsByTagName("canvas")[0];
+      this.singlton(RecordGamePlay, this.config.recordCanvasOption);
+    }
 
   }
 
