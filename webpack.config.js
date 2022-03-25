@@ -133,6 +133,11 @@ let webPackModule = {
       { from: "./src/examples/platformer/ui/player-board.html", to: "templates/ui/player-board.html"},
       { from: "./src/examples/platformer-single-player/ui/select-player.html", to: "templates/ui/select-player.html"},
       { from: "./src/examples/platformer-single-player/ui/player-board.html", to: "templates/ui/single-player-board.html"},
+      // Audios
+      { from: "./src/examples/platformer-single-player/audios/map-themes/sb_indreams.mp3", to: "audios/sb_indreams.mp3"},
+      { from: "./src/examples/platformer-single-player/audios/player/jump.mp3", to: "audios/jump.mp3"},
+      { from: "./src/examples/platformer-single-player/audios/player/collect-item.mp3", to: "audios/collect-item.mp3"},
+      { from: "./src/examples/platformer-single-player/audios/player/dead.mp3", to: "audios/dead.mp3"}
     ], { debug: 'warn' }), // { debug: 'info' } make trace
 
   ],

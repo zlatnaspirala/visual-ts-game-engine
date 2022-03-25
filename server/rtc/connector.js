@@ -49,7 +49,7 @@ class Connector {
 
       let options = {};
 
-      if (serverConfig.serverMode === 'dev') {
+      if (serverConfig.serverMode === 'dev' || serverConfig.serverMode === 'mongodb.net-dev') {
         options = {
           key: fs.readFileSync(serverConfig.certPathSelf.pKeyPath),
           cert: fs.readFileSync(serverConfig.certPathSelf.pCertPath),

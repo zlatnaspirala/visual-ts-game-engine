@@ -59,10 +59,9 @@ class ClientConfig {
    */
   public canvasId: string = "vtsge";
 
-  // will be replace in ioc
-  // document.getElementsByTagName("canvas")[0];
+  // Free to define what ever -> injectCanvas
   public recordCanvasOption: any = {
-    injectCanvas: "canvas",
+    injectCanvas: () => document.getElementsByTagName("canvas")[0],
     frameRequestRate: 30,
     videoDuration: 20,
     outputFilename: "record-gameplay.mp4",
@@ -92,8 +91,8 @@ class ClientConfig {
    * recommendent to use for local propose LAN ip
    * like : 192.168.0.XXX if you wanna run ant test app with server.
    */
-  private domain: string = "maximumroulette.com";
-  // private domain: string = "localhost";
+  // private domain: string = "maximumroulette.com";
+  private domain: string = "localhost";
 
   /**
    * @description Important note for this property: if you

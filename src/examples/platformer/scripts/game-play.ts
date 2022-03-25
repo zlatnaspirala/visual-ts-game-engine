@@ -167,11 +167,14 @@ class GamePlay extends Platformer implements IMultiplayer {
         myInstance.broadcaster.activateDataStream(myInstance.multiPlayerRef);
         console.info("Player spawn. game-init .startNewGame");
 
-        // Play music in background
-        myInstance.starter.ioc.get.Sound.createAudio("./audios/sb_indreams.mp3", "bgMusic");
-        myInstance.starter.ioc.get.Sound.createAudio("./audios/collect-item.mp3", "collectItem");
-        myInstance.starter.ioc.get.Sound.createAudio("./audios/dead.mp3", "dead");
-        
+          // Play music in background
+          myInstance.starter.ioc.get.Sound.createAudio("./audios/sb_indreams.mp3", "bgMusic");
+          myInstance.starter.ioc.get.Sound.createAudio("./audios/collect-item.mp3", "collectItem");
+          myInstance.starter.ioc.get.Sound.createAudio("./audios/dead.mp3", "dead");
+          myInstance.starter.ioc.get.Sound.createAudio("./audios/jump.mp3", "jump");
+          // Correct bg Music
+          myInstance.starter.ioc.get.Sound.audioBox.bgMusic.volume = 0.3;
+
       } catch (err) {
         console.error("Very bad #00001", err);
       }
@@ -355,6 +358,7 @@ class GamePlay extends Platformer implements IMultiplayer {
         };
         Matter.Body.setVelocity(root.player, {x: 0, y: -s});
         // this.player.currentDir = "jump";
+        root.starter.ioc.get.Sound.playById('jump');
       } else if (
         globalEvent.activeKey[37] &&
         root.player.angularVelocity > -limit

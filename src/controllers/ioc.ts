@@ -9,6 +9,7 @@ import { scriptManager } from "../libs/class/system";
 import ViewPort from "../libs/class/view-port";
 import VisualRender from "../libs/class/visual-render";
 import GlobalEvent from "../libs/events/global-event";
+import RecordGamePlay from "../libs/class/record-canvas";
 import { IClientConfig, IUniVector } from "../libs/interface/global";
 import Starter from "../libs/starter";
 
@@ -71,6 +72,11 @@ class Ioc {
     }
 
     this.singlton(Starter, this);
+
+    if (this.config.recordCanvasOption) {
+      this.config.recordCanvasOption.injectCanvas = this.config.recordCanvasOption.injectCanvas();
+      this.singlton(RecordGamePlay, this.config.recordCanvasOption);
+    }
 
   }
 

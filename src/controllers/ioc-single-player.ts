@@ -58,7 +58,6 @@ class Ioc {
 
     this.loadAddson();
 
-    // this.singlton(RecordGamePlay, undefined);
     this.singlton(Sound, undefined);
     this.singlton(MessageBox, undefined);
     this.singlton(MobileControls, undefined);
@@ -71,8 +70,7 @@ class Ioc {
     this.singlton(Starter, this);
 
     if (this.config.recordCanvasOption) {
-      // Must be from config at the end to replace all document.getElementsByTagName("canvas")[0]
-      this.config.recordCanvasOption.injectCanvas = document.getElementsByTagName("canvas")[0];
+      this.config.recordCanvasOption.injectCanvas = this.config.recordCanvasOption.injectCanvas();
       this.singlton(RecordGamePlay, this.config.recordCanvasOption);
     }
 

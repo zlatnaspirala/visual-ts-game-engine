@@ -215,7 +215,7 @@ class GamePlay extends Platformer {
           y: -(s),
         };
         Matter.Body.setVelocity(root.player, { x: 0, y: -s });
-
+        root.starter.ioc.get.Sound.playById('jump');
         // this.player.currentDir = "jump";
 
       } else if (globalEvent.activeKey[37] && root.player.angularVelocity > -limit) {
