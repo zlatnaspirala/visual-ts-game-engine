@@ -269,36 +269,6 @@ Setup in `client-config.ts`:
 ```
 
 
-### Audios
-
- Audios are not loaded by defoult if you use it in IOC controller.
- You create audio instance from code.
- You can mute it all.
-
-#### Add new sound
-
-  - Open webpack and add line:
-     [After this you need to restart webpack.]
-```
-   new CopyWebpackPlugin([
-      ...
-      // Audios
-      { from: "./src/examples/platformer-single-player/audios/player/dead.mp3", to: "audios/newAudio1.mp3"}
-      { from: "./src/examples/platformer-single-player/audios/player/dead.mp3", to: "audios/newAudio2.mp3"}
-    ], { debug: 'warn' })
-```
-
- - Find nice place for creating instance:
-```js
-  myInstance.starter.ioc.get.Sound.createAudio("./audios/newAudio1.mp3", "newAudio1");
-  myInstance.starter.ioc.get.Sound.createAudio("./audios/newAudio2.mp3", "newAudio2");
-```
-
- - Find place where you wanna run play:
-```js
-   root.starter.ioc.get.Sound.playById('jump');
-```
-
 #### About runup gameplay
 
 @Note Somethimes i override autoStartGamePlay!
@@ -441,14 +411,43 @@ LICENSE
 
 ### About Dev Prodc regime
 
- Enum: 'dev', 'prod', `mongodb.net` or `mongodb.net-dev`
+ Enum: `dev`, `prod`, `mongodb.net` or `mongodb.net-dev`
 
- Explanation for `mongodb.net-dev`:
+ Explanation for:
  this.serverMode = "mongodb.net-dev";
-
  If you wanna use mongod.net database but you wanna use it from localhost.
  Multiplayer (with videochat or realtime net) still use `https`.
  For single player variant you can use `http`.
+
+### Audios
+
+ Audios are not loaded by defoult if you use it in IOC controller.
+ You create audio instance from code.
+ You can mute it all.
+
+#### Add new sound
+
+  - Open webpack and add line:
+     [After this you need to restart webpack.]
+```
+new CopyWebpackPlugin([
+  ...
+  // Audios
+  {from: "./src/examples/platformer-single-player/audios/player/dead.mp3", to: "audios/newAudio1.mp3"}
+  {from: "./src/examples/platformer-single-player/audios/player/dead.mp3", to: "audios/newAudio2.mp3"}
+], { debug: 'warn' })
+```
+
+ - Find nice place for creating instance:
+```js
+  myInstance.starter.ioc.get.Sound.createAudio("./audios/newAudio1.mp3", "newAudio1");
+  myInstance.starter.ioc.get.Sound.createAudio("./audios/newAudio2.mp3", "newAudio2");
+```
+
+ - Find place where you wanna run play:
+```js
+   root.starter.ioc.get.Sound.playById('jump');
+```
 
 
 ## Server part
