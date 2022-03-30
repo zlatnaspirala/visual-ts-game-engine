@@ -55,6 +55,8 @@ Old Version:
    MultiRTC3 alias `broadcaster` used for video chat also for data transfer.
  - Mobile controls / Tested on android
 
+## Landscape logo
+
 ![visualTS](https://github.com/zlatnaspirala/visual-ts/blob/master/nonproject-files/logo.png)
 
    - Also use VisualTsGameEngine tool 2dMapCreator made in python:
@@ -462,7 +464,7 @@ Node.js is best options.For email staff i choose :
  npm i gmail-send .
 
 -Run services database server (Locally and leave it alive for develop proccess):
-
+ if you use (running) services mongod no need for this command.
 ```javascript
   npm run dataserver
 ```
