@@ -1,6 +1,6 @@
 {
   "name": "visual-ts",
-  "version": "0.6.21",
+  "version": "0.6.22",
   "description": "0.6.21 -> Added record-canvas npm module, game play can be recorded to the mp4 format and with no action download after rec interval ends. 0.6.20 -> Added Sound:On/Off feature, 0.6.19 -> Adding Sound class to the ioc controller, help for generate self-singed cert, 0.6.18 -> Added free service mongodb.net new optimal option for choosing database, 0.6.16 -> added background audio and jump effect for single player, 0.6.15 -> UPDATE Broadcaster , added webcam access local without networking hot fix . Added local-stream-loaded dispatch event trigger.",
   "main": "",
   "dependencies": {
