@@ -64,10 +64,26 @@ Old Version:
 
 ![visualTS](https://github.com/zlatnaspirala/visual-ts/blob/master/nonproject-files/creatorlogo.png)
 
-###  
+#### Much more easyest way to make yor gameplay table sets is `creator-2dmap` python script. After installation of all needed modules vie pip3 for python3, you need to run:
+```
+  // Windows
+  python.exe tool.py
+  // Macos - linux
+  python3 ./tool.py
+```
+Possible bug on oldies linux os mint. Bug related with tkinter lib.
 
-   ![Creator 2d map](https://github.com/zlatnaspirala/creator-2dmap/blob/master/creator-2d-map.image.png)
-   This is separated and added like git submodules.
+You need to change self.absolutePacksPath from defaults.py config file.
+Put example platformer pack folder path: `src\examples\platformer\scripts\packs` but path must be absolute, my personal path is (For windows users : use double \ for escape ):
+
+This is example for windows users:
+```bash
+E:\\web_server\\xampp\htdocs\\PRIVATE_SERVER\\visual-ts\\project\\visual-ts\\src\\examples\\platformer\\scripts\\packs\\"
+```
+
+
+![Creator 2d map](https://github.com/zlatnaspirala/creator-2dmap/blob/master/creator-2d-map.image.png)
+This is separated and added like git submodules.
 
    - This is freeware / opensource . There is no any limitation in this project.
    You can use video stream as gamePlay objects , multiplayer feature is also free.
