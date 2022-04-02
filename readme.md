@@ -59,7 +59,13 @@ Old Version:
 
 ![visualTS](https://github.com/zlatnaspirala/visual-ts/blob/master/nonproject-files/logo.png)
 
-   - Also use VisualTsGameEngine tool 2dMapCreator made in python:
+### VisualTsGameEngine GUI tool 2d Map Creator made in python:
+###  
+
+![visualTS](https://github.com/zlatnaspirala/visual-ts/blob/master/nonproject-files/creatorlogo.png)
+
+###  
+
    ![Creator 2d map](https://github.com/zlatnaspirala/creator-2dmap/blob/master/creator-2d-map.image.png)
    This is separated and added like git submodules.
 

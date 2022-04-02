@@ -11,8 +11,9 @@ class ServerConfig {
      */
     this.version = "0.2.0";
 
-     // enum : 'dev', 'prod' or `mongodb.net`
-    this.serverMode = "mongodb.net";
+     // enum : 'dev', 'prod', `mongodb.net` or `mongodb.net-dev`
+    // this.serverMode = "mongodb.net";
+    this.serverMode = "dev";
 
     this.ownHosting = false;
     this.ownHttpHostPort = 443;
@@ -95,7 +96,7 @@ class ServerConfig {
     this.databaseRoot = {
       dev: "mongodb://localhost:27017" ,
       prod: "mongodb://userAdmin:*************@localhost:27017/admin",
-      freeService: "mongodb+srv://userAdmin:*******@cluster0.piqav.mongodb.net/masterdatabase?retryWrites=true&w=majority"
+      freeService: "mongodb+srv://userAdmin:************@cluster0.piqav.mongodb.net/masterdatabase?retryWrites=true&w=majority"
     };
 
     this.specialRoute = {
@@ -134,7 +135,7 @@ class ServerConfig {
   get getProtocol() {
     if (this.isSecure) {
       this.protocol = "https";
-    } else if (this.serverMode === "mongodb.net") {
+    } else if (this.serverMode === "mongodb.net" || this.serverMode === "mongodb.net-dev") {
       this.protocol = "https";
     } else {
       this.protocol = "http";
@@ -156,7 +157,7 @@ class ServerConfig {
       return this.databaseRoot.dev;
     } else if (this.serverMode == "prod") {
       return this.databaseRoot.prod;
-    } else if (this.serverMode == "mongodb.net") {
+    } else if (this.serverMode == "mongodb.net" || this.serverMode === "mongodb.net-dev") {
       return this.databaseRoot.freeService;
     }
 
@@ -178,6 +179,8 @@ class ServerConfig {
     return (this.isSecure ? "wss" : "ws") + "://" + this.domain.prod + ":" + this.rtcServerPort + "/";
     } else if (this.serverMode == "mongodb.net") {
       return (this.isSecure ? "wss" : "ws") + "://" + this.domain.prod + ":" + this.rtcServerPort + "/";
+    } else if (this.serverMode == "mongodb.net-dev") {
+      return (this.isSecure ? "wss" : "ws") + "://" + this.domain.dev + ":" + this.rtcServerPort + "/";
     }
 
   }
