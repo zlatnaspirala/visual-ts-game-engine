@@ -48,12 +48,14 @@ Old Version:
 
  - Written in typescript current version 4.2.4.
  - Package tool used webpack 4.46.0.
- - Text editor used and recommended: Last version of `Visual Studio Code`.
+ - Text editor used and recommended: Last version of `Visual Studio Code` [1.66.0].
    Luanch debugger configuration comes with this project (for server part).
+   Or run server on `Javascript Debug Terminal`. 
  - Physics engine based on `Matter.js - Matter.ts` (npm project).
  - Multiplatform video chat (for all browsers) implemented. SocketIO used for session staff.
    MultiRTC3 alias `broadcaster` used for video chat also for data transfer.
  - Mobile controls / Tested on android
+   Based on touch area bounds LEFT , UP, RIGHT (for platformer based gameplay, for now).
 
 ## Landscape logo
 
@@ -65,7 +67,14 @@ Old Version:
 ![visualTS](https://github.com/zlatnaspirala/visual-ts/blob/master/nonproject-files/creatorlogo.png)
 
 #### Much more easyest way to make yor gameplay table sets is `creator-2dmap` python script. After installation of all needed modules vie pip3 for python3, you need to run:
-```
+
+@Note If you use 
+`git clone --recurse-submodules https://github.com/zlatnaspirala/visual-ts-game-engine`
+
+Then run creator@dmap with `npm run creator`
+
+
+```js
   // Windows
   python.exe tool.py
   // Macos - linux
