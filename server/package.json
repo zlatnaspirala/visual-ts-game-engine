@@ -4,19 +4,19 @@
   "description": "0.2.0. dev stage. Whole Package updated. Preparing for next stage 0.2.0 -  proper porting for npm service. This version 0.1.0 of visual-ts game engine server. Main file is server.js , used MongoDB database, webSocket for signaling/networking also own hosting option added with vhost options etc.",
   "main": ".rtc/server.js",
   "dependencies": {
-    "@types/node": "^10.17.29",
+    "@types/node": "^10.17.60",
     "crypto": "^1.0.1",
-    "express": "^4.17.1",
-    "gmail-send": "^1.8.10",
-    "mongodb": "^3.5.6",
+    "express": "^4.17.3",
+    "gmail-send": "^1.8.14",
+    "mongodb": "^3.7.3",
     "node-static": "^0.7.11",
-    "rtcmulticonnection-server": "^1.3.2",
+    "rtcmulticonnection-server": "^1.3.3",
     "vhost": "^3.0.2",
-    "websocket": "^1.0.30"
+    "websocket": "^1.0.34"
   },
   "devDependencies": {
     "eslint": "^4.19.1",
-    "npm": "^7.10.0"
+    "npm": "^7.24.2"
   },
   "scripts": {
     "rtc": "node ./rtc/server.js --ssl",
