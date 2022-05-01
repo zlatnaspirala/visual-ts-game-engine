@@ -76,7 +76,7 @@ class Broadcaster {
      * @description This block can be optimisex
      * SSL on/off
      */
-    if (serverConfig.serverMode === "dev" || this.serverMode === "mongodb.net-dev") {
+    if (serverConfig.serverMode === "dev" || serverConfig.serverMode === "mongodb.net-dev") {
       options = {
         key: fs.readFileSync(serverConfig.certPathSelf.pKeyPath),
         cert: fs.readFileSync(serverConfig.certPathSelf.pCertPath),
@@ -108,7 +108,10 @@ class Broadcaster {
       }
     );
 
-    var collectCorsDomain = "https://maximumroulette.com";
+    // var collectCorsDomain = "https://maximumroulette.com";
+    var collectCorsDomain = config.homePage;
+    console.log("-rtc cors collectCorsDomain : ", collectCorsDomain);
+
     if (serverConfig.serverMode == "dev" || this.serverMode == "mongodb.net-dev") {
       console.log("-rtc cors dev: ", serverConfig.domain.dev);
     } else if (serverConfig.serverMode == "prod" || serverConfig.serverMode == "mongodb.net") {
@@ -120,7 +123,7 @@ class Broadcaster {
     ioServer(httpApp, {
       cors: {
         origin: collectCorsDomain,
-        methods: ["GET", "POST", "OPTIONS"],
+        methods: ["GET", "POST", "OPTIONS", "*"],
         allowedHeaders: ["*"],
         credentials: true,
       },

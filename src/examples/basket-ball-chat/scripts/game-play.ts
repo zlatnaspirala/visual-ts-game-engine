@@ -16,8 +16,9 @@ import BasketBallChat from "./basketBallChat";
 import GameMap from "./map";
 
 /**
- * @description Finally game start at here
- * @function Handling muliplayer part and manage whole gam play.
+ * @description Finally gameplay starts here.
+ * Handling multiplayer part and manage whole game play without account session.
+ * `free for all` game play.
  * @return void
  */
 class GamePlay extends BasketBallChat implements IMultiplayer {
@@ -97,8 +98,10 @@ class GamePlay extends BasketBallChat implements IMultiplayer {
   private ground;
   private rockOptions;
   private rock;
+  private rock2;
   private anchor;
   private elastic;
+  private elasticBig;
   private pyramid;
   private ground2;
   private pyramid2;
@@ -142,7 +145,8 @@ class GamePlay extends BasketBallChat implements IMultiplayer {
                   (e as any).detail.data.game === null ) {
 
           console.info("game-init Player spawn. data.game === null");
-          myInstance.starter.ioc.get.Network.connector.startNewGame(myInstance.gameName);
+          // disabled account session 
+          // myInstance.starter.ioc.get.Network.connector.startNewGame(myInstance.gameName);
           /**
            * @description
            * Very important - You can activate also coordinator like supre extra multiPeer
@@ -161,7 +165,8 @@ class GamePlay extends BasketBallChat implements IMultiplayer {
         myInstance.selectPlayer("nidzica");
 
         // How to access netwoking
-        myInstance.starter.ioc.get.Network.connector.startNewGame(myInstance.gameName);
+        // disabled account session
+        // myInstance.starter.ioc.get.Network.connector.startNewGame(myInstance.gameName);
 
         /**
          * @description
@@ -306,15 +311,17 @@ class GamePlay extends BasketBallChat implements IMultiplayer {
     Matter.Events.on(this.starter.getEngine(), "afterUpdate", function () {
 
       if (root.starter.getMouseConstraint().mouse.button === -1 &&
-         (root.player.position.x > 190 && root.player.position.x < 230)) {
-        // root.rock = Matter.Bodies.polygon(170, 450, 7, 20, root.rockOptions);
-        // Matter.World.add(root.starter.getEngine().world, root.player);
-        root.elastic.bodyB = root.player;
-        console.log(" eLASTICK TEST");
+          (root.player.position.x > 190 && root.player.position.x < 220)) {
 
+        root.elastic.bodyB = root.player;
+        console.log(" eLASTICK TEST" , root.player.position.x);
+
+      } else if ((root.player.position.x > 1690 && root.player.position.x < 1700 )) {
+        root.elasticBig.bodyB = root.player;
       } else {
         root.rock = Matter.Bodies.polygon(170, 450, 7, 20, root.rockOptions);
         root.elastic.bodyB = root.rock;
+        root.elasticBig.bodyB = root.rock2;
       }
 
     });
@@ -447,6 +454,27 @@ class GamePlay extends BasketBallChat implements IMultiplayer {
     });
 
     this.playerSpawn(false);
+
+
+    // Background 
+    const newStaticElement: worldElement = Matter.Bodies.rectangle(
+      1400,
+      500,
+      2000,
+      1000,
+      {
+        isStatic: true,
+        isSleeping: false,
+        label: "background",
+        render: {
+          visualComponent: new TextureComponent("wall", require("../imgs/backgrounds/wall2.jpg")),
+          sprite: {
+            olala: true,
+          },
+        } as any | Matter.IBodyRenderOptions,
+      }
+    );
+    newStaticElement.collisionFilter.group = -1;
 
     /*
     gameMap.getStaticBackgrounds().forEach((item) => {
@@ -628,25 +656,39 @@ class GamePlay extends BasketBallChat implements IMultiplayer {
     });
 
     // Elasticks objects.
-    this.ground = Matter.Bodies.rectangle(395, 600, 815, 50,
+    this.ground = Matter.Bodies.rectangle(500, 600, 815, 50,
        { isStatic: true,
          collisionFilter: {group: -1},
-       }),
+       });
+
+
        this.rockOptions = {
         density: 0.004 ,
         collisionFilter: {
-          category: this.playerCategory,
+          category: -1 //this.playerCategory,
         } as any,
-      },
-      this.rock = Matter.Bodies.polygon(170, 450, 8, 20, this.rockOptions),
-      this.anchor = { x: 170, y: 450 },
+      }
+
+      this.rock = Matter.Bodies.polygon(240, 350, 8, 20, this.rockOptions)
+
+      this.anchor = { x: 440, y: 350 }
+
       this.elastic = Matter.Constraint.create({
         pointA: this.anchor,
         bodyB: this.rock,
+        stiffness: 0.5,
+      });
+
+      this.rock2 = Matter.Bodies.polygon(1690, 110, 8, 20, this.rockOptions)
+
+      this.elasticBig = Matter.Constraint.create({
+        pointA: { x: 1700, y: 110 },
+        bodyB: this.rock2 ,
         stiffness: 0.05,
       });
 
-    this.pyramid = Matter.Composites.pyramid(500, 300, 9, 10, 0, 0, function (x, y) {
+
+    this.pyramid = Matter.Composites.pyramid(50, 30, 9, 10, 0, 0, function (x, y) {
       return Matter.Bodies.rectangle(
         x, y, 25, 40,
         { collisionFilter: {
@@ -655,7 +697,7 @@ class GamePlay extends BasketBallChat implements IMultiplayer {
         });
     });
 
-    this.ground2 = Matter.Bodies.rectangle(610, 250, 200, 20, { isStatic: true });
+    this.ground2 = Matter.Bodies.rectangle(1210, 250, 200, 20, { isStatic: true });
 
     this.pyramid2 = Matter.Composites.pyramid(550, 0, 5, 10, 0, 0, function (x, y) {
         return Matter.Bodies.rectangle(x, y, 25, 40,
@@ -665,12 +707,13 @@ class GamePlay extends BasketBallChat implements IMultiplayer {
         });
     });
 
+    this.starter.AddNewBodies(newStaticElement as worldElement);
     this.starter.AddNewBodies(this.grounds as worldElement);
     this.starter.AddNewBodies(this.enemys as worldElement);
     this.starter.AddNewBodies(this.deadLines as worldElement);
     this.starter.AddNewBodies(this.player as worldElement);
     this.starter.AddNewBodies(
-      [this.ground, this.pyramid, this.ground2, this.pyramid2, this.rock, this.elastic] as worldElement);
+      [ this.ground2] as worldElement);
     this.starter.AddNewBodies(this.labels as worldElement);
     this.attachMatterEvents();
 

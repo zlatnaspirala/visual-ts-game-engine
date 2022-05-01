@@ -24,7 +24,8 @@ import Broadcaster from "../../../libs/class/networking/broadcaster";
  * @param Starter
  * @description This is game logic part
  * we stil use class based methodology.
- * About resource we use require
+ * About resource we use require.
+ * FREE FOR ALL - Account is DISABLED for this instance.
  */
 
 class BasketBallChat implements IGamePlayModel {
@@ -55,7 +56,7 @@ class BasketBallChat implements IGamePlayModel {
   // protected playerStream: worldElement;
 
   private preventDoubleExecution: boolean = false;
-  private playerStartPositions: IPoint[] = [{x: 120, y: 200}];
+  private playerStartPositions: IPoint[] = [{x: 420, y: 200}];
   private playerDeadPauseInterval: number = 500;
 
   private UIPlayerBoard: HTMLDivElement;
@@ -71,8 +72,12 @@ class BasketBallChat implements IGamePlayModel {
     this.starter = starter;
     // this.starter.getEngine().enableSleeping = true;
     this.initSelectPlayer();
-    // this.addUIPlayerBoard();
-    // this.showPlayerBoardUI();
+
+    setTimeout( ()=> {
+    this.addUIPlayerBoard();
+    this.showPlayerBoardUI();
+    }, 1000);
+
     this.attachUpdateLives();
 
     this.broadcaster = starter.ioc.get.Broadcaster;

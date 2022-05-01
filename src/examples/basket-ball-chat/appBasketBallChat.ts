@@ -9,6 +9,12 @@ import Ioc from "../../controllers/ioc";
 import GamePlay from "./scripts/game-play";
 
 /**
+ * @description
+ * This instance use injected overrided config.
+ */
+import AppConfig from './ownConfig';
+
+/**
  * plarformerGameInfo
  * This is strong connection.
  * html-components are on the same level with app.ts
@@ -23,7 +29,7 @@ const gamesList: any[] = [
   gameInfo,
 ];
 
-const master = new Ioc(gamesList);
+const master = new Ioc(gamesList, new AppConfig(gamesList));
 const appIcons = [
   require("../../icon/favicon.ico"),
   require("../../icon/favicon-96x96.png"),

@@ -7,6 +7,12 @@ Basket Ball Chat is one of different use of this game library.
 
 - Snaped code from multiplayer platformer [0.3.4].
 
+
+## Using injected clientConfig
+
+
+
+
 Example structure :
 
 <pre>

@@ -273,7 +273,7 @@ class ConnectorClient {
         }
         case "LOG_OUT": {
           // destroy game play if exist
-          location.reload(true);
+          location.reload();
           break;
         }
         case "OUT_OF_GAME": {
