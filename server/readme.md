@@ -64,6 +64,12 @@ To kill all node tasks:
 taskkill /im node.exe
 ```
 
+If you have running services `The MongDB Seervices` command for kill (run as administrator): 
+```
+net stop MongoDB
+```
+
+
 ```
 netsh int ipv4 show dynamicport tcp
 ```

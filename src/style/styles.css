@@ -25,8 +25,8 @@ footer, header, hgroup, menu, nav, section {
 }
 
 body {
-  font: 14px/20px Helvetica, Arial, sans-serif;
-  color: lime;
+  font: 14px/20px sans-serif, Helvetica, Arial;
+  color: white;
   margin: 0;
   padding: 0;
   border:none;
@@ -482,6 +482,7 @@ button:focus {outline:0;}
 }
 
 .form-selectplayer {
+  height: 300px;
   position: relative;
   text-align: center;
   z-index: 1;

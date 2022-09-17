@@ -713,7 +713,7 @@ class GamePlay extends BasketBallChat implements IMultiplayer {
     this.starter.AddNewBodies(this.deadLines as worldElement);
     this.starter.AddNewBodies(this.player as worldElement);
     this.starter.AddNewBodies(
-      [ this.ground2] as worldElement);
+      [ this.elastic, this.ground2] as worldElement);
     this.starter.AddNewBodies(this.labels as worldElement);
     this.attachMatterEvents();
 
