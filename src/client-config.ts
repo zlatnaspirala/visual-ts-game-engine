@@ -166,7 +166,7 @@ class ClientConfig {
    */
   private broadcasterPort: number = 9001;
 
-  private showBroadcasterOnInt: boolean = true;
+  private showBroadcasterOnInt: boolean = false;
 
   /**
    * @description

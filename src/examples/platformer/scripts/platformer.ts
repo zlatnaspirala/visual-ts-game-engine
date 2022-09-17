@@ -340,14 +340,14 @@ class Platformer implements IGamePlayModel {
          */
          myInstance.UISoundOptionDom.addEventListener("click", function(e) {
 
-          if ((e.currentTarget as HTMLElement).innerHTML == "Sound:Off") {
+          if ((e.currentTarget as HTMLElement).innerHTML == "Sound: Off") {
             myInstance.starter.ioc.get.Sound.audioBox.bgMusic.pause();
             myInstance.starter.ioc.get.Sound.audioBox.noSound = true;
-            (e.currentTarget as HTMLElement).innerText = "Sound:On";
+            (e.currentTarget as HTMLElement).innerText = "Sound: On";
           } else {
             myInstance.starter.ioc.get.Sound.audioBox.noSound = false;
             myInstance.starter.ioc.get.Sound.playById('bgMusic');
-            (e.currentTarget as HTMLElement).innerText = "Sound:Off";
+            (e.currentTarget as HTMLElement).innerText = "Sound: Off";
           }
          });
         /**

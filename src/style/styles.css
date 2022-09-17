@@ -24,14 +24,26 @@ footer, header, hgroup, menu, nav, section {
   display: block;
 }
 
+@font-face {
+  font-family: stormfaze;
+  src: url('../fonts/stormfaze.ttf');
+}
+
+@font-face {
+  font-family: wargames;
+  src: url('../fonts/stormfaze.ttf');
+}
+
+
 body {
-  font: 14px/20px sans-serif, Helvetica, Arial;
+  font-family: stormfaze;
   color: white;
   margin: 0;
   padding: 0;
   border:none;
   background-color:black;
   overflow: hidden;
+  font-size: 14px;
 }
 
 * {
@@ -180,7 +192,7 @@ canvas {
 
 .message-box-content {
   text-align: center;
-  font-size: 140%;
+  font-size: 100%;
 }
 
 .message-box-hide-animation {
@@ -210,7 +222,7 @@ canvas {
   background-color: rgba(237, 17, 17, 0.75);
   border: none;
   cursor: pointer;
-  font-size: 130%;
+  font-size: 100%;
 }
 
 .logger {
@@ -316,7 +328,7 @@ canvas {
 	cursor:pointer;
 	color:#ffffff;
 	font-family: Arial;
-	font-size:17px;
+	font-size:14px;
 	padding:5px 33px;
   text-decoration:none;
   outline: none;
@@ -333,7 +345,7 @@ canvas {
 	cursor:pointer;
 	color:#ffffff;
 	font-family: Arial;
-	font-size:17px;
+	font-size:14px;
 	padding:5px 33px;
   text-decoration:none;
   outline: none;
@@ -357,7 +369,7 @@ canvas {
 	cursor:pointer;
 	color:lightcoral;
 	font-family: Impact, Arial;
-	font-size:17px;
+	font-size:14px;
 	padding:5px 33px;
 	text-decoration:none;
   text-shadow:0px 1px 8px #14151f;
@@ -454,10 +466,12 @@ button:focus {outline:0;}
   margin: auto 0;
   padding: 0;
   width: 16%;
+  max-width: 210px;
+  min-width: 150px;
   height: 100%;
   box-shadow: 0px 20px 70px -20px rgba(0, 0, 0, 0.8);
   border-radius: 20px;
-  font-size: 80%;
+  font-size: 14px;
 }
 
 .container:after {
@@ -478,7 +492,7 @@ button:focus {outline:0;}
   z-index: 1;
   padding: 5% 1% 4% 1%;
   border-bottom: 1px solid rgba(255,255,255, 0.25);
-  font-size: x-large;
+  font-size: 15px;
 }
 
 .form-selectplayer {
@@ -488,7 +502,7 @@ button:focus {outline:0;}
   z-index: 1;
   padding: 1% 1% 4% 1%;
   border-bottom: 1px solid rgba(255,255,255, 0.25);
-  font-size: x-large;
+  font-size: 15px;
 }
 
 .nav {
@@ -512,7 +526,7 @@ button:focus {outline:0;}
   text-decoration: none;
   text-transform: uppercase;
   font-weight: 500;
-  font-size: 1.25rem;
+  font-size: 14px;
   padding-bottom: .5rem;
   transition: .20s all ease;
 }
@@ -547,7 +561,7 @@ button:focus {outline:0;}
 .form-label, .form-checkbox-label{
   color: rgba(255, 255, 255, 0.5);
   text-transform: uppercase;
-  font-size: .75rem;
+  font-size: 12px;
   margin-bottom: 1rem;
 }
 
@@ -594,7 +608,7 @@ button:focus {outline:0;}
 
 .login-button {
 	color: #ffffff;
-	font-size: 18px;
+	font-size: 14px;
 	text-transform: uppercase;
 	letter-spacing: 1px;
 	margin-top: 1rem;
@@ -615,7 +629,6 @@ button:focus {outline:0;}
 	text-align: center;
   color:white;
   background-color: rgba(237, 17, 17, 0.75);
-	font-size: 16px;
 	text-decoration: none;
 	position: relative;
 	z-index: 1;
@@ -635,4 +648,49 @@ button:focus {outline:0;}
 
 .selectPlayerItemBox {
   margin-top: 5%;
+}
+
+.player-board {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  height: inherit;
+}
+
+/** Response logic */
+
+@media only screen and (max-width: 768px) {
+
+  
+.player-board {
+  display: flex;
+  flex-direction: row;
+}
+
+  .form-app {
+    width: 35%;
+    min-width: 150px;
+  }
+
+  .container {
+    max-width: 100%;
+  }
+
+  .login-button {  font-size: small; }
+
+  .leftPanelUni {
+    display: block;
+    position: absolute;
+    top: unset;
+    max-width: unset;
+    bottom: 0;
+    z-index: 10;
+    margin: auto 0;
+    padding: 0;
+    width: 100%;
+    height: auto;
+    box-shadow: 0px 20px 70px -20px rgb(0 0 0 / 80%);
+    border-radius: 20px;
+    font-size: 14px;
+  }
 }

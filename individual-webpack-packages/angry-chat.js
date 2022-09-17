@@ -61,8 +61,8 @@ module.exports = webPackModuleMultiChatBasketBall = {
       { from: './src/libs/addons/cache/worker.js', to: 'worker.js' },
       { from: './src/libs/addons/cache/offline.html', to: 'offline.html' },
       { from: './src/libs/addons/webrtc-adapter/adapter.js', to: 'externals/adapter.js' },
-      { from: "./src/examples/platformer/ui/player-board.html", to: "templates/ui/player-board.html"},
-      { from: "./src/examples/platformer/ui/select-player.html", to: "templates/ui/select-player.html"},
+      { from: "./src/examples/basket-ball-chat/ui/player-board.html", to: "templates/ui/player-board.html"},
+      { from: "./src/examples/basket-ball-chat/ui/select-player.html", to: "templates/ui/select-player.html"},
       { from: 'src/html-components/register.html', to: 'templates/register.html' },
       { from: 'src/html-components/login.html', to: 'templates/login.html' },
       { from: 'src/html-components/user-profile.html', to: 'templates/user-profile.html' },
@@ -72,6 +72,9 @@ module.exports = webPackModuleMultiChatBasketBall = {
       { from: './src/html-components/broadcaster.html', to: 'templates/broadcaster.html' },
       { from: "./src/html-components/message-box.html", to: "templates/message-box.html" },
       { from: "./src/html-components/coordinator.html", to: "templates/coordinator.html" },
+
+      // { from: "./src/fonts/stormfaze.ttf", to: "templates/stormfaze.ttf" },
+      // { from: "./src/fonts/stormfaze.ttf", to: "templates/stormfaze.ttf" },
     ], { debug: 'warn' }),
     // { debug: 'info' } make trace
 

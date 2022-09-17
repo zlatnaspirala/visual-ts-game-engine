@@ -29,7 +29,7 @@ let webPackModule = {
   mode: "development",
   watch: true,
   stats: internalConfig.stats,
-  entry: ["./src/examples/basket-ball-chat/appBasketBallChat.ts"],
+  entry: ["./src/app-platformer-single.ts"],
   output: {
     filename: "visualjs2.js",
     path: __dirname + "/build",
