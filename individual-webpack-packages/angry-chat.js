@@ -72,12 +72,8 @@ module.exports = webPackModuleMultiChatBasketBall = {
       { from: './src/html-components/broadcaster.html', to: 'templates/broadcaster.html' },
       { from: "./src/html-components/message-box.html", to: "templates/message-box.html" },
       { from: "./src/html-components/coordinator.html", to: "templates/coordinator.html" },
-
-      // { from: "./src/fonts/stormfaze.ttf", to: "templates/stormfaze.ttf" },
-      // { from: "./src/fonts/stormfaze.ttf", to: "templates/stormfaze.ttf" },
     ], { debug: 'warn' }),
     // { debug: 'info' } make trace
-
   ],
 
 };
