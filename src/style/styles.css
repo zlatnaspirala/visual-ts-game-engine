@@ -48,7 +48,7 @@ body {
 
 * {
   box-sizing: border-box;
-  font-family: Arial;
+  font-family: stormfaze;
 }
 
 .hide {
@@ -327,7 +327,7 @@ canvas {
 	display:inline-block;
 	cursor:pointer;
 	color:#ffffff;
-	font-family: Arial;
+	font-family: stormfaze;
 	font-size:14px;
 	padding:5px 33px;
   text-decoration:none;
@@ -344,7 +344,7 @@ canvas {
 	display:inline-block;
 	cursor:pointer;
 	color:#ffffff;
-	font-family: Arial;
+	font-family: stormfaze;
 	font-size:14px;
 	padding:5px 33px;
   text-decoration:none;
@@ -483,7 +483,7 @@ button:focus {outline:0;}
   right: 0;
   bottom: 0;
   left: 0;
-  background-image: radial-gradient(ellipse at left bottom, rgba(134, 9, 9, 1) 0%, rgba(150, 15, 15, 0.9) 60%, rgba(159, 14, 14, 0.9) 100%);
+  background-image: radial-gradient(ellipse at left bottom, rgb(3 3 3) 50%, rgba(150, 15, 15, 0.9) 90%, rgb(159 14 14) 100%);
   box-shadow: 0 -20px 150px -20px rgba(0, 0, 0, 0.5);
 }
 
@@ -554,7 +554,7 @@ button:focus {outline:0;}
   height: 2px;
   right: 0;
   bottom: 2px;
-  border-radius: 0;
+  border-radius: 10px;
   transition: .20s all ease;
 }
 
@@ -650,12 +650,25 @@ button:focus {outline:0;}
   margin-top: 5%;
 }
 
+.selectPlayerBox {
+  width:30%;display:inline-block;
+  cursor:pointer;
+  text-align:center;
+  padding: 9px;
+  border-radius: 10px;
+}
+
+.selectPlayerBox:hover{
+  color:blanchedalmond;
+}
+
 .player-board {
   display: flex;
   flex-direction: column;
   margin: 0;
   height: inherit;
 }
+
 
 /** Response logic */
 

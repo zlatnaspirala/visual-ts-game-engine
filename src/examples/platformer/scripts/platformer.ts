@@ -392,8 +392,8 @@ class Platformer implements IGamePlayModel {
 
         const local = document.createElement("div");
         local.id = "" + itemPlayer.labelName;
-        local.className = "bounceIn";
-        local.setAttribute("style", "width:30%;display:inline-block;cursor:pointer;text-align:center;padding: 9px;");
+        local.className = "bounceIn selectPlayerBox";
+        // local.setAttribute("style", "width:30%;display:inline-block;cursor:pointer;text-align:center;padding: 9px;");
         local.innerHTML = "<span> Name:" +
           itemPlayer.labelName +
           "</span> <img src='" +
