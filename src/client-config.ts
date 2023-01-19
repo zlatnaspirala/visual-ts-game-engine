@@ -91,8 +91,8 @@ class ClientConfig {
    * recommendent to use for local propose LAN ip
    * like : 192.168.0.XXX if you wanna run ant test app with server.
    */
-  // private domain: string = "maximumroulette.com";
-  private domain: string = "localhost";
+  private domain: string = "maximumroulette.com";
+  // private domain: string = "localhost";
 
   /**
    * @description Important note for this property: if you
@@ -166,7 +166,7 @@ class ClientConfig {
    */
   private broadcasterPort: number = 9001;
 
-  private showBroadcasterOnInt: boolean = false;
+  private showBroadcasterOnInt: boolean = true;
 
   /**
    * @description

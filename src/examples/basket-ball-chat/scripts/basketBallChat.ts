@@ -219,9 +219,9 @@ class BasketBallChat implements IGamePlayModel {
         density: 0.0005,
         friction: 0.01,
         frictionAir: 0.06,
-        restitution: 0.3,
+        restitution: 0,
         ground: true,
-        jumpAmp: 40,
+        jumpAmp: 140,
         jumpCD: 0,
         portal: -1,
         collisionFilter: {
@@ -281,6 +281,15 @@ class BasketBallChat implements IGamePlayModel {
         if (pair.bodyA.label === "player" && pair.bodyB.label.indexOf("Level") !== -1) {
           const nextLevelItem = pair.bodyB.label;
           myInstance.nextLevel(nextLevelItem);
+        }
+
+        // 'collectItem' is indicator
+        if (pair.bodyA.label === "player" && pair.bodyB.label.indexOf("collectItem") != -1) {
+          const collectitem = pair.bodyB;
+          this.starter.destroyBody(collectitem);
+          this.starter.ioc.get.Sound.playById('collectItem');
+          let gamePlayEvent = new CustomEvent('collect', { detail: { itemName: pair.bodyB.label }});
+          dispatchEvent(gamePlayEvent);
         }
 
         if (pair.bodyA.label === "player" && pair.bodyB.label === "crapmunch") {

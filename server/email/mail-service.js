@@ -21,8 +21,8 @@ class Sender {
   async SEND(subject) {
 
     let arg = {
-      user: "zlatnaspirala@gmail.com",
-      pass: "**********",
+      user: "greespiral@gmail.com",
+      pass: "maximumroulette123654",
       to: this.to,
       subject: this.subject,
       html: this.content

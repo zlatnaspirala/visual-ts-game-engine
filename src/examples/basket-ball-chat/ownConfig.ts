@@ -12,9 +12,13 @@ class AppConfig extends ClientConfig {
   }
 
   /**
-   * @description I wanna free for all this instance.
+   * @description I wanna `free for all` gameplay status.
    */
   public didAppUseAccountsSystem(): boolean {
+    return false;
+  }
+
+  public getShowBroadcasterOnInt ():boolean {
     return false;
   }
 

@@ -23,12 +23,12 @@ class GameMap extends MapLoader implements IGamePlayPlatformerMap {
   public getStaticGrounds(): IStaticItem[] {
 
     // Add bonus objects then return all
-    const LocalWidth = 650;
-    const imgRes = [require("../imgs/grounds/elementGlass019.png")];
-    const tileXLocal = 10;
+    // const LocalWidth = 650;
+    // const imgRes = [require("../imgs/grounds/elementGlass019.png")];
+    // const tileXLocal = 10;
 
-    this.staticGrounds.push(
-      { x: 100, y: 600, w: LocalWidth, h: 60, tex: imgRes, tiles: { tilesX: tileXLocal, tilesY: 1 } });
+    // this.staticGrounds.push(
+    //   { x: 100, y: 600, w: LocalWidth, h: 60, tex: imgRes, tiles: { tilesX: tileXLocal, tilesY: 1 } });
 
     return this.staticGrounds as IStaticItem[];
 
@@ -51,7 +51,7 @@ class GameMap extends MapLoader implements IGamePlayPlatformerMap {
     };
 
     const b: IStaticItem[] = [];
-    for (let x = 0; x < shema.byX; x++) {
+    for (let x = 550; x < shema.byX; x++) {
       for (let y = 0; y < shema.byY; y++) {
         b.push(
           {
@@ -139,13 +139,35 @@ class GameMap extends MapLoader implements IGamePlayPlatformerMap {
     });
 
     this.collectLabels.push(
-      { x: 0, y: 200, w: 400, h: 150,
-        text: " `Platformer` single player mod ",
+      { x: 2220, y: 500, w: 400, h: 150,
+        text: "Visual-ts Video Chat gameplay",
         options: {
           color: "black",
           size: 20,
+          font: "70px stormfaze"
         },
-      },
+      }
+    );
+
+    this.collectLabels.push(
+      { x: 2220, y: 600, w: 400, h: 150,
+        text: "Real time protocols vs physics",
+        options: {
+          color: "black",
+          size: 20,
+          font: "70px wargames"
+        },
+      }
+    );
+
+    this.collectLabels.push(
+      { x: 3220, y: 300, w: 400, h: 150,
+        text: "Public chat",
+        options: {
+          color: "#124784",
+          size: 30,
+        },
+      }
     );
 
     return this.collectLabels as  IStaticLabel[];

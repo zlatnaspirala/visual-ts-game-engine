@@ -50,7 +50,7 @@ class TextComponent implements IVisualComponent {
   originX += originH / 2;
   originY += originH / 2;
 
-  c.font = "50px sans-serif";
+  c.font = (this.options.font as string) || "50px sans-serif";
   c.fillStyle = (this.options.color as string) || "rgba(255,255,255,1)";
   c.fillText(
    this.text,

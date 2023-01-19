@@ -12,7 +12,7 @@ var webPackModuleMultiPlayerSolution = require("./individual-webpack-packages/mu
 var webPackModuleSingleSimpleSolution = require("./individual-webpack-packages/single-player-solution");
 var webPackModuleTutorialsDemo1 = require("./individual-webpack-packages/add-element");
 var webPackModuleTutorialsDemo2 = require("./individual-webpack-packages/webcamera-stream-demo2");
-var webPackModuleMultiChatBasketBall = require("./individual-webpack-packages/angry-chat");
+var webPackModuleMultiChatBasketBall = require("./individual-webpack-packages/basketball-chat");
 var webPackModuleSpriteAnimationDemo = require("./individual-webpack-packages/sprite-animation");
 
 let config = {
@@ -52,10 +52,10 @@ if (internalConfig.createDocumentation == true) {
 }
 
 module.exports = [
-  webPackModuleMultiPlayerSolution,
+  // webPackModuleMultiPlayerSolution,
   webPackModuleSingleSimpleSolution,
   webPackModuleMultiChatBasketBall,
-  webPackModuleTutorialsDemo1,
-  webPackModuleTutorialsDemo2,
-  webPackModuleSpriteAnimationDemo
+  // webPackModuleTutorialsDemo1,
+  // webPackModuleTutorialsDemo2,
+  // webPackModuleSpriteAnimationDemo
 ];

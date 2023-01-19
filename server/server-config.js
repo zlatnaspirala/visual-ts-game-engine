@@ -13,7 +13,7 @@ class ServerConfig {
 
      // enum : 'dev', 'prod', `mongodb.net` or `mongodb.net-dev`
     // this.serverMode = "mongodb.net";
-    this.serverMode = "dev";
+    this.serverMode = "mongodb.net-dev";
 
     this.ownHosting = false;
     this.ownHttpHostPort = 443;
@@ -59,7 +59,7 @@ class ServerConfig {
      */
     this.protocol = "https";
 
-    this.isSecure = true;
+    this.isSecure = false;
 
     /**
      * @description
@@ -67,9 +67,9 @@ class ServerConfig {
      * No pem currently used at the moment.
      */
     this.certPathSelfOrigin = {
-      pKeyPath: "./server/rtc/self-cert/privatekey.pem",
-      pCertPath: "./server/rtc/self-cert/certificate.pem",
-      pCBPath: "./server/rtc/self-cert/certificate.pem",
+      pKeyPath:  "./rtc/apache-local-cert/server.key",
+      pCertPath: "./rtc/apache-local-cert/server.crt",
+      pCBPath:   "./rtc/apache-local-cert/server.csr",
     };
 
     /**
@@ -79,7 +79,7 @@ class ServerConfig {
     this.certPathSelf = {
       pKeyPath: "./server/rtc/apache-local-cert/server.key",
       pCertPath: "./server/rtc/apache-local-cert/server.crt",
-      pCBPath: "./server/rtc/apache-local-cert/server.crt",
+      pCBPath: "./server/rtc/apache-local-cert/server.csr",
     };
 
     // production
@@ -96,7 +96,7 @@ class ServerConfig {
     this.databaseRoot = {
       dev: "mongodb://localhost:27017" ,
       prod: "mongodb://userAdmin:*************@localhost:27017/admin",
-      freeService: "mongodb+srv://userAdmin:************@cluster0.piqav.mongodb.net/masterdatabase?retryWrites=true&w=majority"
+      freeService: "mongodb+srv://userAdmin:s_JmRVjxWh5JsqC@cluster0.piqav.mongodb.net/masterdatabase?retryWrites=true&w=majority"
     };
 
     this.specialRoute = {

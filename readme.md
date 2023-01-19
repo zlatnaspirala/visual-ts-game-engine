@@ -5,9 +5,9 @@ Old Version:
  - `Out of space` - 2021
 ## Current Version  `Lake of fire` 2022
 
-#### 2d canvas game engine based on Matter.js 2D physics engine for the web.
+#### 2d canvas game engine based on Matter.js 2D physics engine for the web supported with backend node.js/mongoDB and visual GUI tool 2d map creator/python3.
 
-  I use my own concept: `take lib for the great benefits`. It means that i import only staff that i can't make in proper way in proper time, all other coming from head. For example `Physics` was imported
+  I use my own concept: `take lib only for the great benefits`. It means that i import only staff that i can't make in proper way in proper time, all other coming from head. For example `Physics` was imported
   in role of npm package for typescript matter.js/ts variant and i keep dependency healthy. In
   networking aspect i use full-duplex connection under web-rtc protocol. Pretty nice working
   combination of physics and realtime-multiplayer connetions. PeerToPeer used for game-play
@@ -94,11 +94,11 @@ E:\\web_server\\xampp\htdocs\\PRIVATE_SERVER\\visual-ts\\project\\visual-ts\\src
 ![Creator 2d map](https://github.com/zlatnaspirala/creator-2dmap/blob/master/creator-2d-map.image.png)
 This is separated and added like git submodules.
 
-   - This is freeware / opensource . There is no any limitation in this project.
+   - This is freeware / opensource. There is no any limitation in this project.
    You can use video stream as gamePlay objects , multiplayer feature is also free.
    - Please don't use fake email address to test public maximumroulette.com platformer example.
   Project even in dev stage is totally `production` approach. You can't pass registration with fake email.
-  Just clone , install and run in local (client & server). You need to install and run also MongoDB on
+  Just clone, install and run in local (client & server). You need to install and run also MongoDB on
   your system. Change flag in databased confimed to the `true` value to skip registration confirmation process.
 
 

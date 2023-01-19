@@ -70,6 +70,7 @@ export interface IStaticLabel {
   options: {
     color: string;
     size: number;
+    font?: string;
   };
 }
 
