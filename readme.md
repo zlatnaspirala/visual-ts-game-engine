@@ -3,7 +3,8 @@
 Old Version:
  - `We can fight` - 2020
  - `Out of space` - 2021
-## Current Version  `Lake of fire` 2022
+ - `Lake of fire` - 2022
+## Current Version  `Right now right here` 2023
 
 #### 2d canvas game engine based on Matter.js 2D physics engine for the web supported with backend node.js/mongoDB and visual GUI tool 2d map creator/python3.
 
@@ -675,19 +676,14 @@ Start application with:
   npm i --save visual-ts
 ```
 
-  Take a look this repo (it is example for approach `npm i visual-ts`)
-  https://github.com/zlatnaspirala/visual-ts-module
+Take a look this repo (it is example for approach `npm i visual-ts`)
+https://github.com/zlatnaspirala/visual-ts-module
 
-  Work with visualTs like package library will be full teste
-  in next commits.
-
-
- If you wanna generate doc you will need manual remove comment
- from plugin section in webpack.config.js. Restart 'npm run dev'
- Best way to fully healty build.
+If you wanna generate doc you will need manual remove comment
+from plugin section in webpack.config.js. Restart 'npm run dev'
 
 If you wanna insert some new html page just define it intro
-webpack.config.js :
+webpack.config.js:
 
 ```javascript
 plugins : [
@@ -735,23 +731,23 @@ After setup run python app from cli with command:
 ## Public stage server / Tutorial demos
 
   ACTUALLY SERVER IS RUNNING - You need to register.
-  
+
   #### Basic examples - How to create instance of engine. With minimum elements and features.
   - #### [Static object vs Free](https://maximumroulette.com/apps/visual-ts/demo1/app.html)
   - #### [Webcam stream loaded as player skin](https://maximumroulette.com/apps/visual-ts/demo2/app.html)
 
-  #### Platformer example without networking
+  #### Platformer example without networking, without account session
   - #### [Single player platformer](https://maximumroulette.com/apps/visual-ts/singleplayer/app.html)
 
-  #### Multiplayer - With Account session
-  - #### [Multiplayer platformer](https://maximumroulette.com/apps/visual-ts/basket-ball-chat/app.html)
+  #### Multiplayer - Without Account session
+  - #### [Video chat platformer](https://maximumroulette.com/apps/visual-ts/basket-ball-chat/app.html)
 
   #### Multiplayer/webCam inside gamePlay - With Account session
   - #### [Video chat platformer](https://maximumroulette.com/apps/visual-ts/multiplayer/app.html)
 
 </br>
 
-## Licence
+## Licence && Credits
 
   Visual Typescript Game engine is under:
   #### MIT License generaly
@@ -792,10 +788,6 @@ After setup run python app from cli with command:
 
 </br>
 
-## Platformer single player solution ##
-### version 0.3.4 ###
-#### Published on apps facebook ####
-http://apps.facebook.com/nidzica
 
 ![Platformer](https://github.com/zlatnaspirala/visual-ts/blob/master/nonproject-files/platformer-typescript.png)
 

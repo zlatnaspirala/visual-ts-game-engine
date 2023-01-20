@@ -134,6 +134,14 @@ class GamePlay extends BasketBallChat implements IMultiplayer {
 
     window.addEventListener("game-init", function(e) {
 
+      // Play music in background
+      myInstance.starter.ioc.get.Sound.createAudio("./audios/map-themes/mishief-stroll.mp4", "bgMusic");
+      myInstance.starter.ioc.get.Sound.createAudio("./audios/player/collect-item.mp3", "collectItem");
+      myInstance.starter.ioc.get.Sound.createAudio("./audios/player/dead.mp3", "dead");
+      myInstance.starter.ioc.get.Sound.createAudio("./audios/player/jump.mp3", "jump");
+      // Correct bg Music
+      myInstance.starter.ioc.get.Sound.audioBox.bgMusic.volume = 0.3;
+
       try {
         if((e as any).detail&&
           ((e as any).detail.data.game==="undefined")) {
@@ -309,10 +317,12 @@ class GamePlay extends BasketBallChat implements IMultiplayer {
     });
 
     let TESTFLAG=false;
+    let threadLocal = null;
     Matter.Events.on(this.starter.getEngine(), "afterUpdate", function() {
 
+      // console.log("root.player.position.y = " , root.player.position.y)
       if(root.starter.getMouseConstraint().mouse.button===-1&&
-        (root.player.position.x>1200&&root.player.position.x<1320)) {
+        (root.player.position.x>1200&&root.player.position.x<1320) && root.player.position.y > 550 && root.player.position.y < 610) {
 
         if(TESTFLAG==false) {
           root.elastic.bodyB=root.player;
@@ -323,13 +333,16 @@ class GamePlay extends BasketBallChat implements IMultiplayer {
       }
 
       if(root.starter.getMouseConstraint().mouse.button===-1&&TESTFLAG==true&&
-        (root.player.position.x>1300)) {
+        (root.player.position.x>1270)) {
 
         root.elastic.bodyB=root.rock;
-        setTimeout(() => {
-          // if you wanna disable or limit silk jump just do ti here - remove this line
-          TESTFLAG= true;
-        }, 5000);
+        if (threadLocal == null) {
+          threadLocal = setTimeout(() => {
+            // if you wanna disable or limit silk jump just do ti here - remove this line
+            TESTFLAG= false;
+            threadLocal = null;
+          }, 5000);
+        }
       }
 
     });
@@ -663,17 +676,19 @@ class GamePlay extends BasketBallChat implements IMultiplayer {
 
     });
 
-    // Elasticks objects.
+
     this.ground=Matter.Bodies.rectangle(500, 600, 815, 50,
       {
         isStatic: true,
         collisionFilter: { group: -1 },
       });
 
+    // Elasticks objects.
     this.rockOptions={
       density: 0.004,
       collisionFilter: {
-        category: -1 //this.playerCategory,
+        group: -1,
+        mask: this.playerCategory// -1 //this.playerCategory,
       } as any,
     }
 
