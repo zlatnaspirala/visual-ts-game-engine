@@ -1,10 +1,15 @@
 
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
 
 const roles = [
+  {
+    test: /\.(woff|woff2|eot|ttf|otf)$/,
+    loader: 'file-loader',
+    options: { outputPath: '/' }
+  },
   { test: /\.tsx?$/, loader: "ts-loader" },
   {
   test: /\.(jpg|png)$/, loader: "file-loader", options: {
@@ -12,7 +17,7 @@ const roles = [
     outputPath: "./imgs"
   }
   },
-  { test: /\.css$/, loader: "style-loader!css-loader" },
+  {test: /\.css$/,  use: ['style-loader', 'css-loader']},
   {
   test: /\.(ico)$/,
   use: {
@@ -59,7 +64,7 @@ module.exports = {
     path: __dirname + "/../" +  rootBuildPath + appTutorialsDemo1,
   },
 
-  devtool: "none",
+  devtool: "hidden-source-map",
 
   resolve: resolveExtensions,
 
@@ -77,7 +82,9 @@ module.exports = {
     new ScriptExtHtmlWebpackPlugin({
       defaultAttribute: 'defer'
     }),
-    new ExtractTextPlugin("./src/style/styles.css"),
+    new MiniCssExtractPlugin({
+      linkType: "text/css",
+    }),
     new CopyWebpackPlugin([
       { from: './src/style/broadcaster.css', to: 'styles/broadcaster.css' },
       { from: './src/style/getHTMLMediaElement.css', to: 'styles/getHTMLMediaElement.css' },

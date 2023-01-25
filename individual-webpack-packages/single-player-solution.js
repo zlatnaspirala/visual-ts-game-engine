@@ -3,7 +3,7 @@ var { rootBuildPath, resolveExtensions, roles } = require("../webpack.global.var
 
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
 const TypedocWebpackPlugin = require('typedoc-webpack-plugin');
@@ -31,7 +31,7 @@ module.exports = webPackModuleSingleSimpleSolution = {
     path: __dirname + "/../" + rootBuildPath + appSingleplayerPlatform,
   },
 
-  devtool: "none",
+  devtool: "hidden-source-map",
 
   resolve: resolveExtensions,
 
@@ -49,7 +49,9 @@ module.exports = webPackModuleSingleSimpleSolution = {
     new ScriptExtHtmlWebpackPlugin({
       defaultAttribute: 'defer'
     }),
-    new ExtractTextPlugin("src/style/styles.css"),
+    new MiniCssExtractPlugin({
+      linkType: "text/css",
+    }),
     new CopyWebpackPlugin([
       { from: './src/libs/addons/hacker-timer/hack-timer.js', to: 'externals/hack-timer.js'},
       // { from: './src/libs/addons/drag/drag.ts', to: 'externals/drag.ts' },

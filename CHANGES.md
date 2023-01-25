@@ -1,7 +1,10 @@
 
-# CHANGES FROM 0.6.15
+# CHANGES 
+### FROM 0.6.15
 
 ## HISTORY LOGS
+
+0.7.0  -> webpack4 to webpack5  migration
 
 0.6.24 -> added new props for TextComponent [implements IVisualComponent] props text value example `40px arial`
           improved basketball/videochat example.

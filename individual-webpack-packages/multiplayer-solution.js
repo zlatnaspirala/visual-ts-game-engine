@@ -3,7 +3,7 @@ var { rootBuildPath, resolveExtensions, roles } = require("./../webpack.global.v
 
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const TypedocWebpackPlugin = require('typedoc-webpack-plugin');
 const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
@@ -33,7 +33,7 @@ module.exports = webPackModuleMultiPlayerSolution = {
     path: __dirname + "/../" + rootBuildPath + appMultiplayerPlatform,
   },
 
-  devtool: "none",
+  devtool: "hidden-source-map",
 
   resolve: resolveExtensions,
 
@@ -51,7 +51,9 @@ module.exports = webPackModuleMultiPlayerSolution = {
     new ScriptExtHtmlWebpackPlugin({
       defaultAttribute: 'defer'
     }),
-    new ExtractTextPlugin("src/style/styles.css"),
+    new MiniCssExtractPlugin({
+      linkType: "text/css",
+    }),
     new CopyWebpackPlugin([
       { from: 'src/style/broadcaster.css', to: 'styles/broadcaster.css' },
       { from: 'src/style/getHTMLMediaElement.css', to: 'styles/getHTMLMediaElement.css' },

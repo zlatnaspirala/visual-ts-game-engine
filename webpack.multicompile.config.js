@@ -2,6 +2,7 @@
  * Documentation generator
  */
 const TypedocWebpackPlugin = require('typedoc-webpack-plugin');
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 /**
  * @description
@@ -52,10 +53,10 @@ if (internalConfig.createDocumentation == true) {
 }
 
 module.exports = [
-  // webPackModuleMultiPlayerSolution,
+  webPackModuleMultiPlayerSolution,
   webPackModuleSingleSimpleSolution,
   webPackModuleMultiChatBasketBall,
-  // webPackModuleTutorialsDemo1,
-  // webPackModuleTutorialsDemo2,
-  // webPackModuleSpriteAnimationDemo
+  webPackModuleTutorialsDemo1,
+  webPackModuleTutorialsDemo2,
+  webPackModuleSpriteAnimationDemo
 ];
