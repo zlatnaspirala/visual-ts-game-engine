@@ -135,10 +135,10 @@ class GamePlay extends BasketBallChat implements IMultiplayer {
     window.addEventListener("game-init", function(e) {
 
       // Play music in background
-      myInstance.starter.ioc.get.Sound.createAudio("./audios/map-themes/mishief-stroll.mp4", "bgMusic");
-      myInstance.starter.ioc.get.Sound.createAudio("./audios/player/collect-item.mp3", "collectItem");
-      myInstance.starter.ioc.get.Sound.createAudio("./audios/player/dead.mp3", "dead");
-      myInstance.starter.ioc.get.Sound.createAudio("./audios/player/jump.mp3", "jump");
+      myInstance.starter.ioc.get.Sound.createAudio("./audios/mishief-stroll.mp4", "bgMusic");
+      myInstance.starter.ioc.get.Sound.createAudio("./audios/collect-item.mp3", "collectItem");
+      myInstance.starter.ioc.get.Sound.createAudio("./audios/dead.mp3", "dead");
+      myInstance.starter.ioc.get.Sound.createAudio("./audios/jump.mp3", "jump");
       // Correct bg Music
       myInstance.starter.ioc.get.Sound.audioBox.bgMusic.volume = 0.3;
 

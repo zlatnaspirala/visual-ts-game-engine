@@ -350,11 +350,11 @@ class ClientConfig {
   }
 
   public getRemoteServerAddress() {
-    return (location.protocol === "https:" ? "wss" : "ws") + "://" + document.domain + ":" + this.rtcServerPort + "/";
+    return (location.protocol === "https:" ? "wss" : "ws") + "://" + location.hostname + ":" + this.rtcServerPort + "/";
   }
 
   public getRemoteServerAddressControlller() {
-    return ( (location.protocol === "https:") ? "wss" : "ws") + "://" + document.domain + ":" + this.getConnectorPort() + "/";
+    return ( (location.protocol === "https:") ? "wss" : "ws") + "://" + location.hostname + ":" + this.getConnectorPort() + "/";
   }
 
   public setNetworkDeepLog(newState: boolean) {

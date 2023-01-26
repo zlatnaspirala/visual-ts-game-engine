@@ -9,7 +9,9 @@ import { UniVector, worldElement } from "../../../libs/types/global";
 import Level1 from "../scripts/packs/BasketBallChat-level1";
 
 // Prepare audios
-// require("../audios/map-themes/mishief-stroll.mp4");
+import "../audios/player/dead.mp3";
+import "../audios/player/collect-item.mp3";
+import "../audios/player/jump.mp3";
 import "../audios/map-themes/mishief-stroll.mp4";
 
 import Network from "../../../libs/class/networking/network";

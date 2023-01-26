@@ -13,9 +13,14 @@ module.exports = {
   },
   roles: [
     {
-      test: /\.(woff|woff2|eot|ttf|otf)$/,
-      loader: 'file-loader',
-      options: { outputPath: '/' }
+      test: /.(ttf|otf|eot|svg|woff(2)?)(\?[a-z0-9]+)?$/,
+      use: [{
+        loader: 'file-loader',
+        options: {
+          name: '[name].[ext]',
+          outputPath: 'fonts/',
+        }
+      }]
     },
     {test: /\.tsx?$/, loader: "ts-loader"},
     {
@@ -39,22 +44,19 @@ module.exports = {
       }
     },
     {
-      test: /\.(mp4|ogg)$/,
-      // include: __dirname + "/src/examples/platformer-single-player/audios",
-      loader: 'file-loader',
-      options: {
-        name: '[name].[ext]',
-        outputPath: "/audios"
-      }
+      test: /\.(mp3|mp4)$/,
+      use: [
+        {
+          loader: "file-loader",
+          options: {
+            name: "[name].[ext]",
+            outputPath: "audios/"
+          }
+        }
+      ]
     },
     // All output '.js' files will have any sourcemaps re-processed by 'source-map-loader'.
     {enforce: "pre", test: /\.js$/, loader: "source-map-loader"},
-
-    {
-      test: /\.(woff|ttf|otf|eot|woff2|svg)$/i,
-      loader: "file-loader"
-    }
-
   ]
 
 };

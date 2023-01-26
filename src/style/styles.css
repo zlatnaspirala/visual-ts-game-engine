@@ -25,13 +25,25 @@ footer, header, hgroup, menu, nav, section {
 }
 
 @font-face {
-  font-family: stormfaze;
+  font-family: 'stormfaze';
   src: url('../fonts/stormfaze.ttf');
+  src: url('../fonts/stormfaze.eot');
+  src: url('../fonts/stormfaze.eot?#iefix') format('embedded-opentype'),
+      url('../fonts/stormfaze.woff2') format('woff2'),
+      url('../fonts/stormfaze.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
 }
+
 
 @font-face {
   font-family: wargames;
-  src: url('../fonts/stormfaze.ttf');
+  src: url('../fonts/wargames.ttf');
+  src: url('../fonts/wargames.eot');
+  src: url('../fonts/wargames.eot?#iefix') format('embedded-opentype'),
+      url('../fonts/wargames.woff2') format('woff2'),
+      url('../fonts/wargames.woff') format('woff');
 }
 
 

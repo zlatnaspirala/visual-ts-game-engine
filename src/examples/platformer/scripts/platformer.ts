@@ -7,8 +7,10 @@ import { DEFAULT_GAMEPLAY_ROLES, DEFAULT_PLAYER_DATA } from "../../../libs/defau
 import { IGamePlayModel, IPoint, ISelectedPlayer } from "../../../libs/interface/global";
 import Starter from "../../../libs/starter";
 import { UniVector, worldElement } from "../../../libs/types/global";
-// Prepare audios require("../audios/map-themes/mishief-stroll.mp4");
-import "./audios/map-themes/mishief-stroll.mp4";
+
+require("../audios/player/dead.mp3");
+// import "../audios/player/collect-item.mp3";
+
 import Level1 from "./packs/level1";
 import Level2 from "./packs/level2";
 import Level3 from "./packs/level3";
