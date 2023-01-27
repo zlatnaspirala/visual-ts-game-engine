@@ -29,7 +29,7 @@
     "extract-text-webpack-plugin": "^3.0.2",
     "file-loader": "^1.1.11",
     "mini-css-extract-plugin": "^2.7.2",
-    "npm": "^6.14.16",
+    "npm": "^9.4.0",
     "source-map-loader": "^0.2.3",
     "style-loader": "^0.21.0",
     "ts-loader": "^4.4.2",
