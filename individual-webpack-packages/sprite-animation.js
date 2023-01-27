@@ -1,4 +1,5 @@
 
+const CleanWebpackPlugin = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CopyWebpackPlugin = require('copy-webpack-plugin');
@@ -6,9 +7,14 @@ const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
 
 const roles = [
   {
-    test: /\.(woff|woff2|eot|ttf|otf)$/,
-    loader: 'file-loader',
-    options: { outputPath: '/' }
+    test: /.(ttf|otf|eot|svg|woff(2)?)(\?[a-z0-9]+)?$/,
+    use: [{
+      loader: 'file-loader',
+      options: {
+        name: '[name].[ext]',
+        outputPath: 'fonts/',
+      }
+    }]
   },
   { test: /\.tsx?$/, loader: "ts-loader" },
   {
@@ -74,7 +80,7 @@ module.exports = {
 
   plugins: [
     // Make sure that the plugin is after any plugins that add images
-    // new CleanWebpackPlugin(['build'], { /*exclude:  ['index.html']*/ }),
+    new CleanWebpackPlugin(['../build/sprite-animation/'], { }),
     new HtmlWebpackPlugin({
       filename: 'app.html',
       template: './src/index.html'

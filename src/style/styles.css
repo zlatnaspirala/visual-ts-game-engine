@@ -36,7 +36,6 @@ footer, header, hgroup, menu, nav, section {
   font-display: swap;
 }
 
-
 @font-face {
   font-family: wargames;
   src: url('../fonts/wargames.ttf');
@@ -45,7 +44,6 @@ footer, header, hgroup, menu, nav, section {
       url('../fonts/wargames.woff2') format('woff2'),
       url('../fonts/wargames.woff') format('woff');
 }
-
 
 body {
   font-family: stormfaze;

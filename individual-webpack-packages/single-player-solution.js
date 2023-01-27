@@ -1,16 +1,15 @@
 
-var { rootBuildPath, resolveExtensions, roles } = require("../webpack.global.vars");
-
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
 const TypedocWebpackPlugin = require('typedoc-webpack-plugin');
+var { rootBuildPath, resolveExtensions, roles } = require("../webpack.global.vars");
 
 /**
- * 2) WebPack for single player solution.
- *
+ * @description
+ * WebPack for single player solution.
  */
 
 let appSingleplayerPlatform = "/singleplayer";
@@ -40,8 +39,7 @@ module.exports = webPackModuleSingleSimpleSolution = {
   },
 
   plugins: [
-    // Make sure that the plugin is after any plugins that add images
-    new CleanWebpackPlugin(['build'], { /*exclude:  ['index.html']*/ }),
+    new CleanWebpackPlugin(['build'], { }),
     new HtmlWebpackPlugin({
       filename: 'app.html',
       template: 'src/index.html'
@@ -54,7 +52,6 @@ module.exports = webPackModuleSingleSimpleSolution = {
     }),
     new CopyWebpackPlugin([
       { from: './src/libs/addons/hacker-timer/hack-timer.js', to: 'externals/hack-timer.js'},
-      // { from: './src/libs/addons/drag/drag.ts', to: 'externals/drag.ts' },
       { from: './src/libs/addons/hacker-timer/hack-timer-worker.js', to: 'externals/hack-timer-worker.js' },
       { from: './src/manifest.web', to: 'manifest.web' },
       { from: './src/libs/addons/webrtc-adapter/adapter.js', to: 'externals/adapter.js' },
@@ -70,8 +67,5 @@ module.exports = webPackModuleSingleSimpleSolution = {
       { from: "./src/examples/platformer-single-player/audios/player/collect-item.mp3", to: "audios/collect-item.mp3"},
       { from: "./src/examples/platformer-single-player/audios/player/dead.mp3", to: "audios/dead.mp3"}
     ], { debug: 'warn' })
-    // { debug: 'info' } make trace
-
-  ],
-
+  ]
 };
