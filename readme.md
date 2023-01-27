@@ -6,6 +6,9 @@ Old Version:
  - `Lake of fire` - 2022
 ## Current Version  `Right now right here` 2023
 
+Fron 0.7.0 VTS migrate to webpack5 version 
+[If you have some trouble try to deleting node_modules/ and install again]
+
 #### 2d canvas game engine based on Matter.js 2D physics engine for the web supported with backend node.js/mongoDB and visual GUI tool 2d map creator/python3.
 
   I use my own concept: `take lib only for the great benefits`. It means that i import only staff that i can't make in proper way in proper time, all other coming from head. For example `Physics` was imported
@@ -35,7 +38,7 @@ Old Version:
    - Video chat comes with visual-ts [standalone].
    - No strange logs - No need for forums just follow stackoverflow.com and wc3.
    - Fast console log access, tracking code
-   - No escape with eval
+   - Easy stage/production switch
    - Fast rebuild - Build single endpoint, Rebuild all
    - Luanch/Attacher debugger options implemented [for visual code]
    - Lib is not to much `inself` closed. Every intervention or used 
@@ -44,11 +47,12 @@ Old Version:
    - You are not forced to use typescript you can always downgrade to javascript this comes 
    with typescript inself.
    - Example multiplayer
+   - Migrated to webpack5
 
    ### Simple there is nothing between you and making the app.
 
  - Written in typescript current version 4.2.4.
- - Package tool used webpack 4.46.0.
+ - Package tool used webpack 5.5.0.
  - Text editor used and recommended: Last version of `Visual Studio Code` [1.66.0].
    Luanch debugger configuration comes with this project (for server part).
    Or run server on `Javascript Debug Terminal`. 
@@ -58,13 +62,15 @@ Old Version:
  - Mobile controls / Tested on android
    Based on touch area bounds LEFT , UP, RIGHT (for platformer based gameplay, for now).
 
-## Landscape logo
 
+## Logo
+![](https://github.com/zlatnaspirala/visual-ts-game-engine/blob/master/src/icon/favicon-96x96.png)
+
+## Landscape logo
 ![visualTS](https://github.com/zlatnaspirala/visual-ts/blob/master/nonproject-files/logo.png)
 
 ### VisualTsGameEngine GUI tool 2d Map Creator made in python:
-###  
-
+###
 ![visualTS](https://github.com/zlatnaspirala/visual-ts/blob/master/nonproject-files/creatorlogo.png)
 
 #### Much more easyest way to make yor gameplay table sets is `creator-2dmap` python script. After installation of all needed modules vie pip3 for python3, you need to run:
