@@ -16,3 +16,4 @@ package-lock.json
 *.*.prod
 .dist/cache
 tools/creator-2dmap
+/ignore/
