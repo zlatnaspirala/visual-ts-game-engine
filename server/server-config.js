@@ -96,7 +96,7 @@ class ServerConfig {
     this.databaseRoot = {
       dev: "mongodb://localhost:27017" ,
       prod: "mongodb://userAdmin:*************@localhost:27017/admin",
-      freeService: "mongodb+srv://userAdmin:s_JmRVjxWh5JsqC@cluster0.piqav.mongodb.net/masterdatabase?retryWrites=true&w=majority"
+      freeService: "mongodb+srv://userAdmin:password@cluster0.piqav.mongodb.net/masterdatabase?retryWrites=true&w=majority"
     };
 
     this.specialRoute = {
