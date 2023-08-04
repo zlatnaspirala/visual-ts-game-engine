@@ -32,7 +32,7 @@ class ServerConfig {
     this.networkDeepLogs = false;
     this.rtcServerPort = 12034;
     this.rtc3ServerPort = 9001;
-    this.connectorPort = 9010;
+    this.connectorPort = 9001;
 
     /**
      * @description
