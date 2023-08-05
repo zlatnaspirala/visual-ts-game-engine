@@ -123,7 +123,7 @@ class ClientConfig {
    * @description
    * Enable Disable coordinator flag
    */
-  private appUseCoordinator: boolean = false;
+  private appUseCoordinator: boolean = true;
 
   /**
    * @description
