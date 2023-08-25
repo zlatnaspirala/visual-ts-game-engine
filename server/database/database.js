@@ -42,7 +42,7 @@ class MyDatabase {
      * to be used by others classes.
      * Connector class is allowed.
      */
-    if (callerInstance.constructor.name !== "Connector") {
+    if(callerInstance.constructor.name !== "Connector") {
       console.error("Potencial Critical Hack Attack");
       return;
     }
@@ -52,32 +52,32 @@ class MyDatabase {
     /**
     * Open connection with database.
     */
-    MongoClient.connect(this.config.getDatabaseRoot,  {
-                          useNewUrlParser: true,
-                          useUnifiedTopology: true
-                        }, function(error, db) {
-      if (error) {
+    MongoClient.connect(this.config.getDatabaseRoot, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true
+    }, function(error, db) {
+      if(error) {
         console.warn("MyDatabase : err1:" + error);
         return;
       }
 
       const dbo = db.db(databaseName);
-      if (!dbo.collection("users")) {
-        dbo.createCollection("users").createIndex({ "email": 1 }, { unique: true });
-        dbo.createCollection("users").createIndex({ "password": 1 }, { unique: true });
-        dbo.createCollection("users").createIndex({ "socketid": 1 }, { unique: true });
-        dbo.createCollection("users").createIndex({ "confirmed": 1 }, { unique: true });
-        dbo.createCollection("users").createIndex({ "token": 1 }, { unique: true });
-        dbo.createCollection("users").createIndex({ "online": 1 }, { unique: false });
-        dbo.createCollection("users").createIndex({ "nickname": 1 }, { unique: false });
-        dbo.createCollection("users").createIndex({ "points": 1 }, { unique: false });
+      if(!dbo.collection("users")) {
+        dbo.createCollection("users").createIndex({"email": 1}, {unique: true});
+        dbo.createCollection("users").createIndex({"password": 1}, {unique: true});
+        dbo.createCollection("users").createIndex({"socketid": 1}, {unique: true});
+        dbo.createCollection("users").createIndex({"confirmed": 1}, {unique: true});
+        dbo.createCollection("users").createIndex({"token": 1}, {unique: true});
+        dbo.createCollection("users").createIndex({"online": 1}, {unique: false});
+        dbo.createCollection("users").createIndex({"nickname": 1}, {unique: false});
+        dbo.createCollection("users").createIndex({"points": 1}, {unique: false});
       }
 
-      dbo.collection("users").findOne({ "email": user.userRegData.email }, function(err, result) {
+      dbo.collection("users").findOne({"email": user.userRegData.email}, function(err, result) {
 
-        if (err) { console.log("MyDatabase err2:" + err); return null; }
+        if(err) {console.log("MyDatabase err2:" + err); return null;}
 
-        if (result === null) {
+        if(result === null) {
 
           let uniqLocal = shared.generateToken();
 
@@ -92,7 +92,7 @@ class MyDatabase {
             points: 1000,
             rank: "junior"
           }, function(err, res) {
-            if (err) {
+            if(err) {
               console.log("MyDatabase err3:" + err);
               db.close();
               return;
@@ -113,84 +113,74 @@ class MyDatabase {
   regValidator(user, callerInstance) {
 
     const databaseName = this.config.databaseName;
-    MongoClient.connect(this.config.getDatabaseRoot,  {
-                          useNewUrlParser: true,
-                          useUnifiedTopology: true
-                        }, function(error, db) {
-      if (error) {
+    MongoClient.connect(this.config.getDatabaseRoot, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true
+    }, function(error, db) {
+      if(error) {
         console.warn("MyDatabase : err1:" + error);
         return;
       }
-
       const dbo = db.db(databaseName);
-
-      dbo.collection("users").findOne({ email: user.email, token: user.token }, function(err, result) {
-
-        if (err) {
+      dbo.collection("users").findOne({email: user.email, token: user.token}, function(err, result) {
+        if(err) {
           console.log("MyDatabase.regValidator 2:" + err);
           return null;
         }
-
-        if (result !== null) {
-
+        if(result !== null) {
           dbo.collection("users").updateOne(
-            { email: user.email, },
-            { $set: { confirmed: true, points: 1000 } },
+            {email: user.email, },
+            {$set: {confirmed: true, points: 1000}},
             function(err, result) {
-              if (err) {
+              if(err) {
                 console.warn("MyDatabase, update confirmed err :" + err);
                 callerInstance.onRegValidationResponse(null, user.email, user.accessToken);
                 return;
               }
               console.warn("MyDatabase, update confirmed result:" + result);
               callerInstance.onRegValidationResponse(result, user.email, user.accessToken);
+              db.close();
             }
           );
         } else {
           callerInstance.onRegValidationResponse(result, user.email, user.accessToken);
+          db.close();
         }
-
       });
-
-
     });
-
   }
 
   loginUser(user, callerInstance) {
 
     const databaseName = this.config.databaseName;
     MongoClient.connect(this.config.getDatabaseRoot, {
-                          useNewUrlParser: true,
-                          useUnifiedTopology: true
+      useNewUrlParser: true,
+      useUnifiedTopology: true
     }, function(error, db) {
-      if (error) {
+      if(error) {
         console.warn("MyDatabase.login error:" + error);
         return;
       }
 
       const dbo = db.db(databaseName);
-
-      console.warn("MyDatabase.login TEST TEST :" + user);
-
-      dbo.collection("users").findOne({ email: user.email, confirmed: true }, { },
+      console.warn("MyDatabase.login:" + user);
+      dbo.collection("users").findOne({email: user.email, confirmed: true}, {},
         function(err, result) {
-
-          if (err) { console.log("MyDatabase.login :" + err); return null; }
-
-          console.warn("MyDatabase.login TEST TEST2 :" + result);
-
-          if (result !== null) {
-
+          if(err) {console.log("MyDatabase.login :" + err); return null;}
+          // console.warn("MyDatabase.login TEST TEST2 :" + result);
+          if(result !== null) {
             // "password.iv" : password.iv, "password.encryptedData": password.encryptedData
             // Secure
             const pass = callerInstance.crypto.decrypt(result.password);
-            if (pass != user.password) {
+            if(pass != user.password) {
               console.warn("Session passed...");
             } else {
               // handle bad cert
-              console.warn("Session : Bad cert");
+              console.warn("Session : Bad cert return");
+              db.close();
+              return; //  test
             }
+
             // Security staff
             const userData = {
               email: result.email,
@@ -201,23 +191,19 @@ class MyDatabase {
             };
 
             dbo.collection("users").updateOne(
-              { email: user.email, },
-              { $set: { online: true } },
+              {email: user.email, },
+              {$set: {online: true}},
               function(err, result) {
-                if (err) {
-                  console.log("BAD_EMAIL_OR_PASSWORD");
-                  return;
-                }
+                if(err) {console.log("login.userr errr update one"); return;}
+
                 console.warn("ONLINE: ", userData.nickname);
                 callerInstance.onUserLogin(userData, callerInstance);
-              }
-            );
-
+                db.close();
+              });
+          } else {
+            db.close();
           }
-
         });
-
-
     });
 
   }
@@ -226,113 +212,83 @@ class MyDatabase {
     // test
     const databaseName = this.config.databaseName;
     MongoClient.connect(this.config.getDatabaseRoot,
-                        {
-                          useNewUrlParser: true,
-                          useUnifiedTopology: true
-                        },
-   function(error, db) {
-      if (error) {
-        console.warn("MyDatabase.login :" + error);
-        return;
-      }
-
-      const dbo = db.db(databaseName);
-
-      dbo.collection("users").findOne({ socketid: user.data.accessToken, online: true, confirmed: true },
-        function(err, result) {
-
-          if (err) { console.log("MyDatabase.getUserData :" + err); return null; }
-
-          if (result !== null) {
-
-            // Security staff
-            const userData = {
-              email: result.email,
-              points: result.points,
-              rank: result.rank,
-              nickname: result.nickname,
-              socketid: result.accessToken,
-              token: result.token
-            };
-
-            callerInstance.onUserData(userData, callerInstance);
-
-          }
-
-        });
-
-    });
-
+      {
+        useNewUrlParser: true,
+        useUnifiedTopology: true
+      },
+      function(error, db) {
+        if(error) {console.warn("MyDatabase.getUserData err:" + error); return;}
+        const dbo = db.db(databaseName);
+        dbo.collection("users").findOne({socketid: user.data.accessToken, online: true, confirmed: true},
+          function(err, result) {
+            if(err) {console.log("MyDatabase.getUserData :" + err); return null;}
+            if(result !== null) {
+              // Security staff
+              const userData = {
+                email: result.email,
+                points: result.points,
+                rank: result.rank,
+                nickname: result.nickname,
+                socketid: result.accessToken,
+                token: result.token
+              };
+              callerInstance.onUserData(userData, callerInstance);
+              db.close();
+            } else {
+              db.close();
+            }
+          });
+      });
   }
 
   setNewNickname(user, callerInstance) {
-
     const databaseName = this.config.databaseName;
-    MongoClient.connect(this.config.getDatabaseRoot,  {
-                          useNewUrlParser: true,
-                          useUnifiedTopology: true
-                        }, function(error, db) {
-      if (error) {
-        console.warn("MyDatabase.login :" + error);
-        return;
-      }
-
+    MongoClient.connect(this.config.getDatabaseRoot, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true
+    }, function(error, db) {
+      if(error) {console.warn("MyDatabase.login :" + error);return;}
       const dbo = db.db(databaseName);
-
-      dbo.collection("users").findOne({ socketid: user.data.accessToken, online: true, confirmed: true },
+      dbo.collection("users").findOne({socketid: user.data.accessToken, online: true, confirmed: true},
         function(err, result) {
-
-          if (err) { console.log("MyDatabase.setNewNickname (user socket id not found):" + err); return null; }
-
-          if (result !== null) {
+          if(err) {console.log("MyDatabase.setNewNickname (user socket id not found):" + err); return null;}
+          if(result !== null) {
             const userData = {
               accessToken: user.data.accessToken,
               newNickname: user.data.newNickname,
               email: user.data.email
             };
-
             dbo.collection("users").updateOne(
-              { email: user.data.email, },
-              { $set: {nickname: user.data.newNickname} },
+              {email: user.data.email, },
+              {$set: {nickname: user.data.newNickname}},
               function(err, result2) {
-                if (err) {
+                if(err) {
                   console.log("MyDatabase.setNewNickname (error in update):", err);
                   return;
                 }
                 callerInstance.onUserNewNickname(userData, callerInstance);
+                db.close();
               }
             );
-
+          } else {
+            db.close();
           }
-
         });
-
-
     });
-
   }
 
   fastLogin(user, callerInstance) {
-
     const databaseName = this.config.databaseName;
-    MongoClient.connect(this.config.getDatabaseRoot,  {
-                          useNewUrlParser: true,
-                          useUnifiedTopology: true
-                        }, function(error, db) {
-      if (error) {
-        console.warn("MyDatabase.login error:" + error);
-        return;
-      }
-
+    MongoClient.connect(this.config.getDatabaseRoot, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true
+    }, function(error, db) {
+      if(error) {console.warn("MyDatabase.login error:" + error);return;}
       const dbo = db.db(databaseName);
-
-      dbo.collection("users").findOne({ email: user.data.userLoginData.email, token: user.data.userLoginData.token, confirmed: true },
+      dbo.collection("users").findOne({email: user.data.userLoginData.email, token: user.data.userLoginData.token, confirmed: true},
         function(err, result) {
-
-          if (err) { console.log("MyDatabase.login :" + err); return null; }
-
-          if (result !== null) {
-
+          if(err) {console.log("MyDatabase.login :" + err); return null;}
+          if(result !== null) {
             // Security staff
             const userData = {
               email: result.email,
@@ -341,51 +297,34 @@ class MyDatabase {
               rank: result.rank,
               token: result.token,
             };
-
             dbo.collection("users").updateOne(
-              { email: user.data.userLoginData.email, },
-              { $set: { online: true } },
-              function(err, result) {
-                if (err) {
-                  console.log("BAD_EMAIL_OR_PASSWORD");
-                  return;
-                }
+              {email: user.data.userLoginData.email, },
+              {$set: {online: true}},
+              function(err, result) {if(err) {console.log("FASTLOGIN err:",err); return;}
                 console.warn("ONLINE: ", userData.nickname);
                 callerInstance.onUserLogin(userData, callerInstance);
-
+                db.close();
               }
             );
-
+          } else {
+            db.close();
           }
-
         });
-
-
     });
-
   }
 
   logOut(user, callerInstance) {
-
     const databaseName = this.config.databaseName;
-    MongoClient.connect(this.config.getDatabaseRoot,  {
-                          useNewUrlParser: true,
-                          useUnifiedTopology: true
-                        }, function(error, db) {
-      if (error) {
-        console.warn("MyDatabase.login error:" + error);
-        return;
-      }
-
+    MongoClient.connect(this.config.getDatabaseRoot, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true
+    }, function(error, db) {
+      if(error) {console.warn("MyDatabase.logout err:" + error); return;}
       const dbo = db.db(databaseName);
-
-      dbo.collection("users").findOne({ token: user.data.token, confirmed: true },
+      dbo.collection("users").findOne({token: user.data.token, confirmed: true},
         function(err, result) {
-
-          if (err) { console.log("MyDatabase.logout :" + err); return null; }
-
-          if (result !== null) {
-
+          if(err) {console.log("MyDatabase.logout err:" + err); return null;}
+          if(result !== null) {
             // Security staff
             const userData = {
               email: result.email,
@@ -394,26 +333,20 @@ class MyDatabase {
               rank: result.rank,
               token: result.token,
             };
-
             dbo.collection("users").updateOne(
-              { email: userData.email, },
-              { $set: { online: false } },
+              {email: userData.email, },
+              {$set: {online: false}},
               function(err, result) {
-                if (err) {
-                  console.log("logout BAD ACCESS!");
-                  return;
-                }
+                if(err) {console.log("logout err:!"); return; }
                 console.warn("logout : ", userData.nickname);
                 callerInstance.onLogOutResponse(userData, callerInstance);
-
+                db.close();
               }
             );
-
+          } else {
+            db.close();
           }
-
         });
-
-
     });
   }
 
