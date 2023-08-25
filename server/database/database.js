@@ -171,10 +171,14 @@ class MyDatabase {
 
       const dbo = db.db(databaseName);
 
+      console.warn("MyDatabase.login TEST TEST :" + user);
+
       dbo.collection("users").findOne({ email: user.email, confirmed: true }, { },
         function(err, result) {
 
           if (err) { console.log("MyDatabase.login :" + err); return null; }
+
+          console.warn("MyDatabase.login TEST TEST2 :" + result);
 
           if (result !== null) {
 

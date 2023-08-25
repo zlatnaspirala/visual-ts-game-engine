@@ -197,6 +197,7 @@ class Connector {
               } else if (msgFromCLient.action === "REG_VALIDATE") {
                 shared.serverHandlerRegValidation(msgFromCLient);
               } else if (msgFromCLient.action === "LOGIN") {
+                console.warn("On message, LOGIN... ", msgFromCLient.data.userLoginData.email);
                 const userId = shared.formatUserKeyLiteral(msgFromCLient.data.userLoginData.email);
                 shared.myBase.userSockCollection[userId] = this;
                 shared.serverHandlerLoginValidation(msgFromCLient);

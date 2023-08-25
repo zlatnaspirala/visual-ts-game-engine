@@ -111,7 +111,7 @@ class ClientConfig {
    * masterServerKey is channel access id used to connect
    * multimedia server channel.Both multiRTC2/3
    */
-  private masterServerKey: string = "maximumroulette.server1";
+  private masterServerKey: string = "maximumroulette.platformer";
 
   /**
    * rtcServerPort Port used to connect multimedia server.
@@ -123,7 +123,7 @@ class ClientConfig {
    * @description
    * Enable Disable coordinator flag
    */
-  private appUseCoordinator: boolean = true;
+  private appUseCoordinator: boolean = false;
 
   /**
    * @description

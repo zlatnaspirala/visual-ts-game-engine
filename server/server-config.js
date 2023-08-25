@@ -12,8 +12,8 @@ class ServerConfig {
     this.version = "0.2.0";
 
      // enum : 'dev', 'prod', `mongodb.net` or `mongodb.net-dev`
-    // this.serverMode = "mongodb.net";
-    this.serverMode = "mongodb.net-dev";
+    this.serverMode = "mongodb.net";
+    // this.serverMode = "mongodb.net-dev";
 
     this.ownHosting = false;
     this.ownHttpHostPort = 443;
@@ -32,7 +32,7 @@ class ServerConfig {
     this.networkDeepLogs = false;
     this.rtcServerPort = 12034;
     this.rtc3ServerPort = 9001;
-    this.connectorPort = 9001;
+    this.connectorPort = 9010;
 
     /**
      * @description
@@ -51,7 +51,7 @@ class ServerConfig {
      * Interest prop for manipulation.
      * This can be upgraded to the Object type.
      */
-    this.masterServerKey = "multi-platformer-sever1.maximum";
+    this.masterServerKey = "maximumroulette.platformer";
 
     /**
      * @description
@@ -59,7 +59,7 @@ class ServerConfig {
      */
     this.protocol = "https";
 
-    this.isSecure = false;
+    this.isSecure = true;
 
     /**
      * @description
@@ -80,6 +80,9 @@ class ServerConfig {
       pKeyPath: "./server/rtc/apache-local-cert/server.key",
       pCertPath: "./server/rtc/apache-local-cert/server.crt",
       pCBPath: "./server/rtc/apache-local-cert/server.csr",
+      // pKeyPath: "/etc/letsencrypt/live/maximumroulette.com/privkey.pem",
+      // pCertPath: "/etc/letsencrypt/live/maximumroulette.com/cert.pem",
+      // pCBPath: "/etc/letsencrypt/live/maximumroulette.com/fullchain.pem"
     };
 
     // production
@@ -91,12 +94,13 @@ class ServerConfig {
 
     this.appUseAccountsSystem = true;
     this.appUseBroadcaster = true;
-    this.databaseName = "masterdatabase";
+    this.databaseName = "rocket-1";
 
     this.databaseRoot = {
       dev: "mongodb://localhost:27017" ,
       prod: "mongodb://userAdmin:*************@localhost:27017/admin",
-      freeService: "mongodb+srv://userAdmin:password@cluster0.piqav.mongodb.net/masterdatabase?retryWrites=true&w=majority"
+      // freeService: "mongodb+srv://******@cluster0.piqav.mongodb.net/masterdatabase?retryWrites=true&w=majority"
+      freeService: "mongodb+srv://*****@cluster0.o4g92.gcp.mongodb.net/rocket-1?retryWrites=true&w=majority"
     };
 
     this.specialRoute = {

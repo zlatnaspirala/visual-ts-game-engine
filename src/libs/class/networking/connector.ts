@@ -13,12 +13,14 @@ class ConnectorClient {
   private webSocketController;
   private memo: Memo;
   private gamesList: any[];
+  private config: EngineConfig;
 
   constructor(config: EngineConfig) {
 
     this.memo = new Memo();
     this.memo.save("online", false);
 
+    this.config = config;
     this.gamesList = config.getGamesList();
 
     /**
@@ -541,6 +543,7 @@ class ConnectorClient {
           gameName,
           rank: this.memo.load("localUserRank"),
           token: this.memo.load("token"),
+          channelID: this.config.getMasterServerKey()
         },
       };
       this.sendObject(localMsg);

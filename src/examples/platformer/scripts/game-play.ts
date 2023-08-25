@@ -21,7 +21,7 @@ import Starter from "../../../libs/starter";
 import {worldElement, worldElementParams} from "../../../libs/types/global";
 import GameMap from "./map";
 import Level1 from "./packs/level1";
-import Platformer from "./Platformer";
+import Platformer from "./platformer";
 
 /**
  * @description Finally game start at here

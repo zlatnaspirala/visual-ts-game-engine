@@ -106,9 +106,9 @@ if (serverConfig.appUseBroadcaster) {
   Broadcaster = require("./broadcaster");
   broadcaster = new Broadcaster(serverConfig);
 
-  var Coordinator = null;
-  Coordinator = require("./coordinator");
-  Coordinator = new Coordinator(serverConfig);
+  // var Coordinator = null;
+  // Coordinator = require("./coordinator");
+  // Coordinator = new Coordinator(serverConfig);
 
   console.info("Running broadcaster and coordinator.");
 }

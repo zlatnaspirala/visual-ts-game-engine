@@ -34,6 +34,7 @@ class PlatformerActiveUsers {
           collection.createIndex({ "rank": 1 }, { unique: false });
           collection.createIndex({ "nickname": 1 }, { unique: false });
           collection.createIndex({ "lives": 3 }, { unique: false });
+          collection.createIndex({ "channelID": 3 }, { unique: false });
           db.close();
 
       });
@@ -89,11 +90,12 @@ class PlatformerActiveUsers {
 
                   root.countPoints(user, callerInstance, 10);
 
-                  dbo.collection("platformer").insertOne({
+                  dbo.collection(gameID).insertOne({
                       nickname: result.nickname,
                       token: result.token,
                       rank: result.rank,
-                      points: result.points
+                      points: result.points,
+                      channelID: user.data.channelID
                     }, function(err, result) {
                       if (err) { console.log(err); db.close(); return; }
                       if (result) {
