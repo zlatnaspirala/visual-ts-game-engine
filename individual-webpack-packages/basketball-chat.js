@@ -4,7 +4,7 @@
  * WebPacks individual pack
  * 1) WebPack for multiplayer solution
  */
-const CleanWebpackPlugin = require('clean-webpack-plugin');
+const {CleanWebpackPlugin} = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CopyWebpackPlugin = require('copy-webpack-plugin')
@@ -41,7 +41,7 @@ module.exports = webPackModuleMultiChatBasketBall = {
 
   plugins: [
     // Make sure that the plugin is after any plugins that add images
-    new CleanWebpackPlugin(['build'], { /*exclude:  ['index.html']*/}),
+    new CleanWebpackPlugin({cleanOnceBeforeBuildPatterns: ['build']}),
     new HtmlWebpackPlugin({
       filename: 'app.html',
       template: './src/index.html'

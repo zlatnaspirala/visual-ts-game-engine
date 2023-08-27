@@ -1,5 +1,7 @@
 
-const CleanWebpackPlugin = require('clean-webpack-plugin');
+// const CleanWebpackPlugin = require('clean-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CopyWebpackPlugin = require('copy-webpack-plugin')
@@ -39,7 +41,7 @@ module.exports = webPackModuleMultiPlayerSolution = {
   },
 
   plugins: [
-    new CleanWebpackPlugin(['build'], { }),
+    new CleanWebpackPlugin({cleanOnceBeforeBuildPatterns: ['build']}),
     new HtmlWebpackPlugin({
       filename: 'app.html',
       template: 'src/index.html'

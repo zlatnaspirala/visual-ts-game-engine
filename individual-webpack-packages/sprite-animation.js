@@ -1,5 +1,4 @@
-
-const CleanWebpackPlugin = require('clean-webpack-plugin');
+const {CleanWebpackPlugin} = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CopyWebpackPlugin = require('copy-webpack-plugin');
@@ -80,7 +79,7 @@ module.exports = {
 
   plugins: [
     // Make sure that the plugin is after any plugins that add images
-    new CleanWebpackPlugin(['../build/sprite-animation/'], { }),
+    new CleanWebpackPlugin({cleanOnceBeforeBuildPatterns: ['../build/sprite-animation/']}),
     new HtmlWebpackPlugin({
       filename: 'app.html',
       template: './src/index.html'

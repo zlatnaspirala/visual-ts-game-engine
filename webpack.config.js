@@ -1,5 +1,4 @@
-
-const CleanWebpackPlugin = require('clean-webpack-plugin');
+const {CleanWebpackPlugin} = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const TypedocWebpackPlugin = require('typedoc-webpack-plugin');
@@ -92,7 +91,7 @@ let webPackModule = {
 
   plugins: [
     // Make sure that the plugin is after any plugins that add images
-    new CleanWebpackPlugin(['build'], { }, { /*exclude:  ['index.html']*/}),
+    new CleanWebpackPlugin({cleanOnceBeforeBuildPatterns: ['build']}),
     new MiniCssExtractPlugin({
       linkType: "text/css",
     }),
@@ -151,7 +150,7 @@ let webPackModule = {
       {from: "./src/examples/platformer/ui/player-board.html", to: "templates/ui/player-board.html"},
       {from: "./src/examples/platformer-single-player/ui/select-player.html", to: "templates/ui/select-player.html"},
       {from: "./src/examples/platformer-single-player/ui/player-board.html", to: "templates/ui/single-player-board.html"},
-      { from: "./src/html-components/coordinator.html", to: "templates/coordinator.html" },
+      {from: "./src/html-components/coordinator.html", to: "templates/coordinator.html"},
       // Audios
       {from: "./src/examples/platformer-single-player/audios/map-themes/sb_indreams.mp3", to: "audios/sb_indreams.mp3"},
       {from: "./src/examples/platformer-single-player/audios/player/jump.mp3", to: "audios/jump.mp3"},
