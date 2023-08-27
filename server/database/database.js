@@ -167,20 +167,16 @@ class MyDatabase {
       dbo.collection("users").findOne({email: user.email, confirmed: true}, {},
         function(err, result) {
           if(err) {console.log("MyDatabase.login :" + err); return null;}
-          // console.warn("MyDatabase.login TEST TEST2 :" + result);
           if(result !== null) {
-            // "password.iv" : password.iv, "password.encryptedData": password.encryptedData
             // Secure
             const pass = callerInstance.crypto.decrypt(result.password);
-            if(pass != user.password) {
+            if(pass == user.password) {
               console.warn("Session passed...");
             } else {
-              // handle bad cert
               console.warn("Session : Bad cert return");
               db.close();
-              return; //  test
+              return;
             }
-
             // Security staff
             const userData = {
               email: result.email,
@@ -194,8 +190,7 @@ class MyDatabase {
               {email: user.email, },
               {$set: {online: true}},
               function(err, result) {
-                if(err) {console.log("login.userr errr update one"); return;}
-
+                if(err) {console.log("login.user err update one:"); return;}
                 console.warn("ONLINE: ", userData.nickname);
                 callerInstance.onUserLogin(userData, callerInstance);
                 db.close();
@@ -247,7 +242,7 @@ class MyDatabase {
       useNewUrlParser: true,
       useUnifiedTopology: true
     }, function(error, db) {
-      if(error) {console.warn("MyDatabase.login :" + error);return;}
+      if(error) {console.warn("MyDatabase.login :" + error); return;}
       const dbo = db.db(databaseName);
       dbo.collection("users").findOne({socketid: user.data.accessToken, online: true, confirmed: true},
         function(err, result) {
@@ -283,7 +278,7 @@ class MyDatabase {
       useNewUrlParser: true,
       useUnifiedTopology: true
     }, function(error, db) {
-      if(error) {console.warn("MyDatabase.login error:" + error);return;}
+      if(error) {console.warn("MyDatabase.login error:" + error); return;}
       const dbo = db.db(databaseName);
       dbo.collection("users").findOne({email: user.data.userLoginData.email, token: user.data.userLoginData.token, confirmed: true},
         function(err, result) {
@@ -300,7 +295,8 @@ class MyDatabase {
             dbo.collection("users").updateOne(
               {email: user.data.userLoginData.email, },
               {$set: {online: true}},
-              function(err, result) {if(err) {console.log("FASTLOGIN err:",err); return;}
+              function(err, result) {
+                if(err) {console.log("FASTLOGIN err:", err); return;}
                 console.warn("ONLINE: ", userData.nickname);
                 callerInstance.onUserLogin(userData, callerInstance);
                 db.close();
@@ -337,7 +333,7 @@ class MyDatabase {
               {email: userData.email, },
               {$set: {online: false}},
               function(err, result) {
-                if(err) {console.log("logout err:!"); return; }
+                if(err) {console.log("logout err:!"); return;}
                 console.warn("logout : ", userData.nickname);
                 callerInstance.onLogOutResponse(userData, callerInstance);
                 db.close();
