@@ -15,8 +15,9 @@ module.exports = {
   serverHandlerSetNewNickname: function() {},
   serverHandlerFastLogin: function() {},
   serverHandlerGamePlayStart: function() {},
-  serverHandlerSessionLogOut: function() { },
-  serverHandlerOutOfGame: function() { },
+  serverHandlerPlusPoints: function() {},
+  serverHandlerSessionLogOut: function() {},
+  serverHandlerOutOfGame: function() {},
 
   validateEmail: function(email) {
     // tslint:disable-next-line:max-line-length

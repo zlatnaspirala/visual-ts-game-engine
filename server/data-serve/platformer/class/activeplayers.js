@@ -94,7 +94,7 @@ class PlatformerActiveUsers {
                     nickname: result.nickname,
                     token: result.token,
                     rank: result.rank,
-                    points: result.points,
+                    // points: result.points,
                     channelID: user.data.channelID
                   }, function(err, result) {
                     if(err) {console.log(err); db.close(); return;}
@@ -200,7 +200,7 @@ class PlatformerActiveUsers {
 
   countPoints(user, callerInstance, pay) {
 
-    if (pay > 0) {
+    if (pay < 0) {
       console.log("POINTS PAY CANT BE > 0 FOR USER ", user.data.token)
       return;
     }
@@ -220,12 +220,35 @@ class PlatformerActiveUsers {
         {$inc: {points: -pay}},
         (err, doc, raw) => {
           /*Do something here*/
-          console.log(" findOneAndUpdate err: ", doc);
+          console.log(" findOneAndUpdate err: -pay ", -pay);
           db.close();
         }
       );
     });
 
+  }
+
+  plusPoints(user, callerInstance, p) {
+    if (pay < 0) {
+      console.log("POINTS PAY CANT BE < 0 FOR USER ", user.data.token)
+      return;
+    }
+    const databaseName = callerInstance.config.databaseName;
+    MongoClient.connect(callerInstance.config.getDatabaseRoot, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true
+    }, function(error, db) {if(error) {console.warn("addActiveGamePlayer err:" + error);return;}
+      const dbo = db.db(databaseName);
+      dbo.collection("users").findOneAndUpdate(
+        {token: user.data.token},
+        {$inc: {points: p}},
+        (err, doc, raw) => {
+          /*Do something here*/
+          console.log(" findOneAndUpdate err: -pay ", p);
+          db.close();
+        }
+      );
+    });
   }
 
 }

@@ -23,7 +23,7 @@ class AppConfig extends ClientConfig {
   }
 
   public getMasterServerKey(): string {
-    return 'maximumroulette.platformer.multiplayer';
+    return 'maximumroulette.platformer';
   }
 
   public didAppUseCoordinator() {

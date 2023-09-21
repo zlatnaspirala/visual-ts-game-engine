@@ -1,7 +1,7 @@
 {
-  "name": "visua-ts-server",
-  "version": "0.2.0",
-  "description": "0.2.0. dev stage. Whole Package updated. Preparing for next stage 0.2.0 -  proper porting for npm service. This version 0.1.0 of visual-ts game engine server. Main file is server.js , used MongoDB database, webSocket for signaling/networking also own hosting option added with vhost options etc.",
+  "name": "websocket-rocket-crafting-server",
+  "version": "1.0.0",
+  "description": "1.0.0. [dev stage]. WebSocket for signaling/networking [share same database structure like rocket-crafting-server] also own hosting option added with vhost options etc.",
   "main": ".rtc/server.js",
   "dependencies": {
     "@types/node": "^10.17.60",

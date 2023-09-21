@@ -27,7 +27,7 @@ class Connector {
     this.http = null;
     this.crypto = new CryptoHandler();
 
-    if (!serverConfig.isSecure) { // || this.serverMode === "mongodb.net"
+    if(!serverConfig.isSecure) { // || this.serverMode === "mongodb.net"
 
       let options = {
         key: fs.readFileSync(serverConfig.certPathSelf.pKeyPath),
@@ -37,7 +37,7 @@ class Connector {
 
       this.http = require(this.config.getProtocol).createServer(options, function(request, response) {
         request.addListener('end', function() {
-          if (request.url.search(/.png|.gif|.js|.css/g) == -1) {
+          if(request.url.search(/.png|.gif|.js|.css/g) == -1) {
             response.statusCode = 200;
             response.write('Please use https protocol for local also for production.');
             return response.end();
@@ -49,13 +49,13 @@ class Connector {
 
       let options = {};
 
-      if (serverConfig.serverMode === 'dev' || serverConfig.serverMode === 'mongodb.net-dev') {
+      if(serverConfig.serverMode === 'dev' || serverConfig.serverMode === 'mongodb.net-dev') {
         options = {
           key: fs.readFileSync(serverConfig.certPathSelf.pKeyPath),
           cert: fs.readFileSync(serverConfig.certPathSelf.pCertPath),
           ca: fs.readFileSync(serverConfig.certPathSelf.pCBPath),
         };
-      } else if (serverConfig.serverMode === 'prod' || serverConfig.serverMode === 'mongodb.net') {
+      } else if(serverConfig.serverMode === 'prod' || serverConfig.serverMode === 'mongodb.net') {
         options = {
           key: fs.readFileSync(serverConfig.certPathProd.pKeyPath),
           cert: fs.readFileSync(serverConfig.certPathProd.pCertPath),
@@ -66,7 +66,6 @@ class Connector {
       }
 
       this.http = require('https').createServer(options, function(request, response) {
-
         /**
          * @interest
          * This work on chrome in https://localhost
@@ -78,12 +77,12 @@ class Connector {
         response.setHeader('Access-Control-Allow-Headers', '*');
 
         request.addListener('end', function() {
-          if (request.url.search(/.png|.gif|.js|.css/g) == -1) {
+          if(request.url.search(/.png|.gif|.js|.css/g) == -1) {
             response.statusCode = 200;
             let msgForHttpCheck = '**********************************************************' + ' \n' +
-                                  '* VisualTS Game Engine Server composition, version: ' + serverConfig.version + '* \n' + 
-                                  '* Type of network - CONNECTOR                            *' + ' \n' +
-                                  '**********************************************************';
+              '* Visual-TS Game Engine Server composition, version: ' + serverConfig.version + '* \n' +
+              '* Type of network - CONNECTOR - COMPACT WITH ROCKETCRAFTINGSERVER DB STRUCTURE  *' + ' \n' +
+              '**********************************************************';
             response.write(msgForHttpCheck);
             return response.end();
           } else file.serve(request, response);
@@ -104,7 +103,7 @@ class Connector {
     }).on("request", this.onRequestConn);
     WebSocketServer = null;
 
-    if (this.config.IsDatabaseActive) {
+    if(this.config.IsDatabaseActive) {
 
       let MyDatabase = require("../database/database");
       /*
@@ -127,6 +126,7 @@ class Connector {
     shared.serverHandlerSetNewNickname = this.serverHandlerSetNewNickname;
     shared.serverHandlerFastLogin = this.serverHandlerFastLogin;
     shared.serverHandlerGamePlayStart = this.serverHandlerGamePlayStart;
+    shared.serverHandlerPlusPoints = this.serverHandlerPlusPoints;
     shared.serverHandlerSessionLogOut = this.serverHandlerSessionLogOut;
     shared.serverHandlerOutOfGame = this.serverHandlerOutOfGame;
 
@@ -134,21 +134,21 @@ class Connector {
 
   sendData(message, websocket) {
 
-    if (message instanceof String) {
+    if(message instanceof String) {
       console.error("Connector.sendData : Message can't be type of string.", message);
       return;
     }
 
     message.data = JSON.stringify(message.data);
 
-    if (!message) {
+    if(!message) {
       console.error("message no exists!");
       return;
     }
 
     try {
       websocket.sendUTF(message.data);
-    } catch (err) {
+    } catch(err) {
       console.error("Error in Connector.sendData", err);
     }
 
@@ -165,66 +165,65 @@ class Connector {
      */
     userSocket.on("message", function(message) {
 
-      if (message.type === "utf8") {
+      if(message.type === "utf8") {
 
         try {
 
           let msgFromCLient = JSON.parse(message.utf8Data);
           console.warn("On message, utf8Data passed... ", msgFromCLient.data);
 
-          if (typeof msgFromCLient.data === "string") {
+          if(typeof msgFromCLient.data === "string") {
 
             /**
              * Passed simple string is not my case
              * Use for some custom non secure data flow.
              */
             console.log("ignore, this is just welcome message : " + msgFromCLient.data);
-            this.send(JSON.stringify({ action: "ignore", data: "Welcome here !" }));
+            this.send(JSON.stringify({action: "ignore", data: "Welcome here !"}));
 
           } else {
 
             /**
              * Network Actions parsed here:
              */
-            if (msgFromCLient.action) {
+            if(msgFromCLient.action) {
 
-              if (msgFromCLient.action === "REGISTER") {
+              if(msgFromCLient.action === "REGISTER") {
                 const userId = shared.formatUserKeyLiteral(msgFromCLient.data.userRegData.email);
                 shared.myBase.userSockCollection[userId] = this;
                 msgFromCLient.data.socketId = userId;
                 console.log(msgFromCLient.data.socketId + ":::msgFromCLient.data.socketId");
                 shared.serverHandlerRegister(msgFromCLient);
-              } else if (msgFromCLient.action === "REG_VALIDATE") {
+              } else if(msgFromCLient.action === "REG_VALIDATE") {
                 shared.serverHandlerRegValidation(msgFromCLient);
-              } else if (msgFromCLient.action === "LOGIN") {
+              } else if(msgFromCLient.action === "LOGIN") {
                 console.warn("On message, LOGIN... ", msgFromCLient.data.userLoginData.email);
                 const userId = shared.formatUserKeyLiteral(msgFromCLient.data.userLoginData.email);
                 shared.myBase.userSockCollection[userId] = this;
                 shared.serverHandlerLoginValidation(msgFromCLient);
-              } else if (msgFromCLient.action === "GET_USER_DATA") {
+              } else if(msgFromCLient.action === "GET_USER_DATA") {
                 shared.serverHandlerGetUserData(msgFromCLient);
-              } else if (msgFromCLient.action === "NEW_NICKNAME") {
+              } else if(msgFromCLient.action === "NEW_NICKNAME") {
                 shared.serverHandlerSetNewNickname(msgFromCLient);
-              } else if (msgFromCLient.action === "FLOGIN") {
+              } else if(msgFromCLient.action === "FLOGIN") {
                 const userId = shared.formatUserKeyLiteral(msgFromCLient.data.userLoginData.email);
                 shared.myBase.userSockCollection[userId] = this;
                 shared.serverHandlerFastLogin(msgFromCLient);
-              } else if (msgFromCLient.action === "GAMEPLAY_START") {
+              } else if(msgFromCLient.action === "GAMEPLAY_START") {
                 shared.serverHandlerGamePlayStart(msgFromCLient);
-              } else if (msgFromCLient.action === "LOG_OUT") {
-
+              } else if(msgFromCLient.action === "LOG_OUT") {
                 shared.serverHandlerSessionLogOut(msgFromCLient);
                 // shared.serverHandlerOutOfGame(msgFromCLient);
-
-              } else if (msgFromCLient.action === "OUT_OF_GAME") {
+              } else if(msgFromCLient.action === "PLUS_10") {
+                shared.serverHandlerPlusPoints(msgFromCLient);
+              } else if(msgFromCLient.action === "OUT_OF_GAME") {
                 shared.serverHandlerOutOfGame(msgFromCLient);
               }
-
             } else {
               console.warn("Object but not action in it.");
             }
           }
-        } catch (err) {
+        } catch(err) {
           console.warn("On message : Message is simple string", err);
         }
       }
@@ -232,7 +231,7 @@ class Connector {
     });
 
     userSocket.on("close", function(e) {
-      console.warn("Event: onClose");
+      console.warn("Event: onClose", e);
 
     });
 
@@ -246,8 +245,8 @@ class Connector {
   serverHandlerRegister(regTest) {
 
     // validate
-    if (regTest.data.userRegData) {
-      if (shared.validateEmail(regTest.data.userRegData.email) === null) {
+    if(regTest.data.userRegData) {
+      if(shared.validateEmail(regTest.data.userRegData.email) === null) {
         shared.myBase.database.register(regTest.data, shared.myBase);
       }
     }
@@ -259,7 +258,7 @@ class Connector {
     let connection;
     let userId = shared.formatUserKeyLiteral(userEmail);
     console.log("onRegisterResponse : " + result + ". For user: " + userEmail);
-    if (result == "USER_REGISTERED") {
+    if(result == "USER_REGISTERED") {
 
       let emailRegBody = require("../email/templates/confirmation.html").getConfirmationEmail;
       let contentRegBody = emailRegBody(uniq, userEmail);
@@ -267,9 +266,9 @@ class Connector {
       try {
         connection = require("../email/mail-service")
           (userEmail, "USER_REGISTERED", contentRegBody).SEND(userEmail);
-      } catch (error) {
+      } catch(error) {
         console.warn("Connector error in sending reg email!", error);
-        let codeSended = { action: "ERROR_EMAIL", data: { errMsg: "Please check your email again!, Something wrong with current email!" } };
+        let codeSended = {action: "ERROR_EMAIL", data: {errMsg: "Please check your email again!, Something wrong with current email!"}};
         codeSended = JSON.stringify(codeSended);
         callerInstance.userSockCollection[socketId].send(codeSended);
         console.log("Email reg error. Notify client.");
@@ -290,7 +289,7 @@ class Connector {
     } else {
       // handle this...
       console.warn("Something wrong with your email. Result is : ", result);
-      let msg = { action: "ERROR_EMAIL", data: { errMsg: "ERR: USER ALREADY REGISTERED" } };
+      let msg = {action: "ERROR_EMAIL", data: {errMsg: "ERR: USER ALREADY REGISTERED"}};
       msg = JSON.stringify(msg);
       callerInstance.userSockCollection[socketId].send(msg);
       console.log("Email reg error. Notify client.");
@@ -300,8 +299,8 @@ class Connector {
 
   serverHandlerRegValidation(register) {
 
-    if (register.data.userRegToken && register.data.email) {
-      const user = { email: register.data.email, token: register.data.userRegToken, accessToken: register.data.accessToken };
+    if(register.data.userRegToken && register.data.email) {
+      const user = {email: register.data.email, token: register.data.userRegToken, accessToken: register.data.accessToken};
       shared.myBase.database.regValidator(user, shared.myBase);
     }
 
@@ -309,14 +308,14 @@ class Connector {
 
   onRegValidationResponse(result, userEmail, accessToken) {
 
-    if (result == null) {
-      let msg = { action: "ERROR_EMAIL", data: { errMsg: "ERR: WRONG CODE!" } };
+    if(result == null) {
+      let msg = {action: "ERROR_EMAIL", data: {errMsg: "ERR: WRONG CODE!"}};
       msg = JSON.stringify(msg);
       this.userSockCollection[accessToken].send(msg);
       console.log("onRegValidationResponse .", this);
     } else {
       // VERIFIED
-      let msg = { action: "VERIFY_SUCCESS", data: { text: "VERIFY SUCCESS! PLEASE LOGIN " } };
+      let msg = {action: "VERIFY_SUCCESS", data: {text: "VERIFY SUCCESS! PLEASE LOGIN "}};
       msg = JSON.stringify(msg);
       this.userSockCollection[accessToken].send(msg);
       console.log("onRegValidationResponse .", this);
@@ -325,18 +324,18 @@ class Connector {
   }
 
   serverHandlerLoginValidation(login) {
-    const user = { email: login.data.userLoginData.email, password: login.data.userLoginData.password };
+    const user = {email: login.data.userLoginData.email, password: login.data.userLoginData.password};
     shared.myBase.database.loginUser(user, shared.myBase);
   }
 
   onUserLogin(user, callerInstance) {
     let userId = shared.formatUserKeyLiteral(user.email);
     try {
-      let codeSended = { action: "ONLINE", data: { accessToken: userId, text: "Welcome to the game portal.", user } };
+      let codeSended = {action: "ONLINE", data: {accessToken: userId, text: "Welcome to the game portal.", user}};
       codeSended = JSON.stringify(codeSended);
       callerInstance.userSockCollection[userId].send(codeSended);
       console.warn("Online : ", user.email);
-    } catch (err) {
+    } catch(err) {
       console.log("Something wrong with onUserLogin :: userSockCollection[userId]. Err :", err);
     }
   }
@@ -344,7 +343,7 @@ class Connector {
   serverHandlerGetUserData(user) {
     try {
       shared.myBase.database.getUserData(user, shared.myBase);
-    } catch (err) {
+    } catch(err) {
       console.log("Connector.serverHandlerGetUserData error : ", err);
     }
   }
@@ -352,23 +351,23 @@ class Connector {
   onUserData(user, callerInstance) {
     try {
       let userId = shared.formatUserKeyLiteral(user.email);
-      let codeSended = { action: "GET_USER_DATA", data: { user } };
+      let codeSended = {action: "GET_USER_DATA", data: {user}};
       codeSended = JSON.stringify(codeSended);
       callerInstance.userSockCollection[userId].send(codeSended);
-    } catch (err) {
+    } catch(err) {
       console.log("Something wrong with onUserData :: userSockCollection[userId]. Err :", err);
     }
   }
 
   serverHandlerSetNewNickname(arg) {
-    if (arg !== undefined) {
+    if(arg !== undefined) {
       console.log(arg);
       shared.myBase.database.setNewNickname(arg, shared.myBase);
     }
   }
 
   serverHandlerFastLogin(arg) {
-    if (arg !== undefined) {
+    if(arg !== undefined) {
       console.log(arg);
       shared.myBase.database.fastLogin(arg, shared.myBase);
     }
@@ -377,30 +376,37 @@ class Connector {
   onUserNewNickname(userData, callerInstance) {
     try {
       let userId = shared.formatUserKeyLiteral(userData.email);
-      let codeSended = { action: "NICKNAME_UPDATED", data: { userData } };
+      let codeSended = {action: "NICKNAME_UPDATED", data: {userData}};
       codeSended = JSON.stringify(codeSended);
       callerInstance.userSockCollection[userId].send(codeSended);
-    } catch (err) {
+    } catch(err) {
       console.log("Something wrong with :: userSockCollection[userId]. Err :", err);
     }
   }
 
   serverHandlerGamePlayStart(arg) {
-    if (arg !== undefined) {
+    if(arg !== undefined) {
       console.log(arg.activeGame);
       shared.myBase.database.platformerActiveUsers.addActiveGamePlayer(arg, shared.myBase);
     }
   }
 
+  serverHandlerPlusPoints(arg) {
+    if(arg !== undefined) {
+      console.log(arg.activeGame);
+      shared.myBase.database.platformerActiveUsers.plusPoints(arg, shared.myBase, 99);
+    }
+  }
+
   serverHandlerSessionLogOut(arg) {
-    if (arg !== undefined) {
+    if(arg !== undefined) {
       console.log(arg);
       shared.myBase.database.logOut(arg, shared.myBase);
     }
   }
 
   serverHandlerOutOfGame(arg) {
-    if (arg !== undefined) {
+    if(arg !== undefined) {
       shared.myBase.database.platformerActiveUsers.removeActiveGamePlayer(arg, shared.myBase);
     }
   }
@@ -408,10 +414,10 @@ class Connector {
   onLogOutResponse(userData, callerInstance) {
     try {
       let userId = shared.formatUserKeyLiteral(userData.email);
-      let codeSended = { action: "LOG_OUT", data: { userData } };
+      let codeSended = {action: "LOG_OUT", data: {userData}};
       codeSended = JSON.stringify(codeSended);
       callerInstance.userSockCollection[userId].send(codeSended);
-    } catch (err) {
+    } catch(err) {
       console.log("Something wrong with :: userSockCollection[userId]. Err :", err);
     }
   }
@@ -419,10 +425,10 @@ class Connector {
   onOutOfGameResponse(userData, callerInstance) {
     try {
       let userId = shared.formatUserKeyLiteral(userData.email);
-      let codeSended = { action: "OUT_OF_GAME", data: { userData } };
+      let codeSended = {action: "OUT_OF_GAME", data: {userData}};
       codeSended = JSON.stringify(codeSended);
       callerInstance.userSockCollection[userId].send(codeSended);
-    } catch (err) {
+    } catch(err) {
       console.log("Something wrong with :: userSockCollection[userId]. Err :", err);
     }
   }
@@ -430,10 +436,10 @@ class Connector {
   onGameStartResponse(userData, callerInstance) {
     try {
       let userId = shared.formatUserKeyLiteral(userData.email);
-      let codeSended = { action: "GAMEPLAY_STARTED", data: { userData } };
+      let codeSended = {action: "GAMEPLAY_STARTED", data: {userData}};
       codeSended = JSON.stringify(codeSended);
       callerInstance.userSockCollection[userId].send(codeSended);
-    } catch (err) {
+    } catch(err) {
       console.log("Something wrong with :: userSockCollection[userId]. Err :", err);
     }
   }

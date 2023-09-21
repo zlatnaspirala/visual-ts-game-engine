@@ -203,8 +203,10 @@ class GamePlay extends BasketBallChat implements IMultiplayer {
           (byId("out-of-game") as HTMLButtonElement).disabled=true;
 
           myInstance.starter.ioc.get.Network.connector.memo.save("activeGame", "none");
-          myInstance.starter.ioc.get.Network.nameUI.disabled=(this as any).disabled=false;
-          myInstance.starter.ioc.get.Network.connectUI.disabled=(this as any).disabled=false;
+
+          // myInstance.starter.ioc.get.Network.nameUI.disabled=(this as any).disabled=false;
+          // myInstance.starter.ioc.get.Network.connectUI.disabled=(this as any).disabled=false;
+
           myInstance.deattachMatterEvents();
           // Leave
           myInstance.starter.ioc.get.Broadcaster.connection.leave();

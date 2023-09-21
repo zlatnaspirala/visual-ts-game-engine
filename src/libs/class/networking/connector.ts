@@ -360,8 +360,10 @@ class ConnectorClient {
         (byId("user-email") as HTMLInputElement).value = dataReceive.data.user.email;
         (byId("nick-name") as HTMLInputElement).value = dataReceive.data.user.nickname;
         byId("log-out").addEventListener("click", myInstance.logOutFromSession, false);
-        // Disable for now.
-        // byId("out-of-game").addEventListener("click", myInstance.exitCurrentGame, false);
+
+        // Disable for now. TEST
+        byId("out-of-game").addEventListener("click", myInstance.exitCurrentGame, false);
+
         (byId("games-list") as HTMLLIElement).addEventListener("click", myInstance.showGamesList, false);
         (byId("store-form") as HTMLLIElement).addEventListener("click", myInstance.showStore, false);
         (byId("set-nickname-profile") as HTMLButtonElement).addEventListener("click", myInstance.setNewNickName, false);
@@ -539,6 +541,24 @@ class ConnectorClient {
     if (this.memo.load("online") === true) {
       const localMsg = {
         action: "GAMEPLAY_START",
+        data: {
+          gameName,
+          rank: this.memo.load("localUserRank"),
+          token: this.memo.load("token"),
+          channelID: this.config.getMasterServerKey()
+        },
+      };
+      this.sendObject(localMsg);
+    }
+
+  }
+
+  private PLUS_10 = (gameName: string) => {
+
+    console.log("PLUS 10: ", gameName);
+    if (this.memo.load("online") === true) {
+      const localMsg = {
+        action: "PLUS_10",
         data: {
           gameName,
           rank: this.memo.load("localUserRank"),

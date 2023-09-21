@@ -134,6 +134,11 @@ class GamePlay extends Platformer implements IMultiplayer {
     const myInstance = this;
 
     window.addEventListener("game-init", function (e) {
+
+      console.info("game-init Player spawn. e => ", (e as any).detail);
+
+      sessionStorage.setItem('current-level', (e as any).detail.data.mapName)
+
       try {
         if ((e as any).detail && (e as any).detail.data.game === "undefined") {
           console.warn("Bad game-init attempt.");
@@ -198,12 +203,18 @@ class GamePlay extends Platformer implements IMultiplayer {
             "activeGame",
             "none"
           );
-          myInstance.starter.ioc.get.Network.nameUI.disabled = (this as any).disabled = false;
-          myInstance.starter.ioc.get.Network.connectUI.disabled = (this as any).disabled = false;
+          
+          console.info("Very bad #00 WHAT IS THIS ", this);
+          console.info("Very bad #00 WHAT IS THIS ", myInstance.starter.ioc.get.Network.nameUI);
+
+          // ??? check this later
+          // myInstance.starter.ioc.get.Network.nameUI.disabled = (this as any).disabled = false;
+          // myInstance.starter.ioc.get.Network.connectUI.disabled = (this as any).disabled = false;
+
           myInstance.deattachMatterEvents();
           // Leave
-          myInstance.starter.ioc.get.network.rtcMultiConnection.connection.leave();
-          myInstance.starter.ioc.get.network.rtcMultiConnection.connection.disconnect();
+          myInstance.starter.ioc.get.Network.rtcMultiConnection.connection.leave();
+          myInstance.starter.ioc.get.Network.rtcMultiConnection.connection.disconnect();
           myInstance.netBodies = {};
           console.info(
             "game-end global event. Destroying game play. DISCONNECT"
