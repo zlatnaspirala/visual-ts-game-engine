@@ -11,23 +11,23 @@ var file = new (static.Server)('/var/www/html/apps/visual-ts/basket-ball-chat/')
  * running configuration(because broadcaster and coordinator).
  * Nature of Connector is `WebSocketServer` context.
  * This is little different between Broadcaster and Conector.
- * Checker added besed on `serverMode` from server config.
+ * Checker added based on `serverMode` from server config.
  * @name Connector
  * Session Controller
  * Based on native webSocket server/client.
  * Supported with mongoDB database platform.
  * @Note `ca` will be disabled for localhost.
+ * @Note must be https for local or public.
  */
 class Connector {
 
   constructor(serverConfig) {
-
     this.userSockCollection = {};
     this.config = serverConfig;
     this.http = null;
     this.crypto = new CryptoHandler();
 
-    if(!serverConfig.isSecure) { // || this.serverMode === "mongodb.net"
+    if(!serverConfig.isSecure) {
 
       let options = {
         key: fs.readFileSync(serverConfig.certPathSelf.pKeyPath),
@@ -55,6 +55,7 @@ class Connector {
           cert: fs.readFileSync(serverConfig.certPathSelf.pCertPath),
           ca: fs.readFileSync(serverConfig.certPathSelf.pCBPath),
         };
+        // options = {};
       } else if(serverConfig.serverMode === 'prod' || serverConfig.serverMode === 'mongodb.net') {
         options = {
           key: fs.readFileSync(serverConfig.certPathProd.pKeyPath),
@@ -81,7 +82,9 @@ class Connector {
             response.statusCode = 200;
             let msgForHttpCheck = '**********************************************************' + ' \n' +
               '* Visual-TS Game Engine Server composition, version: ' + serverConfig.version + '* \n' +
-              '* Type of network - CONNECTOR - COMPACT WITH ROCKETCRAFTINGSERVER DB STRUCTURE  *' + ' \n' +
+              '* Type of network `CONNECTOR` COMPACT WITH ROCKETCRAFTINGSERVER DB STRUCTURE  *' + ' \n' +
+              '* Powerfull tool for real time applications.                                  *' + ' \n' +
+              '* Source code: https://github.com/zlatnaspirala/visual-ts-game-engine         *' + ' \n' +
               '**********************************************************';
             response.write(msgForHttpCheck);
             return response.end();
@@ -231,12 +234,11 @@ class Connector {
     });
 
     userSocket.on("close", function(e) {
-      console.warn("Event: onClose", e);
-
+      console.warn("Event: onClose e=>", e);
     });
 
     userSocket.on("error", function(e) {
-      console.warn("Event: error");
+      // console.warn("Event: error", e);
     });
 
     console.log("onRequestConn constructed.")

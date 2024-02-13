@@ -1,8 +1,8 @@
 class Broadcaster {
   constructor(serverConfig) {
     const fs = require("fs");
-    const path = require("path");
-    const url = require("url");
+    // const path = require("path");
+    // const url = require("url");
     const ioServer = require("socket.io");
     const RTCMultiConnectionServer = require("rtcmulticonnection-server");
     var httpServer = null;
@@ -16,25 +16,18 @@ class Broadcaster {
     };
 
     const BASH_COLORS_HELPER = RTCMultiConnectionServer.BASH_COLORS_HELPER;
-    const getValuesFromConfigJson =
-      RTCMultiConnectionServer.getValuesFromConfigJson;
+    const getValuesFromConfigJson = RTCMultiConnectionServer.getValuesFromConfigJson;
     const getBashParameters = RTCMultiConnectionServer.getBashParameters;
-
     var config = getValuesFromConfigJson(jsonPath);
     config = getBashParameters(config, BASH_COLORS_HELPER);
 
     // if user didn't modifed "PORT" object
-    if (PORT === 9001) {
+    if(PORT === 9001) {
       PORT = config.port;
     }
 
     function serverHandler(request, response) {
-      console.log("++++++++++++++++serverHandler++++++++++++++++");
-      // to make sure we always get valid info from json file
-      // even if external codes are overriding it
-      config = getValuesFromConfigJson(jsonPath);
-      config = getBashParameters(config, BASH_COLORS_HELPER);
-
+      console.log("+serverHandler+");
       var headers = {};
       headers["Access-Control-Allow-Origin"] = "*";
       headers["Access-Control-Allow-Headers"] =
@@ -44,7 +37,7 @@ class Broadcaster {
       headers["Access-Control-Max-Age"] = "86400";
       response.writeHead(200, headers);
 
-      if (request.method === "OPTIONS") {
+      if(request.method === "OPTIONS") {
         console.log("OPTIONS SUCCESS");
         response.end();
       } else {
@@ -55,9 +48,11 @@ class Broadcaster {
           "Access-Control-Allow-Headers": "*",
         });
         let msgForHttpCheck = '**********************************************************' + ' \n' +
-                              '* VisualTS Game Engine Server composition, version: ' + serverConfig.version + '* \n' + 
-                              '* Type of network - BROADCASTER                          *' + ' \n' +
-                              '**********************************************************';
+          '* VisualTS Game Engine Server composition, version: ' + serverConfig.version + '* \n' +
+          '* Type of network - BROADCASTER                          *' + ' \n' +
+          '* Powerfull tool for real time applications.                                  *' + ' \n' +
+          '* Source code: https://github.com/zlatnaspirala/visual-ts-game-engine         *' + ' \n' +
+          '**********************************************************';
         response.write(msgForHttpCheck);
         response.end();
       }
@@ -76,13 +71,13 @@ class Broadcaster {
      * @description This block can be optimisex
      * SSL on/off
      */
-    if (serverConfig.serverMode === "dev" || serverConfig.serverMode === "mongodb.net-dev") {
+    if(serverConfig.serverMode === "dev" || serverConfig.serverMode === "mongodb.net-dev") {
       options = {
         key: fs.readFileSync(serverConfig.certPathSelf.pKeyPath),
         cert: fs.readFileSync(serverConfig.certPathSelf.pCertPath),
         ca: fs.readFileSync(serverConfig.certPathSelf.pCBPath),
       };
-    } else if (serverConfig.serverMode === "prod" || serverConfig.serverMode === "mongodb.net") {
+    } else if(serverConfig.serverMode === "prod" || serverConfig.serverMode === "mongodb.net") {
       options = {
         key: fs.readFileSync(serverConfig.certPathProd.pKeyPath),
         cert: fs.readFileSync(serverConfig.certPathProd.pCertPath),
@@ -94,16 +89,13 @@ class Broadcaster {
       );
     }
 
-    var pfx = false;
-    console.info("Server runs `https` protocol.");
-
+    // var pfx = false;
     httpApp = httpServer.createServer(options, serverHandler);
-
     RTCMultiConnectionServer.beforeHttpListen(httpApp, config);
     httpApp = httpApp.listen(
       process.env.PORT || PORT,
       process.env.IP || "0.0.0.0",
-      function () {
+      function() {
         RTCMultiConnectionServer.afterHttpListen(httpApp, config);
       }
     );
@@ -112,38 +104,46 @@ class Broadcaster {
     var collectCorsDomain = config.homePage;
     console.log("-rtc cors collectCorsDomain : ", collectCorsDomain);
 
-    if (serverConfig.serverMode == "dev" || this.serverMode == "mongodb.net-dev") {
+    if(serverConfig.serverMode == "dev" || this.serverMode == "mongodb.net-dev") {
       console.log("-rtc cors dev: ", serverConfig.domain.dev);
-    } else if (serverConfig.serverMode == "prod" || serverConfig.serverMode == "mongodb.net") {
+    } else if(serverConfig.serverMode == "prod" || serverConfig.serverMode == "mongodb.net") {
       console.log("-rtc cors prod: ", serverConfig.domain.prod);
       collectCorsDomain = serverConfig.protocol + "://" + serverConfig.domain.prod;
     }
 
-    console.log("Cors Domain: ", collectCorsDomain);
-    ioServer(httpApp, {
+    console.log("Cors Domain [extra data]: ", collectCorsDomain);
+    var myBroadcaster = ioServer(httpApp, {
       cors: {
         origin: collectCorsDomain,
         methods: ["GET", "POST", "OPTIONS", "*"],
         allowedHeaders: ["*"],
         credentials: true,
       },
-    }).on("connection", function (socket) {
+    })
+
+    myBroadcaster.on("connection", function(socket) {
       console.log("MultiRTC3: new client.");
       RTCMultiConnectionServer.addSocket(socket, config);
 
       const params = socket.handshake.query;
 
-      if (!params.socketCustomEvent) {
+      if(!params.socketCustomEvent) {
         params.socketCustomEvent = "custom-message";
       }
 
-      socket.on(params.socketCustomEvent, function (message) {
+      socket.on(params.socketCustomEvent, function(message) {
         socket.broadcast.emit(params.socketCustomEvent, message);
       });
+
+      socket.on("disconnect", (e) => {
+        console.log("Broadcaster sock disconnection under: ", e);
+      })
     });
 
-    console.log("Broadcaster runned under:");
-    console.log(config);
+    myBroadcaster.on("disconnection", (e) => {
+      console.log("Broadcaster sock CLOSED under: ", e);
+    })
+
     console.log("Good luck.");
   }
 }
