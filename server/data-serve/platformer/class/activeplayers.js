@@ -1,22 +1,19 @@
 let MongoClient = require("mongodb").MongoClient;
 
+/**
+ * @description 
+ * Only active sessions
+ * 
+ */
 class PlatformerActiveUsers {
 
   constructor(config) {
-
     this.config = config;
-
-    console.log(">>config.getDatabaseRoot>>", config.getDatabaseRoot)
-
     MongoClient.connect(config.getDatabaseRoot, {
       useNewUrlParser: true,
       useUnifiedTopology: true
-    }, function(error, db) {
-      if(error) {
-        console.warn("MyDatabase activeplayers : err:" + error);
-        return;
-      }
-
+    }, function(err, db) {
+      if(err) {console.warn("activeplayers:" + err); return;}
       const dbo = db.db(config.databaseName);
 
       dbo.listCollections().toArray(function(err, data) {
@@ -26,31 +23,23 @@ class PlatformerActiveUsers {
       });
 
       if(!dbo.collection("platformer")) {
-
         dbo.createCollection("platformer", function(err, collection) {
-
           if(err) throw err;
-          collection.createIndex({"token": 1}, {unique: true});
           collection.createIndex({"rank": 1}, {unique: false});
           collection.createIndex({"nickname": 1}, {unique: false});
-          collection.createIndex({"lives": 3}, {unique: false});
-          collection.createIndex({"channelID": 3}, {unique: false});
+          collection.createIndex({"email": 1}, {unique: false});
+          collection.createIndex({"channelID": 1}, {unique: false});
           db.close();
-
-        });
-
+        })
       }
-
-    });
-
+    })
   }
 
   addActiveGamePlayer(user, callerInstance) {
-
     var root = this;
     var gameID;
     if(typeof user.data.gameName === 'undefined') {
-      console.log("user.gameName is undefined");
+      console.log("user.gameName is undefined [deafult:platformer] ");
       gameID = "platformer";
     } else {
       gameID = user.data.gameName;
@@ -61,40 +50,28 @@ class PlatformerActiveUsers {
     MongoClient.connect(callerInstance.config.getDatabaseRoot, {
       useNewUrlParser: true,
       useUnifiedTopology: true
-    }, function(error, db) {
-      if(error) {
-        console.warn("addActiveGamePlayer err:" + error);
-        return;
-      }
+    }, function(err, db) {
+      if(err) {console.warn("addActiveGamePlayer." + err); return;}
       const dbo = db.db(databaseName);
       if(!dbo.collection(gameID)) {console.log("Very bad 0003:: There is no active game collection", gameID)}
-
       dbo.collection(gameID).findOne({token: user.data.token},
         function(err, result) {
-          if(err) {
-            console.log("addActiveGamePlayer err : " + err);
-            return null;
-          }
+          if(err) {console.log("addActiveGamePlayer.err : " + err); return null;}
           if(result == null) {
-
             dbo.collection("users").findOne({token: user.data.token},
               function(err, result) {
                 if(err) {console.log(err); return null;}
                 if(result) {
-
                   const localUserData = {
                     email: result.email,
                     nickname: result.nickname,
                     activeGame: gameID
                   };
-
                   root.countPoints(user, callerInstance, 10);
-
                   dbo.collection(gameID).insertOne({
                     nickname: result.nickname,
                     email: result.email,
                     rank: result.rank,
-                    // points: result.points,
                     channelID: user.data.channelID
                   }, function(err, result) {
                     if(err) {console.log(err); db.close(); return;}
@@ -104,16 +81,13 @@ class PlatformerActiveUsers {
                     }
                     db.close();
                   });
-
                 } else {
                   db.close();
                 }
               });
-
           } else {
-
+            //
             root.countPoints(user, callerInstance, 30);
-
             dbo.collection("users").findOne({token: user.data.token},
               (err, result) => {
                 if(err) {return;}
@@ -126,42 +100,27 @@ class PlatformerActiveUsers {
                 console.log("onGameStartResponse", result);
                 db.close();
               });
-
             console.log("=====================================================================================")
             console.log("ActiveGame.addActiveGame (User is already in game play , new enter -30 points) ");
             console.log("=====================================================================================")
             return null;
-
           }
-
         });
-
     });
-
   }
 
   removeActiveGamePlayer(user, callerInstance) {
-
     const databaseName = this.config.databaseName;
     MongoClient.connect(this.config.getDatabaseRoot, {
       useNewUrlParser: true,
       useUnifiedTopology: true
-    }, function(error, db) {
-      if(error) {
-        console.warn("ActiveGame.removeActiveGamePlayer err:" + error);
-        return;
-      }
-
+    }, function(err, db) {
+      if(err) {console.warn("removeActiveGamePlayer:" + err); return;}
       const dbo = db.db(databaseName);
       dbo.collection("platformer").findOne({token: user.data.token},
         function(err, result) {
-          if(err) {
-            console.log("ActiveGame.removeActiveGamePlayer (err1):" + err);
-            return;
-          }
-
+          if(err) {console.log("removeActiveGamePlayer:" + err); return;}
           if(result !== null) {
-
             var myquery = {token: result.token};
             dbo.collection("platformer").deleteOne(myquery, function(err, obj) {
               if(err) throw err;
@@ -169,16 +128,15 @@ class PlatformerActiveUsers {
               dbo.collection("users").findOne({token: user.data.token},
                 function(err, result) {
                   if(err) {
-                    console.log("ActiveGame.removeActiveGamePlayer (err1):" + err);
+                    console.log("removeActiveGamePlayer:" + err);
                     db.close();
                     return;
                   }
-
                   if(result !== null) {
                     var userData = {
                       email: result.email,
                     };
-                    console.log("ActiveGame.removeActiveGamePlayer player removed: " + result.nickname);
+                    console.log("removeActiveGamePlayer player removed: " + result.nickname);
                     callerInstance.onOutOfGameResponse(userData, callerInstance);
                     db.close();
                     return;
@@ -187,48 +145,67 @@ class PlatformerActiveUsers {
                   }
                 });
             });
-
           } else {
             db.close();
           }
-
-        });
-
-    });
-
+        })
+    })
   }
 
   quickRemoveActiveGamePlayer(keyEmail) {
-
     console.log('Q REMOVE From active - PLATFORMES ')
     const databaseName = this.config.databaseName;
     MongoClient.connect(this.config.getDatabaseRoot, {
       useNewUrlParser: true,
       useUnifiedTopology: true
-    }, function(error, db) {if(error) {console.warn("ActiveGame.removeActiveGamePlayer err:" + error);return;}
+    }, function(err, db) {
+      if(err) {console.warn("removeActiveGamePlayer:" + err); return;}
       const dbo = db.db(databaseName);
       dbo.collection("platformer").find({email: keyEmail},
-        function(err, result) {if(err) {console.log("ActiveGame.removeActiveGamePlayer (err1):" + err);return;}
+        function(err, result) {
+          if(err) {console.log("removeActiveGamePlayer:" + err); return;}
           if(result !== null) {
             var myquery = {"email": keyEmail};
             dbo.collection("platformer").deleteMany(myquery, function(err, obj) {
               if(err) throw err;
               if(obj !== null) {
-                console.log(obj.result.n + " document(s) deleted.user. ", keyEmail);
+                console.log(obj.result.n + " document(s) deleted.user. ", keyEmail)
               }
-              db.close();
-            });
+              db.close()
+            })
           } else {
-            db.close();
+            db.close()
           }
-        });
-    });
+        })
+    })
+  }
 
+  quickGetActiveGamePlayer(user, callerInstance) {
+    console.log('GET From active - PLATFORMES ')
+    const databaseName = this.config.databaseName;
+    MongoClient.connect(this.config.getDatabaseRoot, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true
+    }, function(err, db) {
+      if(err) {console.warn("removeActiveGamePlayer:" + err); return;}
+      const dbo = db.db(databaseName);
+      dbo.collection("platformer").find({},
+        function(err, result) {
+          if(err) {console.log("removeActiveGamePlayer:" + err); return;}
+          console.log("get ActiveGamePlayer:")
+          if(result !== null) {
+            callerInstance.onGetActiveListPlatformer(user, callerInstance)
+            db.close()
+          } else {
+            db.close()
+          }
+        })
+    })
   }
 
   countPoints(user, callerInstance, pay) {
 
-    if (pay < 0) {
+    if(pay < 0) {
       console.log("POINTS PAY CANT BE > 0 FOR USER ", user.data.token)
       return;
     }
@@ -257,7 +234,7 @@ class PlatformerActiveUsers {
   }
 
   plusPoints(user, callerInstance, p) {
-    if (pay < 0) {
+    if(pay < 0) {
       console.log("POINTS PAY CANT BE < 0 FOR USER ", user.data.token)
       return;
     }
@@ -265,7 +242,8 @@ class PlatformerActiveUsers {
     MongoClient.connect(callerInstance.config.getDatabaseRoot, {
       useNewUrlParser: true,
       useUnifiedTopology: true
-    }, function(error, db) {if(error) {console.warn("addActiveGamePlayer err:" + error);return;}
+    }, function(error, db) {
+      if(error) {console.warn("addActiveGamePlayer err:" + error); return;}
       const dbo = db.db(databaseName);
       dbo.collection("users").findOneAndUpdate(
         {token: user.data.token},

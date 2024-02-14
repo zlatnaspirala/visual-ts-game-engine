@@ -18,6 +18,7 @@ module.exports = {
   serverHandlerPlusPoints: function() {},
   serverHandlerSessionLogOut: function() {},
   serverHandlerOutOfGame: function() {},
+  serverHandlerGetPlatformerActiveList: function() {},
 
   validateEmail: function(email) {
     // tslint:disable-next-line:max-line-length

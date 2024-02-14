@@ -133,6 +133,7 @@ class Connector {
     shared.serverHandlerPlusPoints = this.serverHandlerPlusPoints;
     shared.serverHandlerSessionLogOut = this.serverHandlerSessionLogOut;
     shared.serverHandlerOutOfGame = this.serverHandlerOutOfGame;
+    shared.serverHandlerGetPlatformerActiveList = this.serverHandlerGetPlatformerActiveList;
 
   }
 
@@ -226,6 +227,9 @@ class Connector {
                 shared.serverHandlerPlusPoints(msgFromCLient);
               } else if(msgFromCLient.action === "OUT_OF_GAME") {
                 shared.serverHandlerOutOfGame(msgFromCLient);
+              } else if(msgFromCLient.action === "PLATFORMER_LIST") {
+                console.log("give me active gamers in platformer : " + msgFromCLient.data);
+                shared.serverHandlerGetPlatformerActiveList(msgFromCLient);
               }
             } else {
               console.warn("Object but not action in it.");
@@ -428,6 +432,12 @@ class Connector {
     }
   }
 
+  serverHandlerGetPlatformerActiveList(arg) {
+    if(arg !== undefined) {
+      shared.myBase.database.platformerActiveUsers.quickGetActiveGamePlayer(arg, shared.myBase);
+    }
+  }
+
   onLogOutResponse(userData, callerInstance) {
     try {
       let userId = shared.formatUserKeyLiteral(userData.email);
@@ -443,6 +453,17 @@ class Connector {
     try {
       let userId = shared.formatUserKeyLiteral(userData.email);
       let codeSended = {action: "OUT_OF_GAME", data: {userData}};
+      codeSended = JSON.stringify(codeSended);
+      callerInstance.userSockCollection[userId].send(codeSended);
+    } catch(err) {
+      console.log("Something wrong with :: userSockCollection[userId]. Err :", err);
+    }
+  }
+
+  onGetActiveListPlatformer(userData, callerInstance) {
+    try {
+      let userId = shared.formatUserKeyLiteral(userData.email);
+      let codeSended = {action: "ACTIVE_LIST_FROM_DBDOC_PLARFORMER", data: {userData}};
       codeSended = JSON.stringify(codeSended);
       callerInstance.userSockCollection[userId].send(codeSended);
     } catch(err) {
