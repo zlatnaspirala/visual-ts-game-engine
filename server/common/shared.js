@@ -51,6 +51,14 @@ module.exports = {
     return encoded;
   },
 
+  decodeMyKey(base64Encoded) {
+    var decodedString = Buffer.from(base64Encoded, 'base64').toString();
+    console.log("back key "  + decodedString)
+    decodedString = decodedString.replace("_alpha_", "@")
+    decodedString = decodedString.replace("→", "")
+    return decodedString;
+  },
+
   getDefaultNickName() {
     return Math.random() * 1234 * Math.random();
   }

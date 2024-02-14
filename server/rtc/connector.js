@@ -84,6 +84,7 @@ class Connector {
               '* Visual-TS Game Engine Server composition, version: ' + serverConfig.version + '* \n' +
               '* Type of network `CONNECTOR` COMPACT WITH ROCKETCRAFTINGSERVER DB STRUCTURE  *' + ' \n' +
               '* Powerfull tool for real time applications.                                  *' + ' \n' +
+              '* This is rocketcraftingfserver websocket solution.                           *' + ' \n' +
               '* Source code: https://github.com/zlatnaspirala/visual-ts-game-engine         *' + ' \n' +
               '**********************************************************';
             response.write(msgForHttpCheck);
@@ -203,6 +204,8 @@ class Connector {
                 console.warn("On message, LOGIN... ", msgFromCLient.data.userLoginData.email);
                 const userId = shared.formatUserKeyLiteral(msgFromCLient.data.userLoginData.email);
                 shared.myBase.userSockCollection[userId] = this;
+                msgFromCLient.data.socketId = userId;
+                shared.myBase.userSockCollection[userId].userId = userId;
                 shared.serverHandlerLoginValidation(msgFromCLient);
               } else if(msgFromCLient.action === "GET_USER_DATA") {
                 shared.serverHandlerGetUserData(msgFromCLient);
@@ -211,6 +214,8 @@ class Connector {
               } else if(msgFromCLient.action === "FLOGIN") {
                 const userId = shared.formatUserKeyLiteral(msgFromCLient.data.userLoginData.email);
                 shared.myBase.userSockCollection[userId] = this;
+                msgFromCLient.data.socketId = userId;
+                shared.myBase.userSockCollection[userId].userId = userId;
                 shared.serverHandlerFastLogin(msgFromCLient);
               } else if(msgFromCLient.action === "GAMEPLAY_START") {
                 shared.serverHandlerGamePlayStart(msgFromCLient);
@@ -234,11 +239,12 @@ class Connector {
     });
 
     userSocket.on("close", function(e) {
-      console.warn("Event: onClose e=>", e);
+      console.warn("Event: onClose - remove me from active game list [platformer].  userSocket.userId=> ", this.userId, " e=>", e);
+      shared.myBase.database.platformerActiveUsers.quickRemoveActiveGamePlayer(shared.decodeMyKey(this.userId));
     });
 
     userSocket.on("error", function(e) {
-      // console.warn("Event: error", e);
+      console.warn("Event: error", e);
     });
 
     console.log("onRequestConn constructed.")
@@ -326,7 +332,13 @@ class Connector {
   }
 
   serverHandlerLoginValidation(login) {
-    const user = {email: login.data.userLoginData.email, password: login.data.userLoginData.password};
+    let user = {
+      email: login.data.userLoginData.email,
+      password: login.data.userLoginData.password
+    };
+    if(login.data.socketId) {
+      user.socketId = login.data.socketId
+    }
     shared.myBase.database.loginUser(user, shared.myBase);
   }
 
@@ -371,6 +383,9 @@ class Connector {
   serverHandlerFastLogin(arg) {
     if(arg !== undefined) {
       console.log(arg);
+      if(arg.data.socketId) {
+        // arg.data.socketId = arg.data.socketId
+      }
       shared.myBase.database.fastLogin(arg, shared.myBase);
     }
   }

@@ -1,3 +1,5 @@
+const shared = require("./../common/shared");
+
 class Broadcaster {
   constructor(serverConfig) {
     const fs = require("fs");
@@ -140,10 +142,8 @@ class Broadcaster {
       })
     });
 
-    myBroadcaster.on("disconnection", (e) => {
-      console.log("Broadcaster sock CLOSED under: ", e);
-    })
-
+    // Save it - no use for now
+    this.myBroadcaster = myBroadcaster;
     console.log("Good luck.");
   }
 }

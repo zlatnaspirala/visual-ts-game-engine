@@ -156,12 +156,8 @@ class MyDatabase {
     MongoClient.connect(this.config.getDatabaseRoot, {
       useNewUrlParser: true,
       useUnifiedTopology: true
-    }, function(error, db) {
-      if(error) {
-        console.warn("MyDatabase.login error:" + error);
-        return;
-      }
-
+    }, function(err, db) {
+      if(err) {console.warn("Login err:" + err); return;}
       const dbo = db.db(databaseName);
       console.warn("MyDatabase.login:" + user);
       dbo.collection("users").findOne({email: user.email, confirmed: true}, {},
@@ -188,7 +184,7 @@ class MyDatabase {
 
             dbo.collection("users").updateOne(
               {email: user.email, },
-              {$set: {online: true}},
+              {$set: {online: true, socketId: user.socketId}},
               function(err, result) {
                 if(err) {console.log("login.user err update one:"); return;}
                 console.warn("ONLINE: ", userData.nickname);
@@ -294,7 +290,7 @@ class MyDatabase {
             };
             dbo.collection("users").updateOne(
               {email: user.data.userLoginData.email, },
-              {$set: {online: true}},
+              {$set: {online: true, socketId: user.socketId}},
               function(err, result) {
                 if(err) {console.log("FASTLOGIN err:", err); return;}
                 console.warn("ONLINE: ", userData.nickname);

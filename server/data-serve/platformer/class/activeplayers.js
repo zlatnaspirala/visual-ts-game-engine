@@ -92,7 +92,7 @@ class PlatformerActiveUsers {
 
                   dbo.collection(gameID).insertOne({
                     nickname: result.nickname,
-                    token: result.token,
+                    email: result.email,
                     rank: result.rank,
                     // points: result.points,
                     channelID: user.data.channelID
@@ -194,6 +194,34 @@ class PlatformerActiveUsers {
 
         });
 
+    });
+
+  }
+
+  quickRemoveActiveGamePlayer(keyEmail) {
+
+    console.log('Q REMOVE From active - PLATFORMES ')
+    const databaseName = this.config.databaseName;
+    MongoClient.connect(this.config.getDatabaseRoot, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true
+    }, function(error, db) {if(error) {console.warn("ActiveGame.removeActiveGamePlayer err:" + error);return;}
+      const dbo = db.db(databaseName);
+      dbo.collection("platformer").find({email: keyEmail},
+        function(err, result) {if(err) {console.log("ActiveGame.removeActiveGamePlayer (err1):" + err);return;}
+          if(result !== null) {
+            var myquery = {"email": keyEmail};
+            dbo.collection("platformer").deleteMany(myquery, function(err, obj) {
+              if(err) throw err;
+              if(obj !== null) {
+                console.log(obj.result.n + " document(s) deleted.user. ", keyEmail);
+              }
+              db.close();
+            });
+          } else {
+            db.close();
+          }
+        });
     });
 
   }
