@@ -204,7 +204,7 @@ canvas {
   position: absolute;
   z-index: 150;
   right: 0%;
-  width: 20%;
+  width: 350px;
   height: 100%;
   -webkit-animation-name: autohide;
   /* Safari 4.0 - 8.0 */
@@ -217,6 +217,7 @@ canvas {
 .log-data {
   position: absolute;
   z-index: 150;
+  display: contents;
   left: 0;
   width: 100%;
   height: 100%;

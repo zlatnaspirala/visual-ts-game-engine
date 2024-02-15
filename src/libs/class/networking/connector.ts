@@ -225,7 +225,11 @@ class ConnectorClient {
           break;
         }
         case "ACTIVE_LIST_FROM_DBDOC_PLARFORMER": {
-           alert(dataReceive);
+           console.log(dataReceive.data.userData.users);
+           dataReceive.data.userData.users.forEach((p) => {
+            if (byId('currentPlayers')) byId('currentPlayers').innerHTML += 
+               `<div class="link"> nick: ${p.nickname} rank: ${p.rank}  </div>`; 
+           })
           break;
         }
         case "GET_USER_DATA": {
@@ -342,7 +346,9 @@ class ConnectorClient {
   private getActivePlayers=() => {
     let localMsg: any={
       action: "PLATFORMER_LIST",
-      data: {},
+      data: {
+        email: this.memo.load("localUserData") || "no-data"
+      },
     };
     this.sendObject(localMsg);
   }

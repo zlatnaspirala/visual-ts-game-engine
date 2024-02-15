@@ -161,7 +161,11 @@ class PlatformerActiveUsers {
     }, function(err, db) {
       if(err) {console.warn("removeActiveGamePlayer:" + err); return;}
       const dbo = db.db(databaseName);
-      dbo.collection("platformer").find({email: keyEmail},
+      console.warn("removeActiveGamePlayer  keyEmail.toString() :" + keyEmail.toString().length);
+      // keyEmail = keyEmail.replace("→", "")
+      keyEmail = keyEmail.slice(0,-1)
+      console.warn("removeActiveGamePlayer  keyEmail.toString() :" + keyEmail.toString().length);
+      dbo.collection("platformer").find({"email": keyEmail.toString()},
         function(err, result) {
           if(err) {console.log("removeActiveGamePlayer:" + err); return;}
           if(result !== null) {
@@ -181,7 +185,7 @@ class PlatformerActiveUsers {
   }
 
   quickGetActiveGamePlayer(user, callerInstance) {
-    console.log('GET From active - PLATFORMES ')
+    console.log('GET From active - PLATFORMES ' , user)
     const databaseName = this.config.databaseName;
     MongoClient.connect(this.config.getDatabaseRoot, {
       useNewUrlParser: true,
@@ -189,17 +193,28 @@ class PlatformerActiveUsers {
     }, function(err, db) {
       if(err) {console.warn("removeActiveGamePlayer:" + err); return;}
       const dbo = db.db(databaseName);
-      dbo.collection("platformer").find({},
-        function(err, result) {
-          if(err) {console.log("removeActiveGamePlayer:" + err); return;}
-          console.log("get ActiveGamePlayer:")
-          if(result !== null) {
-            callerInstance.onGetActiveListPlatformer(user, callerInstance)
-            db.close()
-          } else {
-            db.close()
-          }
-        })
+      dbo.collection("platformer").find({}).toArray(function(err, result) {
+        if(err) {
+          console.log("error in get user list.");
+          resolve({status: 'error in getUsers'})
+        } else {
+          var usersData = {
+            status: "AUTHORIZED",
+            email: user.data.email,
+            users: []
+          };
+          console.log("get ActiveGamePlayer:", result)
+          result.forEach(function(item, index) {
+            var user = {};
+            user.nickname = item.nickname;
+            user.rank = item.rank;
+            user.email = item.email;
+            usersData.users.push(user);
+          });
+          callerInstance.onGetActiveListPlatformer(usersData, callerInstance);
+          db.close();
+        }
+      })
     })
   }
 
