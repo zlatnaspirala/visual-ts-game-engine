@@ -34,6 +34,9 @@ class GamePlay extends Platformer implements IMultiplayer {
     init(rtcEvent) {
       console.log("rtcEvent addNewPlayer: ", rtcEvent);
       this.root.addNetPlayer(this.root, rtcEvent);
+
+      console.log('call PLATFORME DB ACTIVE LIST - this ; ', this)
+      this.root.starter.ioc.get.Network.connector.getActivePlayers();
     },
 
     update(multiplayer) {
@@ -82,6 +85,7 @@ class GamePlay extends Platformer implements IMultiplayer {
      */
     leaveGamePlay(rtcEvent) {
       console.info("rtcEvent LEAVE GAME: ", rtcEvent.userid);
+      setTimeout(() => this.root.starter.ioc.get.Network.connector.getActivePlayers(), 1000);
       this.root.starter.destroyBody(
         this.root.netBodies["netObject_" + rtcEvent.userid]
       );

@@ -225,11 +225,15 @@ class ConnectorClient {
           break;
         }
         case "ACTIVE_LIST_FROM_DBDOC_PLARFORMER": {
-           console.log(dataReceive.data.userData.users);
-           dataReceive.data.userData.users.forEach((p) => {
-            if (byId('currentPlayers')) byId('currentPlayers').innerHTML += 
-               `<div class="link"> nick: ${p.nickname} rank: ${p.rank}  </div>`; 
-           })
+          console.log(dataReceive.data.userData.users);
+          dispatchEvent(new CustomEvent('ACTIVE_LIST_FROM_DBDOC_PLARFORMER', { detail: dataReceive.data.userData.users }))
+          dataReceive.data.userData.users.forEach((p) => {
+            if(byId('currentPlayers')) byId('currentPlayers').innerHTML+=
+              `<div class="link"> nick: ${p.nickname} rank: ${p.rank}  </div>`;
+          })
+          if (dataReceive.data.userData.users.length == 0) {
+            if(byId('currentPlayers')) byId('currentPlayers').innerHTML = '';
+          }
           break;
         }
         case "GET_USER_DATA": {
@@ -347,7 +351,7 @@ class ConnectorClient {
     let localMsg: any={
       action: "PLATFORMER_LIST",
       data: {
-        email: this.memo.load("localUserData") || "no-data"
+        email: this.memo.load("localUserData")||"no-data"
       },
     };
     this.sendObject(localMsg);

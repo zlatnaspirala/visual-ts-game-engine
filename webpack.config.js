@@ -91,7 +91,7 @@ let webPackModule = {
 
   plugins: [
     // Make sure that the plugin is after any plugins that add images
-    new CleanWebpackPlugin({cleanOnceBeforeBuildPatterns: ['build']}),
+    // new CleanWebpackPlugin({cleanOnceBeforeBuildPatterns: ['build']}),
     new MiniCssExtractPlugin({
       linkType: "text/css",
     }),

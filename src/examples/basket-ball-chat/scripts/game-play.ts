@@ -76,6 +76,7 @@ class GamePlay extends BasketBallChat implements IMultiplayer {
 
       console.info("rtcEvent LEAVE GAME: ", rtcEvent.userid);
       this.root.starter.destroyBody(this.root.netBodies["netObject_"+rtcEvent.userid]);
+      setTimeout(() => this.root.starter.ioc.get.Network.connector.getActivePlayers(), 1000);
       delete this.root.netBodies["netObject_"+rtcEvent.userid];
 
     },

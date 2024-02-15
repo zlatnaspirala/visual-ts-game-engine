@@ -152,9 +152,9 @@
 .popup-right-box {
   position: absolute;
   margin: 0;
-  left : 80%;
+  right : 0;
   top: 0;
-  width: 23vw;
+  width: 300px;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.95);
   box-shadow: 0 -20px 150px -20px rgba(8, 81, 163, 0.5);
