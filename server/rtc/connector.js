@@ -244,6 +244,8 @@ class Connector {
 
     userSocket.on("close", function(e) {
       console.warn("Event: onClose - remove me from active game list [platformer].  userSocket.userId=> ", this.userId, " e=>", e);
+
+      if (typeof this.userId == 'undefined') return; 
       shared.myBase.database.platformerActiveUsers.quickRemoveActiveGamePlayer(shared.decodeMyKey(this.userId));
     });
 

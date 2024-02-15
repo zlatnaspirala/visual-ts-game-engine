@@ -221,7 +221,7 @@ export function getHTMLMediaElement(mediaElement, config) {
 
             var isFullScreeMode = document.webkitIsFullScreen || document.mozFullScreen || document.fullscreen;
 
-            mediaElementContainer.style.width = (isFullScreeMode ? (window.innerWidth - 20) : config.width) + 'px';
+            // mediaElementContainer.style.width = (isFullScreeMode ? (window.innerWidth - 20) : config.width) + 'px';
             mediaElementContainer.style.display = isFullScreeMode ? 'block' : 'inline-block';
 
             if (config.height) {
@@ -262,7 +262,7 @@ export function getHTMLMediaElement(mediaElement, config) {
 
     if (!config.width) config.width = (innerWidth / 2) - 50;
 
-    mediaElementContainer.style.width = config.width + 'px';
+    // mediaElementContainer.style.width = config.width + 'px';
 
     if (config.height) {
         mediaBox.style.height = config.height + 'px';

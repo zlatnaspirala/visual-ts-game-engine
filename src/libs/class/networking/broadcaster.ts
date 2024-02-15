@@ -125,7 +125,7 @@ class Broadcaster {
 
     this.connection.videosContainer.setAttribute(
       "style",
-      "position:absolute;left:0;top:-1000px;width:400px;height:300px;"
+      "position:absolute;left:0;top:-300px;height:300px;"
     );
 
     this.connection.onstream = function (event) {
@@ -140,6 +140,7 @@ class Broadcaster {
 
       const localNumberCW = root.connection.videosContainer.clientWidth;
       const width: number = parseInt(localNumberCW.toString(), 10);
+      console.warn('WHAT IS ', width)
 
       const mediaElement = getHTMLMediaElement(video, {
         title: event.userid,
