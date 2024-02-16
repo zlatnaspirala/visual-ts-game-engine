@@ -9,7 +9,7 @@ import Memo from "./../local-storage";
 class ConnectorClient {
 
   protected popupForm: HTMLDivElement;
-  protected hideUserProfileBtn: HTMLDivElement;
+  protected hideUserProfileBtn: HTMLButtonElement;
   private webSocketController;
   private memo: Memo;
   private gamesList: any[];
@@ -372,9 +372,10 @@ class ConnectorClient {
         myInstance.popupForm.innerHTML=html;
 
         if(!byId("user-profile-btn-ok")) {
-          myInstance.hideUserProfileBtn=document.createElement("div");
+          myInstance.hideUserProfileBtn=document.createElement("button");
           myInstance.hideUserProfileBtn.id="user-profile-btn-ok";
-          myInstance.hideUserProfileBtn.classList.add("login-button");
+          myInstance.hideUserProfileBtn.classList.add("ui-button");
+          myInstance.hideUserProfileBtn.classList.add("link");
           myInstance.hideUserProfileBtn.innerText="User profile";
           if(document.querySelector('.container.player-board')) {
             document.querySelector('.container.player-board').appendChild(myInstance.hideUserProfileBtn)
