@@ -1,4 +1,3 @@
-
 import ClientConfig from "../../../client-config.js";
 import {DEFAULT_NETWORK_PARAMS} from "../../defaults";
 import {BaseMultiPlayer} from "../../interface/networking.js";
@@ -99,7 +98,8 @@ class Broadcaster {
         data: options.session.data,
       };
     } else {
-      this.connection.enableFileSharing = root.engineConfig.getBroadcasterSessionDefaults().enableFileSharing;
+      this.connection.enableFileSharing =
+        root.engineConfig.getBroadcasterSessionDefaults().enableFileSharing;
 
       this.connection.session = {
         audio: root.engineConfig.getBroadcasterSessionDefaults().sessionAudio,
@@ -140,7 +140,6 @@ class Broadcaster {
 
       const localNumberCW = root.connection.videosContainer.clientWidth;
       const width: number = parseInt(localNumberCW.toString(), 10);
-      console.warn('WHAT IS ', width)
 
       const mediaElement = getHTMLMediaElement(video, {
         title: event.userid,
@@ -236,7 +235,7 @@ class Broadcaster {
   };
 
   private showRoomURL(roomid) {
-    console.info('B Entering in room: ', roomid);
+    console.info("B Entering in room: ", roomid);
     return;
   }
 
@@ -326,7 +325,7 @@ class Broadcaster {
     // Hide on start
     root.broadcasterUI.classList.remove("network-panel-show-ver-animation");
     root.broadcasterUI.classList.add("network-panel-hide-ver-animation");
-    
+
     // hide right box (broadcaster)
     root.titleStatus.onclick = function () {
       if (
@@ -336,9 +335,11 @@ class Broadcaster {
       ) {
         root.broadcasterUI.classList.remove("network-panel-show-ver-animation");
         root.broadcasterUI.classList.add("network-panel-hide-ver-animation");
+        root.titleStatus.innerHTML = `N`;
       } else {
         root.broadcasterUI.classList.add("network-panel-show-ver-animation");
         root.broadcasterUI.classList.remove("network-panel-ver-hide-animation");
+        root.titleStatus.innerHTML = `Networking`;
       }
     };
 
@@ -401,10 +402,9 @@ class Broadcaster {
       }
 
       // removing trailing/leading whitespace
-      (this as HTMLInputElement).value = (this as HTMLInputElement).value.replace(
-        /^\s+|\s+$/g,
-        ""
-      );
+      (this as HTMLInputElement).value = (
+        this as HTMLInputElement
+      ).value.replace(/^\s+|\s+$/g, "");
       if (!(this as HTMLInputElement).value.length) {
         return;
       }
@@ -455,13 +455,13 @@ class Broadcaster {
         myInstance.initDOM();
         myInstance.attachEvents();
         myInstance.initWebRtc();
-        myInstance.inputRoomId.nodeValue = myInstance.engineConfig.getMasterServerKey();
+        myInstance.inputRoomId.nodeValue =
+          myInstance.engineConfig.getMasterServerKey();
 
         if (myInstance.engineConfig.getBroadcastAutoConnect()) {
           console.log("Try auto connect for broadcaster.");
           myInstance.openOrJoinBtn.click();
         }
-
       });
   };
 }

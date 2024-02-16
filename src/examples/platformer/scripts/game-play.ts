@@ -134,7 +134,7 @@ class GamePlay extends Platformer implements IMultiplayer {
 
     // check this with config flag
     this.network=starter.ioc.get.Network;
-    // this.broadcaster = starter.ioc.get.Broadcaster;
+    this.broadcaster = starter.ioc.get.Broadcaster;
     // this.coordinator = starter.ioc.get.Network.coordinator;
 
     // MessageBox
@@ -143,13 +143,8 @@ class GamePlay extends Platformer implements IMultiplayer {
 
   public attachAppEvents=() => {
     const myInstance=this;
-
     window.addEventListener("game-init", function(e) {
-
       console.info("game-init Player spawn. e => ", (e as any).detail);
-
-      sessionStorage.setItem('current-level', (e as any).detail.data.mapName)
-
       try {
         if((e as any).detail&&(e as any).detail.data.game==="undefined") {
           console.warn("Bad game-init attempt.");
@@ -163,9 +158,9 @@ class GamePlay extends Platformer implements IMultiplayer {
           myInstance.selectPlayer("nidzica");
           myInstance.playerSpawn(true);
           myInstance.broadcaster.activateDataStream(myInstance.multiPlayerRef);
+          myInstance.starter.ioc.get.Connector.inGamePlay = true;
           return;
         }
-
         myInstance.initSelectPlayer();
         myInstance.selectPlayer("nidzica");
 
@@ -190,7 +185,8 @@ class GamePlay extends Platformer implements IMultiplayer {
         myInstance.starter.ioc.get.Sound.createAudio("./audios/jump.mp3", "jump");
         // Correct bg Music
         myInstance.starter.ioc.get.Sound.audioBox.bgMusic.volume=0.3;
-
+        sessionStorage.setItem('current-level', (e as any).detail.data.mapName)
+        myInstance.starter.ioc.get.Connector.inGamePlay = true;
       } catch(err) {
         console.error("Very bad #00001", err);
       }
@@ -215,13 +211,13 @@ class GamePlay extends Platformer implements IMultiplayer {
             "none"
           );
 
-          console.info("Very bad #00 WHAT IS THIS ", this);
-          console.info("Very bad #00 WHAT IS THIS ", myInstance.starter.ioc.get.Network.nameUI);
-
+          console.info("Game end. THIS ", this);
+          console.info("Game end. ", myInstance.starter.ioc.get.Network.nameUI);
+          myInstance.starter.ioc.get.Broadcaster.leaveRoomBtn.click();
           // ??? check this later
           // myInstance.starter.ioc.get.Network.nameUI.disabled = (this as any).disabled = false;
           // myInstance.starter.ioc.get.Network.connectUI.disabled = (this as any).disabled = false;
-
+          myInstance.starter.ioc.get.Connector.inGamePlay = false;
           myInstance.deattachMatterEvents();
           // Leave
           myInstance.starter.ioc.get.Network.rtcMultiConnection.connection.leave();
@@ -232,7 +228,7 @@ class GamePlay extends Platformer implements IMultiplayer {
           );
         }
       } catch(err) {
-        console.error("Very bad #00003", err);
+        console.error("Very bad #1", err);
       }
     });
   };

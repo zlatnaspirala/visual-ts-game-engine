@@ -401,7 +401,7 @@ class Coordinator {
   }
 
   private attachEvents() {
-
+    console.log('TEST attachEvents')
     const root = this;
     (window as any).enableAdapter = true;
 
@@ -410,9 +410,11 @@ class Coordinator {
       if (root.broadcasterUI.classList.contains("network-panel-show-ver-animation")) {
       root.broadcasterUI.classList.remove("network-panel-show-ver-animation");
       root.broadcasterUI.classList.add("network-panel-hide-ver-animation");
+      root.titleStatus.innerHTML = `N`;
       } else {
       root.broadcasterUI.classList.add("network-panel-show-ver-animation");
       root.broadcasterUI.classList.remove("network-panel-ver-hide-animation");
+      root.titleStatus.innerHTML = `Networking`;
       }
     };
 

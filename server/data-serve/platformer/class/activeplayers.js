@@ -117,11 +117,11 @@ class PlatformerActiveUsers {
     }, function(err, db) {
       if(err) {console.warn("removeActiveGamePlayer:" + err); return;}
       const dbo = db.db(databaseName);
-      dbo.collection("platformer").findOne({token: user.data.token},
+      dbo.collection("platformer").findOne({email: user.data.email},
         function(err, result) {
           if(err) {console.log("removeActiveGamePlayer:" + err); return;}
           if(result !== null) {
-            var myquery = {token: result.token};
+            var myquery = {email: result.email};
             dbo.collection("platformer").deleteOne(myquery, function(err, obj) {
               if(err) throw err;
               // console.log(obj.result.n + " document(s) deleted.user.data.token", user.data.token);

@@ -15,6 +15,9 @@ class MyDatabase {
     var PlatformerActiveUsers = require("../data-serve/platformer/class/activeplayers");
     this.platformerActiveUsers = new PlatformerActiveUsers(this.config);
 
+    var ActiveVisitors = require("../data-serve/visitors/activevisitors");
+    this.activeVisitors = new ActiveVisitors(this.config);
+
     /*
     this.dataServeModules = [];
     dataServeModules.forEach(function(myClass) {
@@ -210,7 +213,7 @@ class MyDatabase {
       function(error, db) {
         if(error) {console.warn("MyDatabase.getUserData err:" + error); return;}
         const dbo = db.db(databaseName);
-        dbo.collection("users").findOne({socketid: user.data.accessToken, online: true, confirmed: true},
+        dbo.collection("users").findOne({token: user.data.token, online: true, confirmed: true},
           function(err, result) {
             if(err) {console.log("MyDatabase.getUserData :" + err); return null;}
             if(result !== null) {

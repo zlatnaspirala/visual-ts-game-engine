@@ -151,6 +151,7 @@
 
 .popup-right-box {
   position: absolute;
+  overflow: hidden;
   margin: 0;
   right : 0;
   top: 0;

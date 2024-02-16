@@ -12,6 +12,7 @@ import GlobalEvent from "../libs/events/global-event";
 import RecordGamePlay from "../libs/class/record-canvas";
 import { IClientConfig, IUniVector } from "../libs/interface/global";
 import Starter from "../libs/starter";
+import MobileControls from "../libs/class/player-commands";
 
 /**
  * @description
@@ -52,6 +53,7 @@ class Ioc {
 
     this.loadAddson();
 
+    this.singlton(MobileControls, undefined);
     this.singlton(Sound, undefined);
     this.singlton(MessageBox, undefined);
     this.singlton(Browser, undefined);

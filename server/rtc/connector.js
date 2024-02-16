@@ -134,6 +134,7 @@ class Connector {
     shared.serverHandlerSessionLogOut = this.serverHandlerSessionLogOut;
     shared.serverHandlerOutOfGame = this.serverHandlerOutOfGame;
     shared.serverHandlerGetPlatformerActiveList = this.serverHandlerGetPlatformerActiveList;
+    shared.serverHandlerAddVisitors = this.serverHandlerAddVisitors;
 
   }
 
@@ -437,6 +438,12 @@ class Connector {
   serverHandlerGetPlatformerActiveList(arg) {
     if(arg !== undefined) {
       shared.myBase.database.platformerActiveUsers.quickGetActiveGamePlayer(arg, shared.myBase);
+    }
+  }
+
+  serverHandlerAddVisitors(arg) {
+    if(arg !== undefined) {
+      shared.myBase.database.activeVisitors.addVisitor(arg, shared.myBase);
     }
   }
 

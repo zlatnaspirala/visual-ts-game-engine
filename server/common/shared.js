@@ -1,6 +1,11 @@
 
 module.exports = {
 
+  dbArg: {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+  },
+
   resolveURL: function(url) {
     const isWin = !!process.platform.match(/^win/);
     if (!isWin) { return url; }
@@ -19,6 +24,7 @@ module.exports = {
   serverHandlerSessionLogOut: function() {},
   serverHandlerOutOfGame: function() {},
   serverHandlerGetPlatformerActiveList: function() {},
+  serverHandlerAddVisitors: function() {},
 
   validateEmail: function(email) {
     // tslint:disable-next-line:max-line-length

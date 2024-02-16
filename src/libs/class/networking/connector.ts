@@ -14,6 +14,7 @@ class ConnectorClient {
   private memo: Memo;
   private gamesList: any[];
   private config: EngineConfig;
+  inGamePlay: boolean=false;
 
   constructor (config: EngineConfig) {
 
@@ -231,8 +232,8 @@ class ConnectorClient {
             if(byId('currentPlayers')) byId('currentPlayers').innerHTML+=
               `<div class="link"> nick: ${p.nickname} rank: ${p.rank}  </div>`;
           })
-          if (dataReceive.data.userData.users.length == 0) {
-            if(byId('currentPlayers')) byId('currentPlayers').innerHTML = '';
+          if(dataReceive.data.userData.users.length==0) {
+            if(byId('currentPlayers')) byId('currentPlayers').innerHTML='';
           }
           break;
         }
@@ -289,14 +290,15 @@ class ConnectorClient {
         }
         case "LOG_OUT": {
           // destroy game play if exist
-          location.reload();
+          alert('LOG OUT')
+          // location.reload();
           break;
         }
         case "OUT_OF_GAME": {
           // destroy gamePlay
           console.log("OUT_OF_GAME");
-          (byId("continue") as HTMLButtonElement).disabled=false;
-          (byId("out-of-game") as HTMLButtonElement).disabled=true;
+          if(byId("continue")) (byId("continue") as HTMLButtonElement).disabled=false;
+          if(byId("out-of-game")) (byId("out-of-game") as HTMLButtonElement).disabled=true;
           this.outOfGame(this.memo.load("activeGame"));
           break;
         }
@@ -374,7 +376,11 @@ class ConnectorClient {
           myInstance.hideUserProfileBtn.id="user-profile-btn-ok";
           myInstance.hideUserProfileBtn.classList.add("login-button");
           myInstance.hideUserProfileBtn.innerText="User profile";
-          document.getElementsByTagName("body")[0].appendChild(myInstance.hideUserProfileBtn);
+          if(document.querySelector('.container.player-board')) {
+            document.querySelector('.container.player-board').appendChild(myInstance.hideUserProfileBtn)
+          } else {
+            document.getElementsByTagName("body")[0].appendChild(myInstance.hideUserProfileBtn);
+          }
           (byId("user-profile-btn-ok") as HTMLDivElement).addEventListener("click", myInstance.minimizeUIPanel, false);
 
         }
@@ -409,7 +415,9 @@ class ConnectorClient {
     e.preventDefault();
     this.popupForm.style.display="none";
     if(byId("user-profile-form")) {
-      (byId("user-profile-form") as HTMLFormElement).style.display="none";
+      (byId("user-profile-form") as HTMLFormElement).classList.remove("myZoom");
+      (byId("user-profile-form") as HTMLFormElement).classList.add("myZoomOut");
+      // (byId("user-profile-form") as HTMLFormElement).style.display="none";
     }
 
     (byId("user-profile-btn-ok") as HTMLDivElement).style.display="block";
@@ -424,7 +432,9 @@ class ConnectorClient {
     (this.popupForm as any).style="";
 
     if(byId("user-profile-form")) {
-      (byId("user-profile-form") as HTMLFormElement).style.display="block";
+      // (byId("user-profile-form") as HTMLFormElement).style.display="block";
+      (byId("user-profile-form") as HTMLFormElement).classList.remove("myZoomOut");
+      (byId("user-profile-form") as HTMLFormElement).classList.add("myZoom");
     }
     // byId("user-profile-btn-ok").style.display = "none";
     this.popupForm.style.display="block";
@@ -494,22 +504,18 @@ class ConnectorClient {
   }
 
   private getUserData=() => {
-
-    const localMsg={ action: "GET_USER_DATA", data: { accessToken: this.memo.load("accessToken") } };
+    const localMsg={ action: "GET_USER_DATA", data: { token: this.memo.load("token") } };
     this.sendObject(localMsg);
-
   }
 
   private openGamePlayFor=(e) => {
-
     // const myInstance = this;
+    if (this.inGamePlay = true) {
+      alert('PPPP')
+      return;
+    }
     e.preventDefault();
-
-    const appStartGamePlay=createAppEvent("game-init",
-      {
-        mapName: "Level1"
-      });
-
+    const appStartGamePlay=createAppEvent("game-init", { mapName: "Level1" });
     (window as any).dispatchEvent(appStartGamePlay);
 
     if(e.currentTarget.getAttribute("id")==="openGamePlay") {
@@ -523,23 +529,16 @@ class ConnectorClient {
       if(byId("user-profile-btn-ok")) {
         (byId("user-profile-btn-ok") as HTMLDivElement).click();
       }
-
     }
-
   }
 
   private outOfGame=(name: string) => {
-
-    const appEndGamePlay=createAppEvent("game-end",
-      {
-        game: name,
-      });
-
-    (window as any).dispatchEvent(appEndGamePlay);
+    sessionStorage.removeItem('current-level')
+    const appEndGamePlay=createAppEvent("game-end", { game: name });
+    (window as any).dispatchEvent(appEndGamePlay)
   }
 
   private setNewNickName=(e) => {
-
     e.preventDefault();
     if(this.memo.load("online")===true) {
       const localMsg={
@@ -596,22 +595,21 @@ class ConnectorClient {
   }
 
   private exitCurrentGame=() => {
-
     // pass arg game name in future
+    sessionStorage.removeItem('current-level')
     if(this.memo.load("online")===true) {
       const localMsg={
         action: "OUT_OF_GAME",
         data: {
           token: this.memo.load("token"),
+          email: this.memo.load("localUserData")
         },
       };
       this.sendObject(localMsg);
     }
-
   }
 
   private logOutFromSession=() => {
-
     if(this.memo.load("online")===true) {
       const localMsg={
         action: "LOG_OUT",
