@@ -158,7 +158,7 @@ class GamePlay extends Platformer implements IMultiplayer {
           myInstance.selectPlayer("nidzica");
           myInstance.playerSpawn(true);
           myInstance.broadcaster.activateDataStream(myInstance.multiPlayerRef);
-          myInstance.starter.ioc.get.Connector.inGamePlay = true;
+          myInstance.starter.ioc.get.Network.connector.inGamePlay = true;
           return;
         }
         myInstance.initSelectPlayer();
@@ -186,7 +186,7 @@ class GamePlay extends Platformer implements IMultiplayer {
         // Correct bg Music
         myInstance.starter.ioc.get.Sound.audioBox.bgMusic.volume=0.3;
         sessionStorage.setItem('current-level', (e as any).detail.data.mapName)
-        myInstance.starter.ioc.get.Connector.inGamePlay = true;
+        myInstance.starter.ioc.get.Network.connector.inGamePlay = true;
       } catch(err) {
         console.error("Very bad #00001", err);
       }
@@ -217,7 +217,7 @@ class GamePlay extends Platformer implements IMultiplayer {
           // ??? check this later
           // myInstance.starter.ioc.get.Network.nameUI.disabled = (this as any).disabled = false;
           // myInstance.starter.ioc.get.Network.connectUI.disabled = (this as any).disabled = false;
-          myInstance.starter.ioc.get.Connector.inGamePlay = false;
+          myInstance.starter.ioc.get.Network.connector.inGamePlay = false;
           myInstance.deattachMatterEvents();
           // Leave
           myInstance.starter.ioc.get.Network.rtcMultiConnection.connection.leave();

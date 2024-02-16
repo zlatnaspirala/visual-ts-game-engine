@@ -509,12 +509,14 @@ class ConnectorClient {
   }
 
   private openGamePlayFor=(e) => {
+    e.preventDefault();
     // const myInstance = this;
-    if (this.inGamePlay = true) {
-      alert('PPPP')
+    if (this.inGamePlay == true) {
+      alert('You are already in gameplay.')
       return;
     }
-    e.preventDefault();
+    console.log('>PASSED>')
+    
     const appStartGamePlay=createAppEvent("game-init", { mapName: "Level1" });
     (window as any).dispatchEvent(appStartGamePlay);
 
