@@ -231,6 +231,9 @@ class Connector {
               } else if(msgFromCLient.action === "PLATFORMER_LIST") {
                 console.log("give me active gamers in platformer : " + msgFromCLient.data);
                 shared.serverHandlerGetPlatformerActiveList(msgFromCLient);
+              }else if(msgFromCLient.action === "VISIT") {
+                console.log("give me active gamers in platformer : " + msgFromCLient.data);
+                shared.serverHandlerAddVisitors(msgFromCLient);
               }
             } else {
               console.warn("Object but not action in it.");

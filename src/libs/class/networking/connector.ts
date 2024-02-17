@@ -41,11 +41,9 @@ class ConnectorClient {
     } else if(config.getStartUpHtmlForm()==="login") {
       this.showLoginForm(null);
     }
-
   }
 
   public showRegisterForm=() => {
-
     const myInstance=this;
     fetch("./templates/register.html", {
       headers: htmlHeader,
@@ -57,12 +55,10 @@ class ConnectorClient {
         myInstance.popupForm.innerHTML=html;
         (byId("reg-button") as HTMLButtonElement).addEventListener("click", myInstance.registerUser, false);
         (byId("sing-in-tab") as HTMLLIElement).addEventListener("click", myInstance.showLoginForm, false);
-      });
-
+      })
   }
 
   private showLoginForm=(data) => {
-
     const myInstance=this;
     fetch("./templates/login.html", {
       headers: htmlHeader,
@@ -82,7 +78,6 @@ class ConnectorClient {
   }
 
   private registerUser=(e: UniClick) => {
-
     e.preventDefault();
 
     const localEmail: string=(byId("reg-user") as HTMLInputElement).value;
@@ -169,6 +164,8 @@ class ConnectorClient {
   private onOpen=() => {
     console.info("Session controller connected.");
     this.webSocketController.send(JSON.stringify({ data: "i am here" }));
+
+    this.iamVisitor();
 
     this.fastLogin();
 
@@ -347,6 +344,16 @@ class ConnectorClient {
     localMsg=null;
     localPasswordToken=null;
     localEmail=null;
+  }
+
+  private iamVisitor =() => {
+    let localMsg: any={
+      action: "VISIT",
+      data: {
+        userAgent: navigator.userAgent 
+      },
+    };
+    this.sendObject(localMsg);
   }
 
   private getActivePlayers=() => {

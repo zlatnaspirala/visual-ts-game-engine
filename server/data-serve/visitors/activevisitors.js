@@ -29,27 +29,23 @@ class ActiveVisitors {
     })
   }
 
-  addVisitor(arg) {
+  addVisitor(arg, callerInstance) {
     var root = this;
     console.log("VISITORS");
     const databaseName = callerInstance.config.databaseName;
     MongoClient.connect(callerInstance.config.getDatabaseRoot, dbArg, function(err, db) {
       if(err) {console.warn("visitors:" + err); return;}
       const dbo = db.db(databaseName);
-      dbo.collection('visitors').findOne({token: user.data.token},
-        function(err, result) {
-          if(err) {console.log("visitors.err:" + err); return null;}
-          dbo.collection("visitors").insertOne({
-            userAgent: arg.data.useragent,
-            browser: arg.data.browser
-          }, function(err, result) {
-            if(err) {console.log(err); db.close(); return;}
-            if(result) {
-              console.log(" NEW VISITORS ! ");
-            }
-            db.close();
-          });
-        });
+      dbo.collection("visitors").insertOne({
+        userAgent: arg.data.useragent,
+        browser: arg.data.browser
+      }, function(err, result) {
+        if(err) {console.log(err); db.close(); return;}
+        if(result) {
+          console.log(" NEW VISITORS ! ");
+        }
+        db.close();
+      });
     });
   }
 }
