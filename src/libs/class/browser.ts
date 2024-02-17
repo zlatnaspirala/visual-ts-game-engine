@@ -142,5 +142,17 @@ class Browser {
 
     }
 
+    public isLandscape() {
+      if (this.isMobile == true || this.navandroid == true) {
+        if (window.innerWidth > window.innerHeight) {
+          return true;
+        } else {
+          return false;
+        }
+      } else {
+        // also check for mobile or desktop/false
+        return false;
+      }
+    }
 }
 export default Browser;

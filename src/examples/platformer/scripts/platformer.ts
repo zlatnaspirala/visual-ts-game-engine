@@ -84,6 +84,11 @@ class Platformer implements IGamePlayModel {
     this.showPlayerBoardUI();
     this.attachUpdateLives();
 
+    // fix mobile
+    if (this.starter.ioc.get.Browser.isLandscape()) {
+      alert('LANSCAPE MOBILE')
+    }
+
   }
 
   /**
