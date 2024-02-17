@@ -86,7 +86,7 @@ class Platformer implements IGamePlayModel {
 
     // fix mobile
     if (this.starter.ioc.get.Browser.isLandscape()) {
-      alert('LANSCAPE MOBILE')
+      console.log('LANSCAPE MOBILE')
     }
 
   }
