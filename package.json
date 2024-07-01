@@ -31,7 +31,7 @@
     "mini-css-extract-plugin": "^2.7.2",
     "source-map-loader": "^0.2.3",
     "style-loader": "^0.21.0",
-    "ts-loader": "^4.4.2",
+    "ts-loader": "^9.5.1",
     "tslint": "^5.20.1",
     "typedoc": "^0.22.14",
     "typedoc-webpack-plugin": "^1.1.4",
