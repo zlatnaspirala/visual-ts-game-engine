@@ -14,7 +14,7 @@
     "mongodb": "^3.7.3",
     "popper.js": "^1.16.1",
     "record-canvas": "^1.2.7",
-    "socket.io-client": "^4.6.1",
+    "socket.io-client": "^4.8.0",
     "tsconfig": "^7.0.0",
     "webrtc-adapter": "^7.7.1",
     "websocket": "^1.0.34"
