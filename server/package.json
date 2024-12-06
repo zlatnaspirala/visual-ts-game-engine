@@ -6,7 +6,7 @@
   "dependencies": {
     "@types/node": "^10.17.60",
     "crypto": "^1.0.1",
-    "express": "^4.21.0",
+    "express": "^4.21.2",
     "gmail-send": "^1.8.14",
     "minimist": "^1.2.6",
     "mongodb": "^3.7.3",
