@@ -105,7 +105,6 @@ class GamePlay extends Platformer implements IMultiplayer {
                                          General: MIT License <br/>\
                                          Copyright (c) 2019 Nikola Lukic zlatnaspirala@gmail.com Serbia Nis <br/>\
                                          Except: Folder src/libs with licence: <br/>\
-                                         GNU LESSER GENERAL PUBLIC LICENSE Version 3 <br/>\
                                          Copyright (c) 2019 maximumroulette.com ";
 
   /**
@@ -124,15 +123,10 @@ class GamePlay extends Platformer implements IMultiplayer {
       // level feature.
       // Override
       this.deadZoneForBottom=2500;
-
       this.load();
     }
 
-    // check this with config flag
-    this.network=starter.ioc.get.Network;
     this.broadcaster = starter.ioc.get.Broadcaster;
-    // this.coordinator = starter.ioc.get.Network.coordinator;
-
     // MessageBox
     // this.starter.ioc.get.MessageBox.show(this.gamePlayWelcomeNote);
   }

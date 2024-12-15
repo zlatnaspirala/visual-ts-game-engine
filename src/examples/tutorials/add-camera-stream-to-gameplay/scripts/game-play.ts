@@ -106,12 +106,8 @@ class GamePlay extends WebCamStream implements IMultiplayer {
       this.load();
     }
 
-    // check this with config flag
-    this.network = starter.ioc.get.Network;
-
     // MessageBox
     // this.starter.ioc.get.MessageBox.show(this.gamePlayWelcomeNote);
-
   }
 
   public attachAppEvents = () => {
