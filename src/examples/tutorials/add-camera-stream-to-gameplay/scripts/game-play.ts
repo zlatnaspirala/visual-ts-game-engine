@@ -131,22 +131,18 @@ class GamePlay extends WebCamStream implements IMultiplayer {
                   (e as any).detail.data.game === null ) {
 
           console.info("game-init Player spawn. data.game === null");
-          myInstance.starter.ioc.get.Network.connector.startNewGame(myInstance.gameName);
           myInstance.broadcaster.activateDataStream(myInstance.multiPlayerRef);
 
           myInstance.initSelectPlayer();
           myInstance.selectPlayer("nidzica");
           myInstance.playerSpawn(true);
-
           return;
-
         }
 
         myInstance.initSelectPlayer();
         myInstance.selectPlayer("nidzica");
 
         // How to access netwoking
-        myInstance.starter.ioc.get.Network.connector.startNewGame(myInstance.gameName);
         myInstance.broadcaster.activateDataStream(myInstance.multiPlayerRef);
 
         myInstance.load((e as any).detail.data.game);

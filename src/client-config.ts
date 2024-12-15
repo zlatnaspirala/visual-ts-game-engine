@@ -10,259 +10,264 @@ import { Addson } from "./libs/types/global";
  */
 class ClientConfig {
 
-   /**
-    * Addson - Role is : "no dependencies scripts only"
-    * All addson are ansync loaded scripts.
-    *  - hackerTimer is for better performace also based on webWorkers. Load this script on top.
-    *  - Cache is based on webWorkers.
-    *  - dragging is script for dragging dom elements taken from stackoverflow.com.
-    *  - facebook addson is simple fb api implementation.
-    *  - adapter is powerfull media/communication fixer(Objective : working on all moder browsers).
-    */
-  private addson: Addson = [
-    {
-      name: "cache",
-      enabled: false,
-      scriptPath: "externals/cacheInit.ts",
-    },
-    {
-      name: "hackerTimer",
-      enabled: true,
-      scriptPath: "externals/hack-timer.js",
-    },
-    {
-      name: "dragging",
-      enabled: false,
-      scriptPath: "externals/drag.ts",
-    },
-    {
-      name: "adapter",
-      enabled: true,
-      scriptPath: "externals/adapter.js",
-    },
-    {
-      name: "facebook",
-      enabled: false,
-      scriptPath: "externals/fb.js",
-    },
-  ];
+	/**
+	 * Addson - Role is : "no dependencies scripts only"
+	 * All addson are ansync loaded scripts.
+	 *  - hackerTimer is for better performace also based on webWorkers. Load this script on top.
+	 *  - Cache is based on webWorkers.
+	 *  - dragging is script for dragging dom elements taken from stackoverflow.com.
+	 *  - facebook addson is simple fb api implementation.
+	 *  - adapter is powerfull media/communication fixer(Objective : working on all moder browsers).
+	 */
+	private addson: Addson=[
+		{
+			name: "cache",
+			enabled: false,
+			scriptPath: "externals/cacheInit.ts",
+		},
+		{
+			name: "hackerTimer",
+			enabled: true,
+			scriptPath: "externals/hack-timer.js",
+		},
+		{
+			name: "dragging",
+			enabled: false,
+			scriptPath: "externals/drag.ts",
+		},
+		{
+			name: "adapter",
+			enabled: true,
+			scriptPath: "externals/adapter.js",
+		},
+		{
+			name: "facebook",
+			enabled: false,
+			scriptPath: "externals/fb.js",
+		},
+	];
 
-  /**
-   * @description This is main canvas dom
-   * id. Program will handle missing this params.
-   * It is nice to have id for main canvas dom element
-   * to avoid coallision woth other possible programs
-   * who use also canvas element.
-   * IMPLEMENTATION [WIP]
-   * @property canvasId
-   * @type  string
-   */
-  public canvasId: string = "vtsge";
+	/**
+	 * @description This is main canvas dom
+	 * id. Program will handle missing this params.
+	 * It is nice to have id for main canvas dom element
+	 * to avoid coallision woth other possible programs
+	 * who use also canvas element.
+	 * IMPLEMENTATION [WIP]
+	 * @property canvasId
+	 * @type  string
+	 */
+	public canvasId: string="vtsge";
 
-  // Free to define what ever -> injectCanvas
-  public recordCanvasOption: any = {
-    injectCanvas: () => document.getElementsByTagName("canvas")[0],
-    frameRequestRate: 30,
-    videoDuration: 20,
-    outputFilename: "record-gameplay.mp4",
-    mineType: "video/mp4",
-    resolutions: '800x600'
-  }
+	// Free to define what ever -> injectCanvas
+	public recordCanvasOption: any={
+		injectCanvas: () => document.getElementsByTagName("canvas")[0],
+		frameRequestRate: 30,
+		videoDuration: 20,
+		outputFilename: "record-gameplay.mp4",
+		mineType: "video/mp4",
+		resolutions: '800x600'
+	}
 
-  /**
-   * @description This is main coordinary types of positions
-   * Can be "diametric-fullscreen" or "frame".
-   *  - diametric-fullscreen is simple fullscreen canvas element.
-   *  - frame keeps aspect ratio in any aspect.
-   * @property drawReference
-   * @type  string
-   */
-  private drawReference: string = "frame";
+	public networking2: any;
+	/**
+	 * @description This is main coordinary types of positions
+	 * Can be "diametric-fullscreen" or "frame".
+	 *  - diametric-fullscreen is simple fullscreen canvas element.
+	 *  - frame keeps aspect ratio in any aspect.
+	 * @property drawReference
+	 * @type  string
+	 */
+	private drawReference: string="frame";
 
-  /**
-   * aspectRatio default value, can be changed in run time.
-   * This is 800x600, 1.78 is also good fit for lot of desktop monitors screens
-   */
-  private aspectRatio: number = 1.333;
+	/**
+	 * aspectRatio default value, can be changed in run time.
+	 * This is 800x600, 1.78 is also good fit for lot of desktop monitors screens
+	 */
+	private aspectRatio: number=1.333;
 
-  /**
-   * @description
-   * Default setup is `dev`.
-   * recommendent to use for local propose LAN ip
-   * like : 192.168.0.XXX if you wanna run ant test app with server.
-   */
-  private domain: string = "maximumroulette.com";
-  // private domain: string = "localhost";
+	/**
+	 * @description
+	 * Default setup is `dev`.
+	 * recommendent to use for local propose LAN ip
+	 * like : 192.168.0.XXX if you wanna run ant test app with server.
+	 */
+	private domain: string="maximumroulette.com";
+	// private domain: string = "localhost";
 
-  /**
-   * @description Important note for this property: if you
-   * disable (false) you can't use Account system or any other
-   * network. Use 'false' if you wanna make single player game.
-   * In other way keep it 'true'.
-   */
-  private appUseNetwork:boolean = true;
+	/**
+	 * @description Important note for this property: if you
+	 * disable (false) you can't use Account system or any other
+	 * network. Use 'false' if you wanna make single player game.
+	 * In other way keep it 'true'.
+	 */
+	private appUseNetwork: boolean=true;
 
-  /**
-   * networkDeepLogs control of dev logs for webRTC context only.
-   */
-  private networkDeepLogs: boolean = false;
+	/**
+	 * networkDeepLogs control of dev logs for webRTC context only.
+	 */
+	private networkDeepLogs: boolean=false;
 
-  /**
-   * masterServerKey is channel access id used to connect
-   * multimedia server channel.Both multiRTC2/3
-   */
-  private masterServerKey: string = "maximumroulette.platformer";
+	/**
+	 * masterServerKey is channel access id used to connect
+	 * multimedia server channel.Both multiRTC2/3
+	 */
+	private masterServerKey: string="maximumroulette.platformer";
 
-  /**
-   * appUseAccountsSystem If you don't want to use session
-   * in your application just setup this variable to the false.
-   */
-  private appUseAccountsSystem: boolean = true;
+	/**
+	 * appUseAccountsSystem If you don't want to use session
+	 * in your application just setup this variable to the false.
+	 */
+	private appUseAccountsSystem: boolean=true;
 
-  /**
-   * appUseBroadcaster Disable or enable broadcaster for
-   * video chats.
-   */
-  private appUseBroadcaster: boolean = true;
+	/**
+	 * appUseBroadcaster Disable or enable broadcaster for
+	 * video chats.
+	 */
+	private appUseBroadcaster: boolean=true;
 
-  /**
-   * @description
-   * broadcasterPort Port used to connect multimedia server MultiRTC3.
-   * I will use it for explicit video chat multiplatform support.
-   * Default value is 9001
-   */
-  private broadcasterPort: number = 2020;
+	/**
+	 * @description
+	 * broadcasterPort Port used to connect multimedia server MultiRTC3.
+	 * I will use it for explicit video chat multiplatform support.
+	 * Default value is 9001
+	 */
+	private broadcasterPort: number=2020;
 
-  private showBroadcasterOnInt: boolean = true;
+	private showBroadcasterOnInt: boolean=true;
 
-  /**
-   * @description
-   * broadcaster socket.io address.
-   * Change it for production regime
-   */
-  private broadcastAutoConnect: boolean = false;
+	/**
+	 * @description
+	 * broadcaster socket.io address.
+	 * Change it for production regime
+	 */
+	private broadcastAutoConnect: boolean=false;
 
-  /**
-   * @description
-   * Possible variant by default:
-   * "register", "login"
-   */
-  private startUpHtmlForm: string = "register";
+	/**
+	 * @description
+	 * Possible variant by default:
+	 * "register", "login"
+	 */
+	private startUpHtmlForm: string="register";
 
-  private controls: {} = {
-    platformerPlayerController: true,
-    enableMobileControlsOnDesktop: true,
-  };
+	private controls: {}={
+		platformerPlayerController: true,
+		enableMobileControlsOnDesktop: true,
+	};
 
-  private gameList: any[];
+	private gameList: any[];
 
-  /**
-   * @description
-   * Implement default gamePlay variable's
-   */
-  private defaultGamePlayLevelName: string = "public";
-  private autoStartGamePlay: boolean = false;
+	/**
+	 * @description
+	 * Implement default gamePlay variable's
+	 */
+	private defaultGamePlayLevelName: string="public";
+	private autoStartGamePlay: boolean=false;
 
-  /**
-   * @description
-   * constructor will save interest data for game platform
-   * For now it is just name of the game. I use it in
-   * pre gameplay UI game selector.
-   */
-  constructor(gameList: any[]) {
-    this.gameList = gameList;
-  }
+	/**
+	 * @description
+	 * constructor will save interest data for game platform
+	 * For now it is just name of the game. I use it in
+	 * pre gameplay UI game selector.
+	 */
+	constructor (gameList: any[]) {
+		this.gameList=gameList;
 
-  public getRecordCanvasOptions(): string {
-    return this.recordCanvasOption;
-  }
+		this.networking2={
+			active: true,
+			domain: 'maximumroulette.com',
+			port: 2020,
+			sessionName: 'platformer',
+			resolution: '640x480'
+		};
+	}
 
-  public getcontrols(): any {
-    return this.controls;
-  }
+	public getRecordCanvasOptions(): string {
+		return this.recordCanvasOption;
+	}
 
-  public getShowBroadcasterOnInt ():boolean {
-    return this.showBroadcasterOnInt;
-  }
+	public getcontrols(): any {
+		return this.controls;
+	}
 
-  public getBroadcastAutoConnect(): boolean {
-   return this.broadcastAutoConnect;
-  }
+	public getShowBroadcasterOnInt(): boolean {
+		return this.showBroadcasterOnInt;
+	}
 
-  public getAddson(): Addson {
-    return this.addson;
-  }
+	public getBroadcastAutoConnect(): boolean {
+		return this.broadcastAutoConnect;
+	}
 
-  public getAutoStartGamePlay(): boolean {
-    return this.autoStartGamePlay;
-  }
+	public getAddson(): Addson {
+		return this.addson;
+	}
 
-  public getGamesList() {
-    return this.gameList;
-  }
+	public getAutoStartGamePlay(): boolean {
+		return this.autoStartGamePlay;
+	}
 
-  public getDefaultGamePlayLevelName(): string {
-    return this.defaultGamePlayLevelName;
-  }
+	public getGamesList() {
+		return this.gameList;
+	}
 
-  public didAppUseNetwork() {
-    return this.appUseNetwork;
-  }
+	public getDefaultGamePlayLevelName(): string {
+		return this.defaultGamePlayLevelName;
+	}
 
-  public didAppUseAccountsSystem(): boolean {
-    return this.appUseAccountsSystem;
-  }
+	public didAppUseAccountsSystem(): boolean {
+		return this.appUseAccountsSystem;
+	}
 
-  public didAppUseBroadcast(): boolean {
-    return this.appUseBroadcaster;
-  }
+	public didAppUseBroadcast(): boolean {
+		return this.appUseBroadcaster;
+	}
 
-  public getBroadcastSockRoute(): string {
-    return this.getProtocolFromAddressBar() +  this.getDomain() + ":" + this.broadcasterPort + "/";
-  }
+	public getBroadcastSockRoute(): string {
+		return this.getProtocolFromAddressBar()+this.getDomain()+":"+this.broadcasterPort+"/";
+	}
 
-  public getStartUpHtmlForm(): string {
-    return this.startUpHtmlForm;
-  }
+	public getStartUpHtmlForm(): string {
+		return this.startUpHtmlForm;
+	}
 
-  public getDomain() {
-    if (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1") {
-      return window.location.hostname;
-    }
-    return this.domain;
-  }
+	public getDomain() {
+		if(window.location.hostname==="localhost"||window.location.hostname==="127.0.0.1") {
+			return window.location.hostname;
+		}
+		return this.domain;
+	}
 
-  public getBroadcasterPort() {
-    return this.broadcasterPort;
-  }
+	public getBroadcasterPort() {
+		return this.broadcasterPort;
+	}
 
-  public getDrawRefference(): string {
-    return this.drawReference;
-  }
+	public getDrawRefference(): string {
+		return this.drawReference;
+	}
 
-  public getAspectRatio(): number {
-    return this.aspectRatio;
-  }
+	public getAspectRatio(): number {
+		return this.aspectRatio;
+	}
 
-  public setAspectRatio(newAspectRatio: number) {
-    this.aspectRatio = newAspectRatio;
-  }
+	public setAspectRatio(newAspectRatio: number) {
+		this.aspectRatio=newAspectRatio;
+	}
 
-  public getProtocolFromAddressBar(): string {
-    return (location.protocol === "https:" ? "https://" : "http://");
-  }
+	public getProtocolFromAddressBar(): string {
+		return (location.protocol==="https:"? "https://":"http://");
+	}
 
-  public setNetworkDeepLog(newState: boolean) {
-    this.networkDeepLogs = newState;
-  }
+	public setNetworkDeepLog(newState: boolean) {
+		this.networkDeepLogs=newState;
+	}
 
-  public getNetworkDeepLog(): boolean {
-    return this.networkDeepLogs;
-  }
+	public getNetworkDeepLog(): boolean {
+		return this.networkDeepLogs;
+	}
 
-  public getMasterServerKey(): string {
-    return this.masterServerKey;
-  }
+	public getMasterServerKey(): string {
+		return this.masterServerKey;
+	}
 
 }
 export default ClientConfig;

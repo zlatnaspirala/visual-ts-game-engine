@@ -46,7 +46,6 @@ class Platformer implements IGamePlayModel {
   // move to maps 'labes text'
   public hudLives: Matter.Body|any=null;
 
-  public network: Network;
   public netBodies: UniVector={};
   public broadcaster: Broadcaster;
 

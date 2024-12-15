@@ -63,8 +63,15 @@ class Ioc {
 		this.singlton(VisualRender, undefined);
 
 		if(this.config.didAppUseBroadcast()) {
-			this.singlton(Broadcaster, this.config);
-			// this.singlton(Network, this.config);
+
+			let BARG = {
+			 	domain: this.config.networking2.domain,
+			 	port: this.config.networking2.port,
+			 	sessionName: this.config.networking2.sessionName,
+			 	resolution: this.config.networking2.resolution
+		}
+
+			this.singlton(Broadcaster, BARG);
 		}
 
 		this.singlton(Starter, this);
@@ -77,16 +84,16 @@ class Ioc {
 	}
 
 	public reLoadNetworking() {
+		if(this.config.didAppUseBroadcast()) {
+			let BARG = {
+				domain: this.config.networking2.domain,
+				port: this.config.networking2.port,
+				sessionName: this.config.networking2.sessionName,
+				resolution: this.config.networking2.resolution
+	 }
 
-		if(this.config.didAppUseNetwork()) {
-
-			if(this.config.didAppUseBroadcast()) {
-				this.singlton(Broadcaster, this.config);
-				this.singlton(Network, this.config);
-			}
-
+		 this.singlton(Broadcaster, BARG);
 		}
-
 	}
 
 	/**

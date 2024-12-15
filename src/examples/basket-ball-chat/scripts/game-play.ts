@@ -82,8 +82,6 @@ class GamePlay extends BasketBallChat implements IMultiplayer {
 
   };
 
-  public coordinator: Coordinator;
-
   /**
    * @description deadZoneForBottom Definition and Default value
    * - overrided from map or map2d(generated) by deadLines object
@@ -119,13 +117,8 @@ class GamePlay extends BasketBallChat implements IMultiplayer {
 
       this.load();
     }
-
-    // check this with config flag
-    this.network=starter.ioc.get.Network;
-
     // MessageBox
     // this.starter.ioc.get.MessageBox.show(this.gamePlayWelcomeNote);
-
   }
 
   public attachAppEvents=() => {

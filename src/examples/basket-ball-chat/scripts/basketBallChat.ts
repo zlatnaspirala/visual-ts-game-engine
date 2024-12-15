@@ -46,7 +46,6 @@ class BasketBallChat implements IGamePlayModel {
   public player: Matter.Body | any = undefined;
   public hudLives: Matter.Body | any = null;
 
-  public network: Network;
   public netBodies: UniVector = {};
   public broadcaster: Broadcaster;
 
