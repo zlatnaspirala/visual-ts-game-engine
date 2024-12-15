@@ -41,7 +41,7 @@ module.exports = webPackModuleMultiPlayerSolution = {
   },
 
   plugins: [
-    new CleanWebpackPlugin({cleanOnceBeforeBuildPatterns: ['build']}),
+    // new CleanWebpackPlugin({cleanOnceBeforeBuildPatterns: ['build']}),
     new HtmlWebpackPlugin({
       filename: 'app.html',
       template: 'src/index.html'
@@ -54,7 +54,7 @@ module.exports = webPackModuleMultiPlayerSolution = {
     }),
     new CopyWebpackPlugin([
       { from: 'src/style/broadcaster.css', to: 'styles/broadcaster.css' },
-      { from: 'src/style/getHTMLMediaElement.css', to: 'styles/getHTMLMediaElement.css' },
+			{ from: './src/libs/class/networking2/openvidu-browser-2.20.0.js', to: 'openvidu-browser-2.20.0.js'},
       { from: './src/libs/addons/hacker-timer/hack-timer.js', to: 'externals/hack-timer.js'},
       { from: './src/libs/addons/hacker-timer/hack-timer-worker.js', to: 'externals/hack-timer-worker.js' },
       { from: './src/manifest.web', to: 'manifest.web' },

@@ -74,7 +74,7 @@ class Platformer implements IGamePlayModel {
   constructor (starter: Starter) {
 
     this.starter=starter;
-
+		console.log('TEST !!!!!2222222222222!!!!!!!!!')
     this.broadcaster=this.starter.ioc.get.Broadcaster;
     // this.starter.getEngine().enableSleeping = true;
     this.initSelectPlayer();
@@ -339,6 +339,7 @@ class Platformer implements IGamePlayModel {
         myInstance.UIPlayAgainBtn=byId("playAgainBtn") as HTMLDivElement;
         myInstance.UISoundOptionDom=byId("soundOptionDom") as HTMLDivElement;
 
+				console.log('TEST !!!!!!!!!!!!!!')
         /**
          * @description In gameplay Enable od disable sounds.
          * New aproach `()=>` next migration.

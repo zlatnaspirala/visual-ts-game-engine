@@ -20,7 +20,7 @@ export default class Broadcaster {
 		netConfig.NETWORKING_PORT = arg.port;
 		netConfig.sessionName = arg.sessionName;
 		netConfig.resolution = arg.resolution;
-		scriptManager.LOAD('openvidu-browser-2.20.0.js', undefined, undefined, undefined, () => {
+		scriptManager.load('openvidu-browser-2.20.0.js', undefined, undefined, undefined, () => {
 			this.loadNetHTML()
 		});
 	}
