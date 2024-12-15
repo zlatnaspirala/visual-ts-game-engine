@@ -136,22 +136,15 @@ class GamePlay extends Platformer implements IMultiplayer {
 		window.addEventListener("game-init", function(e) {
 			console.info("game-init Player spawn. e => ", (e as any).detail);
 			try {
-
-				byId('media-rtc3-controls').style.display='none';
-
 				if((e as any).detail&&(e as any).detail.data.game==="undefined") {
 					console.warn("Bad game-init attempt.");
 					return;
 				} else if((e as any).detail&&(e as any).detail.data.game===null) {
 					console.info("game-init Player spawn. data.game === null");
-					myInstance.starter.ioc.get.Network.connector.startNewGame(
-						myInstance.gameName
-					);
 					myInstance.initSelectPlayer();
 					myInstance.selectPlayer("nidzica");
 					myInstance.playerSpawn(true);
 					myInstance.broadcaster.activateDataStream(myInstance.multiPlayerRef);
-					myInstance.starter.ioc.get.Network.connector.inGamePlay=true;
 					return;
 				}
 				myInstance.initSelectPlayer();
