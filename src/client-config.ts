@@ -114,39 +114,6 @@ class ClientConfig {
   private masterServerKey: string = "maximumroulette.platformer";
 
   /**
-   * rtcServerPort Port used to connect multimedia server.
-   * Default value is 12034
-   */
-  private rtcServerPort: number = 12034;
-
-  /**
-   * @description
-   * Enable Disable coordinator flag
-   */
-  private appUseCoordinator: boolean = false;
-
-  /**
-   * @description
-   * Coordinator rtc3 session init values.
-   * Downgrade to data only.
-   */
-  private coordinatorSessionDefaults: IBroadcasterSession = {
-    sessionAudio: false,
-    sessionVideo: false,
-    sessionData: true,
-    enableFileSharing: false,
-  };
-
-  /**
-   * connectorPort is access port used to connect
-   * session web socket.
-   * Take high number for port to avoid
-   * `code: 'EACCES', errno: -4092, syscall: 'listen'
-   * for localhost usage.
-   */
-  private connectorPort: number = 9010;
-
-  /**
    * appUseAccountsSystem If you don't want to use session
    * in your application just setup this variable to the false.
    */
@@ -164,7 +131,7 @@ class ClientConfig {
    * I will use it for explicit video chat multiplatform support.
    * Default value is 9001
    */
-  private broadcasterPort: number = 9001;
+  private broadcasterPort: number = 2020;
 
   private showBroadcasterOnInt: boolean = true;
 
@@ -174,36 +141,6 @@ class ClientConfig {
    * Change it for production regime
    */
   private broadcastAutoConnect: boolean = false;
-
-  /**
-   * @description
-   * runBroadcasterOnInt load broadcaster
-   */
-  private runBroadcasterOnInt: boolean = true;
-
-  /**
-   * @description
-   * broadcaster rtc session init values.
-   * Change it for production regime
-   */
-  private broadcasterSessionDefaults: IBroadcasterSession = {
-    sessionAudio: true,
-    sessionVideo: true,
-    sessionData: true,
-    enableFileSharing: true,
-  };
-
-  /**
-   * @description
-   * Optimal for dev stage.
-   * read more about webRtc protocols.
-   * Recommended: coturn open source project.
-   */
-  private stunList: string[] = [
-    "stun:stun.l.google.com:19302",
-    "stun:stun1.l.google.com:19302",
-    "stun:stun.l.google.com:19302?transport=udp",
-  ];
 
   /**
    * @description
@@ -233,25 +170,11 @@ class ClientConfig {
    * pre gameplay UI game selector.
    */
   constructor(gameList: any[]) {
-
-    // Interconnection Network.Connector vs app.ts
     this.gameList = gameList;
-
   }
 
   public getRecordCanvasOptions(): string {
     return this.recordCanvasOption;
-  }
-
-  public didAppUseCoordinator() {
-    if (this.appUseBroadcaster === true) {
-      console.warn("App already use broadcaster stream. Running double multiPeer connections is extreme situation.");
-    }
-    return this.appUseCoordinator;
-  }
-
-  public getCoordinatorConfig() {
-    return this.coordinatorSessionDefaults
   }
 
   public getcontrols(): any {
@@ -260,10 +183,6 @@ class ClientConfig {
 
   public getShowBroadcasterOnInt ():boolean {
     return this.showBroadcasterOnInt;
-  }
-
-  public getRunBroadcasterOnInt(): boolean {
-    return this.runBroadcasterOnInt;
   }
 
   public getBroadcastAutoConnect(): boolean {
@@ -298,16 +217,8 @@ class ClientConfig {
     return this.appUseBroadcaster;
   }
 
-  public getStunList(): string[] {
-    return this.stunList;
-  }
-
   public getBroadcastSockRoute(): string {
     return this.getProtocolFromAddressBar() +  this.getDomain() + ":" + this.broadcasterPort + "/";
-  }
-
-  public getCoordinatorSockRoute(): string {
-    return this.getProtocolFromAddressBar() +  this.getDomain() + ":" + this.rtcServerPort + "/";
   }
 
   public getStartUpHtmlForm(): string {
@@ -325,14 +236,6 @@ class ClientConfig {
     return this.broadcasterPort;
   }
 
-  public getBroadcasterSessionDefaults() {
-    return this.broadcasterSessionDefaults;
-  }
-
-  public getConnectorPort() {
-    return this.connectorPort;
-  }
-
   public getDrawRefference(): string {
     return this.drawReference;
   }
@@ -347,14 +250,6 @@ class ClientConfig {
 
   public getProtocolFromAddressBar(): string {
     return (location.protocol === "https:" ? "https://" : "http://");
-  }
-
-  public getRemoteServerAddress() {
-    return (location.protocol === "https:" ? "wss" : "ws") + "://" + location.hostname + ":" + this.rtcServerPort + "/";
-  }
-
-  public getRemoteServerAddressControlller() {
-    return ( (location.protocol === "https:") ? "wss" : "ws") + "://" + location.hostname + ":" + this.getConnectorPort() + "/";
   }
 
   public setNetworkDeepLog(newState: boolean) {

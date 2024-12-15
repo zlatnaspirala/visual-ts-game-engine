@@ -1,7 +1,6 @@
 
 import Matter = require("matter-js");
-import Broadcaster from "../../../../libs/class/networking/broadcaster";
-import Network from "../../../../libs/class/networking/network";
+import Broadcaster from "../../../../libs/class/networking2/app"
 import { byId, createAppEvent, htmlHeader } from "../../../../libs/class/system";
 import SpriteTextureComponent from "../../../../libs/class/visual-methods/sprite-animation";
 import SpriteStreamComponent from "../../../../libs/class/visual-methods/sprite-stream";
@@ -37,7 +36,6 @@ class WebCamStream implements IGamePlayModel {
 
   public player: Matter.Body | any = undefined;
   public hudLives: Matter.Body | any = null;
-  public network: Network;
   public broadcaster: Broadcaster;
   public netBodies: UniVector = {};
 

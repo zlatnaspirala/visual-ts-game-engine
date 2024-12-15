@@ -1,4 +1,5 @@
-import {htmlHeader, scriptManager} from "../lib/utility";
+// import {htmlHeader, scriptManager} from "../lib/utility";
+import {htmlHeader, scriptManager} from "../system";
 import {BIGLOG, byId, closeSession, joinSession, leaveSession, netConfig, REDLOG, removeUser} from "./matrix-stream";
 
 /**
@@ -6,7 +7,7 @@ import {BIGLOG, byId, closeSession, joinSession, leaveSession, netConfig, REDLOG
  * version 1.0.0 beta
  */
 
-export class MatrixStream {
+export default class Broadcaster {
 
 	connection = null;
 	session = null;

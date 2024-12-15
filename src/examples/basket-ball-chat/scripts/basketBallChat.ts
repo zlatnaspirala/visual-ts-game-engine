@@ -14,10 +14,9 @@ import "../audios/player/collect-item.mp3";
 import "../audios/player/jump.mp3";
 import "../audios/map-themes/mishief-stroll.mp4";
 
-import Network from "../../../libs/class/networking/network";
 import SpriteStreamComponent from "../../../libs/class/visual-methods/sprite-stream";
 import TextureStreamComponent from "../../../libs/class/visual-methods/texture-stream";
-import Broadcaster from "../../../libs/class/networking/broadcaster";
+import Broadcaster from "../../../libs/class/networking2/app";
 // import { DEFAULT_PLAYER_DATA } from "../../../libs/defaults";
 
 /**

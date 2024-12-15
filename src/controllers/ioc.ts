@@ -2,8 +2,7 @@
 import ClientConfig from "../client-config";
 import Browser from "../libs/class/browser";
 import MessageBox from "../libs/class/messager-box";
-import Broadcaster from "../libs/class/networking/broadcaster";
-import Network from "../libs/class/networking/network";
+import Broadcaster from "../libs/class/networking2/app";
 import Sound from "../libs/class/sound";
 import { scriptManager } from "../libs/class/system";
 import ViewPort from "../libs/class/view-port";

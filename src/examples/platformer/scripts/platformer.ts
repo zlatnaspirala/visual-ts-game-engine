@@ -1,6 +1,5 @@
 import Matter=require("matter-js");
-import Broadcaster from "../../../libs/class/networking/broadcaster";
-import Network from "../../../libs/class/networking/network";
+import Broadcaster from "../../../libs/class/networking2/app";
 import { byId, createAppEvent, htmlHeader } from "../../../libs/class/system";
 import SpriteTextureComponent from "../../../libs/class/visual-methods/sprite-animation";
 import { DEFAULT_GAMEPLAY_ROLES, DEFAULT_PLAYER_DATA } from "../../../libs/defaults";

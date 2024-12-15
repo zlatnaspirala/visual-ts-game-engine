@@ -1,7 +1,6 @@
 import * as Matter from "matter-js";
 import BotBehavior from "../../../libs/class/bot-behavior";
-import Broadcaster from "../../../libs/class/networking/broadcaster";
-import Coordinator from "../../../libs/class/networking/coordinator";
+import Broadcaster from "../../../libs/class/networking2/app";
 import { byId } from "../../../libs/class/system";
 import SpriteTextureComponent from "../../../libs/class/visual-methods/sprite-animation";
 import TextComponent from "../../../libs/class/visual-methods/text";

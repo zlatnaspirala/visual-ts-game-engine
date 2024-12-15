@@ -2,7 +2,6 @@ import * as Matter from "matter-js";
 import BotBehavior from "../../../libs/class/bot-behavior";
 import Generator from "../../../libs/class/generator";
 import { Counter, netPosOpt, numberOpt } from "../../../libs/class/math";
-import Coordinator from "../../../libs/class/networking/coordinator";
 import { byId } from "../../../libs/class/system";
 import SpriteTextureComponent from "../../../libs/class/visual-methods/sprite-animation";
 import TextComponent from "../../../libs/class/visual-methods/text";
@@ -83,15 +82,12 @@ class GamePlay extends Platformer implements IMultiplayer {
      * - remove from scene
      * - clear object from netObject_x
      */
-
     preventDoubleLGP: {},
-
     leaveGamePlay(rtcEvent) {
       console.info("rtcEvent LEAVE GAME: ", rtcEvent.userid);
-
       if(typeof this.preventDoubleLGP[rtcEvent.userid]==='undefined') {
         this.preventDoubleLGP[rtcEvent.userid]=true;
-        setTimeout(() => this.root.starter.ioc.get.Network.connector.getActivePlayers(), 1000);
+        // setTimeout(() => this.root.starter.ioc.get.Network.connector.getActivePlayers(), 1000);
         this.root.starter.destroyBody(
           this.root.netBodies["netObject_"+rtcEvent.userid]
         );
