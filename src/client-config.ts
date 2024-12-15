@@ -222,10 +222,6 @@ class ClientConfig {
 		return this.appUseBroadcaster;
 	}
 
-	public getBroadcastSockRoute(): string {
-		return this.getProtocolFromAddressBar()+this.getDomain()+":"+this.broadcasterPort+"/";
-	}
-
 	public getStartUpHtmlForm(): string {
 		return this.startUpHtmlForm;
 	}

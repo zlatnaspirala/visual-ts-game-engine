@@ -62,6 +62,8 @@ class Ioc {
 		this.get.MobileControls]);
 		this.singlton(VisualRender, undefined);
 
+		console.log('>>>>>>>>>>>>>>>>');
+
 		if(this.config.didAppUseBroadcast()) {
 
 			let BARG = {

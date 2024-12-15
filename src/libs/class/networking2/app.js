@@ -21,6 +21,7 @@ export default class Broadcaster {
 		netConfig.sessionName = arg.sessionName;
 		netConfig.resolution = arg.resolution;
 		scriptManager.load('openvidu-browser-2.20.0.js', undefined, undefined, undefined, () => {
+			console.error('MatrixStream constructor');
 			this.loadNetHTML()
 		});
 	}
