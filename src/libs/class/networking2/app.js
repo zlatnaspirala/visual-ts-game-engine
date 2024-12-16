@@ -123,7 +123,8 @@ export default class Broadcaster {
 	};
 
 	activateDataStream = (arg) => {
-		console.log("WHAT IS ARG NET2")
+		console.log("override multiPlayer - activateDataStream")
+		this.multiPlayer = arg;
 	}
 
 	domManipulation = {
