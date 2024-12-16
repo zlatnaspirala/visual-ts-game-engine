@@ -130,7 +130,7 @@ export default class Broadcaster {
 	};
 
 	activateDataStream = (arg) => {
-		console.log("override multiPlayer - activateDataStream")
+		console.log("override multiPlayer - activateDataStream", arg)
 		this.multiPlayer = arg;
 		this.joinSessionUI.click();
 	}

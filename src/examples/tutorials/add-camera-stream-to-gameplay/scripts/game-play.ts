@@ -28,6 +28,7 @@ class GamePlay extends WebCamStream implements IMultiplayer {
     },
 
     update (multiplayer) {
+			multiplayer.data = JSON.parse(multiplayer.data);
       if (multiplayer.data.netPos) {
         Matter.Body.setPosition(this.root.netBodies["netObject_" + multiplayer.userid],
           { x: multiplayer.data.netPos.x, y: multiplayer.data.netPos.y });
@@ -305,7 +306,7 @@ class GamePlay extends WebCamStream implements IMultiplayer {
             // empty
         } else {
           // console.log(" root.network.rtcMultiConnection.connection.send({  ", root.network.rtcMultiConnection.connection.send );
-          root.broadcaster.connection.send({
+          if (root.broadcaster.connection) root.broadcaster.connection.send({
             netPos: root.player.position,
             netDir: root.player.currentDir,
           });

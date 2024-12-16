@@ -366,7 +366,7 @@ class GamePlay extends BasketBallChat implements IMultiplayer {
           // empty
         } else {
           // console.log(" root.network.rtcMultiConnection.connection.send({  ", root.network.rtcMultiConnection.connection.send );
-          root.broadcaster.connection.send({
+          if (root.broadcaster.connection) root.broadcaster.connection.send({
             netPos: root.player.position,
             netDir: root.player.currentDir,
           });

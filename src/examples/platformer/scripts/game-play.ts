@@ -296,7 +296,7 @@ class GamePlay extends Platformer implements IMultiplayer {
 						// empty
 						// console.info("IDLE STOPS", root.player.currentDir)
 					} else {
-						root.broadcaster.connection.send({
+						if (root.broadcaster.connection) root.broadcaster.connection.send({
 							netPos: netPosOpt(root.player.position),
 							netDir: root.player.currentDir,
 						});
