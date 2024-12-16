@@ -13,6 +13,7 @@ export default class Broadcaster {
 	session = null;
 
 	constructor(arg) {
+		console.info('[openvidu-browser-2.20.0.js] MatrixStream constructor run');
 		if(typeof arg === 'undefined') {
 			throw console.error('MatrixStream constructor must have argument : { domain: <DOMAIN_NAME> , port: <NUMBER> }');
 		}
@@ -20,15 +21,17 @@ export default class Broadcaster {
 		netConfig.NETWORKING_PORT = arg.port;
 		netConfig.sessionName = arg.sessionName;
 		netConfig.resolution = arg.resolution;
-		scriptManager.load('openvidu-browser-2.20.0.js', undefined, undefined, undefined, () => {
-			console.error('MatrixStream constructor');
+		netConfig.autoConnect = arg.autoConnect;
+		scriptManager.load('openvidu-browser-2.20.0.js', () => {
+			console.info('[openvidu-browser-2.20.0.js] MatrixStream constructor');
 			this.loadNetHTML()
 		});
 	}
 
 	loadNetHTML() {
-		fetch("./broadcaster2.html", {headers: htmlHeader}).then((res) => {return res.text()})
+		fetch("./templates/broadcaster2.html", {headers: htmlHeader}).then((res) => {return res.text()})
 			.then((html) => {
+				console.log(' TEST >>>>>>	loadNetHTML() {>>>>>')
 				var popupUI = byId("matrix-net");
 				popupUI.style = 'display: block;';
 				popupUI.innerHTML = html;
@@ -49,8 +52,9 @@ export default class Broadcaster {
 			console.log('LOCAL-STREAM-READY ', e.detail.connection)
 			this.connection = e.detail.connection;
 			var CHANNEL = netConfig.sessionName
-			// console.log("ONLY ONES CHANNEL =>", CHANNEL);
+			console.log("ONLY ONES CHANNEL =>", CHANNEL);
 			this.connection.send = (netArg) => {
+				console.log("ONLY ONES CHANNEL2 =>", CHANNEL);
 				this.session.signal({
 					data: JSON.stringify(netArg),
 					to: [],
@@ -88,7 +92,10 @@ export default class Broadcaster {
 
 		byId('netHeaderTitle').addEventListener('click', this.domManipulation.hideNetPanel)
 
-		setTimeout(() => dispatchEvent(new CustomEvent('net-ready', {})), 500)
+		setTimeout(() => {
+			console.log('ggggg', netConfig.autoConnect)
+			dispatchEvent(new CustomEvent('net-ready', {}))
+		}, 500)
 	}
 
 	multiPlayer = {
@@ -109,7 +116,7 @@ export default class Broadcaster {
 				// console.log('ROT INFO UPDATE', e);
 			} else if(e.data.netScale) {
 				// console.log('netScale INFO UPDATE', e);
-			} 
+			}
 		},
 		/**
 		 * If someone leaves all client actions is here
@@ -125,6 +132,7 @@ export default class Broadcaster {
 	activateDataStream = (arg) => {
 		console.log("override multiPlayer - activateDataStream")
 		this.multiPlayer = arg;
+		this.joinSessionUI.click();
 	}
 
 	domManipulation = {

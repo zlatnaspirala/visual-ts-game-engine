@@ -96,14 +96,6 @@ class ClientConfig {
 	// private domain: string = "localhost";
 
 	/**
-	 * @description Important note for this property: if you
-	 * disable (false) you can't use Account system or any other
-	 * network. Use 'false' if you wanna make single player game.
-	 * In other way keep it 'true'.
-	 */
-	private appUseNetwork: boolean=true;
-
-	/**
 	 * networkDeepLogs control of dev logs for webRTC context only.
 	 */
 	private networkDeepLogs: boolean=false;
@@ -128,20 +120,10 @@ class ClientConfig {
 
 	/**
 	 * @description
-	 * broadcasterPort Port used to connect multimedia server MultiRTC3.
-	 * I will use it for explicit video chat multiplatform support.
-	 * Default value is 9001
-	 */
-	private broadcasterPort: number=2020;
-
-	private showBroadcasterOnInt: boolean=true;
-
-	/**
-	 * @description
 	 * broadcaster socket.io address.
 	 * Change it for production regime
 	 */
-	private broadcastAutoConnect: boolean=false;
+	private broadcastAutoConnect: boolean=true;
 
 	/**
 	 * @description
@@ -190,10 +172,6 @@ class ClientConfig {
 		return this.controls;
 	}
 
-	public getShowBroadcasterOnInt(): boolean {
-		return this.showBroadcasterOnInt;
-	}
-
 	public getBroadcastAutoConnect(): boolean {
 		return this.broadcastAutoConnect;
 	}
@@ -231,10 +209,6 @@ class ClientConfig {
 			return window.location.hostname;
 		}
 		return this.domain;
-	}
-
-	public getBroadcasterPort() {
-		return this.broadcasterPort;
 	}
 
 	public getDrawRefference(): string {

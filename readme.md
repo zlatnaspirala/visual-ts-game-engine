@@ -783,13 +783,13 @@ Visual Typescript Game engine is under:
 #### MIT License generaly
 
 except ./src/lib. Folder lib is under:
-
 #### GNU LESSER GENERAL PUBLIC LICENSE Version 3
 
 ### External licence in this project:
 
-<b>- Networking based on :</b> <br/>
-Muaz Khan MIT License www.WebRTC-Experiment.com/licence <br/>
+<b>- Networking based on:</b> <br/>
+Kurento OpenVidu server 
+https://openvidu.io/<br/>
 
 <b>- Base physics beased on :</b> <br/>
 Matter.js https://github.com/liabru/matter-js <br/>
@@ -808,15 +808,12 @@ Attribution 4.0 International (CC BY 4.0)
 https://creativecommons.org/licenses/by/4.0/
 </br>
 
-## Todo list for 2020
+## Todo list for 2025
 
 <b>I'am still far a away from project objective :</b>
 
-- Make visual nodes for editor mode in game play.
-- Item's selling for crypto values.
 - Create examples demos in minimum 20 game play variants
   (table games, actions , platformers , basic demo trow the api doc etc.).
-- Implementing AR and webGL2.
 
 </br>
 

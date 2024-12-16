@@ -154,10 +154,10 @@ class GamePlay extends Platformer implements IMultiplayer {
 
 				/**
 				 * @description
-				 * Very important - You can activate also coordinator like supre extra multiPeer
-				 * Connections in the same time but it is not stable in 100%.
+				 * Real time connections works only for gameplay time.
 				 */
 				myInstance.broadcaster.activateDataStream(myInstance.multiPlayerRef);
+				// myInstance.broadcaster
 				console.info("Player spawn. game-init .startNewGame");
 
 				// Play music in background
@@ -186,11 +186,6 @@ class GamePlay extends Platformer implements IMultiplayer {
 					(byId("soundOptionDom") as HTMLButtonElement).disabled=true;
 					(byId("openGamePlay") as HTMLButtonElement).disabled=false;
 					(byId("out-of-game") as HTMLButtonElement).disabled=true;
-
-					myInstance.starter.ioc.get.Network.connector.memo.save(
-						"activeGame",
-						"none"
-					);
 
 					console.info("Game end. THIS ", this);
 					console.info("Game end. ", myInstance.starter.ioc.get.Network.nameUI);

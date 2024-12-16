@@ -72,21 +72,17 @@ class Platformer implements IGamePlayModel {
 	};
 
 	constructor (starter: Starter) {
-
 		this.starter=starter;
-		console.log('TEST !!!!!2222222222222!!!!!!!!!')
 		this.broadcaster=this.starter.ioc.get.Broadcaster;
 		// this.starter.getEngine().enableSleeping = true;
 		this.initSelectPlayer();
 		this.addUIPlayerBoard();
 		this.showPlayerBoardUI();
 		this.attachUpdateLives();
-
 		// fix mobile
 		if(this.starter.ioc.get.Browser.isLandscape()) {
 			console.log('LANSCAPE MOBILE')
 		}
-
 	}
 
 	/**

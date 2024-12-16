@@ -62,15 +62,13 @@ class Ioc {
 		this.get.MobileControls]);
 		this.singlton(VisualRender, undefined);
 
-		console.log('>>>>>>>>>>>>>>>>');
-
 		if(this.config.didAppUseBroadcast()) {
-
 			let BARG = {
 			 	domain: this.config.networking2.domain,
 			 	port: this.config.networking2.port,
 			 	sessionName: this.config.networking2.sessionName,
-			 	resolution: this.config.networking2.resolution
+			 	resolution: this.config.networking2.resolution,
+				autoConnect: this.config.getBroadcastAutoConnect()
 		}
 
 			this.singlton(Broadcaster, BARG);

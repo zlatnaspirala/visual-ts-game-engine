@@ -53,7 +53,7 @@ module.exports = webPackModuleMultiPlayerSolution = {
       linkType: "text/css",
     }),
     new CopyWebpackPlugin([
-      { from: 'src/style/broadcaster.css', to: 'styles/broadcaster.css' },
+      { from: 'src/style/broadcaster2.css', to: 'styles/broadcaster2.css' },
 			{ from: './src/libs/class/networking2/openvidu-browser-2.20.0.js', to: 'openvidu-browser-2.20.0.js'},
       { from: './src/libs/addons/hacker-timer/hack-timer.js', to: 'externals/hack-timer.js'},
       { from: './src/libs/addons/hacker-timer/hack-timer-worker.js', to: 'externals/hack-timer-worker.js' },
@@ -70,7 +70,7 @@ module.exports = webPackModuleMultiPlayerSolution = {
       { from: './src/html-components/store.html', to: 'templates/store.html' },
       { from: './src/html-components/games-list.html', to: 'templates/games-list.html' },
       { from: './src/html-components/video-conference.html',  to: 'templates/video-conference.html' },
-      { from: './src/html-components/broadcaster.html', to: 'templates/broadcaster.html' },
+      { from: './src/html-components/broadcaster2.html', to: 'templates/broadcaster2.html' },
       { from: "./src/html-components/message-box.html", to: "templates/message-box.html" },
       { from: "./src/html-components/coordinator.html", to: "templates/coordinator.html" },
       // // Audios
