@@ -39,6 +39,7 @@ class GamePlay extends Platformer implements IMultiplayer {
 		},
 
 		update(multiplayer) {
+			multiplayer.data = JSON.parse(multiplayer.data)
 			if(multiplayer.data.netPos) {
 				Matter.Body.setPosition(
 					this.root.netBodies["netObject_"+multiplayer.userid],

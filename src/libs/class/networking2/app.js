@@ -54,7 +54,6 @@ export default class Broadcaster {
 			var CHANNEL = netConfig.sessionName
 			console.log("ONLY ONES CHANNEL =>", CHANNEL);
 			this.connection.send = (netArg) => {
-				console.log("ONLY ONES CHANNEL2 =>", CHANNEL);
 				this.session.signal({
 					data: JSON.stringify(netArg),
 					to: [],
