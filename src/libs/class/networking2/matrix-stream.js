@@ -51,7 +51,16 @@ export function joinSession(options) {
 			setTimeout(() => {
 				console.log(`%c REMOTE STREAM READY [] ${byId("remote-video-" + event.stream.streamId)}`, BIGLOG)
 			}, 2000)
-			dispatchEvent(new CustomEvent('onStreamCreated', {detail: {event: event, msg: `[connectionId][${event.stream.connection.connectionId}]`}}))
+			dispatchEvent(new CustomEvent('onStreamCreated', {
+				detail:
+				{
+					event: event,
+					streamId: event.stream.streamId,
+					videoId: "remote-video-" + event.stream.streamId,
+					connectionId: `${event.stream.connection.connectionId}`,
+					msg: 'New remote user.'
+				}
+			}))
 			// Subscribe to the Stream to receive it
 			// HTML video will be appended to element with 'video-container' id
 			var subscriber = session.subscribe(event.stream, 'video-container');

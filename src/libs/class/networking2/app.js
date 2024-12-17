@@ -33,10 +33,10 @@ export default class Broadcaster {
 			.then((html) => {
 				console.log(' TEST >>>>>>	loadNetHTML() {>>>>>')
 				var popupUI = byId("matrix-net");
-				popupUI.style = 'display: block;';
+				popupUI.style = 'display: block;overflow:hidden;';
 				popupUI.innerHTML = html;
 				this.joinSessionUI = byId("join-btn");
-				this.buttonCloseSession = byId('buttonCloseSession');
+				// this.buttonCloseSession = byId('buttonCloseSession');
 				this.buttonLeaveSession = byId('buttonLeaveSession');
 				byId("sessionName").value = netConfig.sessionName;
 				this.sessionName = byId("sessionName");
@@ -69,6 +69,7 @@ export default class Broadcaster {
 		addEventListener('setupSessionObject', (e) => {
 			console.log("setupSessionObject=>", e.detail);
 			this.session = e.detail;
+			console.log("setupSessionObject test conn =>", this.session.connection);
 			this.session.on(`signal:${netConfig.sessionName}`, (e) => {
 				if(this.connection.connectionId == e.from.connectionId) {
 					//
@@ -82,7 +83,7 @@ export default class Broadcaster {
 			console.log(`%c JOIN SESSION [${netConfig.resolution}] `, REDLOG)
 			joinSession({resolution: netConfig.resolution})
 		})
-		this.buttonCloseSession.addEventListener('click', closeSession)
+		// this.buttonCloseSession.addEventListener('click', closeSession)
 		this.buttonLeaveSession.addEventListener('click', () => {
 			console.log(`%c LEAVE SESSION`, REDLOG)
 			removeUser()

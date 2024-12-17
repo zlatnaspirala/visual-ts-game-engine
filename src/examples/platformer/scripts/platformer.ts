@@ -90,8 +90,6 @@ class Platformer implements IGamePlayModel {
 	 */
 	public addNetPlayer=(myInstance, rtcEvent?) => {
 
-		const root=this;
-
 		this.preventDoubleExecution=false;
 
 		const sptTexCom=new SpriteTextureComponent(
@@ -100,14 +98,14 @@ class Platformer implements IGamePlayModel {
 			({ byX: 5, byY: 1 } as any),
 		);
 
-		console.log("New netPlayer: ", rtcEvent.extra.username);
+		console.log("New netPlayer: TEST THIS ", this);
 		const playerRadius=50;
 		const netPlayer: worldElement=Matter.Bodies.circle(
 			this.playerStartPositions[0].x,
 			this.playerStartPositions[0].y,
 			playerRadius, {
 				netId: 1000,
-				label: rtcEvent.extra.nickname,
+				label: rtcEvent.connectionId,
 				density: 0.0005,
 				friction: 0.01,
 				frictionAir: 0.06,
@@ -138,14 +136,14 @@ class Platformer implements IGamePlayModel {
 		if(addToScene) {
 			// this.netPlayer.id = 2;
 			// Sometime networking make double join session receive signal
-			console.log("myInstance.netBodies[netObject_ + rtcEvent.userid]>>", myInstance.netBodies["netObject_"+rtcEvent.userid]);
-			if(myInstance.netBodies["netObject_"+rtcEvent.userid]) {
-				// console.log("ALREADY EXIST");
+			console.log("myInstance.netBodies[netObject_ + rtcEvent.conn id]>>", myInstance.netBodies["netObject_"+rtcEvent.connectionId]);
+			if(myInstance.netBodies["netObject_"+rtcEvent.connectionId]) {
+				console.log("ALREADY EXIST");
 				return;
 			}
 			this.starter.AddNewBodies(netPlayer as worldElement);
 			console.info("Net Player body created.");
-			myInstance.netBodies["netObject_"+rtcEvent.userid]=netPlayer;
+			myInstance.netBodies["netObject_"+rtcEvent.connectionId]=netPlayer;
 
 		}
 

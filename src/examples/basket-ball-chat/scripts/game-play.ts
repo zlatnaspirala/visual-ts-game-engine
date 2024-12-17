@@ -35,18 +35,18 @@ class GamePlay extends BasketBallChat implements IMultiplayer {
 
       if(multiplayer.data.netPos) {
 
-        Matter.Body.setPosition(this.root.netBodies["netObject_"+multiplayer.userid], { x: multiplayer.data.netPos.x, y: multiplayer.data.netPos.y });
+        Matter.Body.setPosition(this.root.netBodies["netObject_"+multiplayer.connectionId], { x: multiplayer.data.netPos.x, y: multiplayer.data.netPos.y });
 
         Matter.Body.setAngle(
-          this.root.netBodies["netObject_"+multiplayer.userid],
+          this.root.netBodies["netObject_"+multiplayer.connectionId],
           -Math.PI*0,
         );
 
         if(multiplayer.data.netDir) {
           if(multiplayer.data.netDir==="left") {
-            this.root.netBodies["netObject_"+multiplayer.userid].render.visualComponent.setHorizontalFlip(false);
+            this.root.netBodies["netObject_"+multiplayer.connectionId].render.visualComponent.setHorizontalFlip(false);
           } else if(multiplayer.data.netDir==="right") {
-            this.root.netBodies["netObject_"+multiplayer.userid].render.visualComponent.setHorizontalFlip(true);
+            this.root.netBodies["netObject_"+multiplayer.connectionId].render.visualComponent.setHorizontalFlip(true);
           }
         }
 
@@ -57,7 +57,7 @@ class GamePlay extends BasketBallChat implements IMultiplayer {
         // bis logic - Initator must have credibility
 
         // Not tested Soft
-        this.root.netBodies["netObject_"+multiplayer.userid].render.visible=false;
+        this.root.netBodies["netObject_"+multiplayer.connectionId].render.visible=false;
         console.log(" VISIBLE FALSE FOR ET OBJECT");
         // Hard make exit if netPlayer is initator
         // Hard - exit game - if game logic

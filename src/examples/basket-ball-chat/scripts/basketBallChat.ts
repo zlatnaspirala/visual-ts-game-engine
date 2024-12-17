@@ -106,7 +106,7 @@ class BasketBallChat implements IGamePlayModel {
       this.playerStartPositions[0].y,
       playerRadius, {
         netId: 1000,
-        label: rtcEvent.extra.nickname,
+        label: rtcEvent.connectionId,
         density: 0.0005,
         friction: 0.01,
         frictionAir: 0.06,

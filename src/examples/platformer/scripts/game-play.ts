@@ -33,32 +33,32 @@ class GamePlay extends Platformer implements IMultiplayer {
 		init(rtcEvent) {
 			console.log("rtcEvent addNewPlayer: ", rtcEvent);
 			this.root.addNetPlayer(this.root, rtcEvent);
-
-			console.log('call PLATFORME DB ACTIVE LIST - this ; ', this)
-			this.root.starter.ioc.get.Network.connector.getActivePlayers();
+			// console.log('call PLATFORME DB ACTIVE LIST - this ; ', this)
+			// this.root.starter.ioc.get.Network.connector.getActivePlayers();
 		},
 
 		update(multiplayer) {
 			multiplayer.data = JSON.parse(multiplayer.data)
+			// multiplayer.from = JSON.parse(multiplayer.from)
 			if(multiplayer.data.netPos) {
 				Matter.Body.setPosition(
-					this.root.netBodies["netObject_"+multiplayer.userid],
+					this.root.netBodies["netObject_"+multiplayer.from.connectionId],
 					{ x: multiplayer.data.netPos.x, y: multiplayer.data.netPos.y }
 				);
 
 				Matter.Body.setAngle(
-					this.root.netBodies["netObject_"+multiplayer.userid],
+					this.root.netBodies["netObject_"+multiplayer.from.connectionId],
 					-Math.PI*0
 				);
 
 				if(multiplayer.data.netDir) {
 					if(multiplayer.data.netDir==="left") {
 						this.root.netBodies[
-							"netObject_"+multiplayer.userid
+							"netObject_"+multiplayer.from.connectionId
 						].render.visualComponent.setHorizontalFlip(true);
 					} else if(multiplayer.data.netDir==="right") {
 						this.root.netBodies[
-							"netObject_"+multiplayer.userid
+							"netObject_"+multiplayer.from.connectionId
 						].render.visualComponent.setHorizontalFlip(false);
 					}
 				}
@@ -70,7 +70,7 @@ class GamePlay extends Platformer implements IMultiplayer {
 
 				// Not tested Soft
 				this.root.netBodies[
-					"netObject_"+multiplayer.userid
+					"netObject_"+multiplayer.from.connectionId
 				].render.visible=false;
 				console.log(" VISIBLE FALSE FOR ET OBJECT");
 				// Hard make exit if netPlayer is initator
@@ -196,9 +196,11 @@ class GamePlay extends Platformer implements IMultiplayer {
 					// myInstance.starter.ioc.get.Network.connectUI.disabled = (this as any).disabled = false;
 					myInstance.starter.ioc.get.Network.connector.inGamePlay=false;
 					myInstance.deattachMatterEvents();
+
+					// ENTER HERE NEW VER
 					// Leave
-					myInstance.starter.ioc.get.Network.rtcMultiConnection.connection.leave();
-					myInstance.starter.ioc.get.Network.rtcMultiConnection.connection.disconnect();
+					// myInstance.starter.ioc.get.Network.rtcMultiConnection.connection.leave();
+					// myInstance.starter.ioc.get.Network.rtcMultiConnection.connection.disconnect();
 					myInstance.netBodies={};
 					console.info(
 						"game-end global event. Destroying game play. DISCONNECT"
@@ -208,6 +210,13 @@ class GamePlay extends Platformer implements IMultiplayer {
 				console.error("Very bad #1", err);
 			}
 		});
+
+		window.addEventListener('onStreamCreated', (e: any) => {
+			console.log(" onStreamCreated ON STREAM CREATED [REMOTE]=>", e.detail);
+			console.log(" onStreamCreated ON TEST THIS ]=>", this);
+			this.multiPlayerRef.init(e.detail)
+		})
+
 	};
 
 	private deattachMatterEvents() {

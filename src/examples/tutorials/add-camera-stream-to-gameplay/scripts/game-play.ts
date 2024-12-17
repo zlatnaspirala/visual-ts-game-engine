@@ -30,18 +30,18 @@ class GamePlay extends WebCamStream implements IMultiplayer {
     update (multiplayer) {
 			multiplayer.data = JSON.parse(multiplayer.data);
       if (multiplayer.data.netPos) {
-        Matter.Body.setPosition(this.root.netBodies["netObject_" + multiplayer.userid],
+        Matter.Body.setPosition(this.root.netBodies["netObject_" + multiplayer.connectionId],
           { x: multiplayer.data.netPos.x, y: multiplayer.data.netPos.y });
         Matter.Body.setAngle(
-          this.root.netBodies["netObject_" + multiplayer.userid],
+          this.root.netBodies["netObject_" + multiplayer.connectionId],
           -Math.PI * 0,
         );
 
         if (multiplayer.data.netDir) {
           if (multiplayer.data.netDir === "left") {
-            this.root.netBodies["netObject_" + multiplayer.userid].render.visualComponent.setHorizontalFlip(false);
+            this.root.netBodies["netObject_" + multiplayer.connectionId].render.visualComponent.setHorizontalFlip(false);
           } else if (multiplayer.data.netDir === "right") {
-            this.root.netBodies["netObject_" + multiplayer.userid].render.visualComponent.setHorizontalFlip(true);
+            this.root.netBodies["netObject_" + multiplayer.connectionId].render.visualComponent.setHorizontalFlip(true);
           }
         }
 
@@ -52,7 +52,7 @@ class GamePlay extends WebCamStream implements IMultiplayer {
         // server database politic make clear player is out of game
         // bis logic - Initator must have credibility
         // Not tested Soft
-        this.root.netBodies["netObject_" + multiplayer.userid].render.visible = false;
+        this.root.netBodies["netObject_" + multiplayer.connectionId].render.visible = false;
         console.log("Soft kill");
 
       }
