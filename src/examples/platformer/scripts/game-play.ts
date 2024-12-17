@@ -85,14 +85,14 @@ class GamePlay extends Platformer implements IMultiplayer {
 		 */
 		preventDoubleLGP: {},
 		leaveGamePlay(rtcEvent) {
-			console.info("rtcEvent LEAVE GAME: ", rtcEvent.userid);
-			if(typeof this.preventDoubleLGP[rtcEvent.userid]==='undefined') {
-				this.preventDoubleLGP[rtcEvent.userid]=true;
+			console.info("rtcEvent LEAVE GAME: ", rtcEvent.connectionId);
+			if(typeof this.preventDoubleLGP[rtcEvent.connectionId]==='undefined') {
+				this.preventDoubleLGP[rtcEvent.connectionId]=true;
 				// setTimeout(() => this.root.starter.ioc.get.Network.connector.getActivePlayers(), 1000);
 				this.root.starter.destroyBody(
-					this.root.netBodies["netObject_"+rtcEvent.userid]
+					this.root.netBodies["netObject_"+rtcEvent.connectionId]
 				);
-				delete this.root.netBodies["netObject_"+rtcEvent.userid];
+				delete this.root.netBodies["netObject_"+rtcEvent.connectionId];
 			}
 		},
 	};

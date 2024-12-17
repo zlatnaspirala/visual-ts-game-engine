@@ -5,22 +5,18 @@ import ClientConfig from "../../client-config";
  * Here make override what ever you want
  */
 class AppConfig extends ClientConfig {
- 
-  constructor(gameList: any) {
-    super(gameList)
-    console.info("Make changes on Application Config with override what ever you want.")
-  }
 
-  /**
-   * @description I wanna `free for all` gameplay status.
-   */
-  public didAppUseAccountsSystem(): boolean {
-    return false;
-  }
+	constructor (gameList: any) {
+		super(gameList)
+		console.info("Make changes on Application Config with override what ever you want.")
+	}
 
-  public getShowBroadcasterOnInt ():boolean {
-    return false;
-  }
+	/**
+	 * @description I wanna `free for all` gameplay status.
+	 */
+	public didAppUseAccountsSystem(): boolean {
+		return false;
+	}
 
 }
 export default AppConfig;

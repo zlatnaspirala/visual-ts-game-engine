@@ -122,14 +122,14 @@ class WebCamStream implements IGamePlayModel {
 
       // this.netPlayer.id = 2;
       // Sometime networking make double join session receive signal
-      console.log("myInstance.netBodies[netObject_ + rtcEvent.userid]>>", myInstance.netBodies["netObject_" + rtcEvent.userid]);
-      if (myInstance.netBodies["netObject_" + rtcEvent.userid]) {
+      console.log("myInstance.netBodies[netObject_ + rtcEvent.connectionId]>>", myInstance.netBodies["netObject_" + rtcEvent.connectionId]);
+      if (myInstance.netBodies["netObject_" + rtcEvent.connectionId]) {
         // console.log("ALREADY EXIST");
         return;
       }
       this.starter.AddNewBodies(netPlayer as worldElement);
       console.info("Net Player body created.");
-      myInstance.netBodies["netObject_" + rtcEvent.userid] = netPlayer;
+      myInstance.netBodies["netObject_" + rtcEvent.connectionId] = netPlayer;
 
     }
 

@@ -30,18 +30,18 @@ class GamePlay extends WebCamStream implements IMultiplayer {
     update (multiplayer) {
 			multiplayer.data = JSON.parse(multiplayer.data);
       if (multiplayer.data.netPos) {
-        Matter.Body.setPosition(this.root.netBodies["netObject_" + multiplayer.connectionId],
+        Matter.Body.setPosition(this.root.netBodies["netObject_" + multiplayer.from.connectionId],
           { x: multiplayer.data.netPos.x, y: multiplayer.data.netPos.y });
         Matter.Body.setAngle(
-          this.root.netBodies["netObject_" + multiplayer.connectionId],
+          this.root.netBodies["netObject_" + multiplayer.from.connectionId],
           -Math.PI * 0,
         );
 
         if (multiplayer.data.netDir) {
           if (multiplayer.data.netDir === "left") {
-            this.root.netBodies["netObject_" + multiplayer.connectionId].render.visualComponent.setHorizontalFlip(false);
+            this.root.netBodies["netObject_" + multiplayer.from.connectionId].render.visualComponent.setHorizontalFlip(false);
           } else if (multiplayer.data.netDir === "right") {
-            this.root.netBodies["netObject_" + multiplayer.connectionId].render.visualComponent.setHorizontalFlip(true);
+            this.root.netBodies["netObject_" + multiplayer.from.connectionId].render.visualComponent.setHorizontalFlip(true);
           }
         }
 
@@ -52,7 +52,7 @@ class GamePlay extends WebCamStream implements IMultiplayer {
         // server database politic make clear player is out of game
         // bis logic - Initator must have credibility
         // Not tested Soft
-        this.root.netBodies["netObject_" + multiplayer.connectionId].render.visible = false;
+        this.root.netBodies["netObject_" + multiplayer.from.connectionId].render.visible = false;
         console.log("Soft kill");
 
       }
@@ -66,9 +66,9 @@ class GamePlay extends WebCamStream implements IMultiplayer {
      * - clear object from netObject_x
      */
     leaveGamePlay (rtcEvent) {
-      console.info("rtcEvent <LEAVE_GAME>: ", rtcEvent.userid);
-      this.root.starter.destroyBody(this.root.netBodies["netObject_" + rtcEvent.userid]);
-      delete this.root.netBodies["netObject_" + rtcEvent.userid];
+      console.info("rtcEvent <LEAVE_GAME>: ", rtcEvent.connectionId);
+      this.root.starter.destroyBody(this.root.netBodies["netObject_" + rtcEvent.connectionId]);
+      delete this.root.netBodies["netObject_" + rtcEvent.connectionId];
     },
 
   };

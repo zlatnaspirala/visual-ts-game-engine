@@ -124,7 +124,7 @@ export default class Broadcaster {
 		 * - clear object from netObject_x
 		 */
 		leaveGamePlay(rtcEvent) {
-			console.info("rtcEvent LEAVE GAME: ", rtcEvent.userid);
+			console.info("rtcEvent LEAVE GAME: ", rtcEvent.connectionId);
 			dispatchEvent(new CustomEvent('net.remove-user', {detail: {data: rtcEvent}}))
 		}
 	};

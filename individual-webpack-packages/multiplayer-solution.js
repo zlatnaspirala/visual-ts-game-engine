@@ -69,10 +69,8 @@ module.exports = webPackModuleMultiPlayerSolution = {
       { from: 'src/html-components/user-profile.html', to: 'templates/user-profile.html' },
       { from: './src/html-components/store.html', to: 'templates/store.html' },
       { from: './src/html-components/games-list.html', to: 'templates/games-list.html' },
-      { from: './src/html-components/video-conference.html',  to: 'templates/video-conference.html' },
       { from: './src/html-components/broadcaster2.html', to: 'templates/broadcaster2.html' },
       { from: "./src/html-components/message-box.html", to: "templates/message-box.html" },
-      { from: "./src/html-components/coordinator.html", to: "templates/coordinator.html" },
       // Audios
       { from: "./src/examples/platformer/audios/map-themes/sb_indreams.mp3", to: "audios/sb_indreams.mp3"},
       { from: "./src/examples/platformer/audios/player/jump.mp3", to: "audios/jump.mp3"},

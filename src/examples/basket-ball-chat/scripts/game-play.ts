@@ -32,18 +32,18 @@ class GamePlay extends BasketBallChat implements IMultiplayer {
 			multiplayer.data=JSON.parse(multiplayer.data)
 			if(multiplayer.data.netPos) {
 
-				Matter.Body.setPosition(this.root.netBodies["netObject_"+multiplayer.connectionId], { x: multiplayer.data.netPos.x, y: multiplayer.data.netPos.y });
+				Matter.Body.setPosition(this.root.netBodies["netObject_"+multiplayer.from.connectionId], { x: multiplayer.data.netPos.x, y: multiplayer.data.netPos.y });
 
 				Matter.Body.setAngle(
-					this.root.netBodies["netObject_"+multiplayer.connectionId],
+					this.root.netBodies["netObject_"+multiplayer.from.connectionId],
 					-Math.PI*0,
 				);
 
 				if(multiplayer.data.netDir) {
 					if(multiplayer.data.netDir==="left") {
-						this.root.netBodies["netObject_"+multiplayer.connectionId].render.visualComponent.setHorizontalFlip(false);
+						this.root.netBodies["netObject_"+multiplayer.from.connectionId].render.visualComponent.setHorizontalFlip(false);
 					} else if(multiplayer.data.netDir==="right") {
-						this.root.netBodies["netObject_"+multiplayer.connectionId].render.visualComponent.setHorizontalFlip(true);
+						this.root.netBodies["netObject_"+multiplayer.from.connectionId].render.visualComponent.setHorizontalFlip(true);
 					}
 				}
 
@@ -53,7 +53,7 @@ class GamePlay extends BasketBallChat implements IMultiplayer {
 				// server database politic make clear player is out of game
 				// bis logic - Initator must have credibility
 				// Not tested Soft
-				this.root.netBodies["netObject_"+multiplayer.connectionId].render.visible=false;
+				this.root.netBodies["netObject_"+multiplayer.from.connectionId].render.visible=false;
 				console.log(" VISIBLE FALSE FOR ET OBJECT");
 				// Hard make exit if netPlayer is initator
 				// Hard - exit game - if game logic
@@ -68,10 +68,10 @@ class GamePlay extends BasketBallChat implements IMultiplayer {
 		 */
 		leaveGamePlay(rtcEvent) {
 
-			console.info("rtcEvent LEAVE GAME: ", rtcEvent.userid);
-			this.root.starter.destroyBody(this.root.netBodies["netObject_"+rtcEvent.userid]);
+			console.info("rtcEvent LEAVE GAME: ", rtcEvent.connectionId);
+			this.root.starter.destroyBody(this.root.netBodies["netObject_"+rtcEvent.connectionId]);
 			setTimeout(() => this.root.starter.ioc.get.Network.connector.getActivePlayers(), 1000);
-			delete this.root.netBodies["netObject_"+rtcEvent.userid];
+			delete this.root.netBodies["netObject_"+rtcEvent.connectionId];
 
 		},
 
@@ -207,6 +207,7 @@ class GamePlay extends BasketBallChat implements IMultiplayer {
 
 		});
 
+		// OLD <<<<<<<<<<<<<<<<<<<<<<<<<<<
 		window.addEventListener("stream-loaded", function(e: CustomEvent) {
 
 			try {
@@ -247,6 +248,13 @@ class GamePlay extends BasketBallChat implements IMultiplayer {
 			} catch(err) { console.error("Very bad #00004", err); }
 
 		});
+
+		window.addEventListener('onStreamCreated', (e: any) => {
+			console.log(" onStreamCreated ON STREAM CREATED [REMOTE]=>", e.detail);
+			console.log(" onStreamCreated ON TEST THIS ]=>", this);
+			this.multiPlayerRef.init(e.detail)
+
+		})
 
 	}
 

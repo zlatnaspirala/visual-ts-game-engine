@@ -520,11 +520,9 @@ class Platformer implements IGamePlayModel {
 	 * @description Jump intro new wourld.
 	 * @param data
 	 * @type Void
-	 * 
-	 *               root.broadcaster.connection.send({
-								netPos: netPosOpt(root.player.position),
-								netDir: root.player.currentDir,
-							});
+	 * root.broadcaster.connection.send({
+	 * netPos: netPosOpt(root.player.position),
+	 * netDir: root.player.currentDir,
 	 */
 	private nextLevel(data: string): void {
 
