@@ -204,56 +204,48 @@ class GamePlay extends BasketBallChat implements IMultiplayer {
 
 				}
 			} catch(err) { console.error("Very bad #00003", err); }
-
 		});
 
-		// OLD <<<<<<<<<<<<<<<<<<<<<<<<<<<
-		window.addEventListener("stream-loaded", function(e: CustomEvent) {
-
+		window.addEventListener("videoElementCreatedSubscriber", function(e: CustomEvent) {
+			// console.log(" videoElementCreatedSubscriber[REMOTE]=>", e.detail.element);
+			// console.log(" videoElementCreatedSubscriber[REMOTE]=>", e.detail.target.stream.connection.connectionId);
 			try {
-
-				let mediaDom=byId(e.detail.data.streamId);
-				mediaDom=mediaDom.getElementsByTagName("video")[0];
-				console.info("Loaded stream: ", byId(e.detail.data.streamId));
-				console.info("Loaded stream: ", mediaDom);
-
-				/**
-				 * @description
-				 * Determinate local or not
-				 */
-				if(myInstance.broadcaster.connection.userid===e.detail.data.userId) {
-					// OWN
-					console.info("Loaded stream: OWN ");
-					(myInstance as any).selectedPlayer.setCurrentTile("stream");
-					(myInstance.player as any).render.visualComponent.setNewShema((myInstance as any).selectedPlayer);
-					(myInstance.player as any).render.visualComponent.assets.SeqFrame.setNewSeqFrameRegimeType("CONST");
-					(myInstance.player as any).render.visualComponent.seqFrameX.regimeType="CONST";
-					(myInstance.player as any).render.visualComponent.seqFrameY.regimeType="CONST";
-					(myInstance.player as any).render.visualComponent.assets.SeqFrame.value=3;
-
-					(myInstance.player as any).render.visualComponent.setStreamTexture(mediaDom);
-					console.log("Stream added.");
-				} else {
-					// console.info("Loaded stream: NET myInstance.netBodies ", myInstance.netBodies);
-					let myNetPlayer=myInstance.netBodies["netObject_"+e.detail.data.userId]
-					myNetPlayer.render.visualComponent.setNewShema((myInstance as any).selectedPlayer);
-					myNetPlayer.render.visualComponent.assets.SeqFrame.setNewSeqFrameRegimeType("CONST");
-					myNetPlayer.render.visualComponent.seqFrameX.regimeType="CONST";
-					myNetPlayer.render.visualComponent.seqFrameY.regimeType="CONST";
-					myNetPlayer.render.visualComponent.assets.SeqFrame.value=3;
-					myNetPlayer.render.visualComponent.setStreamTexture(mediaDom);
-					console.log("Stream added.");
-				}
-
-			} catch(err) { console.error("Very bad #00004", err); }
-
+					let mediaDom=e.detail.element;
+					console.info("Loaded stream: ", e.detail.element);
+					/**
+					 * @description
+					 * Determinate local or not
+					 */
+					if(myInstance.broadcaster.connection !== null && myInstance.broadcaster.connection.connectionId===e.detail.target.stream.connection.connectionId ||
+						myInstance.broadcaster.session.connection !== null && myInstance.broadcaster.session.connection.connectionId===e.detail.target.stream.connection.connectionId
+					) {
+						// // OWN maybe not need at thos point
+						console.info("Loaded stream: OWN ");
+						// (myInstance as any).selectedPlayer.setCurrentTile("stream");
+						// (myInstance.player as any).render.visualComponent.setNewShema((myInstance as any).selectedPlayer);
+						// (myInstance.player as any).render.visualComponent.assets.SeqFrame.setNewSeqFrameRegimeType("CONST");
+						// (myInstance.player as any).render.visualComponent.seqFrameX.regimeType="CONST";
+						// (myInstance.player as any).render.visualComponent.seqFrameY.regimeType="CONST";
+						// (myInstance.player as any).render.visualComponent.assets.SeqFrame.value=3;
+						// (myInstance.player as any).render.visualComponent.setStreamTexture(mediaDom);
+						// console.log("Stream added.");
+					} else {
+						// console.info("Loaded stream: NET myInstance.netBodies ", myInstance.netBodies);
+						let myNetPlayer=myInstance.netBodies["netObject_"+e.detail.target.stream.connection.connectionId]
+						myNetPlayer.render.visualComponent.setNewShema((myInstance as any).selectedPlayer);
+						myNetPlayer.render.visualComponent.assets.SeqFrame.setNewSeqFrameRegimeType("CONST");
+						myNetPlayer.render.visualComponent.seqFrameX.regimeType="CONST";
+						myNetPlayer.render.visualComponent.seqFrameY.regimeType="CONST";
+						myNetPlayer.render.visualComponent.assets.SeqFrame.value=3;
+						myNetPlayer.render.visualComponent.setStreamTexture(mediaDom);
+						console.log("Stream added.");
+					}
+				} catch(err) { console.error("Bad #00004", err); }
 		});
 
 		window.addEventListener('onStreamCreated', (e: any) => {
-			console.log(" onStreamCreated ON STREAM CREATED [REMOTE]=>", e.detail);
-			console.log(" onStreamCreated ON TEST THIS ]=>", this);
+			// console.log(" onStreamCreated ON STREAM CREATED [REMOTE]=>", e.detail);
 			this.multiPlayerRef.init(e.detail)
-
 		})
 
 	}
