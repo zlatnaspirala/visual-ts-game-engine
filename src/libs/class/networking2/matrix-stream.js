@@ -161,9 +161,6 @@ export function joinSession(options) {
 				publisher.on('streamCreated', event => {
 					dispatchEvent(new CustomEvent(`LOCAL-STREAM-READY`, {detail: event.stream}))
 					console.log(`%c LOCAL STREAM READY ${event.stream.connection.connectionId}`, BIGLOG)
-					// if(document.getElementById("pwa-container-1").style.display != 'none') {
-					// 	document.getElementById("pwa-container-1").style.display = 'none';
-					// }
 					pushEvent(event);
 				});
 

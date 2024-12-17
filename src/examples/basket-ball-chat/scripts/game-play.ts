@@ -152,9 +152,7 @@ class GamePlay extends BasketBallChat implements IMultiplayer {
 					myInstance.initSelectPlayer();
 					myInstance.selectPlayer("nidzica");
 					myInstance.playerSpawn(true);
-
 					return;
-
 				}
 
 				myInstance.initSelectPlayer();
@@ -246,6 +244,23 @@ class GamePlay extends BasketBallChat implements IMultiplayer {
 		window.addEventListener('onStreamCreated', (e: any) => {
 			// console.log(" onStreamCreated ON STREAM CREATED [REMOTE]=>", e.detail);
 			this.multiPlayerRef.init(e.detail)
+		})
+
+		window.addEventListener(`LOCAL-STREAM-READY`, (e: any) => {
+
+			console.log('LOCAL-STREAM-READY >>>>>>>>>>>>>>>>>>', e.detail.session.streamManagers[0].element)
+			let mediaDom = e.detail.session.streamManagers[0].element;
+			if (mediaDom.id.toString().indexOf('local-video') == -1) {
+				mediaDom=byId('local-video-undefined');
+			}
+
+			this.player.render.visualComponent.setNewShema((myInstance as any).selectedPlayer);
+			this.player.render.visualComponent.assets.SeqFrame.setNewSeqFrameRegimeType("CONST");
+			this.player.render.visualComponent.seqFrameX.regimeType="CONST";
+			this.player.render.visualComponent.seqFrameY.regimeType="CONST";
+			this.player.render.visualComponent.assets.SeqFrame.value=3;
+			this.player.render.visualComponent.setStreamTexture(mediaDom);
+
 		})
 
 	}
