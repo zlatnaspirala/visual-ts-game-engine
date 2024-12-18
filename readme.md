@@ -2,18 +2,19 @@
 ## Current Version `1.0.0` 2025
 
 ### Status:
-- From 1.0.0 new networking based on kurento media server.
+- From 1.0.0 new networking driver based on kurento media server.
 - From 0.7.0 VTS migrate to webpack5 version
   [If you have some trouble try to deleting node_modules/ and install again]
 
-#### 2d canvas game engine based on Matter.js 2D physics engine for the web supported with backend node.js/mongoDB and visual GUI tool 2d map creator/python3.
+#### 2d canvas game engine based on Matter.js 2D physics engine for the web supported with kurento/OVServer and visual GUI tool 2d map creator/python3.
 
-I use my own concept: `take lib only for the great benefits`. It means that i import only staff that i can't make in proper way in proper time, all other coming from head. For example `Physics` was imported
-in role of npm package for typescript matter.js/ts variant and i keep dependency healthy. In
-networking aspect i use full-duplex connection under web-rtc protocol. Pretty nice working
-combination of physics and realtime-multiplayer connetions. HTMLRequest used only for loading html
-parts in run time (on request) because i want clear single page application with all PWA
-features inside. Also video chat is integrated based on OV server/kurento.
+I use my own concept: `take lib only for the great benefits`. It means that i import only stuff that i can't make in proper way in proper time, all other coming from head. For example `Physics` was imported in role of npm package for typescript matter.js/ts variant and i keep dependency healthy. 
+
+Old networking point [If you dont want kurento in backend and you wanna your own server code]
+It is nice if you wanna try. This works on 5$ VPS (node.js).
+https://github.com/zlatnaspirala/visual-ts-game-engine/tree/POINT_WITH_OWN_SERVER_OLD
+
+In networking aspect i use full-duplex connection under web-rtc protocol. Pretty nice working combination of physics and realtime-multiplayer connetions. HTMLRequest used only for loading html parts in run time (on request) and accounts{wip}  because i want clear single page application with all PWA features inside. Also video chat is integrated based on OV server/kurento.
 You can start recording canvas gameplay with implemented `record-canvas`.
 
 ### For npm users
@@ -28,7 +29,7 @@ It is nice starter project. Fixed all deps to make `npm i visual-ts` usable.
 ### For github users
 
 `git clone --recurse-submodules https://github.com/zlatnaspirala/visual-ts-game-engine`
-
+After this command you can run GUI Python map creator tool.
 
 ### Whats good in this project:
 
@@ -788,7 +789,7 @@ except ./src/lib. Folder lib is under:
 ### External licence in this project:
 
 <b>- Networking based on:</b> <br/>
-Kurento OpenVidu server 
+Kurento OpenVidu server [openvidu-browser-2.20.0]
 https://openvidu.io/<br/>
 
 <b>- Base physics beased on :</b> <br/>
