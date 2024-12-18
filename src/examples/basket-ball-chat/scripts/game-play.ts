@@ -67,12 +67,9 @@ class GamePlay extends BasketBallChat implements IMultiplayer {
 		 * - clear object from netObject_x
 		 */
 		leaveGamePlay(rtcEvent) {
-
 			console.info("rtcEvent LEAVE GAME: ", rtcEvent.connectionId);
 			this.root.starter.destroyBody(this.root.netBodies["netObject_"+rtcEvent.connectionId]);
-			setTimeout(() => this.root.starter.ioc.get.Network.connector.getActivePlayers(), 1000);
 			delete this.root.netBodies["netObject_"+rtcEvent.connectionId];
-
 		},
 
 	};
@@ -208,37 +205,37 @@ class GamePlay extends BasketBallChat implements IMultiplayer {
 			// console.log(" videoElementCreatedSubscriber[REMOTE]=>", e.detail.element);
 			// console.log(" videoElementCreatedSubscriber[REMOTE]=>", e.detail.target.stream.connection.connectionId);
 			try {
-					let mediaDom=e.detail.element;
-					console.info("Loaded stream: ", e.detail.element);
-					/**
-					 * @description
-					 * Determinate local or not
-					 */
-					if(myInstance.broadcaster.connection !== null && myInstance.broadcaster.connection.connectionId===e.detail.target.stream.connection.connectionId ||
-						myInstance.broadcaster.session.connection !== null && myInstance.broadcaster.session.connection.connectionId===e.detail.target.stream.connection.connectionId
-					) {
-						// // OWN maybe not need at thos point
-						console.info("Loaded stream: OWN ");
-						// (myInstance as any).selectedPlayer.setCurrentTile("stream");
-						// (myInstance.player as any).render.visualComponent.setNewShema((myInstance as any).selectedPlayer);
-						// (myInstance.player as any).render.visualComponent.assets.SeqFrame.setNewSeqFrameRegimeType("CONST");
-						// (myInstance.player as any).render.visualComponent.seqFrameX.regimeType="CONST";
-						// (myInstance.player as any).render.visualComponent.seqFrameY.regimeType="CONST";
-						// (myInstance.player as any).render.visualComponent.assets.SeqFrame.value=3;
-						// (myInstance.player as any).render.visualComponent.setStreamTexture(mediaDom);
-						// console.log("Stream added.");
-					} else {
-						// console.info("Loaded stream: NET myInstance.netBodies ", myInstance.netBodies);
-						let myNetPlayer=myInstance.netBodies["netObject_"+e.detail.target.stream.connection.connectionId]
-						myNetPlayer.render.visualComponent.setNewShema((myInstance as any).selectedPlayer);
-						myNetPlayer.render.visualComponent.assets.SeqFrame.setNewSeqFrameRegimeType("CONST");
-						myNetPlayer.render.visualComponent.seqFrameX.regimeType="CONST";
-						myNetPlayer.render.visualComponent.seqFrameY.regimeType="CONST";
-						myNetPlayer.render.visualComponent.assets.SeqFrame.value=3;
-						myNetPlayer.render.visualComponent.setStreamTexture(mediaDom);
-						console.log("Stream added.");
-					}
-				} catch(err) { console.error("Bad #00004", err); }
+				let mediaDom=e.detail.element;
+				console.info("Loaded stream: ", e.detail.element);
+				/**
+				 * @description
+				 * Determinate local or not
+				 */
+				if(myInstance.broadcaster.connection!==null&&myInstance.broadcaster.connection.connectionId===e.detail.target.stream.connection.connectionId||
+					myInstance.broadcaster.session.connection!==null&&myInstance.broadcaster.session.connection.connectionId===e.detail.target.stream.connection.connectionId
+				) {
+					// // OWN maybe not need at thos point
+					console.info("Loaded stream: OWN ");
+					// (myInstance as any).selectedPlayer.setCurrentTile("stream");
+					// (myInstance.player as any).render.visualComponent.setNewShema((myInstance as any).selectedPlayer);
+					// (myInstance.player as any).render.visualComponent.assets.SeqFrame.setNewSeqFrameRegimeType("CONST");
+					// (myInstance.player as any).render.visualComponent.seqFrameX.regimeType="CONST";
+					// (myInstance.player as any).render.visualComponent.seqFrameY.regimeType="CONST";
+					// (myInstance.player as any).render.visualComponent.assets.SeqFrame.value=3;
+					// (myInstance.player as any).render.visualComponent.setStreamTexture(mediaDom);
+					// console.log("Stream added.");
+				} else {
+					// console.info("Loaded stream: NET myInstance.netBodies ", myInstance.netBodies);
+					let myNetPlayer=myInstance.netBodies["netObject_"+e.detail.target.stream.connection.connectionId]
+					myNetPlayer.render.visualComponent.setNewShema((myInstance as any).selectedPlayer);
+					myNetPlayer.render.visualComponent.assets.SeqFrame.setNewSeqFrameRegimeType("CONST");
+					myNetPlayer.render.visualComponent.seqFrameX.regimeType="CONST";
+					myNetPlayer.render.visualComponent.seqFrameY.regimeType="CONST";
+					myNetPlayer.render.visualComponent.assets.SeqFrame.value=3;
+					myNetPlayer.render.visualComponent.setStreamTexture(mediaDom);
+					console.log("Stream added.");
+				}
+			} catch(err) { console.error("Bad #00004", err); }
 		});
 
 		window.addEventListener('onStreamCreated', (e: any) => {
@@ -246,11 +243,16 @@ class GamePlay extends BasketBallChat implements IMultiplayer {
 			this.multiPlayerRef.init(e.detail)
 		})
 
+		window.addEventListener('connectionDestroyed', (e: any) => {
+			console.log("connectionDestroyed =>", e.detail.connectionId);
+			this.multiPlayerRef.leaveGamePlay(e.detail)
+		})
+
 		window.addEventListener(`LOCAL-STREAM-READY`, (e: any) => {
 
 			console.log('LOCAL-STREAM-READY >>>>>>>>>>>>>>>>>>', e.detail.session.streamManagers[0].element)
-			let mediaDom = e.detail.session.streamManagers[0].element;
-			if (mediaDom.id.toString().indexOf('local-video') == -1) {
+			let mediaDom=e.detail.session.streamManagers[0].element;
+			if(mediaDom.id.toString().indexOf('local-video')==-1) {
 				mediaDom=byId('local-video-undefined');
 			}
 
@@ -259,7 +261,13 @@ class GamePlay extends BasketBallChat implements IMultiplayer {
 			this.player.render.visualComponent.seqFrameX.regimeType="CONST";
 			this.player.render.visualComponent.seqFrameY.regimeType="CONST";
 			this.player.render.visualComponent.assets.SeqFrame.value=3;
+
 			this.player.render.visualComponent.setStreamTexture(mediaDom);
+			// fast solution for now to stop sprite for stream
+			setTimeout(() => {
+				 this.player.render.visualComponent.seqFrameX.finish=0; 
+				 console.log("SETUP this.player.render.visualComponent.seqFrameX.finish", this.player.render.visualComponent.seqFrameX.finish)
+				}, 4000)
 
 		})
 
@@ -270,27 +278,21 @@ class GamePlay extends BasketBallChat implements IMultiplayer {
 	}
 
 	private overrideOnKeyDown=() => {
-
 		const testRoot=this;
-
 		if(typeof testRoot.player==="undefined"||testRoot.player===null) { return; }
 		const vc=testRoot.player.render.visualComponent;
 		if(vc.assets.SeqFrame.getValue()===0||
 			testRoot.selectedPlayer.spriteTileCurrent==="stream") {
 			return;
 		}
-
-		testRoot.selectedPlayer.setCurrentTile("run");
-		testRoot.player.render.visualComponent.setNewShema(testRoot.selectedPlayer);
-		testRoot.player.render.visualComponent.assets.SeqFrame.setNewValue(0);
-		testRoot.player.render.visualComponent.seqFrameX.setDelay(8);
-
+		// testRoot.selectedPlayer.setCurrentTile("run");
+		// testRoot.player.render.visualComponent.setNewShema(testRoot.selectedPlayer);
+		// testRoot.player.render.visualComponent.assets.SeqFrame.setNewValue(0);
+		// testRoot.player.render.visualComponent.seqFrameX.setDelay(8);
 	}
 
 	private overrideOnKeyUp=() => {
-
 		const testRoot=this;
-
 		if(typeof testRoot.player==="undefined"||testRoot.player===null) {
 			return;
 		}
@@ -299,11 +301,10 @@ class GamePlay extends BasketBallChat implements IMultiplayer {
 			testRoot.selectedPlayer.spriteTileCurrent==="stream") {
 			return;
 		}
-		testRoot.selectedPlayer.setCurrentTile("idle");
-		testRoot.player.render.visualComponent.setNewShema(testRoot.selectedPlayer);
-		vc.assets.SeqFrame.setNewValue(2);
-		vc.seqFrameX.setDelay(8);
-
+		// testRoot.selectedPlayer.setCurrentTile("idle");
+		// testRoot.player.render.visualComponent.setNewShema(testRoot.selectedPlayer);
+		// vc.assets.SeqFrame.setNewValue(2);
+		// vc.seqFrameX.setDelay(8);
 	}
 
 	private attachMatterEvents() {
@@ -363,7 +364,6 @@ class GamePlay extends BasketBallChat implements IMultiplayer {
 			if(root.player) {
 				Matter.Body.setAngle(root.player, -Math.PI*0);
 				// Matter.Body.setAngle(root.enemys[0] as Matter.Body, -Math.PI * 0);
-
 				Matter.Bounds.shift(root.starter.getRender().bounds,
 					{
 						x: root.player.position.x-root.starter.getRender().options.width/1.3,
@@ -371,11 +371,9 @@ class GamePlay extends BasketBallChat implements IMultiplayer {
 					});
 
 				if(root.player.velocity.x<0.00001&&root.player.velocity.y===0&&
-					// tslint:disable-next-line: no-empty
 					root.player.currentDir==="idle") {
 					// empty
 				} else {
-					// console.log(" root.network.rtcMultiConnection.connection.send({  ", root.network.rtcMultiConnection.connection.send );
 					if(root.broadcaster.connection) root.broadcaster.connection.send({
 						netPos: root.player.position,
 						netDir: root.player.currentDir,

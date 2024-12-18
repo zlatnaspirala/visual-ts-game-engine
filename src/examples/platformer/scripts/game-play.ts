@@ -85,10 +85,7 @@ class GamePlay extends Platformer implements IMultiplayer {
 			console.info("rtcEvent LEAVE GAME: ", rtcEvent.connectionId);
 			if(typeof this.preventDoubleLGP[rtcEvent.connectionId]==='undefined') {
 				this.preventDoubleLGP[rtcEvent.connectionId]=true;
-				// setTimeout(() => this.root.starter.ioc.get.Network.connector.getActivePlayers(), 1000);
-				this.root.starter.destroyBody(
-					this.root.netBodies["netObject_"+rtcEvent.connectionId]
-				);
+				this.root.starter.destroyBody(this.root.netBodies["netObject_"+rtcEvent.connectionId]);
 				delete this.root.netBodies["netObject_"+rtcEvent.connectionId];
 			}
 		},
@@ -103,7 +100,7 @@ class GamePlay extends Platformer implements IMultiplayer {
                                          General: MIT License <br/>\
                                          Copyright (c) 2019 Nikola Lukic zlatnaspirala@gmail.com Serbia Nis <br/>\
                                          Except: Folder src/libs with licence: <br/>\
-                                         Copyright (c) 2019 maximumroulette.com ";
+                                         GPLV3 Copyright (c) 2019 maximumroulette.com";
 
 	/**
 	 * @description deadZoneForBottom Definition and Default value

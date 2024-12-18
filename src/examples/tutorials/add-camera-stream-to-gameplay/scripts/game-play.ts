@@ -243,10 +243,10 @@ class GamePlay extends WebCamStream implements IMultiplayer {
 			return;
 		}
 
-		testRoot.selectedPlayer.setCurrentTile("run");
-		testRoot.player.render.visualComponent.setNewShema(testRoot.selectedPlayer);
-		testRoot.player.render.visualComponent.assets.SeqFrame.setNewValue(0);
-		testRoot.player.render.visualComponent.seqFrameX.setDelay(8);
+		// testRoot.selectedPlayer.setCurrentTile("run");
+		// testRoot.player.render.visualComponent.setNewShema(testRoot.selectedPlayer);
+		// testRoot.player.render.visualComponent.assets.SeqFrame.setNewValue(0);
+		// testRoot.player.render.visualComponent.seqFrameX.setDelay(8);
 
 	}
 
@@ -262,10 +262,10 @@ class GamePlay extends WebCamStream implements IMultiplayer {
 			testRoot.selectedPlayer.spriteTileCurrent==="stream") {
 			return;
 		}
-		testRoot.selectedPlayer.setCurrentTile("idle");
-		testRoot.player.render.visualComponent.setNewShema(testRoot.selectedPlayer);
-		vc.assets.SeqFrame.setNewValue(2);
-		vc.seqFrameX.setDelay(8);
+		// testRoot.selectedPlayer.setCurrentTile("idle");
+		// testRoot.player.render.visualComponent.setNewShema(testRoot.selectedPlayer);
+		// vc.assets.SeqFrame.setNewValue(2);
+		// vc.seqFrameX.setDelay(8);
 
 	}
 
