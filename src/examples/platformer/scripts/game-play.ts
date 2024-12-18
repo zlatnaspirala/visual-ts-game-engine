@@ -33,13 +33,10 @@ class GamePlay extends Platformer implements IMultiplayer {
 		init(rtcEvent) {
 			console.log("rtcEvent addNewPlayer: ", rtcEvent);
 			this.root.addNetPlayer(this.root, rtcEvent);
-			// console.log('call PLATFORME DB ACTIVE LIST - this ; ', this)
-			// this.root.starter.ioc.get.Network.connector.getActivePlayers();
 		},
 
 		update(multiplayer) {
 			multiplayer.data = JSON.parse(multiplayer.data)
-			// multiplayer.from = JSON.parse(multiplayer.from)
 			if(multiplayer.data.netPos) {
 				Matter.Body.setPosition(
 					this.root.netBodies["netObject_"+multiplayer.from.connectionId],
@@ -215,6 +212,11 @@ class GamePlay extends Platformer implements IMultiplayer {
 			console.log(" onStreamCreated ON STREAM CREATED [REMOTE]=>", e.detail);
 			console.log(" onStreamCreated ON TEST THIS ]=>", this);
 			this.multiPlayerRef.init(e.detail)
+		})
+
+		window.addEventListener('connectionDestroyed', (e: any) => {
+			console.log("connectionDestroyed =>", e.detail.connectionId);
+			this.multiPlayerRef.leaveGamePlay(e.detail)
 		})
 
 	};

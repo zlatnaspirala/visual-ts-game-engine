@@ -31,7 +31,7 @@ export default class Broadcaster {
 	loadNetHTML() {
 		fetch("./templates/broadcaster2.html", {headers: htmlHeader}).then((res) => {return res.text()})
 			.then((html) => {
-				console.log(' TEST >>>>>>	loadNetHTML() {>>>>>')
+				// console.log(' TEST >>>>>>	loadNetHTML() {>>>>>')
 				var popupUI = byId("matrix-net");
 				popupUI.style = 'display: block;overflow:hidden;';
 				popupUI.innerHTML = html;

@@ -40,7 +40,6 @@ export function joinSession(options) {
 		session.on('connectionDestroyed', e => {
 			console.log(`Connection destroyed ${e.connection.connectionId}`)
 			dispatchEvent(new CustomEvent('connectionDestroyed', {detail: {connectionId: e.connection.connectionId, event: e}}))
-			// byId("pwa-container-2").style.display = "none";
 			pushEvent(e);
 		});
 
