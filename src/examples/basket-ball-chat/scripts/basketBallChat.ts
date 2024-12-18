@@ -16,7 +16,7 @@ import "../audios/map-themes/mishief-stroll.mp4";
 
 import SpriteStreamComponent from "../../../libs/class/visual-methods/sprite-stream";
 import TextureStreamComponent from "../../../libs/class/visual-methods/texture-stream";
-import Broadcaster from "../../../libs/class/networking2/app";
+import Broadcaster from "../../../libs/class/networking2/app.js";
 // import { DEFAULT_PLAYER_DATA } from "../../../libs/defaults";
 
 /**

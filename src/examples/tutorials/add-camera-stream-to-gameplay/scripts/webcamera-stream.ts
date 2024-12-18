@@ -1,6 +1,6 @@
 
 import Matter=require("matter-js");
-import Broadcaster from "../../../../libs/class/networking2/app"
+import Broadcaster from "../../../../libs/class/networking2/app.js"
 import { byId, createAppEvent, htmlHeader } from "../../../../libs/class/system";
 import SpriteTextureComponent from "../../../../libs/class/visual-methods/sprite-animation";
 import SpriteStreamComponent from "../../../../libs/class/visual-methods/sprite-stream";

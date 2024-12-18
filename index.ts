@@ -18,7 +18,7 @@ import TextureStreamComponent from "./src/libs/class/visual-methods/texture-stre
 import IocSinglePlayerMode from "./src/controllers/ioc-single-player"
 import IocMultiPlayerMode from "./src/controllers/ioc";
 import Generator from "./src/libs/class/generator";
-import Broadcaster from "./src/libs/class/networking2/app";
+import Broadcaster from "./src/libs/class/networking2/app.js";
 import MobileControls from "./src/libs/class/player-commands";
 import * as Type from "./src/libs/types/global";
 import * as Interface from "./src/libs/interface/global";
