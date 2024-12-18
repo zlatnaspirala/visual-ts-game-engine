@@ -9,12 +9,12 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
  * Import individual webpack packages or
  * Remove package from multi compile webpackconfig.
  */
-// var webPackModuleMultiPlayerSolution = require("./individual-webpack-packages/multiplayer-solution");
-// var webPackModuleSingleSimpleSolution = require("./individual-webpack-packages/single-player-solution");
-// var webPackModuleTutorialsDemo1 = require("./individual-webpack-packages/add-element");
+var webPackModuleMultiPlayerSolution = require("./individual-webpack-packages/multiplayer-solution");
+var webPackModuleSingleSimpleSolution = require("./individual-webpack-packages/single-player-solution");
+var webPackModuleTutorialsDemo1 = require("./individual-webpack-packages/add-element");
 var webPackModuleTutorialsDemo2 = require("./individual-webpack-packages/webcamera-stream-demo2");
-// var webPackModuleMultiChatBasketBall = require("./individual-webpack-packages/basketball-chat");
-// var webPackModuleSpriteAnimationDemo = require("./individual-webpack-packages/sprite-animation");
+var webPackModuleMultiChatBasketBall = require("./individual-webpack-packages/basketball-chat");
+var webPackModuleSpriteAnimationDemo = require("./individual-webpack-packages/sprite-animation");
 
 let config = {
 	module: {},
@@ -53,10 +53,10 @@ if(internalConfig.createDocumentation == true) {
 }
 
 module.exports = [
-	// webPackModuleMultiPlayerSolution,
-	// webPackModuleSingleSimpleSolution,
-	// webPackModuleMultiChatBasketBall,
-	// webPackModuleTutorialsDemo1,
+	webPackModuleMultiPlayerSolution,
+	webPackModuleSingleSimpleSolution,
+	webPackModuleMultiChatBasketBall,
+	webPackModuleTutorialsDemo1,
 	webPackModuleTutorialsDemo2,
-	// webPackModuleSpriteAnimationDemo
+	webPackModuleSpriteAnimationDemo
 ];
