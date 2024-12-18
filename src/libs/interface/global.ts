@@ -168,6 +168,7 @@ export interface IClientConfig {
   getRemoteServerAddressControlller(): string;
   setNetworkDeepLog(newState: boolean): void;
 
+	networking2: any;
   /**
    * @description
    * Syntetic for now.

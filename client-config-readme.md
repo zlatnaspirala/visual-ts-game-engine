@@ -95,100 +95,14 @@ class ClientConfig {
    * masterServerKey is channel access id used to connect
    * multimedia server channel.Both multiRTC3
    */
-  private masterServerKey: string = "maximumroulette.server1";
-
-  /**
-   * rtcServerPort Port used to connect multimedia server.
-   * Default value is 12034
-   */
-  private rtcServerPort: number = 12034;
-
-  /**
-   * @description
-   * Enable Disable coordinator flag
-   */
-  private appUseCoordinator: boolean = false;
-
-  /**
-   * @description
-   * Coordinator rtc3 session init values.
-   * Downgrade to data only.
-   */
-  private coordinatorSessionDefaults: IBroadcasterSession = {
-    sessionAudio: false,
-    sessionVideo: false,
-    sessionData: true,
-    enableFileSharing: false,
-  };
-
-  /**
-   * connectorPort is access port used to connect
-   * session web socket.
-   * Take high number for port to avoid
-   * `code: 'EACCES', errno: -4092, syscall: 'listen'
-   * for localhost usage.
-   */
-  private connectorPort: number = 9010;
+  private masterServerKey: string = "maximumroulette.platformer";
 
   /**
    * appUseAccountsSystem If you don't want to use session
    * in your application just setup this variable to the false.
    */
   private appUseAccountsSystem: boolean = true;
-
-  /**
-   * appUseBroadcaster Disable or enable broadcaster for
-   * video chats.
-   */
-  private appUseBroadcaster: boolean = true;
-
-  /**
-   * @description
-   * broadcasterPort Port used to connect multimedia server MultiRTC3.
-   * I will use it for explicit video chat multiplatform support.
-   * Default value is 9001
-   */
-  private broadcasterPort: number = 9001;
-
-  private showBroadcasterOnInt: boolean = true;
-
-  /**
-   * @description
-   * broadcaster socket.io address.
-   * Change it for production regime
-   */
-  private broadcastAutoConnect: boolean = false;
-
-  /**
-   * @description
-   * runBroadcasterOnInt load broadcaster
-   */
-  private runBroadcasterOnInt: boolean = true;
-
-  /**
-   * @description
-   * broadcaster rtc session init values.
-   * Change it for production regime
-   */
-  private broadcasterSessionDefaults: IBroadcasterSession = {
-    sessionAudio: true,
-    sessionVideo: true,
-    sessionData: true,
-    enableFileSharing: true,
-  };
-
-  /**
-   * @description
-   * Optimal for dev stage.
-   * read more about webRtc protocols.
-   * Recommended: coturn open source project.
-   */
-  private stunList: string[] = [
-    "stun:stun.l.google.com:19302",
-    "stun:stun1.l.google.com:19302",
-    "stun:stun.l.google.com:19302?transport=udp",
-  ];
-
+  
   /**
    * @description
    * Possible variant by default:
@@ -217,10 +131,40 @@ class ClientConfig {
    * pre gameplay UI game selector.
    */
   constructor(gameList: any[]) {
-
     // Interconnection Network.Connector vs app.ts
-    this.gameList = gameList;
-
   }
 
 ```
+
+
+
+export let activateNet2 = (CustomConfig, sessionOption) => {
+	if(typeof App.net !== 'undefined' && App.net === true) {
+		if(typeof CustomConfig !== 'undefined') {
+			var t = new CustomConfig();
+		} else {
+			var t = new ClientConfig();
+		}
+
+		// -----------------------
+		// Make run
+		// -----------------------
+		if(typeof sessionOption === 'undefined') {
+			sessionOption.sessionName = 'matrix-engine-random';
+			sessionOption.resolution = '160x240';
+		}
+		net = new MatrixStream({
+			domain: t.networking2.domain,
+			port: t.networking2.port,
+			sessionName: sessionOption.sessionName,
+			resolution: sessionOption.resolution
+		})
+
+		addEventListener(`onTitle`, (e) => {
+			document.title = e.detail;
+		})
+		// remove at the end
+		window.matrixStream = net;
+		console.info(`%c Networking2 params: ${t.networking2}`, CS3);
+	}
+};

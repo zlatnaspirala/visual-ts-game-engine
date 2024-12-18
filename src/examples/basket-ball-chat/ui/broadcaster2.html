@@ -1,0 +1,86 @@
+<div id="netHeader" class="">
+	<button id="netHeaderTitle" class="btn btn-lg btn-success">HIDE</button>
+
+	<div id="session" style="display: none">
+		<div id="video-container" class="col-md-12"></div>
+		<div id="session-header">
+			<h2 id="session-title"></h2>
+			<input class="btn btn-sm btn-danger" type="button" id="buttonCloseSession" value="Close session">
+			<input class="btn btn-sm btn-danger" type="button" id="buttonLeaveSession" value="Leave session">
+			<div class="vertical-separator-top" style="display:none;"></div>
+			<input class="form-control" id="forceValue" type="text" onkeyup="checkBtnsForce()" style="display:none;">
+			<input class="btn btn-sm" type="button" id="buttonForceUnpublish" onmouseup="forceUnpublish()" value="Force unpublish"
+				disabled style="display:none;">
+			<input class="btn btn-sm" type="button" id="buttonForceDisconnect" onmouseup="forceDisconnect()" value="Force disconnect"
+				disabled style="display:none;">
+			<div class="vertical-separator-top" style="display:none;"></div>
+			<input class="btn btn-sm" type="button" id="buttonFetchInfo" onmouseup="fetchInfo()"
+				value="Fetch info" style="display:none;">
+			<input class="btn btn-sm" type="button" id="buttonFetchAll" onmouseup="fetchAll()"
+				value="Fetch all" style="display:none;">
+		</div>
+		<!-- REC DISABLED -->
+		<div id="recording-btns" style="display:none">
+			<div class="btns">
+				<input class="btn btn-md" type="button" id="buttonStartRecording" onmouseup="startRecording()" value="Start recording">
+				<form style="display:none;">
+					<label class="radio-inline">
+						<input type="radio" name="outputMode" value="COMPOSED" id="radio-composed" checked>COMPOSED
+					</label>
+					<label class="radio-inline">
+						<input type="radio" name="outputMode" value="INDIVIDUAL" id="radio-individual">INDIVIDUAL
+					</label>
+				</form>
+				<form style="display:none;">
+					<label class="checkbox-inline">
+						<input type="checkbox" id="has-audio-checkbox" checked>Has audio
+					</label>
+					<label class="checkbox-inline">
+						<input type="checkbox" id="has-video-checkbox" checked>Has video
+					</label>
+				</form>
+			</div>
+			<div class="btns">
+				<input class="btn btn-md" type="button" id="buttonListRecording" onmouseup="listRecordings()" value="List recordings">
+				<div class="vertical-separator-bottom"></div>
+				<input class="btn btn-md" type="button" id="buttonGetRecording" onmouseup="getRecording()" value="Get recording"
+					disabled>
+				<input class="btn btn-md" type="button" id="buttonStopRecording" onmouseup="stopRecording()" value="Stop recording"
+					disabled>
+				<input class="btn btn-md" type="button" id="buttonDeleteRecording" onmouseup="deleteRecording()" value="Delete recording"
+					disabled>
+				<input class="form-control" id="forceRecordingId" type="text" onkeyup="checkBtnsRecordings()">
+			</div>
+			<div class="textarea-container" id="textarea-http-container">
+				<button type="button" class="btn btn-outline-secondary" id="clear-http-btn" onclick="clearHttpTextarea()">Clear</button>
+				<span>HTTP responses</span>
+				<textarea id="textarea-http" readonly="true" class="form-control" name="textarea-http"></textarea>
+			</div>
+			<div class="textarea-container" id="textarea-events-container">
+				<button type="button" class="btn btn-outline-secondary" id="clear-events-btn" onclick="clearEventsTextarea()">Clear</button>
+				<span>OpenVidu events</span>
+				<textarea id="textarea-events" readonly="true" class="form-control" name="textarea-events"></textarea>
+			</div>
+		</div>
+	</div>
+
+	<div id="pwa-container-2" style="display: block;">
+		<div id="join" class="vertical-center">
+			<div id="join-dialog" class="">
+				<h2 id="caller-title" class="">Start video chat</h2>
+				<form class="form-group" onsubmit="return false">
+					<p style="display: flex;">
+						<label style="padding-bottom: 8px;">Session name</label>
+						<input class="form-control" type="text" id="sessionName" value="matrixEngine" required>
+					</p>
+					<p class="text-center">
+						<button class="btn btn-lg btn-success" id="join-btn">Join!</button>
+					</p>
+				</form>
+			</div>
+		</div>
+
+
+	</div>
+	<!-- <script type="module" src="./app.js"></script> -->
+</div>

@@ -17,46 +17,46 @@ var webPackModuleMultiChatBasketBall = require("./individual-webpack-packages/ba
 var webPackModuleSpriteAnimationDemo = require("./individual-webpack-packages/sprite-animation");
 
 let config = {
-  module: {},
+	module: {},
 };
 
 let internalConfig = {
-  createDocumentation: false,
-  // stats: "errors-warnings"
+	createDocumentation: false,
+	// stats: "errors-warnings"
 };
 
 let documentationPlugin = new TypedocWebpackPlugin({
-  out: './api-doc',
-  module: 'amd',
-  target: 'es5',
-  exclude: ['**/node_modules/**/*.*', '**/level*.ts'],
-  experimentalDecorators: true,
-  excludeExternals: true,
-  name: 'sn-theme',
-  mode: 'file',
-  theme: './sn-theme/',
-  includeDeclarations: false,
-  ignoreCompilerErrors: true,
+	out: './api-doc',
+	module: 'amd',
+	target: 'es5',
+	exclude: ['**/node_modules/**/*.*', '**/level*.ts'],
+	experimentalDecorators: true,
+	excludeExternals: true,
+	name: 'sn-theme',
+	mode: 'file',
+	theme: './sn-theme/',
+	includeDeclarations: false,
+	ignoreCompilerErrors: true,
 });
 
- /**
-  * WebPacks objects for tutorials comes from import
-  * folder `./individual-webpack-packages`
-  *
-  * List:
-  *  Output -> /demo1 - Add element
-  *  Output -> /demo2 - Webcamera stream intro gameplay
-  */
+/**
+ * WebPacks objects for tutorials comes from import
+ * folder `./individual-webpack-packages`
+ *
+ * List:
+ *  Output -> /demo1 - Add element
+ *  Output -> /demo2 - Webcamera stream intro gameplay
+ */
 
-if (internalConfig.createDocumentation == true) {
-  webPackModuleMultiPlayerSolution.plugins.push(documentationPlugin);
+if(internalConfig.createDocumentation == true) {
+	webPackModuleMultiPlayerSolution.plugins.push(documentationPlugin);
 }
 
 module.exports = [
-  webPackModuleMultiPlayerSolution,
-  webPackModuleSingleSimpleSolution,
-  webPackModuleMultiChatBasketBall,
-  webPackModuleTutorialsDemo1,
-  webPackModuleTutorialsDemo2,
-  webPackModuleSpriteAnimationDemo
+	webPackModuleMultiPlayerSolution,
+	webPackModuleSingleSimpleSolution,
+	webPackModuleMultiChatBasketBall,
+	webPackModuleTutorialsDemo1,
+	webPackModuleTutorialsDemo2,
+	webPackModuleSpriteAnimationDemo
 ];

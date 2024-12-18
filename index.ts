@@ -18,10 +18,7 @@ import TextureStreamComponent from "./src/libs/class/visual-methods/texture-stre
 import IocSinglePlayerMode from "./src/controllers/ioc-single-player"
 import IocMultiPlayerMode from "./src/controllers/ioc";
 import Generator from "./src/libs/class/generator";
-import Broadcaster from "./src/libs/class/networking/broadcaster";
-import Connector from "./src/libs/class/networking/connector";
-import Coordinator from "./src/libs/class/networking/coordinator";
-import Network from "./src/libs/class/networking/network";
+import Broadcaster from "./src/libs/class/networking2/app";
 import MobileControls from "./src/libs/class/player-commands";
 import * as Type from "./src/libs/types/global";
 import * as Interface from "./src/libs/interface/global";
@@ -68,8 +65,5 @@ export {
   Generator,
   AppIcon,
   Broadcaster,
-  Connector,
-  Coordinator,
-  Network,
   MobileControls
 }
