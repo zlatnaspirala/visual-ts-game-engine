@@ -1,9 +1,9 @@
 # Project: Visual TS
-## Current Version `1.0.0` 2025
+## Current Version `1.0.0` 2025 BETA
 
 ### Status:
 - From 1.0.0 new networking driver based on kurento media server.
-- From 0.7.0 VTS migrate to webpack5 version
+- From 0.7.0 Migrate to webpack5 version
   [If you have some trouble try to deleting node_modules/ and install again]
 
 #### 2d canvas game engine based on Matter.js 2D physics engine for the web supported with kurento/OVServer and visual GUI tool 2d map creator/python3.
@@ -499,56 +499,6 @@ myInstance.starter.ioc.get.Sound.createAudio(
 root.starter.ioc.get.Sound.playById("jump");
 ```
 
-## Server part
-
-### Installed database : MongoDB server version: 3.5.6
-
-Updated to the last
-https://tecadmin.net/install-mongodb-on-centos/
-
--No typescript here, we need keep state clear no.
-Node.js is best options.For email staff i choose :
-npm i gmail-send .
-
--Run services database server (Locally and leave it alive for develop proccess):
-if you use (running) services mongod no need for this command.
-
-```javascript
-  npm run dataserver
-```
-
-Looks like this :
-
-```node
- mongod --dbpath ./server/database/data
-```
-
-Fix : "failed: address already in use" :
-
-```javascript
-  netstat -ano | findstr :27017
-
-  taskkill /PID typeyourPIDhere /F
-```
-
-Cent os:
-
-```
- mongod
- db.changeUserPassword(‘admin’,’<new_password>’)
-
-
-```
-
-- Command for kill all node.js procces for window users :
-
-```node
-  taskkill /im node.exe /F
-```
-
-## Networking multimedia communication : WebSocketServer running on Node.js
-
-Text-based protocol SIP (Session Initiation Protocol) used for signaling and controlling multimedia sessions.
 
 ### General networking config:
 
@@ -560,108 +510,6 @@ You need to install cert (mmc.exe) (for User or local Mashine), also in browser:
 
 ![](https://github.com/zlatnaspirala/visual-ts-game-engine/blob/dev/nonproject-files/browser-selfsign-allow.png)
 
-Note:
-
-- Connector (websocket) no need to be wss. If you wanna use just session communication.
-
-#### About production running (last version of centos will be nice).
-
-- This is only for localhost test running. On your public server (VPS) you will need to have SSL certification
-  (take a look for free SSL on great https://letsencrypt.org/). Then change in `server-config.js` parameter
-  serverMode to `prod` or `mongodb.net`.
-
-- If you setup with `prod` it means that you have runned mongodb on public mashine.
-- If you setup with `mongodb.net` it means that you regiter free plan on mongodb.net services and you need to setup
-  freeService in databaseRoot:
-
-
-    ```this.databaseRoot = {
-          dev: "mongodb://localhost:27017" ,
-          prod: "mongodb://userAdmin:PUT_YOU_PASSWORD@localhost:27017/admin",
-          freeService: "mongodb+srv://userAdmin:PUT_YOU_PASSWORD@cluster0.piqav.mongodb.net/masterdatabase?retryWrites=true&w=majority"
-        };
-    ```
-
-.
-
-- Cert setup on production (certPathProd):
-  this.certPathProd = {
-  pKeyPath: "/etc/letsencrypt/live/maximumroulette.com/privkey.pem",
-  pCertPath: "/etc/letsencrypt/live/maximumroulette.com/cert.pem",
-  pCBPath: "/etc/letsencrypt/live/maximumroulette.com/fullchain.pem"
-  };
-
-### about server-config
-
-Config property defined in constructor from ServerConfig class
-in interest way. With two defined flags dev & prod it is easy resolved
-boring problem with migration localhost - public server:
-
-```javascript
-// enum : 'dev', 'mongodb.net' or 'prod'
-this.serverMode = "dev";
-
-this.networkDeepLogs = false;
-this.rtcServerPort = 12034;
-this.rtc3ServerPort = 9001;
-this.connectorPort = 1234;
-
-this.domain = {
-  dev: "localhost",
-  prod: "maximumroulette.com",
-};
-
-this.masterServerKey = "maximumroulette.server1";
-this.protocol = "http";
-this.isSecure = false;
-
-// localhost
-this.certPathSelf = {
-  pKeyPath: "./server/rtc/self-cert/privatekey.pem",
-  pCertPath: "./server/rtc/self-cert/certificate.pem",
-  pCBPath: "./server/rtc/self-cert/certificate.pem",
-};
-
-// production
-this.certPathProd = {
-  pKeyPath: "/etc/httpd/conf/ssl/maximumroulette.com.key",
-  pCertPath: "/etc/httpd/conf/ssl/maximumroulette_com.crt",
-  pCBPath: "/etc/httpd/conf/ssl/maximumroulette.ca-bundle",
-};
-
-this.appUseAccountsSystem = true;
-this.appUseBroadcaster = true;
-this.databaseName = "masterdatabase";
-
-this.databaseRoot = {
-  dev: "mongodb://localhost:27017",
-  prod: "mongodb://userAdmin:********@maximumroulette.com:27017/admin",
-};
-
-this.specialRoute = {
-  default:
-    "/var/www/html/applications/visual-typescript-game-engine/build/app.html",
-};
-```
-
-<b> - Running server is easy : </b>
-From root folder (not from server folder).
-If you wanna use node.js debugger you need to fix path for the certs.
-
-```javascript
-  npm run rtc
-```
-
-With this cmd : <i>npm run rtc</i> we run server.js `hosting` and connector.ts websocket `session` and webrtc `broadcaster.ts`.
-Connector is our account session used for login, register etc.
-Implemented video chat based on webRTC protocol. Running rtc3 server is integrated.
-If you wanna disable session-database-rtc3 features and run only `broadcaster`:
-
-Features comes with broadcaster:
-
-- Multiplatform video chat works with other hybrid frameworks
-  or custom implementation throw the native mobile application
-  web control (Chrome implementation usually).
 
 ### GUI Tools
 
