@@ -634,6 +634,8 @@ Visual Typescript Game engine is under:
 except ./src/lib. Folder lib is under:
 #### GNU LESSER GENERAL PUBLIC LICENSE Version 3
 
+only if modify inside src/lib even than you not need to make your project public just fork and publish modification. You are totally free to use this software in commercial prodc.
+
 ### External licence in this project:
 
 <b>- Networking based on:</b> <br/>
